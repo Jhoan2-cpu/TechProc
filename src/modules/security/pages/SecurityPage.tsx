@@ -422,7 +422,7 @@ export const SecurityPage = () => {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
-          Centro de Seguridad
+          security/dashboard
         </h1>
 
         {/* Pestañas */}

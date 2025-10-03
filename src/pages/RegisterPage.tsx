@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUserPlus,
@@ -34,7 +35,8 @@ interface RegisterFormData {
   reason: string;
 }
 
-export const RegisterPage = ({ onBackToLogin }: RegisterPageProps) => {
+export const RegisterPage = ({}: RegisterPageProps) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<RegisterFormData>({
     firstName: '',
     lastName: '',
@@ -50,6 +52,10 @@ export const RegisterPage = ({ onBackToLogin }: RegisterPageProps) => {
 
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
+
+  const handleBackToLogin = () => {
+    navigate('/login');
+  };
 
   const roles = [
     {
@@ -166,7 +172,7 @@ export const RegisterPage = ({ onBackToLogin }: RegisterPageProps) => {
             contactará pronto.
           </p>
           <button
-            onClick={onBackToLogin}
+            onClick={handleBackToLogin}
             className="btn btn-primary inline-flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faArrowLeft} />
@@ -420,7 +426,7 @@ export const RegisterPage = ({ onBackToLogin }: RegisterPageProps) => {
             <div className="flex items-center justify-between pt-4 border-t border-secondary-200">
               <button
                 type="button"
-                onClick={onBackToLogin}
+                onClick={handleBackToLogin}
                 className="btn btn-outline flex items-center gap-2"
               >
                 <FontAwesomeIcon icon={faArrowLeft} />

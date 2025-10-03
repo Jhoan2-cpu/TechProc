@@ -645,7 +645,7 @@ export const InfrastructurePage = () => {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
-          Gestión de Infraestructura
+          infrastructure/dashboard
         </h1>
 
         {/* Pestañas */}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
@@ -13,69 +13,40 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student } from '../types';
-
-// Datos mock
-const mockStudents: Student[] = [
-  {
-    id: '1',
-    first_name: 'Ana',
-    last_name: 'Torres',
-    email: 'ana.torres@email.com',
-    email_verified_at: '2024-01-15',
-    address: 'Av. Arequipa 1234, Lima',
-    birth_date: '2000-05-15',
-    gender: 'F',
-    country_location: 'PE',
-    profile_photo: null,
-    role: 'student',
-    state: 'activo',
-    last_access_ip: '192.168.1.1',
-    last_access: '2024-03-15 10:30:00',
-    created_at: '2024-01-01',
-    updated_at: '2024-03-15',
-  },
-  {
-    id: '2',
-    first_name: 'Pedro',
-    last_name: 'Sánchez',
-    email: 'pedro.sanchez@email.com',
-    email_verified_at: '2024-01-20',
-    address: 'Jr. Lima 567, Lima',
-    birth_date: '1999-08-22',
-    gender: 'M',
-    country_location: 'PE',
-    profile_photo: null,
-    role: 'student',
-    state: 'activo',
-    last_access_ip: '192.168.1.2',
-    last_access: '2024-03-14 16:45:00',
-    created_at: '2024-01-05',
-    updated_at: '2024-03-14',
-  },
-  {
-    id: '3',
-    first_name: 'Laura',
-    last_name: 'Martínez',
-    email: 'laura.martinez@email.com',
-    email_verified_at: null,
-    address: 'Calle Los Olivos 890, Lima',
-    birth_date: '2001-03-10',
-    gender: 'F',
-    country_location: 'PE',
-    profile_photo: null,
-    role: 'student',
-    state: 'inactivo',
-    last_access_ip: '192.168.1.3',
-    last_access: '2024-02-28 09:15:00',
-    created_at: '2024-01-10',
-    updated_at: '2024-02-28',
-  },
-];
+import { studentsService } from '../services';
 
 export const StudentsPage = () => {
-  const [students] = useState<Student[]>(mockStudents);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterState, setFilterState] = useState<string>('all');
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setLoading(true);
+        const data = await studentsService.getAll();
+        setStudents(data);
+      } catch (error) {
+        console.error('Error fetching students:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-secondary-600">Cargando estudiantes...</p>
+        </div>
+      </div>
+    );
+  }
 
   const filteredStudents = students.filter((student) => {
     const matchesSearch =
@@ -88,6 +59,7 @@ export const StudentsPage = () => {
 
   return (
     <div>
+      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">lms/students</h1>
       {/* Header */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
         <div className="flex-1 max-w-md">

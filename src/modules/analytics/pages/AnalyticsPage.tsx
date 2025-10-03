@@ -876,7 +876,7 @@ export const AnalyticsPage = () => {
         <div>
           <h1 className="text-3xl font-heading font-bold text-secondary-900 flex items-center">
             <FontAwesomeIcon icon={faChartLine} className="mr-3 text-primary-600" />
-            Analítica y Monitoreo
+            analytics/dashboard
           </h1>
           <p className="text-secondary-600 mt-2">
             Análisis de datos, asistencia, progreso, rendimiento y predicción de deserción

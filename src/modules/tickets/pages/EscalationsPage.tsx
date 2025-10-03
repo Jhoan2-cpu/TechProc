@@ -353,7 +353,7 @@ export const EscalationsPage = () => {
       {/* Header */}
       <div>
         <h2 className="text-2xl font-heading font-bold text-secondary-900 mb-6">
-          Gestión de Escalaciones
+          tickets/escalations
         </h2>
 
         {/* Pestañas */}

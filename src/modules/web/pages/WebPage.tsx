@@ -635,7 +635,7 @@ export const WebPage = () => {
             Nueva FAQ
           </button>
         </div>
-
+        
         <div className="space-y-3">
           {faqs.map((faq, index) => (
             <ChatbotFAQCard
@@ -654,7 +654,7 @@ export const WebPage = () => {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
-          Gestión del Sitio Web
+          web/dashboard
         </h1>
 
         {/* Pestañas */}

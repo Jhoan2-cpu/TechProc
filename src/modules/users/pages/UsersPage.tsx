@@ -1,7 +1,7 @@
 export const UsersPage = () => {
   return (
     <div>
-      <h1>SECCIÓN GESTIÓN DE USUARIOS</h1>
+      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">users/management</h1>
       <h2>Administración de Usuarios del Sistema</h2>
       <ul>
         <li>Crear Usuarios</li>

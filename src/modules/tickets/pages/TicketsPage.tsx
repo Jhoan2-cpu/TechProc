@@ -312,7 +312,7 @@ export const TicketsPage = () => {
       {/* Header con navegación por pestañas */}
       <div>
         <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
-          Sistema de Tickets
+          tickets/dashboard
         </h1>
 
         {/* Pestañas */}

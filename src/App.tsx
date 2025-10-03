@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -27,82 +28,50 @@ import {
   faUserClock,
 } from '@fortawesome/free-solid-svg-icons';
 
-type AppView = 'login' | 'register';
+// Protected Route Component
+function ProtectedRoute({ children, currentUser, requiredModule }: { children: React.ReactNode; currentUser: User | null; requiredModule?: string }) {
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
 
-function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [currentModule, setCurrentModule] = useState<string>('');
-  const [appView, setAppView] = useState<AppView>('login');
+  if (requiredModule && !hasAccess(currentUser, requiredModule)) {
+    return <Navigate to="/" replace />;
+  }
 
-  useEffect(() => {
-    // Simular carga inicial
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+  return <>{children}</>;
+}
 
-    return () => clearTimeout(timer);
-  }, []);
+// Layout Component
+function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => void }) {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogin = (user: User) => {
-    setCurrentUser(user);
-    // Determinar el primer módulo disponible
-    if (hasAccess(user, 'users')) setCurrentModule('users');
-    else if (hasAccess(user, 'lms')) setCurrentModule('lms');
-    else if (hasAccess(user, 'tickets')) setCurrentModule('tickets');
-    else if (hasAccess(user, 'security')) setCurrentModule('security');
-    else if (hasAccess(user, 'infrastructure')) setCurrentModule('infrastructure');
-    else if (hasAccess(user, 'web')) setCurrentModule('web');
-    else if (hasAccess(user, 'analytics')) setCurrentModule('analytics');
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    setCurrentModule('');
-    setAppView('login');
-  };
+  // Redirigir automáticamente al primer módulo disponible si estamos en la raíz
+  React.useEffect(() => {
+    if (location.pathname === '/') {
+      if (hasAccess(currentUser, 'users')) {
+        navigate('/users', { replace: true });
+      } else if (hasAccess(currentUser, 'lms')) {
+        navigate('/lms', { replace: true });
+      } else if (hasAccess(currentUser, 'tickets')) {
+        navigate('/tickets', { replace: true });
+      } else if (hasAccess(currentUser, 'security')) {
+        navigate('/security', { replace: true });
+      } else if (hasAccess(currentUser, 'infrastructure')) {
+        navigate('/infrastructure', { replace: true });
+      } else if (hasAccess(currentUser, 'web')) {
+        navigate('/web', { replace: true });
+      } else if (hasAccess(currentUser, 'analytics')) {
+        navigate('/analytics', { replace: true });
+      } else {
+        navigate('/profile', { replace: true });
+      }
+    }
+  }, [location.pathname, currentUser, navigate]);
 
   const handleModuleChange = (module: string) => {
-    // El perfil está disponible para todos
-    if (module === 'profile') {
-      setCurrentModule(module);
-    } else if (currentUser && hasAccess(currentUser, module)) {
-      setCurrentModule(module);
-    }
+    navigate(`/${module}`);
   };
-
-  const renderModule = () => {
-    if (!currentUser) return null;
-
-    switch (currentModule) {
-      case 'profile': return <ProfilePage user={currentUser} />;
-      case 'users': return <UsersPage />;
-      case 'pending-registrations': return <PendingRegistrationsPage />;
-      case 'lms': return <LMSMainPage />;
-      case 'tickets': return <TicketsPage />;
-      case 'security': return <SecurityPage />;
-      case 'infrastructure': return <InfrastructurePage />;
-      case 'web': return <WebPage />;
-      case 'analytics': return <AnalyticsPage />;
-      default: return (
-        <div className="flex items-center justify-center h-96">
-          <h2 className="text-2xl text-secondary-600">Seleccione un módulo</h2>
-        </div>
-      );
-    }
-  };
-
-  if (isLoading) {
-    return <Preloader />;
-  }
-
-  // Si no hay usuario logueado, mostrar página de login o registro
-  if (!currentUser) {
-    if (appView === 'register') {
-      return <RegisterPage onBackToLogin={() => setAppView('login')} />;
-    }
-    return <LoginPage onLogin={handleLogin} onRegisterClick={() => setAppView('register')} />;
-  }
 
   const modules = [
     { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
@@ -114,6 +83,8 @@ function App() {
     { id: 'web', name: 'Web', icon: faGlobe },
     { id: 'analytics', name: 'Analítica', icon: faChartLine },
   ];
+
+  const currentPath = location.pathname.split('/')[1] || '';
 
   return (
     <div className="min-h-screen bg-secondary-50 flex animate-fade-in">
@@ -149,7 +120,7 @@ function App() {
             {modules.map((module) => {
               if (!hasAccess(currentUser, module.id)) return null;
 
-              const isActive = currentModule === module.id;
+              const isActive = currentPath === module.id;
 
               return (
                 <button
@@ -175,7 +146,7 @@ function App() {
           <button
             onClick={() => handleModuleChange('profile')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-              currentModule === 'profile'
+              currentPath === 'profile'
                 ? 'bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-md'
                 : 'text-secondary-700 hover:bg-secondary-100'
             }`}
@@ -186,7 +157,7 @@ function App() {
 
           {/* Logout Button */}
           <button
-            onClick={handleLogout}
+            onClick={onLogout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200"
           >
             <FontAwesomeIcon icon={faRightFromBracket} className="text-lg" />
@@ -198,10 +169,70 @@ function App() {
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         <div className="p-8">
-          {renderModule()}
+          <Routes>
+            <Route path="/" element={
+              <div className="flex items-center justify-center h-96">
+                <h2 className="text-2xl text-secondary-600">Seleccione un módulo</h2>
+              </div>
+            } />
+            <Route path="/profile" element={<ProfilePage user={currentUser} />} />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />
+            <Route path="/lms" element={<LMSMainPage />} />
+            <Route path="/tickets" element={<TicketsPage />} />
+            <Route path="/security" element={<SecurityPage />} />
+            <Route path="/infrastructure" element={<InfrastructurePage />} />
+            <Route path="/web" element={<WebPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+          </Routes>
         </div>
       </main>
     </div>
+  );
+}
+
+// Main App Component
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // Simular carga inicial
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleLogin = (user: User) => {
+    setCurrentUser(user);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+  };
+
+  if (isLoading) {
+    return <Preloader />;
+  }
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={
+          currentUser ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} onRegisterClick={() => {}} />
+        } />
+        <Route path="/register" element={
+          currentUser ? <Navigate to="/" replace /> : <RegisterPage onBackToLogin={() => {}} />
+        } />
+        <Route path="/*" element={
+          <ProtectedRoute currentUser={currentUser}>
+            <Layout currentUser={currentUser!} onLogout={handleLogout} />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

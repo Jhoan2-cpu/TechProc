@@ -4,3 +4,5 @@ export { RecentCourseCard } from './RecentCourseCard';
 export { RecentEnrollmentCard } from './RecentEnrollmentCard';
 export { CreateCourseModal } from './CreateCourseModal';
 export { LMSLayout } from './LMSLayout';
+export { CourseCard } from './CourseCard';
+export { ViewCourseModal } from './ViewCourseModal';

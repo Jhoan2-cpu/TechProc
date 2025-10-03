@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBookOpen,
@@ -12,72 +12,63 @@ import {
   RecentCourseCard,
   RecentEnrollmentCard,
 } from '../components';
-
-// Datos mock (luego conectar con backend)
-const mockStats: LMSStats = {
-  total_courses: 45,
-  published_courses: 38,
-  draft_courses: 7,
-  total_students: 1250,
-  active_enrollments: 3420,
-  total_instructors: 28,
-};
-
-const mockRecentCourses: RecentCourse[] = [
-  {
-    id: '1',
-    title: 'Desarrollo Web Full Stack',
-    code: 'WEB-101',
-    instructor_name: 'Juan Pérez',
-    status: 'publicado',
-    created_at: '2024-03-15',
-  },
-  {
-    id: '2',
-    title: 'Inteligencia Artificial',
-    code: 'IA-201',
-    instructor_name: 'María González',
-    status: 'publicado',
-    created_at: '2024-03-14',
-  },
-  {
-    id: '3',
-    title: 'Diseño UX/UI',
-    code: 'DIS-150',
-    instructor_name: 'Carlos Ruiz',
-    status: 'borrador',
-    created_at: '2024-03-13',
-  },
-];
-
-const mockRecentEnrollments: RecentEnrollment[] = [
-  {
-    id: '1',
-    student_name: 'Ana Torres',
-    student_email: 'ana.torres@email.com',
-    course_title: 'Desarrollo Web Full Stack',
-    enrolled_at: '2024-03-15 10:30',
-  },
-  {
-    id: '2',
-    student_name: 'Pedro Sánchez',
-    student_email: 'pedro.sanchez@email.com',
-    course_title: 'Inteligencia Artificial',
-    enrolled_at: '2024-03-15 09:15',
-  },
-  {
-    id: '3',
-    student_name: 'Laura Martínez',
-    student_email: 'laura.martinez@email.com',
-    course_title: 'Diseño UX/UI',
-    enrolled_at: '2024-03-14 16:45',
-  },
-];
+import { lmsService } from '../services';
 
 export const LMSPage = () => {
-  const [stats] = useState<LMSStats>(mockStats);
-  const [recentCourses] = useState<RecentCourse[]>(mockRecentCourses);
-  const [recentEnrollments] = useState<RecentEnrollment[]>(mockRecentEnrollments);
+  const [stats, setStats] = useState<LMSStats | null>(null);
+  const [recentCourses, setRecentCourses] = useState<RecentCourse[]>([]);
+  const [recentEnrollments, setRecentEnrollments] = useState<RecentEnrollment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const [statsData, coursesData, enrollmentsData] = await Promise.all([
+          lmsService.getStats(),
+          lmsService.getRecentCourses(),
+          lmsService.getRecentEnrollments(),
+        ]);
+
+        setStats(statsData);
+        setRecentCourses(coursesData);
+        setRecentEnrollments(enrollmentsData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error al cargar los datos');
+        console.error('Error fetching LMS data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-secondary-600">Cargando datos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-700">Error: {error}</p>
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return null;
+  }
 
   const statCards = [
     {
@@ -119,7 +110,7 @@ export const LMSPage = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-2">
-          Dashboard LMS
+          lms/dashboard
         </h1>
         <p className="text-secondary-600">
           Sistema de Gestión de Aprendizaje

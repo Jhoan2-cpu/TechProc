@@ -20,7 +20,7 @@ export const AnalyticsStatsCard = ({
 }: AnalyticsStatsCardProps) => {
   return (
     <div className={`card ${colorClass} ${borderColor}`}>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between p-4">
         <div>
           <p className="text-sm text-gray-600 mb-1">{title}</p>
           <p className="text-3xl font-heading font-bold">

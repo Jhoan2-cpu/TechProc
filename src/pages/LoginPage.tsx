@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser,
@@ -12,24 +13,48 @@ import {
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import type { User } from '../shared/types/auth';
-import { MOCK_USERS } from '../shared/types/auth';
+import { MOCK_USERS, MODULE_ACCESS } from '../shared/types/auth';
 
 interface LoginPageProps {
   onLogin: (user: User) => void;
   onRegisterClick?: () => void;
 }
 
-export const LoginPage = ({ onLogin, onRegisterClick }: LoginPageProps) => {
+export const LoginPage = ({ onLogin }: LoginPageProps) => {
   const [username, setUsername] = useState('');
   const [hoveredUser, setHoveredUser] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     const user = MOCK_USERS.find(u => u.username === username);
     if (user) {
       onLogin(user);
+      // Redirigir al primer módulo disponible según los permisos del usuario
+      const userModules = MODULE_ACCESS[user.role];
+      if (userModules.includes('users')) {
+        navigate('/users');
+      } else if (userModules.includes('lms')) {
+        navigate('/lms');
+      } else if (userModules.includes('tickets')) {
+        navigate('/tickets');
+      } else if (userModules.includes('security')) {
+        navigate('/security');
+      } else if (userModules.includes('infrastructure')) {
+        navigate('/infrastructure');
+      } else if (userModules.includes('web')) {
+        navigate('/web');
+      } else if (userModules.includes('analytics')) {
+        navigate('/analytics');
+      } else {
+        navigate('/profile');
+      }
     } else {
       alert('Usuario no encontrado');
     }
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
   };
 
   const userCards = [
@@ -177,7 +202,7 @@ export const LoginPage = ({ onLogin, onRegisterClick }: LoginPageProps) => {
           <div className="mt-4">
             <span className="text-secondary-600">¿No tienes cuenta? </span>
             <button
-              onClick={onRegisterClick}
+              onClick={handleRegisterClick}
               className="text-primary-600 hover:text-primary-700 font-semibold hover:underline"
             >
               Solicita tu registro aquí

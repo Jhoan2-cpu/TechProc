@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
@@ -13,79 +13,41 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Instructor } from '../types';
-
-// Datos mock
-const mockInstructors: Instructor[] = [
-  {
-    id: '1',
-    first_name: 'Juan',
-    last_name: 'Pérez',
-    email: 'juan.perez@email.com',
-    email_verified_at: '2024-01-10',
-    address: 'Av. Universitaria 456, Lima',
-    birth_date: '1985-03-15',
-    gender: 'M',
-    country_location: 'PE',
-    profile_photo: null,
-    role: 'instructor',
-    state: 'activo',
-    last_access_ip: '192.168.1.10',
-    last_access: '2024-03-15 14:20:00',
-    created_at: '2023-12-01',
-    updated_at: '2024-03-15',
-    bio: 'Desarrollador Full Stack con más de 10 años de experiencia en tecnologías web.',
-    expertise_area: 'Desarrollo Web, JavaScript, React, Node.js',
-    status: 'activo',
-  },
-  {
-    id: '2',
-    first_name: 'María',
-    last_name: 'González',
-    email: 'maria.gonzalez@email.com',
-    email_verified_at: '2024-01-12',
-    address: 'Jr. Cusco 789, Lima',
-    birth_date: '1990-07-20',
-    gender: 'F',
-    country_location: 'PE',
-    profile_photo: null,
-    role: 'instructor',
-    state: 'activo',
-    last_access_ip: '192.168.1.11',
-    last_access: '2024-03-15 09:45:00',
-    created_at: '2023-12-05',
-    updated_at: '2024-03-15',
-    bio: 'Especialista en Inteligencia Artificial y Machine Learning con doctorado en Ciencias de la Computación.',
-    expertise_area: 'Inteligencia Artificial, Machine Learning, Python',
-    status: 'activo',
-  },
-  {
-    id: '3',
-    first_name: 'Carlos',
-    last_name: 'Ruiz',
-    email: 'carlos.ruiz@email.com',
-    email_verified_at: '2024-01-15',
-    address: 'Av. Brasil 234, Lima',
-    birth_date: '1988-11-05',
-    gender: 'M',
-    country_location: 'PE',
-    profile_photo: null,
-    role: 'instructor',
-    state: 'inactivo',
-    last_access_ip: '192.168.1.12',
-    last_access: '2024-02-20 11:30:00',
-    created_at: '2023-12-10',
-    updated_at: '2024-02-20',
-    bio: 'Diseñador UX/UI con experiencia en crear experiencias digitales excepcionales.',
-    expertise_area: 'Diseño UX/UI, Figma, Adobe XD',
-    status: 'inactivo',
-  },
-];
+import { instructorsService } from '../services';
 
 export const InstructorsPage = () => {
-  const [instructors] = useState<Instructor[]>(mockInstructors);
+  const [instructors, setInstructors] = useState<Instructor[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
+
+  useEffect(() => {
+    const fetchInstructors = async () => {
+      try {
+        setLoading(true);
+        const data = await instructorsService.getAll();
+        setInstructors(data);
+      } catch (error) {
+        console.error('Error fetching instructors:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInstructors();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-secondary-600">Cargando instructores...</p>
+        </div>
+      </div>
+    );
+  }
 
   const filteredInstructors = instructors.filter((instructor) => {
     const matchesSearch =
@@ -99,6 +61,7 @@ export const InstructorsPage = () => {
 
   return (
     <div>
+      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">lms/instructors</h1>
       {/* Header */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
         <div className="flex-1 max-w-md">

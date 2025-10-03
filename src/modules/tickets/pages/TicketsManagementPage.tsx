@@ -147,7 +147,7 @@ export const TicketsManagementPage = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
         <h1 className="text-3xl font-heading font-bold text-secondary-900">
-          Gesti�n de Tickets
+          tickets/management
         </h1>
         <button className="btn btn-primary flex items-center gap-2 whitespace-nowrap">
           <FontAwesomeIcon icon={faPlus} />

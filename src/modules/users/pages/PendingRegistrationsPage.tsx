@@ -138,7 +138,7 @@ export const PendingRegistrationsPage = () => {
       <div className="mb-6 pb-6 border-b-2 border-secondary-200">
         <h1 className="text-3xl font-heading font-bold text-secondary-900 flex items-center">
           <FontAwesomeIcon icon={faUserClock} className="mr-3 text-primary-600" />
-          Solicitudes de Registro
+          users/pending-registrations
         </h1>
         <p className="text-secondary-600 mt-2">
           Revisa y aprueba las solicitudes de registro de nuevos usuarios
