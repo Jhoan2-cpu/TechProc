@@ -1,3 +1,10 @@
 export { ProgressChart } from './ProgressChart';
 export { PieChart } from './PieChart';
 export { StatCard } from './StatCard';
+export { AnalyticsStatsCard } from './AnalyticsStatsCard';
+export { CourseAnalyticsCard } from './CourseAnalyticsCard';
+export { AttendanceCard } from './AttendanceCard';
+export { ProgressCard } from './ProgressCard';
+export { PerformanceCard } from './PerformanceCard';
+export { DropoutPredictionCard } from './DropoutPredictionCard';
+export { ReportCard } from './ReportCard';

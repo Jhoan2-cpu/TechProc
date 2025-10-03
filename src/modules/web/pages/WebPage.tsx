@@ -8,16 +8,7 @@ import {
   faRobot,
   faTachometerAlt,
   faPlus,
-  faEdit,
-  faTrash,
-  faEye,
-  faEyeSlash,
   faCheck,
-  faTimes,
-  faPaperPlane,
-  faClock,
-  faChartLine,
-  faImage,
   faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import type {
@@ -27,6 +18,14 @@ import type {
   ContactForm,
   ChatbotFAQ,
 } from '../types';
+import {
+  WebStatsCard,
+  NewsCard,
+  AlertCard,
+  AnnouncementCard,
+  ContactFormCard,
+  ChatbotFAQCard,
+} from '../components';
 
 // Datos mock - Noticias
 const mockNews: News[] = [
@@ -383,65 +382,41 @@ export const WebPage = () => {
     <>
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <div className="card p-6 bg-gradient-to-br from-blue-50 to-blue-100 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-700 mb-1">Noticias Publicadas</p>
-              <p className="text-3xl font-heading font-bold text-blue-900">{publishedNews}</p>
-            </div>
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faNewspaper} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 animate-fade-in" style={{ animationDelay: '100ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-green-700 mb-1">Alertas Activas</p>
-              <p className="text-3xl font-heading font-bold text-green-900">{activeAlerts}</p>
-            </div>
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faBell} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-purple-50 to-purple-100 animate-fade-in" style={{ animationDelay: '200ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-purple-700 mb-1">Anuncios Activos</p>
-              <p className="text-3xl font-heading font-bold text-purple-900">{activeAnnouncements}</p>
-            </div>
-            <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faBullhorn} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-orange-50 to-orange-100 animate-fade-in" style={{ animationDelay: '300ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-orange-700 mb-1">Consultas Pendientes</p>
-              <p className="text-3xl font-heading font-bold text-orange-900">{pendingContacts}</p>
-            </div>
-            <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faEnvelope} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-indigo-50 to-indigo-100 animate-fade-in" style={{ animationDelay: '400ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-indigo-700 mb-1">FAQs Chatbot</p>
-              <p className="text-3xl font-heading font-bold text-indigo-900">{totalFAQs}</p>
-            </div>
-            <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faRobot} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
+        <WebStatsCard
+          title="Noticias Publicadas"
+          value={publishedNews}
+          icon={faNewspaper}
+          colorClass="from-blue-50 to-blue-100 text-blue-700 bg-blue-600"
+          index={0}
+        />
+        <WebStatsCard
+          title="Alertas Activas"
+          value={activeAlerts}
+          icon={faBell}
+          colorClass="from-green-50 to-green-100 text-green-700 bg-green-600"
+          index={1}
+        />
+        <WebStatsCard
+          title="Anuncios Activos"
+          value={activeAnnouncements}
+          icon={faBullhorn}
+          colorClass="from-purple-50 to-purple-100 text-purple-700 bg-purple-600"
+          index={2}
+        />
+        <WebStatsCard
+          title="Consultas Pendientes"
+          value={pendingContacts}
+          icon={faEnvelope}
+          colorClass="from-orange-50 to-orange-100 text-orange-700 bg-orange-600"
+          index={3}
+        />
+        <WebStatsCard
+          title="FAQs Chatbot"
+          value={totalFAQs}
+          icon={faRobot}
+          colorClass="from-indigo-50 to-indigo-100 text-indigo-700 bg-indigo-600"
+          index={4}
+        />
       </div>
 
       {/* Consultas Pendientes */}
@@ -532,67 +507,13 @@ export const WebPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {news.map((item, index) => (
-          <div
+          <NewsCard
             key={item.id_news}
-            className="card p-6 animate-fade-in"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex gap-4">
-              {item.featured_image && (
-                <div className="w-32 h-32 bg-secondary-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <FontAwesomeIcon icon={faImage} className="text-secondary-400 text-3xl" />
-                </div>
-              )}
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h3 className="text-xl font-heading font-bold text-secondary-900">{item.title}</h3>
-                    <p className="text-sm text-secondary-600">Por {item.author_name} • {formatDate(item.created_date)}</p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(item.status)}`}>
-                    {item.status}
-                  </span>
-                </div>
-                <p className="text-secondary-700 mb-3">{item.summary}</p>
-                <div className="flex flex-wrap gap-2 mb-3">
-                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{item.category}</span>
-                  {item.tags.map((tag, i) => (
-                    <span key={i} className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded text-xs">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-4 text-sm text-secondary-600">
-                  <span className="flex items-center gap-1">
-                    <FontAwesomeIcon icon={faEye} />
-                    {item.views} vistas
-                  </span>
-                  {item.published_date && <span>Publicado: {formatDate(item.published_date)}</span>}
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
-                  <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                  Editar
-                </button>
-                {item.status === 'draft' && (
-                  <button className="btn bg-green-600 hover:bg-green-700 text-white">
-                    <FontAwesomeIcon icon={faCheck} className="mr-2" />
-                    Publicar
-                  </button>
-                )}
-                {item.status === 'published' && (
-                  <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white">
-                    <FontAwesomeIcon icon={faEyeSlash} className="mr-2" />
-                    Ocultar
-                  </button>
-                )}
-                <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </div>
-          </div>
+            news={item}
+            index={index}
+            formatDate={formatDate}
+            getStatusColor={getStatusColor}
+          />
         ))}
       </div>
     </div>
@@ -610,69 +531,14 @@ export const WebPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {alerts.map((alert, index) => (
-          <div
+          <AlertCard
             key={alert.id_alert}
-            className={`card p-6 border-2 animate-fade-in ${getAlertTypeColor(alert.type)}`}
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getAlertTypeColor(alert.type)}`}>
-                        {alert.type}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(alert.status)}`}>
-                        {alert.status}
-                      </span>
-                      <span className="text-xs text-secondary-600">Prioridad: {alert.priority}</span>
-                    </div>
-                    <p className="text-lg text-secondary-900 font-medium">{alert.message}</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div>
-                    <p className="text-secondary-600">Inicio</p>
-                    <p className="font-semibold">{formatDate(alert.start_date)}</p>
-                  </div>
-                  <div>
-                    <p className="text-secondary-600">Fin</p>
-                    <p className="font-semibold">{formatDate(alert.end_date)}</p>
-                  </div>
-                  {alert.link_url && (
-                    <>
-                      <div>
-                        <p className="text-secondary-600">Enlace</p>
-                        <p className="font-mono text-xs">{alert.link_url}</p>
-                      </div>
-                      <div>
-                        <p className="text-secondary-600">Texto del botón</p>
-                        <p className="font-semibold">{alert.link_text}</p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-                {alert.status === 'inactive' ? (
-                  <button className="btn bg-green-600 hover:bg-green-700 text-white">
-                    <FontAwesomeIcon icon={faCheck} />
-                  </button>
-                ) : (
-                  <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white">
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                )}
-                <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </div>
-          </div>
+            alert={alert}
+            index={index}
+            formatDate={formatDate}
+            getStatusColor={getStatusColor}
+            getAlertTypeColor={getAlertTypeColor}
+          />
         ))}
       </div>
     </div>
@@ -690,60 +556,12 @@ export const WebPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {announcements.map((announcement, index) => (
-          <div
+          <AnnouncementCard
             key={announcement.id_announcement}
-            className="card p-6 animate-fade-in"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            {announcement.image_url && (
-              <div className="w-full h-40 bg-secondary-200 rounded-lg flex items-center justify-center mb-4">
-                <FontAwesomeIcon icon={faImage} className="text-secondary-400 text-4xl" />
-              </div>
-            )}
-            <div className="flex items-start justify-between mb-3">
-              <h3 className="text-lg font-heading font-bold text-secondary-900">{announcement.title}</h3>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(announcement.status)}`}>
-                {announcement.status}
-              </span>
-            </div>
-            <p className="text-secondary-700 mb-4">{announcement.content}</p>
-            <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-              <div>
-                <p className="text-secondary-600">Tipo</p>
-                <p className="font-semibold capitalize">{announcement.display_type}</p>
-              </div>
-              <div>
-                <p className="text-secondary-600">Página</p>
-                <p className="font-semibold capitalize">{announcement.target_page}</p>
-              </div>
-              <div>
-                <p className="text-secondary-600">Vistas</p>
-                <p className="font-semibold">{announcement.views.toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-secondary-600">Clics</p>
-                <p className="font-semibold">{announcement.clicks.toLocaleString()}</p>
-              </div>
-            </div>
-            <div className="bg-secondary-50 rounded p-3 mb-4">
-              <p className="text-xs text-secondary-600 mb-1">CTR (Click-Through Rate)</p>
-              <p className="text-2xl font-bold text-primary-600">
-                {((announcement.clicks / announcement.views) * 100).toFixed(2)}%
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1">
-                <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                Editar
-              </button>
-              <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
-                <FontAwesomeIcon icon={faChartLine} />
-              </button>
-              <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-            </div>
-          </div>
+            announcement={announcement}
+            index={index}
+            getStatusColor={getStatusColor}
+          />
         ))}
       </div>
     </div>
@@ -765,76 +583,14 @@ export const WebPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {contacts.map((contact, index) => (
-          <div
+          <ContactFormCard
             key={contact.id_contact}
-            className={`card p-6 animate-fade-in ${contact.status === 'spam' ? 'opacity-50' : ''}`}
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-lg font-heading font-bold text-secondary-900">{contact.full_name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(contact.priority)}`}>
-                        {contact.priority}
-                      </span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contact.status)}`}>
-                        {contact.status}
-                      </span>
-                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">
-                        {contact.form_type}
-                      </span>
-                    </div>
-                    <p className="text-sm text-secondary-600">{contact.email} {contact.phone && `• ${contact.phone}`}</p>
-                    {contact.company && <p className="text-sm text-secondary-600">Empresa: {contact.company}</p>}
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <p className="text-sm font-semibold text-secondary-700 mb-1">Asunto:</p>
-                  <p className="text-secondary-900">{contact.subject}</p>
-                </div>
-                <div className="bg-secondary-50 rounded p-3 mb-3">
-                  <p className="text-sm font-semibold text-secondary-700 mb-1">Mensaje:</p>
-                  <p className="text-sm text-secondary-900">{contact.message}</p>
-                </div>
-                {contact.response && (
-                  <div className="bg-green-50 border-l-4 border-green-500 rounded p-3 mb-3">
-                    <p className="text-sm font-semibold text-green-800 mb-1">Respuesta enviada:</p>
-                    <p className="text-sm text-secondary-700">{contact.response}</p>
-                    <p className="text-xs text-secondary-600 mt-2">Por {contact.assigned_to_name} • {formatDateTime(contact.response_date)}</p>
-                  </div>
-                )}
-                <div className="flex gap-4 text-xs text-secondary-600">
-                  <span><FontAwesomeIcon icon={faClock} className="mr-1" />Recibido: {formatDateTime(contact.submission_date)}</span>
-                  {contact.assigned_to_name && <span>Asignado a: {contact.assigned_to_name}</span>}
-                  {contact.utm_source && <span>Fuente: {contact.utm_source}/{contact.utm_medium}</span>}
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 w-40">
-                {contact.status === 'pending' && (
-                  <>
-                    <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
-                      <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
-                      Responder
-                    </button>
-                    <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                      Marcar Spam
-                    </button>
-                  </>
-                )}
-                {contact.status === 'in_progress' && (
-                  <button className="btn bg-green-600 hover:bg-green-700 text-white">
-                    <FontAwesomeIcon icon={faCheck} className="mr-2" />
-                    Resolver
-                  </button>
-                )}
-                <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
-                  Ver Detalles
-                </button>
-              </div>
-            </div>
-          </div>
+            contact={contact}
+            index={index}
+            formatDateTime={formatDateTime}
+            getPriorityColor={getPriorityColor}
+            getStatusColor={getStatusColor}
+          />
         ))}
       </div>
     </div>
@@ -882,42 +638,11 @@ export const WebPage = () => {
 
         <div className="space-y-3">
           {faqs.map((faq, index) => (
-            <div
+            <ChatbotFAQCard
               key={faq.id_faq}
-              className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow animate-fade-in"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{faq.category}</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
-                      {faq.usage_count} usos
-                    </span>
-                    {faq.active && (
-                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Activa</span>
-                    )}
-                  </div>
-                  <h4 className="font-semibold text-secondary-900 mb-2">{faq.question}</h4>
-                  <p className="text-sm text-secondary-700 mb-2">{faq.answer}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {faq.keywords.map((keyword, i) => (
-                      <span key={i} className="px-2 py-0.5 bg-secondary-100 text-secondary-600 rounded text-xs">
-                        {keyword}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
-                  <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white">
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                </div>
-              </div>
-            </div>
+              faq={faq}
+              index={index}
+            />
           ))}
         </div>
       </div>

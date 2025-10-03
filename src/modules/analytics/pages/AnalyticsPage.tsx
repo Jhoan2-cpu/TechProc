@@ -7,18 +7,13 @@ import {
   faTrophy,
   faExclamationTriangle,
   faFileAlt,
-  faDownload,
-  faCalendar,
   faUsers,
   faGraduationCap,
   faCheckCircle,
-  faTimesCircle,
-  faClock,
   faChartBar,
   faFileExport,
   faFilter,
   faPlus,
-  faUser,
   faFileCsv,
 } from '@fortawesome/free-solid-svg-icons';
 import type {
@@ -32,7 +27,17 @@ import type {
   ReportType,
   ReportFormat,
 } from '../types';
-import { ProgressChart, PieChart } from '../components';
+import {
+  ProgressChart,
+  PieChart,
+  AnalyticsStatsCard,
+  CourseAnalyticsCard,
+  AttendanceCard,
+  ProgressCard,
+  PerformanceCard,
+  DropoutPredictionCard,
+  ReportCard,
+} from '../components';
 
 type AnalyticsTab = 'dashboard' | 'attendance' | 'progress' | 'performance' | 'dropout' | 'reports';
 
@@ -481,116 +486,42 @@ export const AnalyticsPage = () => {
     { id: 'reports' as const, name: 'Reportes', icon: faFileAlt },
   ];
 
-  const getAttendanceColor = (percentage: number) => {
-    if (percentage >= 90) return 'text-green-600';
-    if (percentage >= 80) return 'text-yellow-600';
-    if (percentage >= 70) return 'text-orange-600';
-    return 'text-red-600';
-  };
-
-  const getPerformanceColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 80) return 'text-blue-600';
-    if (score >= 70) return 'text-yellow-600';
-    if (score >= 60) return 'text-orange-600';
-    return 'text-red-600';
-  };
-
-  const getProgressColor = (percentage: number) => {
-    if (percentage >= 80) return 'bg-green-600';
-    if (percentage >= 60) return 'bg-primary-500';
-    if (percentage >= 40) return 'bg-yellow-500';
-    return 'bg-red-600';
-  };
-
-  const getRiskColor = (level: string) => {
-    switch (level) {
-      case 'crítico': return 'bg-red-100 border-red-500 text-red-900';
-      case 'alto': return 'bg-orange-100 border-orange-500 text-orange-900';
-      case 'medio': return 'bg-yellow-100 border-yellow-500 text-yellow-900';
-      case 'bajo': return 'bg-green-100 border-green-500 text-green-900';
-      default: return 'bg-gray-100 border-gray-500 text-gray-900';
-    }
-  };
-
-  const getRiskBadge = (level: string) => {
-    switch (level) {
-      case 'crítico': return 'bg-red-600 text-white';
-      case 'alto': return 'bg-orange-600 text-white';
-      case 'medio': return 'bg-yellow-600 text-white';
-      case 'bajo': return 'bg-green-600 text-white';
-      default: return 'bg-gray-600 text-white';
-    }
-  };
-
-  const getGradeColor = (grade: string) => {
-    switch (grade) {
-      case 'A': return 'bg-green-600 text-white';
-      case 'B': return 'bg-blue-600 text-white';
-      case 'C': return 'bg-yellow-600 text-white';
-      case 'D': return 'bg-orange-600 text-white';
-      case 'F': return 'bg-red-600 text-white';
-      default: return 'bg-gray-600 text-white';
-    }
-  };
-
   const renderDashboard = () => (
     <div className="space-y-6">
       {/* Métricas Generales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-600">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Estudiantes Activos</p>
-              <p className="text-3xl font-heading font-bold text-blue-900">
-                {mockDashboard.active_students}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                de {mockDashboard.total_students} totales
-              </p>
-            </div>
-            <FontAwesomeIcon icon={faUsers} className="text-4xl text-blue-600 opacity-50" />
-          </div>
-        </div>
-
-        <div className="card bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-600">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Asistencia Promedio</p>
-              <p className="text-3xl font-heading font-bold text-green-900">
-                {mockDashboard.average_attendance.toFixed(1)}%
-              </p>
-              <p className="text-xs text-gray-500 mt-1">en todos los cursos</p>
-            </div>
-            <FontAwesomeIcon icon={faUserCheck} className="text-4xl text-green-600 opacity-50" />
-          </div>
-        </div>
-
-        <div className="card bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-600">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Rendimiento Promedio</p>
-              <p className="text-3xl font-heading font-bold text-purple-900">
-                {mockDashboard.average_performance.toFixed(1)}%
-              </p>
-              <p className="text-xs text-gray-500 mt-1">calificaciones</p>
-            </div>
-            <FontAwesomeIcon icon={faTrophy} className="text-4xl text-purple-600 opacity-50" />
-          </div>
-        </div>
-
-        <div className="card bg-gradient-to-br from-red-50 to-red-100 border-l-4 border-red-600">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Estudiantes en Riesgo</p>
-              <p className="text-3xl font-heading font-bold text-red-900">
-                {mockDashboard.at_risk_students}
-              </p>
-              <p className="text-xs text-gray-500 mt-1">requieren atención</p>
-            </div>
-            <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl text-red-600 opacity-50" />
-          </div>
-        </div>
+        <AnalyticsStatsCard
+          title="Estudiantes Activos"
+          value={mockDashboard.active_students}
+          subtitle={`de ${mockDashboard.total_students} totales`}
+          icon={faUsers}
+          colorClass="bg-gradient-to-br from-blue-50 to-blue-100 text-blue-900"
+          borderColor="border-l-4 border-blue-600"
+        />
+        <AnalyticsStatsCard
+          title="Asistencia Promedio"
+          value={`${mockDashboard.average_attendance.toFixed(1)}%`}
+          subtitle="en todos los cursos"
+          icon={faUserCheck}
+          colorClass="bg-gradient-to-br from-green-50 to-green-100 text-green-900"
+          borderColor="border-l-4 border-green-600"
+        />
+        <AnalyticsStatsCard
+          title="Rendimiento Promedio"
+          value={`${mockDashboard.average_performance.toFixed(1)}%`}
+          subtitle="calificaciones"
+          icon={faTrophy}
+          colorClass="bg-gradient-to-br from-purple-50 to-purple-100 text-purple-900"
+          borderColor="border-l-4 border-purple-600"
+        />
+        <AnalyticsStatsCard
+          title="Estudiantes en Riesgo"
+          value={mockDashboard.at_risk_students}
+          subtitle="requieren atención"
+          icon={faExclamationTriangle}
+          colorClass="bg-gradient-to-br from-red-50 to-red-100 text-red-900"
+          borderColor="border-l-4 border-red-600"
+        />
       </div>
 
       {/* Métricas Adicionales */}
@@ -662,52 +593,11 @@ export const AnalyticsPage = () => {
         </h2>
         <div className="space-y-4">
           {mockCourseAnalytics.map((course, index) => (
-            <div
+            <CourseAnalyticsCard
               key={course.course_id}
-              className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-secondary-50"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-heading font-bold text-lg text-secondary-900">
-                  {course.course_name}
-                </h3>
-                <div className="flex items-center gap-4 text-sm">
-                  <span className="text-secondary-600">
-                    <FontAwesomeIcon icon={faUsers} className="mr-1" />
-                    {course.active_students}/{course.total_students}
-                  </span>
-                  {course.at_risk_count > 0 && (
-                    <span className="text-red-600 font-semibold">
-                      <FontAwesomeIcon icon={faExclamationTriangle} className="mr-1" />
-                      {course.at_risk_count} en riesgo
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                <div className="text-center">
-                  <p className="text-xs text-secondary-600 mb-1">Asistencia</p>
-                  <p className="text-lg font-bold text-green-600">{course.average_attendance.toFixed(1)}%</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-secondary-600 mb-1">Rendimiento</p>
-                  <p className="text-lg font-bold text-primary-600">{course.average_performance.toFixed(1)}%</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-secondary-600 mb-1">Progreso</p>
-                  <p className="text-lg font-bold text-accent-600">{course.average_progress.toFixed(1)}%</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-secondary-600 mb-1">Completación</p>
-                  <p className="text-lg font-bold text-primary-700">{course.completion_rate.toFixed(1)}%</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-secondary-600 mb-1">Deserción</p>
-                  <p className="text-lg font-bold text-red-600">{course.dropout_rate.toFixed(1)}%</p>
-                </div>
-              </div>
-            </div>
+              course={course}
+              index={index}
+            />
           ))}
         </div>
       </div>
@@ -746,56 +636,11 @@ export const AnalyticsPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {mockAttendance.map((attendance, index) => (
-          <div
+          <AttendanceCard
             key={attendance.student_id}
-            className="card p-6 hover:shadow-lg transition-shadow"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-heading font-bold text-lg text-secondary-900">
-                  {attendance.student_name}
-                </h3>
-                <p className="text-sm text-secondary-600">{attendance.course_name}</p>
-              </div>
-              <div className="text-right">
-                <p className={`text-3xl font-bold ${getAttendanceColor(attendance.attendance_percentage)}`}>
-                  {attendance.attendance_percentage.toFixed(1)}%
-                </p>
-                <p className="text-xs text-secondary-500">asistencia</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
-              <div className="text-center p-2 bg-primary-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Total Sesiones</p>
-                <p className="text-lg font-bold text-primary-900">{attendance.total_sessions}</p>
-              </div>
-              <div className="text-center p-2 bg-green-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Asistencias</p>
-                <p className="text-lg font-bold text-green-900">{attendance.attended_sessions}</p>
-              </div>
-              <div className="text-center p-2 bg-red-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Ausencias</p>
-                <p className="text-lg font-bold text-red-900">{attendance.absences}</p>
-              </div>
-              <div className="text-center p-2 bg-yellow-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Tardanzas</p>
-                <p className="text-lg font-bold text-yellow-900">{attendance.tardiness}</p>
-              </div>
-              <div className="text-center p-2 bg-accent-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Justificadas</p>
-                <p className="text-lg font-bold text-accent-900">{attendance.justified_absences}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-sm text-secondary-600">
-              <span>
-                <FontAwesomeIcon icon={faCalendar} className="mr-2" />
-                Última asistencia: {attendance.last_attendance_date || 'N/A'}
-              </span>
-            </div>
-          </div>
+            attendance={attendance}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -818,61 +663,11 @@ export const AnalyticsPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {mockProgress.map((progress, index) => (
-          <div
+          <ProgressCard
             key={progress.student_id}
-            className="card p-6 hover:shadow-lg transition-shadow"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-heading font-bold text-lg text-secondary-900">
-                  {progress.student_name}
-                </h3>
-                <p className="text-sm text-secondary-600">{progress.course_name}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-3xl font-bold text-primary-700">
-                  {progress.progress_percentage.toFixed(1)}%
-                </p>
-                <p className="text-xs text-secondary-500">completado</p>
-              </div>
-            </div>
-
-            {/* Barra de Progreso */}
-            <div className="mb-4">
-              <div className="flex items-center justify-between text-sm text-secondary-600 mb-2">
-                <span>Módulo {progress.current_module} de {progress.total_modules}</span>
-                <span>{progress.completed_modules} completados</span>
-              </div>
-              <div className="w-full bg-secondary-200 rounded-full h-4">
-                <div
-                  className={`h-4 rounded-full ${getProgressColor(progress.progress_percentage)} transition-all duration-500`}
-                  style={{ width: `${progress.progress_percentage}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="flex items-center gap-2 text-sm">
-                <FontAwesomeIcon icon={faClock} className="text-secondary-400" />
-                <span className="text-secondary-600">
-                  Promedio: <strong>{progress.average_time_per_module.toFixed(1)}h</strong> por módulo
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
-                <span className="text-secondary-600">
-                  Inscrito: <strong>{progress.enrollment_date}</strong>
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-sm">
-                <FontAwesomeIcon icon={faCheckCircle} className="text-secondary-400" />
-                <span className="text-secondary-600">
-                  Estimado: <strong>{progress.estimated_completion_date}</strong>
-                </span>
-              </div>
-            </div>
-          </div>
+            progress={progress}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -895,58 +690,11 @@ export const AnalyticsPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {mockPerformance.map((perf, index) => (
-          <div
+          <PerformanceCard
             key={perf.student_id}
-            className="card p-6 hover:shadow-lg transition-shadow"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3">
-                  <h3 className="font-heading font-bold text-lg text-secondary-900">
-                    {perf.student_name}
-                  </h3>
-                  <span className={`px-3 py-1 rounded-full text-sm font-bold ${getGradeColor(perf.grade)}`}>
-                    {perf.grade}
-                  </span>
-                </div>
-                <p className="text-sm text-secondary-600">{perf.course_name}</p>
-              </div>
-              <div className="text-right">
-                <p className={`text-3xl font-bold ${getPerformanceColor(perf.average_score)}`}>
-                  {perf.average_score.toFixed(1)}
-                </p>
-                <p className="text-xs text-secondary-500">promedio</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
-              <div className="text-center p-2 bg-primary-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Evaluaciones</p>
-                <p className="text-lg font-bold text-primary-900">
-                  {perf.completed_assessments}/{perf.total_assessments}
-                </p>
-              </div>
-              <div className="text-center p-2 bg-green-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Más Alta</p>
-                <p className="text-lg font-bold text-green-900">{perf.highest_score}</p>
-              </div>
-              <div className="text-center p-2 bg-red-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Más Baja</p>
-                <p className="text-lg font-bold text-red-900">{perf.lowest_score}</p>
-              </div>
-              <div className="text-center p-2 bg-accent-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Aprobación</p>
-                <p className="text-lg font-bold text-accent-900">{perf.passing_rate.toFixed(0)}%</p>
-              </div>
-              <div className="text-center p-2 bg-yellow-50 rounded">
-                <p className="text-xs text-secondary-600 mb-1">Última Eval.</p>
-                <p className="text-xs font-bold text-yellow-900">
-                  {perf.last_assessment_date || 'N/A'}
-                </p>
-              </div>
-            </div>
-          </div>
+            performance={perf}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -982,82 +730,11 @@ export const AnalyticsPage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {mockDropout.map((student, index) => (
-          <div
+          <DropoutPredictionCard
             key={student.student_id}
-            className={`border-l-4 rounded-lg p-6 ${getRiskColor(student.risk_level)}`}
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <h3 className="font-heading font-bold text-xl">
-                    {student.student_name}
-                  </h3>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${getRiskBadge(student.risk_level)}`}>
-                    Riesgo {student.risk_level}
-                  </span>
-                </div>
-                <p className="text-sm opacity-80">{student.course_name}</p>
-                <p className="text-xs opacity-70">{student.email}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-4xl font-bold">{student.risk_score}</p>
-                <p className="text-xs opacity-70">puntuación de riesgo</p>
-              </div>
-            </div>
-
-            {/* Factores de Riesgo */}
-            <div className="mb-4">
-              <h4 className="font-heading font-bold text-sm mb-2 uppercase">Factores de Riesgo</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {student.factors.map((factor, idx) => (
-                  <div key={idx} className="bg-white bg-opacity-50 rounded p-3">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-sm">{factor.factor_name}</span>
-                      <span className={`text-xs px-2 py-1 rounded ${
-                        factor.impact === 'alto' ? 'bg-red-200 text-red-900' :
-                        factor.impact === 'medio' ? 'bg-yellow-200 text-yellow-900' :
-                        'bg-green-200 text-green-900'
-                      }`}>
-                        Impacto {factor.impact}
-                      </span>
-                    </div>
-                    <p className="text-xs opacity-80">{factor.description}</p>
-                    <p className="text-sm font-bold mt-1">Valor: {factor.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Información Adicional */}
-            <div className="mb-4 flex items-center gap-6 text-sm">
-              <span>
-                <FontAwesomeIcon icon={faClock} className="mr-2" />
-                Último acceso: <strong>{student.last_login}</strong>
-              </span>
-              <span className="text-red-700 font-bold">
-                <FontAwesomeIcon icon={faTimesCircle} className="mr-2" />
-                {student.days_inactive} días inactivo
-              </span>
-            </div>
-
-            {/* Acciones Recomendadas */}
-            <div>
-              <h4 className="font-heading font-bold text-sm mb-2 uppercase flex items-center gap-2">
-                <FontAwesomeIcon icon={faCheckCircle} />
-                Acciones Recomendadas
-              </h4>
-              <ul className="space-y-1">
-                {student.recommended_actions.map((action, idx) => (
-                  <li key={idx} className="text-sm flex items-start gap-2">
-                    <FontAwesomeIcon icon={faCheckCircle} className="mt-1 text-green-700" />
-                    <span>{action}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+            student={student}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -1180,53 +857,12 @@ export const AnalyticsPage = () => {
         <h3 className="font-heading font-bold text-lg mb-4">Reportes Generados Recientemente</h3>
         <div className="grid grid-cols-1 gap-4">
           {mockReports.map((report, index) => (
-            <div
+            <ReportCard
               key={report.id_report}
-              className="card p-6 hover:shadow-lg transition-shadow cursor-pointer"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <FontAwesomeIcon icon={faFileAlt} className="text-2xl text-primary-600" />
-                    <div>
-                      <h4 className="font-heading font-bold text-secondary-900">
-                        {report.report_name}
-                      </h4>
-                      <p className="text-sm text-secondary-600">{report.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4 text-sm text-secondary-600 mt-3">
-                    <span className="px-2 py-1 bg-primary-100 text-primary-900 rounded text-xs font-bold uppercase">
-                      {report.report_type}
-                    </span>
-                    <span className="px-2 py-1 bg-green-100 text-green-900 rounded text-xs font-bold uppercase">
-                      {report.format}
-                    </span>
-                    <span>
-                      <FontAwesomeIcon icon={faCalendar} className="mr-1" />
-                      {report.generation_date}
-                    </span>
-                    <span>
-                      <FontAwesomeIcon icon={faUser} className="mr-1" />
-                      {report.generated_by_name}
-                    </span>
-                    <span className="text-secondary-500">
-                      {(report.file_size_kb / 1024).toFixed(2)} MB
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  className="btn btn-primary flex items-center gap-2"
-                  onClick={() => handleDownloadReport(report)}
-                >
-                  <FontAwesomeIcon icon={faDownload} />
-                  Descargar
-                </button>
-              </div>
-            </div>
+              report={report}
+              index={index}
+              onDownload={handleDownloadReport}
+            />
           ))}
         </div>
       </div>
