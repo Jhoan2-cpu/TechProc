@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChartLine,
   faBookOpen,
   faUsers,
   faCheckCircle,
   faGraduationCap,
-  faChalkboardTeacher,
-  faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import type { LMSStats, RecentCourse, RecentEnrollment } from '../types';
+import {
+  LMSStatsCard,
+  RecentCourseCard,
+  RecentEnrollmentCard,
+} from '../components';
 
 // Datos mock (luego conectar con backend)
 const mockStats: LMSStats = {
@@ -112,15 +114,6 @@ export const LMSPage = () => {
     },
   ];
 
-  const getStatusBadge = (status: string) => {
-    const styles = {
-      publicado: 'bg-green-100 text-green-700',
-      borrador: 'bg-yellow-100 text-yellow-700',
-      archivado: 'bg-gray-100 text-gray-700',
-    };
-    return styles[status as keyof typeof styles] || styles.borrador;
-  };
-
   return (
     <div className="animate-fade-in">
       {/* Header */}
@@ -136,20 +129,14 @@ export const LMSPage = () => {
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {statCards.map((stat, index) => (
-          <div
+          <LMSStatsCard
             key={index}
-            className="card p-6 animate-slide-up hover:scale-105 transition-transform duration-300"
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}>
-                <FontAwesomeIcon icon={stat.icon} className="text-white text-2xl" />
-              </div>
-              <FontAwesomeIcon icon={faChartLine} className="text-secondary-400" />
-            </div>
-            <h3 className="text-sm font-medium text-secondary-600 mb-1">{stat.title}</h3>
-            <p className="text-3xl font-heading font-bold text-secondary-900">{stat.value}</p>
-          </div>
+            title={stat.title}
+            value={stat.value}
+            icon={stat.icon}
+            color={stat.color}
+            index={index}
+          />
         ))}
       </div>
 
@@ -170,34 +157,7 @@ export const LMSPage = () => {
 
           <div className="space-y-4">
             {recentCourses.map((course) => (
-              <div
-                key={course.id}
-                className="p-4 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-secondary-900 mb-1">
-                      {course.title}
-                    </h3>
-                    <p className="text-sm text-secondary-600">
-                      Código: {course.code}
-                    </p>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(course.status)}`}>
-                    {course.status.charAt(0).toUpperCase() + course.status.slice(1)}
-                  </span>
-                </div>
-                <div className="flex items-center gap-4 text-xs text-secondary-500 mt-3">
-                  <span className="flex items-center gap-1">
-                    <FontAwesomeIcon icon={faChalkboardTeacher} />
-                    {course.instructor_name}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <FontAwesomeIcon icon={faClock} />
-                    {new Date(course.created_at).toLocaleDateString('es-ES')}
-                  </span>
-                </div>
-              </div>
+              <RecentCourseCard key={course.id} course={course} />
             ))}
           </div>
         </div>
@@ -217,33 +177,7 @@ export const LMSPage = () => {
 
           <div className="space-y-4">
             {recentEnrollments.map((enrollment) => (
-              <div
-                key={enrollment.id}
-                className="p-4 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">
-                      {enrollment.student_name.charAt(0)}
-                    </span>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-secondary-900 text-sm mb-1">
-                      {enrollment.student_name}
-                    </h3>
-                    <p className="text-xs text-secondary-600 mb-1">
-                      {enrollment.student_email}
-                    </p>
-                    <p className="text-xs text-secondary-700 font-medium">
-                      → {enrollment.course_title}
-                    </p>
-                    <p className="text-xs text-secondary-500 mt-2">
-                      <FontAwesomeIcon icon={faClock} className="mr-1" />
-                      {new Date(enrollment.enrolled_at).toLocaleString('es-ES')}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <RecentEnrollmentCard key={enrollment.id} enrollment={enrollment} />
             ))}
           </div>
         </div>

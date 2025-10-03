@@ -16,9 +16,10 @@ import { MOCK_USERS } from '../shared/types/auth';
 
 interface LoginPageProps {
   onLogin: (user: User) => void;
+  onRegisterClick?: () => void;
 }
 
-export const LoginPage = ({ onLogin }: LoginPageProps) => {
+export const LoginPage = ({ onLogin, onRegisterClick }: LoginPageProps) => {
   const [username, setUsername] = useState('');
   const [hoveredUser, setHoveredUser] = useState<string | null>(null);
 
@@ -173,6 +174,15 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
         {/* Footer Info */}
         <div className="mt-12 text-center text-secondary-500 text-sm animate-fade-in">
           <p>Seleccione su tipo de usuario para acceder al sistema</p>
+          <div className="mt-4">
+            <span className="text-secondary-600">¿No tienes cuenta? </span>
+            <button
+              onClick={onRegisterClick}
+              className="text-primary-600 hover:text-primary-700 font-semibold hover:underline"
+            >
+              Solicita tu registro aquí
+            </button>
+          </div>
         </div>
       </div>
     </div>

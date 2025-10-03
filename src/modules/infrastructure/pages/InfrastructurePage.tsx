@@ -6,16 +6,9 @@ import {
   faHdd,
   faLaptop,
   faExclamationTriangle,
-  faCheckCircle,
-  faTimesCircle,
-  faChartLine,
   faPlus,
-  faEdit,
-  faTrash,
   faTachometerAlt,
-  faTools,
   faCog,
-  faDownload,
 } from '@fortawesome/free-solid-svg-icons';
 import type {
   Server,
@@ -25,6 +18,14 @@ import type {
   TechResource,
   InfrastructureAlert,
 } from '../types';
+import {
+  InfrastructureStats,
+  ServerCard,
+  LicenseCard,
+  StorageCard,
+  SoftwareCard,
+  ResourceCard,
+} from '../components';
 
 // Datos mock - Servidores
 const mockServers: Server[] = [
@@ -419,25 +420,6 @@ export const InfrastructurePage = () => {
     }
   };
 
-  const getLicenseStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-700';
-      case 'expired': return 'bg-red-100 text-red-700';
-      case 'expiring_soon': return 'bg-orange-100 text-orange-700';
-      case 'suspended': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
-  const getStorageStatusColor = (status: string) => {
-    switch (status) {
-      case 'healthy': return 'text-green-600';
-      case 'warning': return 'text-yellow-600';
-      case 'critical': return 'text-red-600';
-      default: return 'text-gray-600';
-    }
-  };
-
   const getUsageColor = (percent: number) => {
     if (percent >= 90) return 'bg-red-500';
     if (percent >= 75) return 'bg-orange-500';
@@ -457,55 +439,15 @@ export const InfrastructurePage = () => {
   const renderDashboard = () => (
     <>
       {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-green-700 mb-1">Servidores Online</p>
-              <p className="text-3xl font-heading font-bold text-green-900">{onlineServers}/{servers.length}</p>
-            </div>
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faServer} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-blue-50 to-blue-100 animate-fade-in" style={{ animationDelay: '100ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-700 mb-1">Licencias Activas</p>
-              <p className="text-3xl font-heading font-bold text-blue-900">{activeLicenses}/{licenses.length}</p>
-            </div>
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faKey} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 animate-fade-in" style={{ animationDelay: '200ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-red-700 mb-1">Alertas Críticas</p>
-              <p className="text-3xl font-heading font-bold text-red-900">{criticalAlerts}</p>
-            </div>
-            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-purple-50 to-purple-100 animate-fade-in" style={{ animationDelay: '300ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-purple-700 mb-1">Recursos en Uso</p>
-              <p className="text-3xl font-heading font-bold text-purple-900">{resourcesInUse}/{resources.length}</p>
-            </div>
-            <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faLaptop} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <InfrastructureStats
+        onlineServers={onlineServers}
+        totalServers={servers.length}
+        activeLicenses={activeLicenses}
+        totalLicenses={licenses.length}
+        criticalAlerts={criticalAlerts}
+        resourcesInUse={resourcesInUse}
+        totalResources={resources.length}
+      />
 
       {/* Alertas Críticas */}
       {criticalAlerts > 0 && (
@@ -595,100 +537,12 @@ export const InfrastructurePage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {servers.map((server, index) => (
-          <div
+          <ServerCard
             key={server.id_server}
-            className="card p-6 hover:shadow-lg transition-all animate-fade-in"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex flex-col lg:flex-row gap-6">
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h3 className="text-xl font-heading font-bold text-secondary-900">{server.server_name}</h3>
-                    <p className="text-secondary-600">{server.operating_system}</p>
-                    <p className="text-sm text-secondary-500 mt-1">
-                      <FontAwesomeIcon icon={faServer} className="mr-1" />
-                      IP: <span className="font-mono">{server.ip_address}</span>
-                    </p>
-                  </div>
-                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${getServerStatusColor(server.status)}`}>
-                    {server.status.toUpperCase()}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                  <div className="bg-secondary-50 rounded-lg p-3">
-                    <p className="text-xs text-secondary-600">CPU</p>
-                    <p className="text-lg font-bold text-secondary-900">{server.cpu_cores} Cores</p>
-                  </div>
-                  <div className="bg-secondary-50 rounded-lg p-3">
-                    <p className="text-xs text-secondary-600">RAM</p>
-                    <p className="text-lg font-bold text-secondary-900">{server.ram_gb} GB</p>
-                  </div>
-                  <div className="bg-secondary-50 rounded-lg p-3">
-                    <p className="text-xs text-secondary-600">Disco</p>
-                    <p className="text-lg font-bold text-secondary-900">{server.disk_gb} GB</p>
-                  </div>
-                  <div className="bg-secondary-50 rounded-lg p-3">
-                    <p className="text-xs text-secondary-600">Uptime</p>
-                    <p className="text-lg font-bold text-secondary-900">{Math.floor(server.uptime_hours / 24)}d</p>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-secondary-700">Uso CPU</span>
-                      <span className="font-semibold">{server.cpu_usage_percent}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className={`h-3 rounded-full ${getUsageColor(server.cpu_usage_percent)}`} style={{ width: `${server.cpu_usage_percent}%` }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-secondary-700">Uso RAM</span>
-                      <span className="font-semibold">{server.ram_usage_percent}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className={`h-3 rounded-full ${getUsageColor(server.ram_usage_percent)}`} style={{ width: `${server.ram_usage_percent}%` }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-secondary-700">Uso Disco</span>
-                      <span className="font-semibold">{server.disk_usage_percent}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className={`h-3 rounded-full ${getUsageColor(server.disk_usage_percent)}`} style={{ width: `${server.disk_usage_percent}%` }}></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-secondary-200">
-                  <div className="flex flex-wrap gap-4 text-sm text-secondary-600">
-                    <span>📍 {server.location}</span>
-                    <span>🔧 Mantenimiento: {formatDate(server.last_maintenance)}</span>
-                    <span>⚙️ Servicios: {server.services_running.join(', ')}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex lg:flex-col gap-2 lg:w-40">
-                <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faChartLine} className="mr-2" />
-                  Monitorear
-                </button>
-                <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faTools} className="mr-2" />
-                  Mantenimiento
-                </button>
-                <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-              </div>
-            </div>
-          </div>
+            server={server}
+            formatDate={formatDate}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -706,74 +560,12 @@ export const InfrastructurePage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {licenses.map((license, index) => (
-          <div
+          <LicenseCard
             key={license.id_license}
-            className={`card p-6 animate-fade-in ${license.status === 'expired' || license.status === 'expiring_soon' ? 'border-2 border-orange-300' : ''}`}
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-lg font-heading font-bold text-secondary-900">{license.software_name}</h3>
-                    <p className="text-sm text-secondary-600">{license.provider}</p>
-                  </div>
-                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${getLicenseStatusColor(license.status)}`}>
-                    {license.status === 'expiring_soon' ? 'Por Vencer' : license.status === 'expired' ? 'Vencida' : 'Activa'}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                  <div>
-                    <p className="text-xs text-secondary-600">Tipo</p>
-                    <p className="font-semibold text-secondary-900 capitalize">{license.license_type}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-secondary-600">Licencias Usadas</p>
-                    <p className="font-semibold text-secondary-900">{license.seats_used}/{license.seats_total}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-secondary-600">Costo Anual</p>
-                    <p className="font-semibold text-secondary-900">S/ {license.cost_annual.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-secondary-600">Vencimiento</p>
-                    <p className="font-semibold text-secondary-900">{formatDate(license.expiration_date)}</p>
-                  </div>
-                </div>
-
-                <div className="bg-secondary-50 rounded-lg p-3 mb-3">
-                  <p className="text-xs text-secondary-600 mb-1">Clave de Licencia</p>
-                  <p className="font-mono text-sm text-secondary-900">{license.license_key}</p>
-                </div>
-
-                {license.notes && (
-                  <div className="bg-amber-50 border-l-4 border-amber-400 p-3">
-                    <p className="text-sm text-secondary-700">{license.notes}</p>
-                  </div>
-                )}
-
-                <div className="mt-3 text-sm text-secondary-600">
-                  Fecha de compra: {formatDate(license.purchase_date)}
-                </div>
-              </div>
-
-              <div className="flex lg:flex-col gap-2 lg:w-40">
-                {license.status === 'expired' || license.status === 'expiring_soon' ? (
-                  <button className="btn bg-orange-600 hover:bg-orange-700 text-white flex-1 lg:flex-none">
-                    Renovar
-                  </button>
-                ) : null}
-                <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                  Editar
-                </button>
-                <button className="btn bg-red-600 hover:bg-red-700 text-white flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </div>
-          </div>
+            license={license}
+            formatDate={formatDate}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -791,72 +583,12 @@ export const InfrastructurePage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {storage.map((store, index) => (
-          <div
+          <StorageCard
             key={store.id_storage}
-            className={`card p-6 animate-fade-in ${store.status === 'critical' ? 'border-2 border-red-300' : ''}`}
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-heading font-bold text-secondary-900">{store.storage_name}</h3>
-                <p className="text-sm text-secondary-600 capitalize">{store.storage_type.replace('_', ' ')}</p>
-              </div>
-              <FontAwesomeIcon
-                icon={store.status === 'healthy' ? faCheckCircle : store.status === 'warning' ? faExclamationTriangle : faTimesCircle}
-                className={`text-2xl ${getStorageStatusColor(store.status)}`}
-              />
-            </div>
-
-            <div className="mb-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-secondary-700">Uso de Almacenamiento</span>
-                <span className="font-semibold">{store.used_gb} GB / {store.capacity_gb} GB</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                <div
-                  className={`h-4 rounded-full ${getUsageColor((store.used_gb / store.capacity_gb) * 100)}`}
-                  style={{ width: `${(store.used_gb / store.capacity_gb) * 100}%` }}
-                ></div>
-              </div>
-              <p className="text-xs text-secondary-500 mt-1">
-                {((store.used_gb / store.capacity_gb) * 100).toFixed(1)}% utilizado -
-                {(store.capacity_gb - store.used_gb).toFixed(0)} GB libres
-              </p>
-            </div>
-
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Ubicación:</span>
-                <span className="font-medium text-secondary-900">{store.location}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Punto de montaje:</span>
-                <span className="font-mono text-secondary-900 text-xs">{store.mount_point}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Backup:</span>
-                <span className={store.backup_enabled ? 'text-green-700' : 'text-red-700'}>
-                  {store.backup_enabled ? 'Habilitado' : 'Deshabilitado'}
-                </span>
-              </div>
-              {store.last_backup && (
-                <div className="flex justify-between">
-                  <span className="text-secondary-600">Último backup:</span>
-                  <span className="text-secondary-900">{formatDate(store.last_backup)}</span>
-                </div>
-              )}
-            </div>
-
-            <div className="flex gap-2 mt-4 pt-4 border-t border-secondary-200">
-              <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1">
-                <FontAwesomeIcon icon={faChartLine} className="mr-2" />
-                Ver Detalles
-              </button>
-              <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
-                <FontAwesomeIcon icon={faEdit} />
-              </button>
-            </div>
-          </div>
+            storage={store}
+            formatDate={formatDate}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -874,66 +606,12 @@ export const InfrastructurePage = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {software.map((soft, index) => (
-          <div
+          <SoftwareCard
             key={soft.id_software}
-            className="card p-6 animate-fade-in"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-lg font-heading font-bold text-secondary-900">{soft.software_name}</h3>
-                    <p className="text-secondary-600">Versión {soft.version}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                      {soft.category}
-                    </span>
-                    {soft.auto_update && (
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                        Auto-Update
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
-                  <div>
-                    <p className="text-xs text-secondary-600">Proveedor</p>
-                    <p className="font-semibold text-secondary-900">{soft.vendor}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-secondary-600">Instalación</p>
-                    <p className="font-semibold text-secondary-900">{formatDate(soft.installation_date)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-secondary-600">Última Actualización</p>
-                    <p className="font-semibold text-secondary-900">{formatDate(soft.last_update)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-secondary-600">Soporte hasta</p>
-                    <p className="font-semibold text-secondary-900">{formatDate(soft.support_until)}</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 text-sm text-secondary-600">
-                  <span>Instalado en {soft.server_ids.length} servidor(es)</span>
-                  {soft.license_id && <span>Licencia #{soft.license_id}</span>}
-                </div>
-              </div>
-
-              <div className="flex lg:flex-col gap-2 lg:w-40">
-                <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faDownload} className="mr-2" />
-                  Actualizar
-                </button>
-                <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex-1 lg:flex-none">
-                  <FontAwesomeIcon icon={faEdit} />
-                </button>
-              </div>
-            </div>
-          </div>
+            software={soft}
+            formatDate={formatDate}
+            index={index}
+          />
         ))}
       </div>
     </div>
@@ -951,71 +629,12 @@ export const InfrastructurePage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {resources.map((resource, index) => (
-          <div
+          <ResourceCard
             key={resource.id_resource}
-            className="card p-6 animate-fade-in"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-heading font-bold text-secondary-900 capitalize">
-                  {resource.resource_type.replace('_', ' ')}
-                </h3>
-                <p className="text-sm text-secondary-600">{resource.brand} {resource.model}</p>
-              </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                resource.status === 'in_use' ? 'bg-green-100 text-green-700' :
-                resource.status === 'available' ? 'bg-blue-100 text-blue-700' :
-                resource.status === 'maintenance' ? 'bg-yellow-100 text-yellow-700' :
-                'bg-gray-100 text-gray-700'
-              }`}>
-                {resource.status.replace('_', ' ')}
-              </span>
-            </div>
-
-            <div className="space-y-2 text-sm mb-4">
-              <div className="flex justify-between">
-                <span className="text-secondary-600">S/N:</span>
-                <span className="font-mono text-secondary-900 text-xs">{resource.serial_number}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Ubicación:</span>
-                <span className="text-secondary-900">{resource.location}</span>
-              </div>
-              {resource.assigned_to_user && (
-                <div className="flex justify-between">
-                  <span className="text-secondary-600">Asignado a:</span>
-                  <span className="text-secondary-900">Usuario #{resource.assigned_to_user}</span>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Garantía:</span>
-                <span className={new Date(resource.warranty_until || '') > new Date() ? 'text-green-700' : 'text-red-700'}>
-                  {formatDate(resource.warranty_until)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-secondary-600">Costo:</span>
-                <span className="font-semibold text-secondary-900">S/ {resource.cost.toLocaleString()}</span>
-              </div>
-            </div>
-
-            {resource.notes && (
-              <div className="bg-secondary-50 rounded p-2 mb-4">
-                <p className="text-xs text-secondary-700">{resource.notes}</p>
-              </div>
-            )}
-
-            <div className="flex gap-2">
-              <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1">
-                <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                Editar
-              </button>
-              <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
-            </div>
-          </div>
+            resource={resource}
+            formatDate={formatDate}
+            index={index}
+          />
         ))}
       </div>
     </div>

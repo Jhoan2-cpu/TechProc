@@ -10,7 +10,13 @@
       "Bash(npm uninstall:*)",
       "Bash(npm run build:*)",
       "Bash(grep:*)",
-      "Read(//mnt/c/Users/anton/Desktop/**)"
+      "Read(//mnt/c/Users/anton/Desktop/**)",
+      "Bash(for module in analytics lms tickets security infrastructure web users)",
+      "Bash(do echo \"=== $module ===\")",
+      "Bash(find:*)",
+      "Bash(done)",
+      "Bash(do echo \"=== Módulo: $module ===\")",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []

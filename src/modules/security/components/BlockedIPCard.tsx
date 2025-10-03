@@ -1,0 +1,82 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faBan,
+  faGlobe,
+  faCalendar,
+  faCheckCircle,
+  faPlay,
+} from '@fortawesome/free-solid-svg-icons';
+import type { BlockedIP } from '../types';
+
+interface BlockedIPCardProps {
+  blockedIP: BlockedIP & {
+    unblock_date?: string;
+  };
+  formatDate: (dateString: string) => string;
+  onUnblock?: (id: number) => void;
+}
+
+export const BlockedIPCard = ({ blockedIP, formatDate, onUnblock }: BlockedIPCardProps) => {
+  return (
+    <div className="card p-6 hover:shadow-lg transition-shadow">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start gap-3">
+          <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+            <FontAwesomeIcon icon={faBan} className="text-red-600 text-xl" />
+          </div>
+          <div>
+            <div className="flex items-center gap-3">
+              <h3 className="font-heading font-bold text-lg text-secondary-900 flex items-center gap-2">
+                <FontAwesomeIcon icon={faGlobe} className="text-red-600" />
+                {blockedIP.ip_address}
+              </h3>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  blockedIP.active
+                    ? 'bg-red-100 text-red-900'
+                    : 'bg-green-100 text-green-900'
+                }`}
+              >
+                {blockedIP.active ? 'Bloqueada' : 'Desbloqueada'}
+              </span>
+            </div>
+            <p className="text-sm text-secondary-600 mt-2">
+              <span className="font-semibold">Razón:</span> {blockedIP.reason}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
+        <div>
+          <p className="text-secondary-500 text-xs mb-1">Fecha de Bloqueo</p>
+          <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
+            {formatDate(blockedIP.block_date)}
+          </p>
+        </div>
+        {blockedIP.unblock_date && (
+          <div>
+            <p className="text-secondary-500 text-xs mb-1">Fecha de Desbloqueo</p>
+            <p className="text-secondary-900 font-medium flex items-center gap-1">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" />
+              {formatDate(blockedIP.unblock_date)}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {onUnblock && blockedIP.active && (
+        <div className="pt-4 border-t border-secondary-200">
+          <button
+            onClick={() => onUnblock(blockedIP.id_blocked_ip)}
+            className="btn bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          >
+            <FontAwesomeIcon icon={faPlay} />
+            Desbloquear IP
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};

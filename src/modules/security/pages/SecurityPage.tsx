@@ -3,21 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faExclamationTriangle,
   faBan,
-  faDesktop,
   faFileArchive,
-  faCheckCircle,
-  faTimesCircle,
   faUsers,
-  faClock,
-  faUser,
-  faGlobe,
-  faCalendar,
-  faPlay,
-  faPause,
-  faTrash,
   faPlus,
+  faPlay,
   faTachometerAlt,
-  faClipboardList,
 } from '@fortawesome/free-solid-svg-icons';
 import type {
   Incident,
@@ -25,6 +15,13 @@ import type {
   Backup,
   ActiveSession
 } from '../types';
+import {
+  SecurityStats,
+  SessionCard,
+  IncidentCard,
+  BlockedIPCard,
+  BackupCard,
+} from '../components';
 
 // Datos mock - Sesiones activas con información de usuarios
 const mockActiveSessions: (ActiveSession & {
@@ -224,26 +221,6 @@ export const SecurityPage = () => {
     });
   };
 
-  const getIncidentSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-700 border-red-300';
-      case 'high': return 'bg-orange-100 text-orange-700 border-orange-300';
-      case 'medium': return 'bg-yellow-100 text-yellow-700 border-yellow-300';
-      case 'low': return 'bg-blue-100 text-blue-700 border-blue-300';
-      default: return 'bg-gray-100 text-gray-700 border-gray-300';
-    }
-  };
-
-  const getIncidentStatusColor = (status: string) => {
-    switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-700';
-      case 'investigating': return 'bg-yellow-100 text-yellow-700';
-      case 'resolved': return 'bg-green-100 text-green-700';
-      case 'closed': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
   const tabs = [
     { id: 'dashboard' as SecurityTab, name: 'Dashboard', icon: faTachometerAlt },
     { id: 'sessions' as SecurityTab, name: 'Sesiones Activas', icon: faUsers },
@@ -255,55 +232,13 @@ export const SecurityPage = () => {
   const renderDashboard = () => (
     <>
       {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-green-700 mb-1">Sesiones Activas</p>
-              <p className="text-3xl font-heading font-bold text-green-900">{activeSessions}</p>
-            </div>
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faUsers} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 animate-fade-in" style={{ animationDelay: '100ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-red-700 mb-1">IPs Bloqueadas</p>
-              <p className="text-3xl font-heading font-bold text-red-900">{activeBlockedIPs}</p>
-            </div>
-            <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faBan} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-orange-50 to-orange-100 animate-fade-in" style={{ animationDelay: '200ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-orange-700 mb-1">Incidentes Críticos</p>
-              <p className="text-3xl font-heading font-bold text-orange-900">{criticalIncidents}</p>
-            </div>
-            <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6 bg-gradient-to-br from-blue-50 to-blue-100 animate-fade-in" style={{ animationDelay: '300ms' }}>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-blue-700 mb-1">Backups Exitosos</p>
-              <p className="text-3xl font-heading font-bold text-blue-900">{successfulBackups}/{backups.length}</p>
-            </div>
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faFileArchive} className="text-white text-xl" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <SecurityStats
+        activeSessions={activeSessions}
+        activeBlockedIPs={activeBlockedIPs}
+        criticalIncidents={criticalIncidents}
+        successfulBackups={successfulBackups}
+        totalBackups={backups.length}
+      />
 
       {/* Incidentes Críticos */}
       {criticalIncidents > 0 && (
@@ -314,23 +249,12 @@ export const SecurityPage = () => {
           </h2>
           <div className="space-y-3">
             {incidents.filter(i => i.severity === 'critical' && i.status !== 'resolved').map((incident) => (
-              <div key={incident.id_incident} className="bg-white border border-red-300 rounded-lg p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="font-heading font-bold text-secondary-900 mb-1">
-                      #{incident.id_incident} - {incident.title}
-                    </h3>
-                    <p className="text-sm text-secondary-700 mb-2">{incident.description}</p>
-                    <div className="flex gap-4 text-xs text-secondary-600">
-                      <span>{formatDate(incident.report_date)}</span>
-                      {incident.assigned_to && <span>Asignado a: {incident.assigned_to}</span>}
-                    </div>
-                  </div>
-                  <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                    Gestionar
-                  </button>
-                </div>
-              </div>
+              <IncidentCard
+                key={incident.id_incident}
+                incident={incident}
+                formatDate={formatDate}
+                compact={true}
+              />
             ))}
           </div>
         </div>
@@ -343,33 +267,12 @@ export const SecurityPage = () => {
         </h2>
         <div className="space-y-3">
           {sessions.slice(0, 3).map((session) => (
-            <div key={session.session_id} className="border border-secondary-200 rounded-lg p-4 bg-green-50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
-                    <FontAwesomeIcon icon={faUser} className="text-white" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-secondary-900">{session.user_name}</p>
-                    <p className="text-sm text-secondary-600">{session.user_email}</p>
-                    <div className="flex gap-4 text-xs text-secondary-500 mt-1">
-                      <span className="flex items-center gap-1">
-                        <FontAwesomeIcon icon={faGlobe} />
-                        {session.ip_address}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <FontAwesomeIcon icon={faDesktop} />
-                        {session.device}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right text-sm">
-                  <p className="text-secondary-600">Última actividad:</p>
-                  <p className="font-medium text-secondary-900">{formatDate(session.last_activity)}</p>
-                </div>
-              </div>
-            </div>
+            <SessionCard
+              key={session.session_id}
+              session={session}
+              formatDate={formatDate}
+              compact={true}
+            />
           ))}
         </div>
       </div>
@@ -388,60 +291,12 @@ export const SecurityPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {sessions.map((session, index) => (
-          <div
+        {sessions.map((session) => (
+          <SessionCard
             key={session.session_id}
-            className="card p-6 hover:shadow-lg transition-all animate-fade-in"
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-              <div className="flex items-center gap-4 flex-1">
-                <div className="w-14 h-14 bg-gradient-primary rounded-full flex items-center justify-center">
-                  <FontAwesomeIcon icon={faUser} className="text-white text-xl" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-heading font-bold text-lg text-secondary-900">{session.user_name}</h3>
-                  <p className="text-secondary-600">{session.user_email}</p>
-                  <div className="flex flex-wrap gap-4 text-sm text-secondary-500 mt-2">
-                    <span className="flex items-center gap-1">
-                      <FontAwesomeIcon icon={faGlobe} className="text-secondary-400" />
-                      <span className="font-mono">{session.ip_address}</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FontAwesomeIcon icon={faDesktop} className="text-secondary-400" />
-                      {session.device}
-                    </span>
-                    {session.location && (
-                      <span className="flex items-center gap-1">
-                        <FontAwesomeIcon icon={faGlobe} className="text-secondary-400" />
-                        {session.location}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="lg:text-right space-y-2">
-                <div>
-                  <p className="text-xs text-secondary-500">Inicio de sesión</p>
-                  <p className="text-sm font-medium text-secondary-900">{formatDate(session.start_date)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-secondary-500">Última actividad</p>
-                  <p className="text-sm font-medium text-secondary-900">{formatDate(session.last_activity)}</p>
-                </div>
-              </div>
-              <div className="flex lg:flex-col gap-2">
-                <button className="btn bg-orange-600 hover:bg-orange-700 text-white flex items-center gap-2">
-                  <FontAwesomeIcon icon={faPause} />
-                  Suspender
-                </button>
-                <button className="btn bg-red-600 hover:bg-red-700 text-white flex items-center gap-2">
-                  <FontAwesomeIcon icon={faTimesCircle} />
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
+            session={session}
+            formatDate={formatDate}
+          />
         ))}
       </div>
     </div>
@@ -460,45 +315,12 @@ export const SecurityPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {blockedIPs.map((ip, index) => (
-          <div
+        {blockedIPs.map((ip) => (
+          <BlockedIPCard
             key={ip.id_blocked_ip}
-            className={`card p-6 animate-fade-in ${ip.active ? 'border-l-4 border-red-500' : 'opacity-60'}`}
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <FontAwesomeIcon icon={faBan} className={ip.active ? 'text-red-600' : 'text-gray-400'} size="lg" />
-                  <div>
-                    <h3 className="font-mono font-bold text-xl text-secondary-900">{ip.ip_address}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${ip.active ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'}`}>
-                      {ip.active ? 'Bloqueada' : 'Desbloqueada'}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-secondary-700 mb-2">{ip.reason}</p>
-                <p className="text-sm text-secondary-500">
-                  <FontAwesomeIcon icon={faCalendar} className="mr-1" />
-                  Bloqueada: {formatDate(ip.block_date)}
-                </p>
-              </div>
-              <div className="flex flex-col gap-2">
-                {ip.active ? (
-                  <button className="btn bg-green-600 hover:bg-green-700 text-white">
-                    Desbloquear
-                  </button>
-                ) : (
-                  <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                    Bloquear
-                  </button>
-                )}
-                <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </div>
-          </div>
+            blockedIP={ip}
+            formatDate={formatDate}
+          />
         ))}
       </div>
     </div>
@@ -517,64 +339,12 @@ export const SecurityPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {incidents.map((incident, index) => (
-          <div
+        {incidents.map((incident) => (
+          <IncidentCard
             key={incident.id_incident}
-            className={`card p-6 border-2 hover:shadow-lg transition-all animate-fade-in ${getIncidentSeverityColor(incident.severity)}`}
-            style={{ animationDelay: `${index * 50}ms` }}
-          >
-            <div className="flex flex-col lg:flex-row lg:items-start gap-4">
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-lg font-heading font-bold text-secondary-900">
-                      Incidente #{incident.id_incident} - {incident.title}
-                    </h3>
-                    <div className="flex gap-2 mt-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getIncidentSeverityColor(incident.severity)}`}>
-                        {incident.severity.toUpperCase()}
-                      </span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getIncidentStatusColor(incident.status)}`}>
-                        {incident.status.replace('_', ' ').charAt(0).toUpperCase() + incident.status.replace('_', ' ').slice(1)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-secondary-700 mb-3">{incident.description}</p>
-                <div className="flex flex-wrap gap-4 text-sm text-secondary-600">
-                  <span className="flex items-center gap-1">
-                    <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
-                    {formatDate(incident.report_date)}
-                  </span>
-                  {incident.assigned_to && (
-                    <span className="flex items-center gap-1">
-                      <FontAwesomeIcon icon={faUser} className="text-secondary-400" />
-                      {incident.assigned_to}
-                    </span>
-                  )}
-                  <span className="flex items-center gap-1">
-                    <FontAwesomeIcon icon={faClipboardList} className="text-secondary-400" />
-                    Alerta #{incident.alert_id}
-                  </span>
-                </div>
-              </div>
-              <div className="flex lg:flex-col gap-2 lg:w-40">
-                {incident.status !== 'resolved' && incident.status !== 'closed' && (
-                  <>
-                    <button className="btn bg-green-600 hover:bg-green-700 text-white flex-1 lg:flex-none">
-                      Resolver
-                    </button>
-                    <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white flex-1 lg:flex-none">
-                      Investigar
-                    </button>
-                  </>
-                )}
-                <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none">
-                  Ver Detalles
-                </button>
-              </div>
-            </div>
-          </div>
+            incident={incident}
+            formatDate={formatDate}
+          />
         ))}
       </div>
     </div>
@@ -635,51 +405,12 @@ export const SecurityPage = () => {
           Historial de Backups
         </h3>
         <div className="space-y-3">
-          {backups.map((backup, index) => (
-            <div
+          {backups.map((backup) => (
+            <BackupCard
               key={backup.id_backup}
-              className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow animate-fade-in"
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <FontAwesomeIcon
-                    icon={backup.status === 'completed' ? faCheckCircle : backup.status === 'failed' ? faTimesCircle : faClock}
-                    className={`text-3xl ${
-                      backup.status === 'completed' ? 'text-green-600' :
-                      backup.status === 'failed' ? 'text-red-600' : 'text-yellow-600'
-                    }`}
-                  />
-                  <div>
-                    <h4 className="font-semibold text-secondary-900">
-                      Backup {backup.type.charAt(0).toUpperCase() + backup.type.slice(1)}
-                    </h4>
-                    <p className="text-sm text-secondary-600">
-                      {formatDate(backup.backup_date)}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6">
-                  <div className="text-right">
-                    <p className="text-sm text-secondary-600">Tamaño</p>
-                    <p className="font-semibold text-secondary-900">{backup.size_mb.toFixed(1)} MB</p>
-                  </div>
-                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                    backup.status === 'completed' ? 'bg-green-100 text-green-700' :
-                    backup.status === 'failed' ? 'bg-red-100 text-red-700' :
-                    'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {backup.status === 'completed' ? 'Exitoso' :
-                     backup.status === 'failed' ? 'Fallido' : 'En Progreso'}
-                  </span>
-                  {backup.status === 'completed' && (
-                    <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
-                      Restaurar
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
+              backup={backup}
+              formatDate={formatDate}
+            />
           ))}
         </div>
       </div>

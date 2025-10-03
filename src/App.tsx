@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LMSMainPage } from './modules/lms/pages/LMSMainPage';
 import { TicketsPage } from './modules/tickets/pages/TicketsPage';
@@ -8,6 +9,7 @@ import { InfrastructurePage } from './modules/infrastructure/pages/Infrastructur
 import { WebPage } from './modules/web/pages/WebPage';
 import { AnalyticsPage } from './modules/analytics/pages/AnalyticsPage';
 import { UsersPage } from './modules/users/pages/UsersPage';
+import { PendingRegistrationsPage } from './modules/users/pages/PendingRegistrationsPage';
 import { Preloader } from './shared/components/Preloader';
 import type { User } from './shared/types/auth';
 import { hasAccess } from './shared/utils/auth';
@@ -22,12 +24,16 @@ import {
   faChartLine,
   faRightFromBracket,
   faUserCircle,
+  faUserClock,
 } from '@fortawesome/free-solid-svg-icons';
+
+type AppView = 'login' | 'register';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentModule, setCurrentModule] = useState<string>('');
+  const [appView, setAppView] = useState<AppView>('login');
 
   useEffect(() => {
     // Simular carga inicial
@@ -53,6 +59,7 @@ function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     setCurrentModule('');
+    setAppView('login');
   };
 
   const handleModuleChange = (module: string) => {
@@ -70,6 +77,7 @@ function App() {
     switch (currentModule) {
       case 'profile': return <ProfilePage user={currentUser} />;
       case 'users': return <UsersPage />;
+      case 'pending-registrations': return <PendingRegistrationsPage />;
       case 'lms': return <LMSMainPage />;
       case 'tickets': return <TicketsPage />;
       case 'security': return <SecurityPage />;
@@ -88,13 +96,17 @@ function App() {
     return <Preloader />;
   }
 
-  // Si no hay usuario logueado, mostrar página de login
+  // Si no hay usuario logueado, mostrar página de login o registro
   if (!currentUser) {
-    return <LoginPage onLogin={handleLogin} />;
+    if (appView === 'register') {
+      return <RegisterPage onBackToLogin={() => setAppView('login')} />;
+    }
+    return <LoginPage onLogin={handleLogin} onRegisterClick={() => setAppView('register')} />;
   }
 
   const modules = [
     { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
+    { id: 'pending-registrations', name: 'Solicitudes de Registro', icon: faUserClock },
     { id: 'lms', name: 'LMS', icon: faGraduationCap },
     { id: 'tickets', name: 'Tickets', icon: faTicket },
     { id: 'security', name: 'Seguridad', icon: faLock },
