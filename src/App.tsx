@@ -14,6 +14,7 @@ import { PendingRegistrationsPage } from './modules/users/pages/PendingRegistrat
 import { Preloader } from './shared/components/Preloader';
 import type { User } from './shared/types/auth';
 import { hasAccess } from './shared/utils/auth';
+import { authService } from './services/authService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUsers,
@@ -197,12 +198,27 @@ function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Simular carga inicial
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
+    // Verificar si hay una sesión guardada
+    const checkSession = async () => {
+      try {
+        if (authService.isAuthenticated()) {
+          const user = authService.getCurrentUser();
+          if (user) {
+            setCurrentUser(user);
+          }
+        }
+      } catch (error) {
+        console.error('Error al verificar sesión:', error);
+        authService.clearSession();
+      } finally {
+        // Simular carga inicial
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500);
+      }
+    };
 
-    return () => clearTimeout(timer);
+    checkSession();
   }, []);
 
   const handleLogin = (user: User) => {
@@ -210,6 +226,7 @@ function App() {
   };
 
   const handleLogout = () => {
+    authService.clearSession();
     setCurrentUser(null);
   };
 
@@ -221,7 +238,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={
-          currentUser ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} onRegisterClick={() => {}} />
+          currentUser ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} />
         } />
         <Route path="/register" element={
           currentUser ? <Navigate to="/" replace /> : <RegisterPage onBackToLogin={() => {}} />

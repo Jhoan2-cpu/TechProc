@@ -9,7 +9,6 @@ import {
   faCode,
   faFileAlt,
   faUsers,
-  faChartLine,
   faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Course, Enrollment } from '../types';
