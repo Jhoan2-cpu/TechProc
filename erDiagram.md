@@ -17,8 +17,57 @@ erDiagram
         string first_name
         string last_name
         string name
+        string phone
+        string department
+        boolean is_active
+        timestamp email_verified_at
+        timestamp last_login
+        string last_login_ip
         timestamp created_at
         timestamp updated_at
+        int created_by FK
+    }
+
+    PendingRegistration {
+        int id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone
+        string username UK
+        string role
+        string department
+        text reason
+        string status
+        timestamp submitted_at
+        int reviewed_by FK
+        timestamp reviewed_at
+        text rejection_reason
+    }
+
+    UserPermission {
+        int id PK
+        int user_id FK
+        string module
+        boolean can_create
+        boolean can_read
+        boolean can_update
+        boolean can_delete
+        json custom_permissions
+        timestamp created_at
+    }
+
+    UserAuditLog {
+        int id PK
+        int user_id FK
+        int changed_by FK
+        string action_type
+        string field_changed
+        string old_value
+        string new_value
+        text description
+        string ip_address
+        timestamp created_at
     }
 
     %% ====================================
@@ -530,6 +579,16 @@ erDiagram
     }
 
     %% ====================================
+    %% RELACIONES - USERS
+    %% ====================================
+
+    User ||--o{ User : "creates"
+    User ||--o{ PendingRegistration : "reviews"
+    User ||--o{ UserPermission : "has"
+    User ||--o{ UserAuditLog : "subject_of"
+    User ||--o{ UserAuditLog : "performs_audit"
+
+    %% ====================================
     %% RELACIONES - LMS
     %% ====================================
 
@@ -628,9 +687,9 @@ erDiagram
 - **Entidades**: StudentAttendance, StudentProgress, StudentPerformance, DropoutPrediction, Report
 - **Prop�sito**: Anal�tica avanzada y predicci�n de deserci�n estudiantil
 
-### =d M�dulo Auth/Users (Autenticaci�n)
-- **Entidades**: User
-- **Prop�sito**: Autenticaci�n JWT y gesti�n de usuarios con roles
+### 👤 Módulo Users (Gestión de Usuarios)
+- **Entidades**: User, PendingRegistration, UserPermission, UserAuditLog
+- **Propósito**: Gestión completa de usuarios del sistema, aprobación de registros pendientes, control de permisos granular y auditoría de cambios
 
 ## Caracter�sticas Profesionales del Dise�o
 
