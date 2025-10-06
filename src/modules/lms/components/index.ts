@@ -8,4 +8,6 @@ export { CourseCard } from './CourseCard';
 export { ViewCourseModal } from './ViewCourseModal';
 export { EditStudentModal } from './EditStudentModal';
 export { ViewStudentModal } from './ViewStudentModal';
+export { CreateStudentModal } from './CreateStudentModal';
 export { EditInstructorModal } from './EditInstructorModal';
+export { CreateInstructorModal } from './CreateInstructorModal';

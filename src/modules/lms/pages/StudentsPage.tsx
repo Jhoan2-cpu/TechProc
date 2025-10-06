@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student } from '../types';
 import { studentsService } from '../services';
-import { EditStudentModal, ViewStudentModal } from '../components';
+import { EditStudentModal, ViewStudentModal, CreateStudentModal } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const StudentsPage = () => {
@@ -25,6 +25,7 @@ export const StudentsPage = () => {
   const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
   const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
   const [studentToView, setStudentToView] = useState<Student | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -63,6 +64,15 @@ export const StudentsPage = () => {
   const handleEditStudent = (updatedStudent: Student) => {
     setStudents(students.map(s => s.id === updatedStudent.id ? updatedStudent : s));
     setStudentToEdit(null);
+  };
+
+  const handleCreateStudent = (newStudentData: Omit<Student, 'id'>) => {
+    const newStudent: Student = {
+      ...newStudentData,
+      id: Math.max(...students.map(s => s.id), 0) + 1,
+    };
+    setStudents([newStudent, ...students]);
+    setShowCreateModal(false);
   };
 
   const filteredStudents = students.filter((student) => {
@@ -106,7 +116,10 @@ export const StudentsPage = () => {
             <option value="inactivo">Inactivo</option>
           </select>
 
-          <button className="btn btn-primary flex items-center gap-2 whitespace-nowrap">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
+          >
             <FontAwesomeIcon icon={faUserPlus} />
             Agregar Estudiante
           </button>
@@ -248,6 +261,12 @@ export const StudentsPage = () => {
       </div>
 
       {/* Modales */}
+      <CreateStudentModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSave={handleCreateStudent}
+      />
+
       <ViewStudentModal
         student={studentToView}
         isOpen={!!studentToView}

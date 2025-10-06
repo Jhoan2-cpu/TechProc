@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Instructor } from '../types';
 import { instructorsService } from '../services';
-import { EditInstructorModal } from '../components';
+import { EditInstructorModal, CreateInstructorModal } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const InstructorsPage = () => {
@@ -25,6 +25,7 @@ export const InstructorsPage = () => {
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
   const [instructorToDelete, setInstructorToDelete] = useState<Instructor | null>(null);
   const [instructorToEdit, setInstructorToEdit] = useState<Instructor | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     const fetchInstructors = async () => {
@@ -63,6 +64,15 @@ export const InstructorsPage = () => {
   const handleEditInstructor = (updatedInstructor: Instructor) => {
     setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updatedInstructor : i));
     setInstructorToEdit(null);
+  };
+
+  const handleCreateInstructor = (newInstructorData: Omit<Instructor, 'id'>) => {
+    const newInstructor: Instructor = {
+      ...newInstructorData,
+      id: Math.max(...instructors.map(i => i.id), 0) + 1,
+    };
+    setInstructors([newInstructor, ...instructors]);
+    setShowCreateModal(false);
   };
 
   const filteredInstructors = instructors.filter((instructor) => {
@@ -108,7 +118,10 @@ export const InstructorsPage = () => {
             <option value="suspendido">Suspendido</option>
           </select>
 
-          <button className="btn btn-primary flex items-center gap-2 whitespace-nowrap">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
+          >
             <FontAwesomeIcon icon={faUserPlus} />
             Agregar Instructor
           </button>
@@ -285,6 +298,12 @@ export const InstructorsPage = () => {
       )}
 
       {/* Modales */}
+      <CreateInstructorModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSave={handleCreateInstructor}
+      />
+
       <EditInstructorModal
         instructor={instructorToEdit}
         isOpen={!!instructorToEdit}
