@@ -3,11 +3,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import type { Ticket } from '../types';
 
+// Lista mock de técnicos disponibles para escalación
+const availableTechnicians = [
+  { id: 2, name: 'Carlos Rodríguez', specialty: 'Seguridad Avanzada', level: 'Senior' },
+  { id: 3, name: 'Ana García', specialty: 'Infraestructura', level: 'Senior' },
+  { id: 4, name: 'Luis Martínez', specialty: 'Desarrollo', level: 'Lead' },
+  { id: 5, name: 'María Fernández', specialty: 'Redes', level: 'Senior' },
+];
+
 interface EscalateTicketModalProps {
   ticket: Ticket | null;
   isOpen: boolean;
   onClose: () => void;
-  onEscalate: (ticketId: number, reason: string, observations: string) => void;
+  onEscalate: (ticketId: number, technicianId: number, reason: string, observations: string) => void;
 }
 
 export const EscalateTicketModal = ({
@@ -16,6 +24,7 @@ export const EscalateTicketModal = ({
   onClose,
   onEscalate,
 }: EscalateTicketModalProps) => {
+  const [technicianId, setTechnicianId] = useState('');
   const [reason, setReason] = useState('');
   const [observations, setObservations] = useState('');
 
@@ -23,13 +32,15 @@ export const EscalateTicketModal = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onEscalate(ticket.ticket_id, reason, observations);
+    onEscalate(ticket.ticket_id, Number(technicianId), reason, observations);
     // Reset form
+    setTechnicianId('');
     setReason('');
     setObservations('');
   };
 
   const handleClose = () => {
+    setTechnicianId('');
     setReason('');
     setObservations('');
     onClose();
@@ -71,6 +82,26 @@ export const EscalateTicketModal = ({
                 Usuario ID: <span className="font-semibold">{ticket.user_id}</span>
               </span>
             </div>
+          </div>
+
+          {/* Technician Selection */}
+          <div>
+            <label className="block text-sm font-medium text-secondary-700 mb-2">
+              Escalar a Técnico *
+            </label>
+            <select
+              required
+              value={technicianId}
+              onChange={(e) => setTechnicianId(e.target.value)}
+              className="select"
+            >
+              <option value="">Seleccione un técnico</option>
+              {availableTechnicians.map((tech) => (
+                <option key={tech.id} value={tech.id}>
+                  {tech.name} - {tech.specialty} ({tech.level})
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Reason Selection */}

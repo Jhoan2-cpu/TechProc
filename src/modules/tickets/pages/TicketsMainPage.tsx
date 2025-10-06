@@ -141,13 +141,19 @@ export const TicketsMainPage = () => {
     setTicketToEscalate(ticket);
   };
 
-  const handleEscalateConfirm = (ticketId: number, reason: string, observations: string) => {
+  const handleEscalateConfirm = (ticketId: number, technicianId: number, reason: string, observations: string) => {
     setTickets(tickets.map(t =>
       t.ticket_id === ticketId
-        ? { ...t, status: 'escalado' as const }
+        ? {
+            ...t,
+            status: 'escalado' as const,
+            assigned_technician: technicianId,
+          }
         : t
     ));
     setTicketToEscalate(null);
+    // Aquí podrías mostrar una notificación de éxito
+    console.log(`Ticket ${ticketId} escalado al técnico ${technicianId}. Motivo: ${reason}`);
   };
 
   const handleTakeTicket = (ticket: Ticket) => {
