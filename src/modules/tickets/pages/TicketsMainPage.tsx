@@ -9,6 +9,7 @@ import {
   ViewTicketDetailsModal,
   EscalateTicketModal,
   TakeTicketModal,
+  ResolveTicketModal,
 } from '../components';
 
 // Datos mock - Simulando técnico con ID 1
@@ -131,6 +132,7 @@ export const TicketsMainPage = () => {
   const [ticketToView, setTicketToView] = useState<Ticket | null>(null);
   const [ticketToEscalate, setTicketToEscalate] = useState<Ticket | null>(null);
   const [ticketToTake, setTicketToTake] = useState<Ticket | null>(null);
+  const [ticketToResolve, setTicketToResolve] = useState<Ticket | null>(null);
 
   // Handlers para modales
   const handleViewDetails = (ticket: Ticket) => {
@@ -175,6 +177,27 @@ export const TicketsMainPage = () => {
     setTicketToTake(null);
   };
 
+  const handleResolve = (ticket: Ticket) => {
+    setTicketToResolve(ticket);
+  };
+
+  const handleResolveConfirm = (ticketId: number, resolution: string) => {
+    const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+    setTickets(tickets.map(t =>
+      t.ticket_id === ticketId
+        ? {
+            ...t,
+            status: 'resuelto' as const,
+            resolution_date: now,
+            notes: resolution
+          }
+        : t
+    ));
+    setTicketToResolve(null);
+    // Aquí podrías mostrar una notificación de éxito
+    console.log(`Ticket ${ticketId} resuelto. Solución: ${resolution}`);
+  };
+
   // Determinar la sección actual basándose en la ruta
   const getCurrentSection = () => {
     const path = location.pathname;
@@ -195,6 +218,7 @@ export const TicketsMainPage = () => {
             currentTechnicianId={currentTechnicianId}
             onViewDetails={handleViewDetails}
             onEscalate={handleEscalate}
+            onResolve={handleResolve}
           />
         );
       case 'available':
@@ -216,6 +240,7 @@ export const TicketsMainPage = () => {
             onViewDetails={handleViewDetails}
             onEscalate={handleEscalate}
             onTakeTicket={handleTakeTicket}
+            onResolve={handleResolve}
           />
         );
     }
@@ -244,6 +269,13 @@ export const TicketsMainPage = () => {
         isOpen={!!ticketToTake}
         onClose={() => setTicketToTake(null)}
         onConfirm={handleTakeTicketConfirm}
+      />
+
+      <ResolveTicketModal
+        ticket={ticketToResolve}
+        isOpen={!!ticketToResolve}
+        onClose={() => setTicketToResolve(null)}
+        onResolve={handleResolveConfirm}
       />
     </div>
   );

@@ -6,3 +6,4 @@ export { CriticalTicketAlert } from './CriticalTicketAlert';
 export { ViewTicketDetailsModal } from './ViewTicketDetailsModal';
 export { EscalateTicketModal } from './EscalateTicketModal';
 export { TakeTicketModal } from './TakeTicketModal';
+export { ResolveTicketModal } from './ResolveTicketModal';

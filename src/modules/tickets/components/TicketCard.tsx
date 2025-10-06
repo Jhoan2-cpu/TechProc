@@ -14,6 +14,7 @@ interface TicketCardProps {
   variant?: 'default' | 'compact';
   onViewDetails?: (ticket: Ticket) => void;
   onEscalate?: (ticket: Ticket) => void;
+  onResolve?: (ticket: Ticket) => void;
 }
 
 export const TicketCard = ({
@@ -24,6 +25,7 @@ export const TicketCard = ({
   variant = 'default',
   onViewDetails,
   onEscalate,
+  onResolve,
 }: TicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -99,12 +101,22 @@ export const TicketCard = ({
               >
                 Ver Detalles
               </button>
-              <button
-                onClick={() => onEscalate?.(ticket)}
-                className="btn bg-orange-600 hover:bg-orange-700 text-white text-sm"
-              >
-                Escalar
-              </button>
+              {ticket.status !== 'resuelto' && ticket.status !== 'cerrado' && (
+                <>
+                  <button
+                    onClick={() => onResolve?.(ticket)}
+                    className="btn bg-green-600 hover:bg-green-700 text-white text-sm"
+                  >
+                    Resolver
+                  </button>
+                  <button
+                    onClick={() => onEscalate?.(ticket)}
+                    className="btn bg-orange-600 hover:bg-orange-700 text-white text-sm"
+                  >
+                    Escalar
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -170,7 +182,10 @@ export const TicketCard = ({
             </button>
             {ticket.status !== 'resuelto' && ticket.status !== 'cerrado' && (
               <>
-                <button className="btn bg-green-600 hover:bg-green-700 text-white flex-1 lg:flex-none">
+                <button
+                  onClick={() => onResolve?.(ticket)}
+                  className="btn bg-green-600 hover:bg-green-700 text-white flex-1 lg:flex-none"
+                >
                   Resolver
                 </button>
                 <button

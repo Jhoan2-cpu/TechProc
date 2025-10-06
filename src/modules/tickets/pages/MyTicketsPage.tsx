@@ -8,13 +8,15 @@ interface MyTicketsPageProps {
   currentTechnicianId: number;
   onViewDetails: (ticket: Ticket) => void;
   onEscalate: (ticket: Ticket) => void;
+  onResolve: (ticket: Ticket) => void;
 }
 
 export const MyTicketsPage = ({
   tickets,
   currentTechnicianId,
   onViewDetails,
-  onEscalate
+  onEscalate,
+  onResolve
 }: MyTicketsPageProps) => {
   const myTickets = tickets.filter(t => t.assigned_technician === currentTechnicianId);
 
@@ -51,6 +53,7 @@ export const MyTicketsPage = ({
               index={index}
               onViewDetails={onViewDetails}
               onEscalate={onEscalate}
+              onResolve={onResolve}
             />
           ))
         ) : (
