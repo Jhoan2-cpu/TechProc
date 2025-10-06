@@ -54,10 +54,23 @@ const MOCK_CREDENTIALS = [
     },
   },
   {
+    email: 'soporte@techproc.com',
+    password: 'soporte123',
+    user: {
+      id: '3',
+      username: 'soporte',
+      email: 'soporte@techproc.com',
+      role: 'soporte_tecnico' as const,
+      name: 'Soporte Técnico',
+      first_name: 'Luis',
+      last_name: 'Martínez',
+    },
+  },
+  {
     email: 'security@techproc.com',
     password: 'security123',
     user: {
-      id: '3',
+      id: '4',
       username: 'seg',
       email: 'security@techproc.com',
       role: 'soporte_seguridad' as const,
@@ -70,7 +83,7 @@ const MOCK_CREDENTIALS = [
     email: 'infra@techproc.com',
     password: 'infra123',
     user: {
-      id: '4',
+      id: '5',
       username: 'infra',
       email: 'infra@techproc.com',
       role: 'soporte_infraestructura' as const,
@@ -83,7 +96,7 @@ const MOCK_CREDENTIALS = [
     email: 'web@techproc.com',
     password: 'web123',
     user: {
-      id: '5',
+      id: '6',
       username: 'web',
       email: 'web@techproc.com',
       role: 'developer_web' as const,
@@ -96,7 +109,7 @@ const MOCK_CREDENTIALS = [
     email: 'data@techproc.com',
     password: 'data123',
     user: {
-      id: '6',
+      id: '7',
       username: 'data',
       email: 'data@techproc.com',
       role: 'analista_datos' as const,

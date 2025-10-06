@@ -3,6 +3,7 @@
 export type UserRole =
   | 'administrador'
   | 'gestor_lms'
+  | 'soporte_tecnico'
   | 'soporte_seguridad'
   | 'soporte_infraestructura'
   | 'developer_web'
@@ -20,11 +21,12 @@ export interface User {
 
 // Permisos de acceso a módulos por rol
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
-  administrador: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
+  administrador: ['users', 'lms', 'support', 'security', 'infrastructure', 'web', 'analytics'],
   gestor_lms: ['lms'],
-  soporte_seguridad: ['tickets', 'security'],
-  soporte_infraestructura: ['tickets', 'infrastructure'],
-  developer_web: ['web', 'tickets'],
+  soporte_tecnico: ['support'],
+  soporte_seguridad: ['security'],
+  soporte_infraestructura: ['infrastructure'],
+  developer_web: ['web'],
   analista_datos: ['analytics'],
 };
 
@@ -50,6 +52,15 @@ export const MOCK_USERS: User[] = [
   },
   {
     id: '3',
+    username: 'soporte',
+    email: 'soporte@techproc.com',
+    role: 'soporte_tecnico',
+    name: 'Soporte Técnico',
+    first_name: 'Luis',
+    last_name: 'Martínez',
+  },
+  {
+    id: '4',
     username: 'seg',
     email: 'security@techproc.com',
     role: 'soporte_seguridad',
@@ -58,7 +69,7 @@ export const MOCK_USERS: User[] = [
     last_name: 'González',
   },
   {
-    id: '4',
+    id: '5',
     username: 'infra',
     email: 'infra@techproc.com',
     role: 'soporte_infraestructura',
@@ -67,7 +78,7 @@ export const MOCK_USERS: User[] = [
     last_name: 'Ruiz',
   },
   {
-    id: '5',
+    id: '6',
     username: 'web',
     email: 'web@techproc.com',
     role: 'developer_web',
@@ -76,7 +87,7 @@ export const MOCK_USERS: User[] = [
     last_name: 'Torres',
   },
   {
-    id: '6',
+    id: '7',
     username: 'data',
     email: 'data@techproc.com',
     role: 'analista_datos',

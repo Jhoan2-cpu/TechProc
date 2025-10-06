@@ -5,6 +5,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LMSMainPage } from './modules/lms/pages/LMSMainPage';
 import { TicketsPage } from './modules/tickets/pages/TicketsPage';
+import { TicketsMainPage } from './modules/tickets/pages/TicketsMainPage';
 import {
   SecurityDashboardPage,
   SessionsPage,
@@ -13,6 +14,7 @@ import {
   BackupsPage,
 } from './modules/security/pages';
 import { InfrastructurePage } from './modules/infrastructure/pages/InfrastructurePage';
+import { InfrastructureMainPage } from './modules/infrastructure/pages/InfrastructureMainPage';
 import { WebPage } from './modules/web/pages/WebPage';
 import { AnalyticsPage } from './modules/analytics/pages/AnalyticsPage';
 import { UsersPage } from './modules/users/pages/UsersPage';
@@ -40,6 +42,27 @@ import {
   faFileArchive,
   faChevronDown,
   faChevronRight,
+  faBars,
+  faTimes,
+  faKey,
+  faHdd,
+  faCog,
+  faLaptop,
+  faClipboardList,
+  faInbox,
+  faExchangeAlt,
+  faUserCheck,
+  faTasks,
+  faTrophy,
+  faFileAlt,
+  faNewspaper,
+  faBell,
+  faBullhorn,
+  faEnvelope,
+  faRobot,
+  faBookOpen,
+  faUserGraduate,
+  faChalkboardTeacher,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Protected Route Component
@@ -59,7 +82,8 @@ function ProtectedRoute({ children, currentUser, requiredModule }: { children: R
 function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => void }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [expandedModules, setExpandedModules] = useState<string[]>(['security']);
+  const [expandedModules, setExpandedModules] = useState<string[]>(['lms', 'support', 'security', 'infrastructure', 'web', 'analytics']);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
   // Redirigir automáticamente al primer módulo disponible si estamos en la raíz
   React.useEffect(() => {
@@ -67,17 +91,17 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
       if (hasAccess(currentUser, 'users')) {
         navigate('/users', { replace: true });
       } else if (hasAccess(currentUser, 'lms')) {
-        navigate('/lms', { replace: true });
-      } else if (hasAccess(currentUser, 'tickets')) {
-        navigate('/tickets', { replace: true });
+        navigate('/lms-dashboard', { replace: true });
+      } else if (hasAccess(currentUser, 'support')) {
+        navigate('/tickets-dashboard', { replace: true});
       } else if (hasAccess(currentUser, 'security')) {
         navigate('/security-dashboard', { replace: true });
       } else if (hasAccess(currentUser, 'infrastructure')) {
-        navigate('/infrastructure', { replace: true });
+        navigate('/infrastructure-dashboard', { replace: true });
       } else if (hasAccess(currentUser, 'web')) {
-        navigate('/web', { replace: true });
+        navigate('/web-dashboard', { replace: true });
       } else if (hasAccess(currentUser, 'analytics')) {
-        navigate('/analytics', { replace: true });
+        navigate('/analytics-dashboard', { replace: true });
       } else {
         navigate('/profile', { replace: true });
       }
@@ -91,8 +115,28 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
   const modules = [
     { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
     { id: 'pending-registrations', name: 'Solicitudes de Registro', icon: faUserClock },
-    { id: 'lms', name: 'LMS', icon: faGraduationCap },
-    { id: 'tickets', name: 'Tickets', icon: faTicket },
+    {
+      id: 'lms',
+      name: 'LMS',
+      icon: faGraduationCap,
+      submodules: [
+        { id: 'lms-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+        { id: 'lms-courses', name: 'Cursos', icon: faBookOpen },
+        { id: 'lms-students', name: 'Estudiantes', icon: faUserGraduate },
+        { id: 'lms-instructors', name: 'Instructores', icon: faChalkboardTeacher },
+      ],
+    },
+    {
+      id: 'support',
+      name: 'Soporte',
+      icon: faTicket,
+      submodules: [
+        { id: 'tickets-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+        { id: 'tickets-my-tickets', name: 'Mis Tickets', icon: faClipboardList },
+        { id: 'tickets-available', name: 'Disponibles', icon: faInbox },
+        { id: 'tickets-escalations', name: 'Escalaciones', icon: faExchangeAlt },
+      ],
+    },
     {
       id: 'security',
       name: 'Seguridad',
@@ -105,25 +149,75 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         { id: 'security-backups', name: 'Backups', icon: faFileArchive },
       ],
     },
-    { id: 'infrastructure', name: 'Infraestructura', icon: faServer },
-    { id: 'web', name: 'Web', icon: faGlobe },
-    { id: 'analytics', name: 'Analítica', icon: faChartLine },
+    {
+      id: 'infrastructure',
+      name: 'Infraestructura',
+      icon: faServer,
+      submodules: [
+        { id: 'infrastructure-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+        { id: 'infrastructure-servers', name: 'Servidores', icon: faServer },
+        { id: 'infrastructure-licenses', name: 'Licencias', icon: faKey },
+        { id: 'infrastructure-storage', name: 'Almacenamiento', icon: faHdd },
+        { id: 'infrastructure-software', name: 'Software', icon: faCog },
+        { id: 'infrastructure-resources', name: 'Recursos', icon: faLaptop },
+      ],
+    },
+    {
+      id: 'web',
+      name: 'Web',
+      icon: faGlobe,
+      submodules: [
+        { id: 'web-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+        { id: 'web-news', name: 'Noticias', icon: faNewspaper },
+        { id: 'web-alerts', name: 'Alertas', icon: faBell },
+        { id: 'web-announcements', name: 'Anuncios', icon: faBullhorn },
+        { id: 'web-contacts', name: 'Consultas', icon: faEnvelope },
+        { id: 'web-chatbot', name: 'Chatbot', icon: faRobot },
+      ],
+    },
+    {
+      id: 'analytics',
+      name: 'Analítica',
+      icon: faChartLine,
+      submodules: [
+        { id: 'analytics-dashboard', name: 'Dashboard', icon: faChartLine },
+        { id: 'analytics-attendance', name: 'Asistencia', icon: faUserCheck },
+        { id: 'analytics-progress', name: 'Progreso', icon: faTasks },
+        { id: 'analytics-performance', name: 'Rendimiento', icon: faTrophy },
+        { id: 'analytics-dropout', name: 'Riesgo Deserción', icon: faExclamationTriangle },
+        { id: 'analytics-reports', name: 'Reportes', icon: faFileAlt },
+      ],
+    },
   ];
 
   const currentPath = location.pathname.split('/')[1] || '';
 
   return (
     <div className="min-h-screen bg-secondary-50 flex animate-fade-in">
+      {/* Toggle Button */}
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className={`fixed top-4 z-50 bg-primary-600 text-white p-3 rounded-r-[50%] shadow-lg hover:bg-primary-700 transition-all duration-300 ${
+          isSidebarOpen ? 'left-[276px]' : 'left-4'
+        }`}
+        aria-label={isSidebarOpen ? 'Ocultar sidebar' : 'Mostrar sidebar'}
+      >
+        <FontAwesomeIcon icon={isSidebarOpen ? faTimes : faBars} className="text-lg" />
+      </button>
+
       {/* Sidebar */}
-      <aside className="w-72 bg-white shadow-lg border-r border-secondary-200 flex flex-col">
-        {/* Logo */}
-        <div className="p-6 border-b border-secondary-200">
-          <h1 className="text-2xl font-heading font-bold text-gradient">TechProc</h1>
-          <p className="text-sm text-secondary-600 mt-1">Sistema Modular</p>
-        </div>
+      <aside className={`bg-white shadow-lg border-r border-secondary-200 flex flex-col h-screen sticky top-0 transition-all duration-300 ${
+        isSidebarOpen ? 'w-72' : 'w-0 -translate-x-full'
+      }`}>
+        <div className={`${isSidebarOpen ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300 flex flex-col h-full`}>
+          {/* Logo */}
+          <div className="p-6 border-b border-secondary-200 flex-shrink-0">
+            <h1 className="text-2xl font-heading font-bold text-gradient">TechProc</h1>
+            <p className="text-sm text-secondary-600 mt-1">Sistema Modular</p>
+          </div>
 
         {/* User Info */}
-        <div className="p-6 border-b border-secondary-200 bg-gradient-to-br from-primary-50 to-accent-50">
+        <div className="p-6 border-b border-secondary-200 bg-gradient-to-br from-primary-50 to-accent-50 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center">
               <span className="text-white font-bold text-lg">
@@ -138,7 +232,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 overflow-y-auto">
+        <nav className="flex-1 p-4 overflow-y-auto min-h-0">
           <p className="text-xs font-semibold text-secondary-500 uppercase tracking-wider mb-3 px-3">
             Módulos
           </p>
@@ -155,6 +249,12 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
                   <button
                     onClick={() => {
                       if (hasSubmodules) {
+                        // Navegar al dashboard del módulo
+                        const dashboardSubmodule = module.submodules.find((sub: any) => sub.name === 'Dashboard');
+                        if (dashboardSubmodule) {
+                          handleModuleChange(dashboardSubmodule.id);
+                        }
+                        // Expandir/contraer el módulo
                         setExpandedModules((prev) =>
                           prev.includes(module.id)
                             ? prev.filter((id) => id !== module.id)
@@ -209,7 +309,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         </nav>
 
         {/* Profile & Logout Section */}
-        <div className="p-4 border-t border-secondary-200 space-y-2">
+        <div className="p-4 border-t border-secondary-200 space-y-2 flex-shrink-0">
           {/* Profile Button */}
           <button
             onClick={() => handleModuleChange('profile')}
@@ -232,11 +332,12 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             <span className="font-medium">Cerrar Sesión</span>
           </button>
         </div>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
-        <div className="p-8">
+      <main className="flex-1 overflow-auto h-screen">
+        <div className="p-14">
           <Routes>
             <Route path="/" element={
               <div className="flex items-center justify-center h-96">
@@ -246,16 +347,37 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />
-            <Route path="/lms" element={<LMSMainPage />} />
-            <Route path="/tickets" element={<TicketsPage />} />
+            <Route path="/lms-dashboard" element={<LMSMainPage />} />
+            <Route path="/lms-courses" element={<LMSMainPage />} />
+            <Route path="/lms-students" element={<LMSMainPage />} />
+            <Route path="/lms-instructors" element={<LMSMainPage />} />
+            <Route path="/tickets-dashboard" element={<TicketsMainPage />} />
+            <Route path="/tickets-my-tickets" element={<TicketsMainPage />} />
+            <Route path="/tickets-available" element={<TicketsMainPage />} />
+            <Route path="/tickets-escalations" element={<TicketsMainPage />} />
             <Route path="/security-dashboard" element={<SecurityDashboardPage />} />
             <Route path="/security-sessions" element={<SessionsPage />} />
             <Route path="/security-blocked-ips" element={<BlockedIPsPage />} />
             <Route path="/security-incidents" element={<IncidentsPage />} />
             <Route path="/security-backups" element={<BackupsPage />} />
-            <Route path="/infrastructure" element={<InfrastructurePage />} />
-            <Route path="/web" element={<WebPage />} />
-            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/infrastructure-dashboard" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-servers" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-licenses" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-storage" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-software" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-resources" element={<InfrastructureMainPage />} />
+            <Route path="/web-dashboard" element={<WebPage />} />
+            <Route path="/web-news" element={<WebPage />} />
+            <Route path="/web-alerts" element={<WebPage />} />
+            <Route path="/web-announcements" element={<WebPage />} />
+            <Route path="/web-contacts" element={<WebPage />} />
+            <Route path="/web-chatbot" element={<WebPage />} />
+            <Route path="/analytics-dashboard" element={<AnalyticsPage />} />
+            <Route path="/analytics-attendance" element={<AnalyticsPage />} />
+            <Route path="/analytics-progress" element={<AnalyticsPage />} />
+            <Route path="/analytics-performance" element={<AnalyticsPage />} />
+            <Route path="/analytics-dropout" element={<AnalyticsPage />} />
+            <Route path="/analytics-reports" element={<AnalyticsPage />} />
           </Routes>
         </div>
       </main>

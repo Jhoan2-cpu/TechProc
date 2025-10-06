@@ -16,7 +16,8 @@
       "Bash(find:*)",
       "Bash(done)",
       "Bash(do echo \"=== Módulo: $module ===\")",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(for module in analytics lms tickets security infrastructure users)"
     ],
     "deny": [],
     "ask": []

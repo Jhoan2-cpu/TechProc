@@ -15,6 +15,7 @@ import {
   faGlobe,
   faChartLine,
   faArrowLeft,
+  faTicket,
 } from '@fortawesome/free-solid-svg-icons';
 import type { User, UserRole } from '../shared/types/auth';
 import { authService } from '../services/authService';
@@ -62,9 +63,17 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'lms@techproc.com',
     },
     {
+      value: 'soporte_tecnico',
+      label: 'Soporte Técnico',
+      description: 'Gestión de tickets de soporte',
+      color: 'from-yellow-500 to-yellow-700',
+      icon: faTicket,
+      suggestedEmail: 'soporte@techproc.com',
+    },
+    {
       value: 'soporte_seguridad',
       label: 'Soporte - Seguridad',
-      description: 'Tickets y seguridad',
+      description: 'Seguridad del sistema',
       color: 'from-purple-500 to-purple-700',
       icon: faLock,
       suggestedEmail: 'security@techproc.com',
@@ -72,7 +81,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     {
       value: 'soporte_infraestructura',
       label: 'Soporte - Infraestructura',
-      description: 'Tickets e infraestructura',
+      description: 'Gestión de infraestructura',
       color: 'from-green-500 to-green-700',
       icon: faServer,
       suggestedEmail: 'infra@techproc.com',
@@ -80,7 +89,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     {
       value: 'developer_web',
       label: 'Developer Web',
-      description: 'Gestión web y tickets',
+      description: 'Desarrollo y gestión web',
       color: 'from-orange-500 to-orange-700',
       icon: faGlobe,
       suggestedEmail: 'web@techproc.com',

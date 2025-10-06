@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faNewspaper,
@@ -294,12 +295,25 @@ const mockChatbotFAQs: ChatbotFAQ[] = [
 type WebTab = 'dashboard' | 'news' | 'alerts' | 'announcements' | 'contacts' | 'chatbot';
 
 export const WebPage = () => {
-  const [activeTab, setActiveTab] = useState<WebTab>('dashboard');
+  const location = useLocation();
   const [news] = useState(mockNews);
   const [alerts] = useState(mockAlerts);
   const [announcements] = useState(mockAnnouncements);
   const [contacts] = useState(mockContactForms);
   const [faqs] = useState(mockChatbotFAQs);
+
+  // Determinar la sección actual basándose en la ruta
+  const getCurrentTab = (): WebTab => {
+    const path = location.pathname;
+    if (path.includes('news')) return 'news';
+    if (path.includes('alerts')) return 'alerts';
+    if (path.includes('announcements')) return 'announcements';
+    if (path.includes('contacts')) return 'contacts';
+    if (path.includes('chatbot')) return 'chatbot';
+    return 'dashboard';
+  };
+
+  const activeTab = getCurrentTab();
 
   const publishedNews = news.filter(n => n.status === 'published').length;
   const activeAlerts = alerts.filter(a => a.status === 'active').length;
@@ -369,14 +383,6 @@ export const WebPage = () => {
     }
   };
 
-  const tabs = [
-    { id: 'dashboard' as WebTab, name: 'Dashboard', icon: faTachometerAlt },
-    { id: 'news' as WebTab, name: 'Noticias', icon: faNewspaper },
-    { id: 'alerts' as WebTab, name: 'Alertas', icon: faBell },
-    { id: 'announcements' as WebTab, name: 'Anuncios', icon: faBullhorn },
-    { id: 'contacts' as WebTab, name: 'Consultas', icon: faEnvelope },
-    { id: 'chatbot' as WebTab, name: 'Chatbot', icon: faRobot },
-  ];
 
   const renderDashboard = () => (
     <>
@@ -651,32 +657,6 @@ export const WebPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
-          web/dashboard
-        </h1>
-
-        {/* Pestañas */}
-        <div className="flex gap-2 border-b border-secondary-200 overflow-x-auto">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'border-primary-600 text-primary-600 bg-primary-50'
-                  : 'border-transparent text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-              }`}
-            >
-              <FontAwesomeIcon icon={tab.icon} />
-              <span>{tab.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Contenido según pestaña activa */}
       {activeTab === 'dashboard' && renderDashboard()}
       {activeTab === 'news' && renderNews()}
       {activeTab === 'alerts' && renderAlerts()}

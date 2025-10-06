@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChartLine,
@@ -417,7 +418,7 @@ const mockReports: Report[] = [
 ];
 
 export const AnalyticsPage = () => {
-  const [activeTab, setActiveTab] = useState<AnalyticsTab>('dashboard');
+  const location = useLocation();
   const [selectedCourse, setSelectedCourse] = useState<number | 'all'>('all');
   const [reportForm, setReportForm] = useState<ReportFormData>({
     report_type: 'asistencia',
@@ -429,6 +430,19 @@ export const AnalyticsPage = () => {
   });
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
+
+  // Determinar la sección actual basándose en la ruta
+  const getCurrentTab = (): AnalyticsTab => {
+    const path = location.pathname;
+    if (path.includes('attendance')) return 'attendance';
+    if (path.includes('progress')) return 'progress';
+    if (path.includes('performance')) return 'performance';
+    if (path.includes('dropout')) return 'dropout';
+    if (path.includes('reports')) return 'reports';
+    return 'dashboard';
+  };
+
+  const activeTab = getCurrentTab();
 
   // Función para exportar datos a CSV
   const exportToCSV = (data: any[], filename: string) => {
@@ -477,14 +491,6 @@ export const AnalyticsPage = () => {
     }, 2000);
   };
 
-  const tabs = [
-    { id: 'dashboard' as const, name: 'Dashboard', icon: faChartLine },
-    { id: 'attendance' as const, name: 'Asistencia', icon: faUserCheck },
-    { id: 'progress' as const, name: 'Progreso', icon: faTasks },
-    { id: 'performance' as const, name: 'Rendimiento', icon: faTrophy },
-    { id: 'dropout' as const, name: 'Riesgo Deserción', icon: faExclamationTriangle },
-    { id: 'reports' as const, name: 'Reportes', icon: faFileAlt },
-  ];
 
   const renderDashboard = () => (
     <div className="space-y-6">
@@ -870,47 +876,13 @@ export const AnalyticsPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-secondary-50 p-6">
-      {/* Header */}
-      <div className="mb-6 pb-6 border-b-2 border-secondary-200">
-        <div>
-          <h1 className="text-3xl font-heading font-bold text-secondary-900 flex items-center">
-            <FontAwesomeIcon icon={faChartLine} className="mr-3 text-primary-600" />
-            analytics/dashboard
-          </h1>
-          <p className="text-secondary-600 mt-2">
-            Análisis de datos, asistencia, progreso, rendimiento y predicción de deserción
-          </p>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2 ${
-              activeTab === tab.id
-                ? 'bg-primary-600 text-white shadow-lg'
-                : 'bg-white text-secondary-700 hover:bg-secondary-100'
-            }`}
-          >
-            <FontAwesomeIcon icon={tab.icon} />
-            {tab.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div>
-        {activeTab === 'dashboard' && renderDashboard()}
-        {activeTab === 'attendance' && renderAttendance()}
-        {activeTab === 'progress' && renderProgress()}
-        {activeTab === 'performance' && renderPerformance()}
-        {activeTab === 'dropout' && renderDropout()}
-        {activeTab === 'reports' && renderReports()}
-      </div>
+    <div className="space-y-6">
+      {activeTab === 'dashboard' && renderDashboard()}
+      {activeTab === 'attendance' && renderAttendance()}
+      {activeTab === 'progress' && renderProgress()}
+      {activeTab === 'performance' && renderPerformance()}
+      {activeTab === 'dropout' && renderDropout()}
+      {activeTab === 'reports' && renderReports()}
     </div>
   );
 };
