@@ -32,14 +32,6 @@ interface User {
   last_login?: string;
 }
 
-type UserRole =
-  | 'administrador'
-  | 'gestor_lms'
-  | 'soporte_seguridad'
-  | 'soporte_infraestructura'
-  | 'developer_web'
-  | 'analista_datos';
-
 // Datos mock
 const mockUsers: User[] = [
   {

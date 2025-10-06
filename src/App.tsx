@@ -5,7 +5,13 @@ import { RegisterPage } from './pages/RegisterPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LMSMainPage } from './modules/lms/pages/LMSMainPage';
 import { TicketsPage } from './modules/tickets/pages/TicketsPage';
-import { SecurityPage } from './modules/security/pages/SecurityPage';
+import {
+  SecurityDashboardPage,
+  SessionsPage,
+  BlockedIPsPage,
+  IncidentsPage,
+  BackupsPage,
+} from './modules/security/pages';
 import { InfrastructurePage } from './modules/infrastructure/pages/InfrastructurePage';
 import { WebPage } from './modules/web/pages/WebPage';
 import { AnalyticsPage } from './modules/analytics/pages/AnalyticsPage';
@@ -27,6 +33,13 @@ import {
   faRightFromBracket,
   faUserCircle,
   faUserClock,
+  faTachometerAlt,
+  faUsersViewfinder,
+  faBan,
+  faExclamationTriangle,
+  faFileArchive,
+  faChevronDown,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Protected Route Component
@@ -46,6 +59,7 @@ function ProtectedRoute({ children, currentUser, requiredModule }: { children: R
 function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => void }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [expandedModules, setExpandedModules] = useState<string[]>(['security']);
 
   // Redirigir automáticamente al primer módulo disponible si estamos en la raíz
   React.useEffect(() => {
@@ -57,7 +71,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
       } else if (hasAccess(currentUser, 'tickets')) {
         navigate('/tickets', { replace: true });
       } else if (hasAccess(currentUser, 'security')) {
-        navigate('/security', { replace: true });
+        navigate('/security-dashboard', { replace: true });
       } else if (hasAccess(currentUser, 'infrastructure')) {
         navigate('/infrastructure', { replace: true });
       } else if (hasAccess(currentUser, 'web')) {
@@ -79,7 +93,18 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
     { id: 'pending-registrations', name: 'Solicitudes de Registro', icon: faUserClock },
     { id: 'lms', name: 'LMS', icon: faGraduationCap },
     { id: 'tickets', name: 'Tickets', icon: faTicket },
-    { id: 'security', name: 'Seguridad', icon: faLock },
+    {
+      id: 'security',
+      name: 'Seguridad',
+      icon: faLock,
+      submodules: [
+        { id: 'security-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+        { id: 'security-sessions', name: 'Sesiones Activas', icon: faUsersViewfinder },
+        { id: 'security-blocked-ips', name: 'IPs Bloqueadas', icon: faBan },
+        { id: 'security-incidents', name: 'Incidentes', icon: faExclamationTriangle },
+        { id: 'security-backups', name: 'Backups', icon: faFileArchive },
+      ],
+    },
     { id: 'infrastructure', name: 'Infraestructura', icon: faServer },
     { id: 'web', name: 'Web', icon: faGlobe },
     { id: 'analytics', name: 'Analítica', icon: faChartLine },
@@ -118,24 +143,66 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             Módulos
           </p>
           <div className="space-y-1">
-            {modules.map((module) => {
+            {modules.map((module: any) => {
               if (!hasAccess(currentUser, module.id)) return null;
 
               const isActive = currentPath === module.id;
+              const isExpanded = expandedModules.includes(module.id);
+              const hasSubmodules = module.submodules && module.submodules.length > 0;
 
               return (
-                <button
-                  key={module.id}
-                  onClick={() => handleModuleChange(module.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                    isActive
-                      ? 'bg-gradient-primary text-white shadow-md'
-                      : 'text-secondary-700 hover:bg-secondary-100'
-                  }`}
-                >
-                  <FontAwesomeIcon icon={module.icon} className="text-lg" />
-                  <span className="font-medium">{module.name}</span>
-                </button>
+                <div key={module.id}>
+                  <button
+                    onClick={() => {
+                      if (hasSubmodules) {
+                        setExpandedModules((prev) =>
+                          prev.includes(module.id)
+                            ? prev.filter((id) => id !== module.id)
+                            : [...prev, module.id]
+                        );
+                      } else {
+                        handleModuleChange(module.id);
+                      }
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                      isActive && !hasSubmodules
+                        ? 'bg-gradient-primary text-white shadow-md'
+                        : 'text-secondary-700 hover:bg-secondary-100'
+                    }`}
+                  >
+                    <FontAwesomeIcon icon={module.icon} className="text-lg" />
+                    <span className="font-medium flex-1 text-left">{module.name}</span>
+                    {hasSubmodules && (
+                      <FontAwesomeIcon
+                        icon={isExpanded ? faChevronDown : faChevronRight}
+                        className="text-sm"
+                      />
+                    )}
+                  </button>
+
+                  {/* Submódulos */}
+                  {hasSubmodules && isExpanded && (
+                    <div className="ml-4 mt-1 space-y-1">
+                      {module.submodules.map((submodule: any) => {
+                        const isSubActive = currentPath === submodule.id;
+                        return (
+                          <button
+                            key={submodule.id}
+                            onClick={() => handleModuleChange(submodule.id)}
+                            className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 text-sm ${
+                              isSubActive
+                                ? 'bg-gradient-primary text-white shadow-md'
+                                : 'text-secondary-600 hover:bg-secondary-100'
+                            }`}
+                          >
+                            <FontAwesomeIcon icon={submodule.icon} />
+                            <span className="font-medium">{submodule.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
@@ -181,7 +248,11 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />
             <Route path="/lms" element={<LMSMainPage />} />
             <Route path="/tickets" element={<TicketsPage />} />
-            <Route path="/security" element={<SecurityPage />} />
+            <Route path="/security-dashboard" element={<SecurityDashboardPage />} />
+            <Route path="/security-sessions" element={<SessionsPage />} />
+            <Route path="/security-blocked-ips" element={<BlockedIPsPage />} />
+            <Route path="/security-incidents" element={<IncidentsPage />} />
+            <Route path="/security-backups" element={<BackupsPage />} />
             <Route path="/infrastructure" element={<InfrastructurePage />} />
             <Route path="/web" element={<WebPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
