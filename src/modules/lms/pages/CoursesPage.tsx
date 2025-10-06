@@ -7,6 +7,7 @@ import {
 import type { Course } from '../types';
 import { CreateCourseModal, CourseCard, ViewCourseModal } from '../components';
 import { coursesService } from '../services';
+import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const CoursesPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -15,6 +16,8 @@ export const CoursesPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
+  const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -31,6 +34,18 @@ export const CoursesPage = () => {
 
     fetchCourses();
   }, []);
+
+  const handleEditCourse = (updatedCourse: Course) => {
+    setCourses(courses.map(c => c.id === updatedCourse.id ? updatedCourse : c));
+    setCourseToEdit(null);
+  };
+
+  const handleDeleteCourse = () => {
+    if (courseToDelete) {
+      setCourses(courses.filter(c => c.id !== courseToDelete.id));
+      setCourseToDelete(null);
+    }
+  };
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -102,8 +117,8 @@ export const CoursesPage = () => {
             course={course}
             index={index}
             onView={(course) => setSelectedCourse(course)}
-            onEdit={(course) => console.log('Editar curso:', course)}
-            onDelete={(course) => console.log('Eliminar curso:', course)}
+            onEdit={(course) => setCourseToEdit(course)}
+            onDelete={(course) => setCourseToDelete(course)}
           />
         ))}
       </div>
@@ -133,6 +148,25 @@ export const CoursesPage = () => {
           onClose={() => setSelectedCourse(null)}
         />
       )}
+
+      {/* Modal de edición */}
+      {courseToEdit && (
+        <CreateCourseModal
+          course={courseToEdit}
+          onClose={() => setCourseToEdit(null)}
+          onSave={handleEditCourse}
+        />
+      )}
+
+      {/* Modal de confirmación de eliminación */}
+      <ConfirmDeleteModal
+        isOpen={!!courseToDelete}
+        title="Confirmar Eliminación"
+        message="¿Estás seguro de que deseas eliminar el curso?"
+        itemName={courseToDelete ? courseToDelete.title : ''}
+        onConfirm={handleDeleteCourse}
+        onCancel={() => setCourseToDelete(null)}
+      />
     </div>
   );
 };

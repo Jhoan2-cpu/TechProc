@@ -14,12 +14,17 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student } from '../types';
 import { studentsService } from '../services';
+import { EditStudentModal, ViewStudentModal } from '../components';
+import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const StudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterState, setFilterState] = useState<string>('all');
+  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
+  const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
+  const [studentToView, setStudentToView] = useState<Student | null>(null);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -47,6 +52,18 @@ export const StudentsPage = () => {
       </div>
     );
   }
+
+  const handleDeleteStudent = () => {
+    if (studentToDelete) {
+      setStudents(students.filter(s => s.id !== studentToDelete.id));
+      setStudentToDelete(null);
+    }
+  };
+
+  const handleEditStudent = (updatedStudent: Student) => {
+    setStudents(students.map(s => s.id === updatedStudent.id ? updatedStudent : s));
+    setStudentToEdit(null);
+  };
 
   const filteredStudents = students.filter((student) => {
     const matchesSearch =
@@ -174,13 +191,25 @@ export const StudentsPage = () => {
                   </td>
                   <td className="p-4">
                     <div className="flex items-center justify-center gap-2">
-                      <button className="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-colors" title="Ver">
+                      <button
+                        onClick={() => setStudentToView(student)}
+                        className="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                        title="Ver"
+                      >
                         <FontAwesomeIcon icon={faEye} />
                       </button>
-                      <button className="text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-colors" title="Editar">
+                      <button
+                        onClick={() => setStudentToEdit(student)}
+                        className="text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-colors"
+                        title="Editar"
+                      >
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
-                      <button className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors" title="Eliminar">
+                      <button
+                        onClick={() => setStudentToDelete(student)}
+                        className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                        title="Eliminar"
+                      >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </div>
@@ -217,6 +246,29 @@ export const StudentsPage = () => {
           </p>
         </div>
       </div>
+
+      {/* Modales */}
+      <ViewStudentModal
+        student={studentToView}
+        isOpen={!!studentToView}
+        onClose={() => setStudentToView(null)}
+      />
+
+      <EditStudentModal
+        student={studentToEdit}
+        isOpen={!!studentToEdit}
+        onClose={() => setStudentToEdit(null)}
+        onSave={handleEditStudent}
+      />
+
+      <ConfirmDeleteModal
+        isOpen={!!studentToDelete}
+        title="Confirmar Eliminación"
+        message="¿Estás seguro de que deseas eliminar al estudiante?"
+        itemName={studentToDelete ? `${studentToDelete.first_name} ${studentToDelete.last_name}` : ''}
+        onConfirm={handleDeleteStudent}
+        onCancel={() => setStudentToDelete(null)}
+      />
     </div>
   );
 };

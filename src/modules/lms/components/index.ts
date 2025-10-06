@@ -6,3 +6,6 @@ export { CreateCourseModal } from './CreateCourseModal';
 export { LMSLayout } from './LMSLayout';
 export { CourseCard } from './CourseCard';
 export { ViewCourseModal } from './ViewCourseModal';
+export { EditStudentModal } from './EditStudentModal';
+export { ViewStudentModal } from './ViewStudentModal';
+export { EditInstructorModal } from './EditInstructorModal';

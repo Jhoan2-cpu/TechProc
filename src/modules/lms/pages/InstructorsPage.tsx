@@ -14,6 +14,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Instructor } from '../types';
 import { instructorsService } from '../services';
+import { EditInstructorModal } from '../components';
+import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const InstructorsPage = () => {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
@@ -21,6 +23,8 @@ export const InstructorsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
+  const [instructorToDelete, setInstructorToDelete] = useState<Instructor | null>(null);
+  const [instructorToEdit, setInstructorToEdit] = useState<Instructor | null>(null);
 
   useEffect(() => {
     const fetchInstructors = async () => {
@@ -48,6 +52,18 @@ export const InstructorsPage = () => {
       </div>
     );
   }
+
+  const handleDeleteInstructor = () => {
+    if (instructorToDelete) {
+      setInstructors(instructors.filter(i => i.id !== instructorToDelete.id));
+      setInstructorToDelete(null);
+    }
+  };
+
+  const handleEditInstructor = (updatedInstructor: Instructor) => {
+    setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updatedInstructor : i));
+    setInstructorToEdit(null);
+  };
 
   const filteredInstructors = instructors.filter((instructor) => {
     const matchesSearch =
@@ -167,10 +183,18 @@ export const InstructorsPage = () => {
                 >
                   <FontAwesomeIcon icon={faEye} />
                 </button>
-                <button className="text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-colors" title="Editar">
+                <button
+                  onClick={() => setInstructorToEdit(instructor)}
+                  className="text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-colors"
+                  title="Editar"
+                >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors" title="Eliminar">
+                <button
+                  onClick={() => setInstructorToDelete(instructor)}
+                  className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                  title="Eliminar"
+                >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>
@@ -259,6 +283,23 @@ export const InstructorsPage = () => {
           </div>
         </div>
       )}
+
+      {/* Modales */}
+      <EditInstructorModal
+        instructor={instructorToEdit}
+        isOpen={!!instructorToEdit}
+        onClose={() => setInstructorToEdit(null)}
+        onSave={handleEditInstructor}
+      />
+
+      <ConfirmDeleteModal
+        isOpen={!!instructorToDelete}
+        title="Confirmar Eliminación"
+        message="¿Estás seguro de que deseas eliminar al instructor?"
+        itemName={instructorToDelete ? `${instructorToDelete.first_name} ${instructorToDelete.last_name}` : ''}
+        onConfirm={handleDeleteInstructor}
+        onCancel={() => setInstructorToDelete(null)}
+      />
     </div>
   );
 };

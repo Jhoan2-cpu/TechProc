@@ -11,6 +11,7 @@ import {
 import type { Course, ContentType } from '../types';
 
 interface CreateCourseModalProps {
+  course?: Course;
   onClose: () => void;
   onSave: (course: Partial<Course>) => void;
 }
@@ -24,15 +25,17 @@ interface ContentItem {
   content: string;
 }
 
-export const CreateCourseModal = ({ onClose, onSave }: CreateCourseModalProps) => {
+export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModalProps) => {
+  const isEditing = !!course;
+
   const [formData, setFormData] = useState({
-    title: '',
-    code: '',
-    description: '',
-    instructor_id: '',
-    duration_weeks: 4,
-    price: 0,
-    status: 'borrador' as const,
+    title: course?.title || '',
+    code: course?.code || '',
+    description: course?.description || '',
+    instructor_id: course?.instructor_id?.toString() || '',
+    duration_weeks: course?.duration_weeks || 4,
+    price: course?.price || 0,
+    status: (course?.status || 'borrador') as const,
   });
 
   const [contents, setContents] = useState<ContentItem[]>([]);
@@ -67,7 +70,11 @@ export const CreateCourseModal = ({ onClose, onSave }: CreateCourseModalProps) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({ ...formData, created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
+    if (isEditing) {
+      onSave({ ...course, ...formData, updated_at: new Date().toISOString() });
+    } else {
+      onSave({ ...formData, created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
+    }
   };
 
   const contentsByWeek = contents.filter(c => c.week === currentWeek);
@@ -78,7 +85,7 @@ export const CreateCourseModal = ({ onClose, onSave }: CreateCourseModalProps) =
         {/* Header */}
         <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-primary-500 to-primary-600">
           <h2 className="text-2xl font-heading font-bold text-white">
-            Crear Nuevo Curso
+            {isEditing ? 'Editar Curso' : 'Crear Nuevo Curso'}
           </h2>
           <button
             onClick={onClose}
@@ -299,7 +306,7 @@ export const CreateCourseModal = ({ onClose, onSave }: CreateCourseModalProps) =
               type="submit"
               className="btn btn-primary"
             >
-              Crear Curso
+              {isEditing ? 'Guardar Cambios' : 'Crear Curso'}
             </button>
           </div>
         </form>
