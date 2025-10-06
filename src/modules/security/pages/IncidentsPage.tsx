@@ -1,61 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import type { Incident } from '../types';
 import { IncidentCard } from '../components';
-
-const mockIncidents: (Incident & {
-  description: string;
-  severity: string;
-  assigned_to?: string;
-})[] = [
-  {
-    id_incident: 1,
-    alert_id: 1,
-    responsible_id: 3,
-    title: 'Intento de acceso no autorizado detectado',
-    description: 'Se detectaron múltiples intentos de acceso desde IP 192.168.100.50',
-    severity: 'high',
-    status: 'investigating',
-    report_date: '2024-03-15 08:15:00',
-    assigned_to: 'Carlos Ramírez',
-  },
-  {
-    id_incident: 2,
-    alert_id: 2,
-    responsible_id: 3,
-    title: 'Actividad inusual en base de datos',
-    description: 'Consultas sospechosas detectadas en horario no laboral',
-    severity: 'medium',
-    status: 'open',
-    report_date: '2024-03-15 02:30:00',
-  },
-  {
-    id_incident: 3,
-    alert_id: 3,
-    responsible_id: 1,
-    title: 'Posible fuga de datos detectada',
-    description: 'Transferencia inusual de gran volumen de datos hacia IP externa',
-    severity: 'critical',
-    status: 'investigating',
-    report_date: '2024-03-15 12:00:00',
-    assigned_to: 'Juan Pérez',
-  },
-  {
-    id_incident: 4,
-    alert_id: 4,
-    responsible_id: 2,
-    title: 'Malware detectado en estación de trabajo',
-    description: 'El antivirus detectó y eliminó malware en PC-205',
-    severity: 'medium',
-    status: 'resolved',
-    report_date: '2024-03-14 16:00:00',
-    assigned_to: 'Ana García',
-  },
-];
+import { incidentsService } from '../services';
 
 export const IncidentsPage = () => {
-  const [incidents] = useState(mockIncidents);
+  const [incidents, setIncidents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchIncidents = async () => {
+      try {
+        const data = await incidentsService.getAll();
+        setIncidents(data);
+      } catch (error) {
+        console.error('Error fetching incidents:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIncidents();
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -67,6 +33,17 @@ export const IncidentsPage = () => {
       minute: '2-digit',
     });
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-secondary-600">Cargando incidentes...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

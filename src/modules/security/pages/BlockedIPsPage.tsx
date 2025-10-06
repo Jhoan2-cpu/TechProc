@@ -1,42 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import type { BlockedIP } from '../types';
 import { BlockedIPCard } from '../components';
-
-const mockBlockedIPs: BlockedIP[] = [
-  {
-    id_blocked_ip: 1,
-    ip_address: '192.168.100.50',
-    reason: 'Múltiples intentos de acceso fallidos (15 intentos en 5 minutos)',
-    block_date: '2024-03-15 08:00:00',
-    active: true,
-  },
-  {
-    id_blocked_ip: 2,
-    ip_address: '10.0.0.123',
-    reason: 'Actividad sospechosa - Escaneo de puertos detectado',
-    block_date: '2024-03-14 20:00:00',
-    active: true,
-  },
-  {
-    id_blocked_ip: 3,
-    ip_address: '203.0.113.45',
-    reason: 'Intento de inyección SQL en formularios',
-    block_date: '2024-03-14 15:30:00',
-    active: true,
-  },
-  {
-    id_blocked_ip: 4,
-    ip_address: '198.51.100.89',
-    reason: 'IP reportada en lista negra de spam/malware',
-    block_date: '2024-03-13 10:00:00',
-    active: false,
-  },
-];
+import { blockedIPsService } from '../services';
 
 export const BlockedIPsPage = () => {
-  const [blockedIPs] = useState(mockBlockedIPs);
+  const [blockedIPs, setBlockedIPs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlockedIPs = async () => {
+      try {
+        const data = await blockedIPsService.getAll();
+        setBlockedIPs(data);
+      } catch (error) {
+        console.error('Error fetching blocked IPs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlockedIPs();
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -48,6 +33,17 @@ export const BlockedIPsPage = () => {
       minute: '2-digit',
     });
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-secondary-600">Cargando IPs bloqueadas...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

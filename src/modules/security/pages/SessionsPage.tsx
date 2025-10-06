@@ -1,65 +1,25 @@
-import { useState } from 'react';
-import type { ActiveSession } from '../types';
+import { useState, useEffect } from 'react';
 import { SessionCard } from '../components';
-
-const mockActiveSessions: (ActiveSession & {
-  user_name: string;
-  user_email: string;
-  last_activity: string;
-  location?: string;
-})[] = [
-  {
-    session_id: 1,
-    user_id: 5,
-    user_name: 'Carlos Méndez',
-    user_email: 'carlos.mendez@techproc.com',
-    ip_address: '192.168.1.105',
-    device: 'Chrome 120 - Windows 10',
-    start_date: '2024-03-15 08:30:00',
-    last_activity: '2024-03-15 14:25:00',
-    location: 'Lima, Perú',
-    active: true,
-  },
-  {
-    session_id: 2,
-    user_id: 8,
-    user_name: 'Ana Torres',
-    user_email: 'ana.torres@techproc.com',
-    ip_address: '192.168.1.120',
-    device: 'Firefox 122 - macOS',
-    start_date: '2024-03-15 09:00:00',
-    last_activity: '2024-03-15 14:30:00',
-    location: 'Lima, Perú',
-    active: true,
-  },
-  {
-    session_id: 3,
-    user_id: 12,
-    user_name: 'Roberto Silva',
-    user_email: 'roberto.silva@techproc.com',
-    ip_address: '192.168.1.135',
-    device: 'Chrome 120 - Android',
-    start_date: '2024-03-15 10:15:00',
-    last_activity: '2024-03-15 14:28:00',
-    location: 'Arequipa, Perú',
-    active: true,
-  },
-  {
-    session_id: 4,
-    user_id: 15,
-    user_name: 'María González',
-    user_email: 'maria.gonzalez@techproc.com',
-    ip_address: '10.0.0.50',
-    device: 'Safari 17 - iOS',
-    start_date: '2024-03-15 11:00:00',
-    last_activity: '2024-03-15 14:20:00',
-    location: 'Cusco, Perú',
-    active: true,
-  },
-];
+import { sessionsService } from '../services';
 
 export const SessionsPage = () => {
-  const [sessions] = useState(mockActiveSessions);
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      try {
+        const data = await sessionsService.getAll();
+        setSessions(data);
+      } catch (error) {
+        console.error('Error fetching sessions:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSessions();
+  }, []);
 
   const activeSessions = sessions.filter((s) => s.active).length;
 
@@ -73,6 +33,17 @@ export const SessionsPage = () => {
       minute: '2-digit',
     });
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-secondary-600">Cargando sesiones...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
