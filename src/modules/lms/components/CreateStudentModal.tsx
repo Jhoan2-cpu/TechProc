@@ -27,10 +27,19 @@ export const CreateStudentModal = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newStudent = {
+    const now = new Date().toISOString();
+    const newStudent: Omit<Student, 'id'> = {
       ...formData,
+      role: 'student' as const,
       email_verified_at: null,
       last_access: null,
+      address: '',
+      birth_date: '2000-01-01',
+      gender: 'Otro' as const,
+      profile_photo: null,
+      last_access_ip: null,
+      created_at: now,
+      updated_at: now,
     };
 
     onSave(newStudent);

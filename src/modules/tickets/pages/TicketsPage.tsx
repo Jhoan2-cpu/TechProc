@@ -15,6 +15,9 @@ import {
   TicketCard,
   AvailableTicketCard,
   CriticalTicketAlert,
+  ViewTicketDetailsModal,
+  EscalateTicketModal,
+  TakeTicketModal,
 } from '../components';
 
 // Datos mock - Simulando técnico con ID 1
@@ -135,7 +138,10 @@ type TabType = 'dashboard' | 'my_tickets' | 'available' | 'escalations';
 
 export const TicketsPage = () => {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
-  const [tickets] = useState<Ticket[]>(mockTickets);
+  const [tickets, setTickets] = useState<Ticket[]>(mockTickets);
+  const [ticketToView, setTicketToView] = useState<Ticket | null>(null);
+  const [ticketToEscalate, setTicketToEscalate] = useState<Ticket | null>(null);
+  const [ticketToTake, setTicketToTake] = useState<Ticket | null>(null);
 
   // Filtrar tickets del técnico actual
   const myTickets = tickets.filter(t => t.assigned_technician === currentTechnicianId);
@@ -166,6 +172,45 @@ export const TicketsPage = () => {
     });
   };
 
+  // Handlers para modales
+  const handleViewDetails = (ticket: Ticket) => {
+    setTicketToView(ticket);
+  };
+
+  const handleEscalate = (ticket: Ticket) => {
+    setTicketToEscalate(ticket);
+  };
+
+  const handleEscalateConfirm = (ticketId: number, reason: string, observations: string) => {
+    setTickets(tickets.map(t =>
+      t.ticket_id === ticketId
+        ? { ...t, status: 'escalado' as const }
+        : t
+    ));
+    setTicketToEscalate(null);
+    // Aquí se podría mostrar una notificación de éxito
+  };
+
+  const handleTakeTicket = (ticket: Ticket) => {
+    setTicketToTake(ticket);
+  };
+
+  const handleTakeTicketConfirm = (ticketId: number) => {
+    const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+    setTickets(tickets.map(t =>
+      t.ticket_id === ticketId
+        ? {
+            ...t,
+            assigned_technician: currentTechnicianId,
+            assignment_date: now,
+            status: 'en_progreso' as const
+          }
+        : t
+    ));
+    setTicketToTake(null);
+    // Aquí se podría mostrar una notificación de éxito
+  };
+
   const renderMyTickets = () => (
     <div className="card p-6">
       <div className="flex justify-between items-center mb-6">
@@ -185,6 +230,8 @@ export const TicketsPage = () => {
               ticket={ticket}
               formatDate={formatDate}
               index={index}
+              onViewDetails={handleViewDetails}
+              onEscalate={handleEscalate}
             />
           ))
         ) : (
@@ -217,6 +264,8 @@ export const TicketsPage = () => {
               ticket={ticket}
               formatDate={formatDate}
               index={index}
+              onTakeTicket={handleTakeTicket}
+              onViewDetails={handleViewDetails}
             />
           ))
         ) : (
@@ -278,6 +327,8 @@ export const TicketsPage = () => {
                 formatDate={formatDate}
                 index={index}
                 variant="compact"
+                onViewDetails={handleViewDetails}
+                onEscalate={handleEscalate}
               />
             ))
           ) : (
@@ -299,6 +350,7 @@ export const TicketsPage = () => {
                 key={ticket.ticket_id}
                 ticket={ticket}
                 formatDate={formatDate}
+                onTakeTicket={handleTakeTicket}
               />
             ))}
           </div>
@@ -339,6 +391,27 @@ export const TicketsPage = () => {
       {activeTab === 'my_tickets' && renderMyTickets()}
       {activeTab === 'available' && renderAvailableTickets()}
       {activeTab === 'escalations' && <EscalationsPage />}
+
+      {/* Modales */}
+      <ViewTicketDetailsModal
+        ticket={ticketToView}
+        isOpen={!!ticketToView}
+        onClose={() => setTicketToView(null)}
+      />
+
+      <EscalateTicketModal
+        ticket={ticketToEscalate}
+        isOpen={!!ticketToEscalate}
+        onClose={() => setTicketToEscalate(null)}
+        onEscalate={handleEscalateConfirm}
+      />
+
+      <TakeTicketModal
+        ticket={ticketToTake}
+        isOpen={!!ticketToTake}
+        onClose={() => setTicketToTake(null)}
+        onConfirm={handleTakeTicketConfirm}
+      />
     </div>
   );
 };

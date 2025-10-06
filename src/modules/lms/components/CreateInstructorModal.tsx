@@ -29,11 +29,20 @@ export const CreateInstructorModal = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newInstructor = {
+    const now = new Date().toISOString();
+    const newInstructor: Omit<Instructor, 'id'> = {
       ...formData,
-      email_verified_at: new Date().toISOString(),
-      courses_count: 0,
-      rating: 0,
+      role: 'instructor' as const,
+      email_verified_at: now,
+      address: '',
+      birth_date: '1980-01-01',
+      gender: 'Otro' as const,
+      profile_photo: null,
+      state: 'activo',
+      last_access_ip: null,
+      last_access: null,
+      created_at: now,
+      updated_at: now,
     };
 
     onSave(newInstructor);

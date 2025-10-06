@@ -35,8 +35,11 @@ export const CoursesPage = () => {
     fetchCourses();
   }, []);
 
-  const handleEditCourse = (updatedCourse: Course) => {
-    setCourses(courses.map(c => c.id === updatedCourse.id ? updatedCourse : c));
+  const handleEditCourse = (updatedCourse: Partial<Course>) => {
+    if (courseToEdit && updatedCourse) {
+      const fullCourse: Course = { ...courseToEdit, ...updatedCourse };
+      setCourses(courses.map(c => c.id === courseToEdit.id ? fullCourse : c));
+    }
     setCourseToEdit(null);
   };
 

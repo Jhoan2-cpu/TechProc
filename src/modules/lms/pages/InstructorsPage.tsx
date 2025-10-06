@@ -69,7 +69,7 @@ export const InstructorsPage = () => {
   const handleCreateInstructor = (newInstructorData: Omit<Instructor, 'id'>) => {
     const newInstructor: Instructor = {
       ...newInstructorData,
-      id: Math.max(...instructors.map(i => i.id), 0) + 1,
+      id: String(Math.max(...instructors.map(i => Number(i.id)), 0) + 1),
     };
     setInstructors([newInstructor, ...instructors]);
     setShowCreateModal(false);

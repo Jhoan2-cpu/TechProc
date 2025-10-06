@@ -69,7 +69,7 @@ export const StudentsPage = () => {
   const handleCreateStudent = (newStudentData: Omit<Student, 'id'>) => {
     const newStudent: Student = {
       ...newStudentData,
-      id: Math.max(...students.map(s => s.id), 0) + 1,
+      id: String(Math.max(...students.map(s => Number(s.id)), 0) + 1),
     };
     setStudents([newStudent, ...students]);
     setShowCreateModal(false);

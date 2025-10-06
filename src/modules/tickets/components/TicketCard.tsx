@@ -12,6 +12,8 @@ interface TicketCardProps {
   index: number;
   showActions?: boolean;
   variant?: 'default' | 'compact';
+  onViewDetails?: (ticket: Ticket) => void;
+  onEscalate?: (ticket: Ticket) => void;
 }
 
 export const TicketCard = ({
@@ -20,6 +22,8 @@ export const TicketCard = ({
   index,
   showActions = true,
   variant = 'default',
+  onViewDetails,
+  onEscalate,
 }: TicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -89,10 +93,16 @@ export const TicketCard = ({
           </div>
           {showActions && (
             <div className="flex md:flex-col gap-2">
-              <button className="btn bg-primary-600 hover:bg-primary-700 text-white text-sm">
+              <button
+                onClick={() => onViewDetails?.(ticket)}
+                className="btn bg-primary-600 hover:bg-primary-700 text-white text-sm"
+              >
                 Ver Detalles
               </button>
-              <button className="btn bg-orange-600 hover:bg-orange-700 text-white text-sm">
+              <button
+                onClick={() => onEscalate?.(ticket)}
+                className="btn bg-orange-600 hover:bg-orange-700 text-white text-sm"
+              >
                 Escalar
               </button>
             </div>
@@ -152,7 +162,10 @@ export const TicketCard = ({
         </div>
         {showActions && (
           <div className="flex lg:flex-col gap-2 lg:w-40">
-            <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none">
+            <button
+              onClick={() => onViewDetails?.(ticket)}
+              className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none"
+            >
               Ver Detalles
             </button>
             {ticket.status !== 'resuelto' && ticket.status !== 'cerrado' && (
@@ -160,7 +173,10 @@ export const TicketCard = ({
                 <button className="btn bg-green-600 hover:bg-green-700 text-white flex-1 lg:flex-none">
                   Resolver
                 </button>
-                <button className="btn bg-orange-600 hover:bg-orange-700 text-white flex-1 lg:flex-none">
+                <button
+                  onClick={() => onEscalate?.(ticket)}
+                  className="btn bg-orange-600 hover:bg-orange-700 text-white flex-1 lg:flex-none"
+                >
                   Escalar
                 </button>
               </>

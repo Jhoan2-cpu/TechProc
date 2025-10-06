@@ -25,6 +25,7 @@ interface ProfilePageProps {
 const roleConfig: Record<UserRole, { color: string; icon: any; label: string }> = {
   administrador: { color: 'from-red-500 to-red-700', icon: faShieldHalved, label: 'Administrador' },
   gestor_lms: { color: 'from-blue-500 to-blue-700', icon: faGraduationCap, label: 'Gestor LMS' },
+  soporte_tecnico: { color: 'from-yellow-500 to-yellow-700', icon: faBriefcase, label: 'Soporte Técnico' },
   soporte_seguridad: { color: 'from-purple-500 to-purple-700', icon: faLock, label: 'Soporte - Seguridad' },
   soporte_infraestructura: { color: 'from-green-500 to-green-700', icon: faServer, label: 'Soporte - Infraestructura' },
   developer_web: { color: 'from-orange-500 to-orange-700', icon: faGlobe, label: 'Developer Web' },

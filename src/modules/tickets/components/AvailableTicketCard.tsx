@@ -10,9 +10,11 @@ interface AvailableTicketCardProps {
   ticket: Ticket;
   formatDate: (dateString: string | null) => string;
   index: number;
+  onTakeTicket?: (ticket: Ticket) => void;
+  onViewDetails?: (ticket: Ticket) => void;
 }
 
-export const AvailableTicketCard = ({ ticket, formatDate, index }: AvailableTicketCardProps) => {
+export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, onViewDetails }: AvailableTicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'baja': return 'text-blue-600 bg-blue-100';
@@ -58,14 +60,20 @@ export const AvailableTicketCard = ({ ticket, formatDate, index }: AvailableTick
           </div>
         </div>
         <div className="flex flex-col gap-2 lg:w-40">
-          <button className={`btn text-white ${
-            ticket.priority === 'crítica'
-              ? 'bg-red-600 hover:bg-red-700'
-              : 'bg-primary-600 hover:bg-primary-700'
-          }`}>
+          <button
+            onClick={() => onTakeTicket?.(ticket)}
+            className={`btn text-white ${
+              ticket.priority === 'crítica'
+                ? 'bg-red-600 hover:bg-red-700'
+                : 'bg-primary-600 hover:bg-primary-700'
+            }`}
+          >
             Tomar Ticket
           </button>
-          <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
+          <button
+            onClick={() => onViewDetails?.(ticket)}
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+          >
             Ver Detalles
           </button>
         </div>

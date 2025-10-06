@@ -65,8 +65,20 @@ const mockEscalations: Escalation[] = [
 type EscalationTab = 'sent' | 'received';
 
 export const EscalationsPage = () => {
-  const [escalations] = useState<Escalation[]>(mockEscalations);
+  const [escalations, setEscalations] = useState<Escalation[]>(mockEscalations);
   const [activeTab, setActiveTab] = useState<EscalationTab>('sent');
+
+  const handleAcceptEscalation = (escalationId: number) => {
+    setEscalations(escalations.map(e =>
+      e.escalation_id === escalationId
+        ? { ...e, approved: true }
+        : e
+    ));
+  };
+
+  const handleRejectEscalation = (escalationId: number) => {
+    setEscalations(escalations.filter(e => e.escalation_id !== escalationId));
+  };
 
   // Filtrar escalaciones enviadas y recibidas
   const sentEscalations = escalations.filter(e => e.technician_origin_id === currentTechnicianId);
@@ -325,11 +337,17 @@ export const EscalationsPage = () => {
 
               {!escalation.approved && (
                 <div className="flex gap-3 mt-4 pt-4 border-t border-secondary-200">
-                  <button className="btn bg-green-600 hover:bg-green-700 text-white flex-1 flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => handleAcceptEscalation(escalation.escalation_id)}
+                    className="btn bg-green-600 hover:bg-green-700 text-white flex-1 flex items-center justify-center gap-2"
+                  >
                     <FontAwesomeIcon icon={faCheckCircle} />
                     Aceptar Escalación
                   </button>
-                  <button className="btn bg-red-600 hover:bg-red-700 text-white flex-1 flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => handleRejectEscalation(escalation.escalation_id)}
+                    className="btn bg-red-600 hover:bg-red-700 text-white flex-1 flex items-center justify-center gap-2"
+                  >
                     <FontAwesomeIcon icon={faTimesCircle} />
                     Rechazar
                   </button>

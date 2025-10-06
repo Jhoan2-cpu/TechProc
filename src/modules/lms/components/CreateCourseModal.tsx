@@ -8,7 +8,7 @@ import {
   faLink,
   faBullhorn,
 } from '@fortawesome/free-solid-svg-icons';
-import type { Course, ContentType } from '../types';
+import type { Course, ContentType, CourseStatus } from '../types';
 
 interface CreateCourseModalProps {
   course?: Course;
@@ -35,7 +35,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
     instructor_id: course?.instructor_id?.toString() || '',
     duration_weeks: course?.duration_weeks || 4,
     price: course?.price || 0,
-    status: (course?.status || 'borrador') as const,
+    status: course?.status || 'borrador' as CourseStatus,
   });
 
   const [contents, setContents] = useState<ContentItem[]>([]);

@@ -3,9 +3,10 @@ import type { Ticket } from '../types';
 interface CriticalTicketAlertProps {
   ticket: Ticket;
   formatDate: (dateString: string | null) => string;
+  onTakeTicket?: (ticket: Ticket) => void;
 }
 
-export const CriticalTicketAlert = ({ ticket, formatDate }: CriticalTicketAlertProps) => {
+export const CriticalTicketAlert = ({ ticket, formatDate, onTakeTicket }: CriticalTicketAlertProps) => {
   return (
     <div className="bg-white border border-red-300 rounded-lg p-4 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between gap-4">
@@ -20,7 +21,10 @@ export const CriticalTicketAlert = ({ ticket, formatDate }: CriticalTicketAlertP
             <span className="font-medium text-red-700">{ticket.category}</span>
           </div>
         </div>
-        <button className="btn bg-red-600 hover:bg-red-700 text-white">
+        <button
+          onClick={() => onTakeTicket?.(ticket)}
+          className="btn bg-red-600 hover:bg-red-700 text-white"
+        >
           Tomar Ticket
         </button>
       </div>
