@@ -6,9 +6,16 @@ import { TicketCard } from '../components';
 interface MyTicketsPageProps {
   tickets: Ticket[];
   currentTechnicianId: number;
+  onViewDetails: (ticket: Ticket) => void;
+  onEscalate: (ticket: Ticket) => void;
 }
 
-export const MyTicketsPage = ({ tickets, currentTechnicianId }: MyTicketsPageProps) => {
+export const MyTicketsPage = ({
+  tickets,
+  currentTechnicianId,
+  onViewDetails,
+  onEscalate
+}: MyTicketsPageProps) => {
   const myTickets = tickets.filter(t => t.assigned_technician === currentTechnicianId);
 
   const formatDate = (dateString: string | null) => {
@@ -42,6 +49,8 @@ export const MyTicketsPage = ({ tickets, currentTechnicianId }: MyTicketsPagePro
               ticket={ticket}
               formatDate={formatDate}
               index={index}
+              onViewDetails={onViewDetails}
+              onEscalate={onEscalate}
             />
           ))
         ) : (

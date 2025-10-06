@@ -15,9 +15,18 @@ import {
 interface TicketsDashboardPageProps {
   tickets: Ticket[];
   currentTechnicianId: number;
+  onViewDetails: (ticket: Ticket) => void;
+  onEscalate: (ticket: Ticket) => void;
+  onTakeTicket: (ticket: Ticket) => void;
 }
 
-export const TicketsDashboardPage = ({ tickets, currentTechnicianId }: TicketsDashboardPageProps) => {
+export const TicketsDashboardPage = ({
+  tickets,
+  currentTechnicianId,
+  onViewDetails,
+  onEscalate,
+  onTakeTicket
+}: TicketsDashboardPageProps) => {
   // Filtrar tickets del técnico actual
   const myTickets = tickets.filter(t => t.assigned_technician === currentTechnicianId);
   const availableTickets = tickets.filter(t => t.assigned_technician === null);
@@ -88,6 +97,8 @@ export const TicketsDashboardPage = ({ tickets, currentTechnicianId }: TicketsDa
                 formatDate={formatDate}
                 index={index}
                 variant="compact"
+                onViewDetails={onViewDetails}
+                onEscalate={onEscalate}
               />
             ))
           ) : (
@@ -109,6 +120,7 @@ export const TicketsDashboardPage = ({ tickets, currentTechnicianId }: TicketsDa
                 key={ticket.ticket_id}
                 ticket={ticket}
                 formatDate={formatDate}
+                onTakeTicket={onTakeTicket}
               />
             ))}
           </div>

@@ -5,6 +5,11 @@ import { MyTicketsPage } from './MyTicketsPage';
 import { AvailableTicketsPage } from './AvailableTicketsPage';
 import { EscalationsPage } from './EscalationsPage';
 import type { Ticket } from '../types';
+import {
+  ViewTicketDetailsModal,
+  EscalateTicketModal,
+  TakeTicketModal,
+} from '../components';
 
 // Datos mock - Simulando técnico con ID 1
 const currentTechnicianId = 1;
@@ -122,7 +127,47 @@ const mockTickets: Ticket[] = [
 
 export const TicketsMainPage = () => {
   const location = useLocation();
-  const [tickets] = useState<Ticket[]>(mockTickets);
+  const [tickets, setTickets] = useState<Ticket[]>(mockTickets);
+  const [ticketToView, setTicketToView] = useState<Ticket | null>(null);
+  const [ticketToEscalate, setTicketToEscalate] = useState<Ticket | null>(null);
+  const [ticketToTake, setTicketToTake] = useState<Ticket | null>(null);
+
+  // Handlers para modales
+  const handleViewDetails = (ticket: Ticket) => {
+    setTicketToView(ticket);
+  };
+
+  const handleEscalate = (ticket: Ticket) => {
+    setTicketToEscalate(ticket);
+  };
+
+  const handleEscalateConfirm = (ticketId: number, reason: string, observations: string) => {
+    setTickets(tickets.map(t =>
+      t.ticket_id === ticketId
+        ? { ...t, status: 'escalado' as const }
+        : t
+    ));
+    setTicketToEscalate(null);
+  };
+
+  const handleTakeTicket = (ticket: Ticket) => {
+    setTicketToTake(ticket);
+  };
+
+  const handleTakeTicketConfirm = (ticketId: number) => {
+    const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+    setTickets(tickets.map(t =>
+      t.ticket_id === ticketId
+        ? {
+            ...t,
+            assigned_technician: currentTechnicianId,
+            assignment_date: now,
+            status: 'en_progreso' as const
+          }
+        : t
+    ));
+    setTicketToTake(null);
+  };
 
   // Determinar la sección actual basándose en la ruta
   const getCurrentSection = () => {
@@ -138,20 +183,62 @@ export const TicketsMainPage = () => {
 
     switch (section) {
       case 'my_tickets':
-        return <MyTicketsPage tickets={tickets} currentTechnicianId={currentTechnicianId} />;
+        return (
+          <MyTicketsPage
+            tickets={tickets}
+            currentTechnicianId={currentTechnicianId}
+            onViewDetails={handleViewDetails}
+            onEscalate={handleEscalate}
+          />
+        );
       case 'available':
-        return <AvailableTicketsPage tickets={tickets} />;
+        return (
+          <AvailableTicketsPage
+            tickets={tickets}
+            onTakeTicket={handleTakeTicket}
+            onViewDetails={handleViewDetails}
+          />
+        );
       case 'escalations':
         return <EscalationsPage />;
       case 'dashboard':
       default:
-        return <TicketsDashboardPage tickets={tickets} currentTechnicianId={currentTechnicianId} />;
+        return (
+          <TicketsDashboardPage
+            tickets={tickets}
+            currentTechnicianId={currentTechnicianId}
+            onViewDetails={handleViewDetails}
+            onEscalate={handleEscalate}
+            onTakeTicket={handleTakeTicket}
+          />
+        );
     }
   };
 
   return (
     <div className="space-y-6">
       {renderSection()}
+
+      {/* Modales */}
+      <ViewTicketDetailsModal
+        ticket={ticketToView}
+        isOpen={!!ticketToView}
+        onClose={() => setTicketToView(null)}
+      />
+
+      <EscalateTicketModal
+        ticket={ticketToEscalate}
+        isOpen={!!ticketToEscalate}
+        onClose={() => setTicketToEscalate(null)}
+        onEscalate={handleEscalateConfirm}
+      />
+
+      <TakeTicketModal
+        ticket={ticketToTake}
+        isOpen={!!ticketToTake}
+        onClose={() => setTicketToTake(null)}
+        onConfirm={handleTakeTicketConfirm}
+      />
     </div>
   );
 };

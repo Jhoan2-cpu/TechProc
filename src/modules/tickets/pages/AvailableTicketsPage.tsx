@@ -5,9 +5,15 @@ import { AvailableTicketCard } from '../components';
 
 interface AvailableTicketsPageProps {
   tickets: Ticket[];
+  onTakeTicket: (ticket: Ticket) => void;
+  onViewDetails: (ticket: Ticket) => void;
 }
 
-export const AvailableTicketsPage = ({ tickets }: AvailableTicketsPageProps) => {
+export const AvailableTicketsPage = ({
+  tickets,
+  onTakeTicket,
+  onViewDetails
+}: AvailableTicketsPageProps) => {
   const availableTickets = tickets.filter(t => t.assigned_technician === null);
 
   const formatDate = (dateString: string | null) => {
@@ -41,6 +47,8 @@ export const AvailableTicketsPage = ({ tickets }: AvailableTicketsPageProps) => 
               ticket={ticket}
               formatDate={formatDate}
               index={index}
+              onTakeTicket={onTakeTicket}
+              onViewDetails={onViewDetails}
             />
           ))
         ) : (
