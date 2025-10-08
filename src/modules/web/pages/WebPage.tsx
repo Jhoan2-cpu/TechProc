@@ -41,6 +41,7 @@ import {
   RespondContactModal,
   FAQFormModal,
   DeleteFAQModal,
+  ChatbotConfigModal,
 } from '../components';
 
 // Datos mock - Noticias
@@ -344,6 +345,17 @@ export const WebPage = () => {
   const [showDeleteFAQModal, setShowDeleteFAQModal] = useState(false);
   const [faqToEdit, setFaqToEdit] = useState<ChatbotFAQ | null>(null);
   const [faqToDelete, setFaqToDelete] = useState<ChatbotFAQ | null>(null);
+
+  // Estados para configuración del Chatbot
+  const [showChatbotConfigModal, setShowChatbotConfigModal] = useState(false);
+  const [chatbotConfig, setChatbotConfig] = useState({
+    enabled: true,
+    greeting_message: '¡Hola! Soy el asistente virtual. ¿En qué puedo ayudarte hoy?',
+    fallback_message: 'Lo siento, no entendí tu pregunta. ¿Podrías reformularla?',
+    response_delay: 1000,
+    max_conversations_per_day: 1000,
+    contact_threshold: 3,
+  });
 
   // Determinar la sección actual basándose en la ruta
   const getCurrentTab = (): WebTab => {
@@ -689,6 +701,16 @@ export const WebPage = () => {
     }
   };
 
+  // ==================== HANDLERS - CHATBOT CONFIG ====================
+  const handleOpenChatbotConfig = () => {
+    setShowChatbotConfigModal(true);
+  };
+
+  const handleSaveChatbotConfig = (config: typeof chatbotConfig) => {
+    setChatbotConfig(config);
+    setShowChatbotConfigModal(false);
+  };
+
 
   const renderDashboard = () => (
     <>
@@ -1001,7 +1023,10 @@ export const WebPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión del Chatbot</h2>
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
+        <button
+          onClick={handleOpenChatbotConfig}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+        >
           <FontAwesomeIcon icon={faCog} />
           Configuración
         </button>
@@ -1073,6 +1098,13 @@ export const WebPage = () => {
           setShowDeleteFAQModal(false);
           setFaqToDelete(null);
         }}
+      />
+
+      <ChatbotConfigModal
+        isOpen={showChatbotConfigModal}
+        config={chatbotConfig}
+        onSave={handleSaveChatbotConfig}
+        onCancel={() => setShowChatbotConfigModal(false)}
       />
     </div>
   );

@@ -1,13 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTimes, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import type { ChatbotFAQ } from '../types';
 
 interface ChatbotFAQCardProps {
   faq: ChatbotFAQ;
   index: number;
+  onEdit: (faq: ChatbotFAQ) => void;
+  onDelete: (faq: ChatbotFAQ) => void;
+  onToggleActive: (faq: ChatbotFAQ) => void;
 }
 
-export const ChatbotFAQCard = ({ faq, index }: ChatbotFAQCardProps) => {
+export const ChatbotFAQCard = ({ faq, index, onEdit, onDelete, onToggleActive }: ChatbotFAQCardProps) => {
   return (
     <div
       className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow animate-fade-in"
@@ -35,10 +38,25 @@ export const ChatbotFAQCard = ({ faq, index }: ChatbotFAQCardProps) => {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
+          <button
+            onClick={() => onEdit(faq)}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white"
+            title="Editar FAQ"
+          >
             <FontAwesomeIcon icon={faEdit} />
           </button>
-          <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white">
+          <button
+            onClick={() => onToggleActive(faq)}
+            className={`btn ${faq.active ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700'} text-white`}
+            title={faq.active ? 'Desactivar FAQ' : 'Activar FAQ'}
+          >
+            <FontAwesomeIcon icon={faq.active ? faToggleOff : faToggleOn} />
+          </button>
+          <button
+            onClick={() => onDelete(faq)}
+            className="btn bg-red-600 hover:bg-red-700 text-white"
+            title="Eliminar FAQ"
+          >
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>

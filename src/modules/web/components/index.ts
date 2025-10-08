@@ -24,3 +24,4 @@ export { RespondContactModal } from './RespondContactModal';
 // Modales - FAQs
 export { FAQFormModal } from './FAQFormModal';
 export { DeleteFAQModal } from './DeleteFAQModal';
+export { ChatbotConfigModal } from './ChatbotConfigModal';
