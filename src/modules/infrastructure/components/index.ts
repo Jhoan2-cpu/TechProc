@@ -9,3 +9,6 @@ export { InfrastructureLayout } from './InfrastructureLayout';
 export { ServerDetailsModal } from './ServerDetailsModal';
 export { ServerFormModal } from './ServerFormModal';
 export { DeleteServerModal } from './DeleteServerModal';
+export { LicenseDetailsModal } from './LicenseDetailsModal';
+export { LicenseFormModal } from './LicenseFormModal';
+export { DeleteLicenseModal } from './DeleteLicenseModal';

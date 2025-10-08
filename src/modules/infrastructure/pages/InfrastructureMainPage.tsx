@@ -375,7 +375,7 @@ const mockAlerts: InfrastructureAlert[] = [
 export const InfrastructureMainPage = () => {
   const location = useLocation();
   const [servers, setServers] = useState(mockServers);
-  const [licenses] = useState(mockLicenses);
+  const [licenses, setLicenses] = useState(mockLicenses);
   const [storage] = useState(mockStorage);
   const [software] = useState(mockSoftware);
   const [resources] = useState(mockResources);
@@ -399,7 +399,7 @@ export const InfrastructureMainPage = () => {
       case 'servers':
         return <ServersPage servers={servers} onUpdateServers={setServers} />;
       case 'licenses':
-        return <LicensesPage licenses={licenses} />;
+        return <LicensesPage licenses={licenses} onUpdateLicenses={setLicenses} />;
       case 'storage':
         return <StoragePage storage={storage} />;
       case 'software':

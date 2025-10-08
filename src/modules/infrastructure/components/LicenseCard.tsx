@@ -10,9 +10,12 @@ interface LicenseCardProps {
   license: License;
   formatDate: (dateString: string | null) => string;
   index: number;
+  onDetails: (license: License) => void;
+  onEdit: (license: License) => void;
+  onDelete: (license: License) => void;
 }
 
-export const LicenseCard = ({ license, formatDate, index }: LicenseCardProps) => {
+export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onDelete }: LicenseCardProps) => {
   const getLicenseStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-700';
@@ -85,15 +88,24 @@ export const LicenseCard = ({ license, formatDate, index }: LicenseCardProps) =>
         </div>
 
         <div className="flex lg:flex-col gap-2 lg:w-40">
-          <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center justify-center gap-2">
+          <button
+            onClick={() => onDetails(license)}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faDownload} />
-            Descargar
+            Detalles
           </button>
-          <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2">
+          <button
+            onClick={() => onEdit(license)}
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
-          <button className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2">
+          <button
+            onClick={() => onDelete(license)}
+            className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar
           </button>
