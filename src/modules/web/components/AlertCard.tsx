@@ -8,9 +8,12 @@ interface AlertCardProps {
   formatDate: (dateString: string | null) => string;
   getStatusColor: (status: string) => string;
   getAlertTypeColor: (type: string) => string;
+  onEdit: (alert: Alert) => void;
+  onDelete: (alert: Alert) => void;
+  onToggleStatus: (alert: Alert) => void;
 }
 
-export const AlertCard = ({ alert, index, formatDate, getStatusColor, getAlertTypeColor }: AlertCardProps) => {
+export const AlertCard = ({ alert, index, formatDate, getStatusColor, getAlertTypeColor, onEdit, onDelete, onToggleStatus }: AlertCardProps) => {
   return (
     <div
       className={`card p-6 border-2 animate-fade-in ${getAlertTypeColor(alert.type)}`}
@@ -56,19 +59,35 @@ export const AlertCard = ({ alert, index, formatDate, getStatusColor, getAlertTy
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
+          <button
+            onClick={() => onEdit(alert)}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white"
+            title="Editar alerta"
+          >
             <FontAwesomeIcon icon={faEdit} />
           </button>
           {alert.status === 'inactive' ? (
-            <button className="btn bg-green-600 hover:bg-green-700 text-white">
+            <button
+              onClick={() => onToggleStatus(alert)}
+              className="btn bg-green-600 hover:bg-green-700 text-white"
+              title="Activar alerta"
+            >
               <FontAwesomeIcon icon={faCheck} />
             </button>
           ) : (
-            <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white">
+            <button
+              onClick={() => onToggleStatus(alert)}
+              className="btn bg-yellow-600 hover:bg-yellow-700 text-white"
+              title="Desactivar alerta"
+            >
               <FontAwesomeIcon icon={faTimes} />
             </button>
           )}
-          <button className="btn bg-red-600 hover:bg-red-700 text-white">
+          <button
+            onClick={() => onDelete(alert)}
+            className="btn bg-red-600 hover:bg-red-700 text-white"
+            title="Eliminar alerta"
+          >
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>
