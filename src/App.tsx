@@ -10,6 +10,7 @@ import {
   SecurityDashboardPage,
   SessionsPage,
   BlockedIPsPage,
+  BlockedUsersPage,
   IncidentsPage,
   BackupsPage,
 } from './modules/security/pages';
@@ -38,6 +39,7 @@ import {
   faTachometerAlt,
   faUsersViewfinder,
   faBan,
+  faUserSlash,
   faExclamationTriangle,
   faFileArchive,
   faChevronDown,
@@ -145,6 +147,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         { id: 'security-dashboard', name: 'Dashboard', icon: faTachometerAlt },
         { id: 'security-sessions', name: 'Sesiones Activas', icon: faUsersViewfinder },
         { id: 'security-blocked-ips', name: 'IPs Bloqueadas', icon: faBan },
+        { id: 'security-blocked-users', name: 'Usuarios Bloqueados', icon: faUserSlash },
         { id: 'security-incidents', name: 'Incidentes', icon: faExclamationTriangle },
         { id: 'security-backups', name: 'Backups', icon: faFileArchive },
       ],
@@ -358,6 +361,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             <Route path="/security-dashboard" element={<SecurityDashboardPage />} />
             <Route path="/security-sessions" element={<SessionsPage />} />
             <Route path="/security-blocked-ips" element={<BlockedIPsPage />} />
+            <Route path="/security-blocked-users" element={<BlockedUsersPage />} />
             <Route path="/security-incidents" element={<IncidentsPage />} />
             <Route path="/security-backups" element={<BackupsPage />} />
             <Route path="/infrastructure-dashboard" element={<InfrastructureMainPage />} />

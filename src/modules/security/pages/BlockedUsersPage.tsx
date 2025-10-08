@@ -1,60 +1,65 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { BlockedIPCard, BlockIPModal, UnblockIPModal } from '../components';
-import { blockedIPsService } from '../services';
+import { BlockedUserCard, BlockUserModal, UnblockUserModal } from '../components';
+import { blockedUsersService } from '../services';
+import type { BlockedUser } from '../types';
 
-export const BlockedIPsPage = () => {
-  const [blockedIPs, setBlockedIPs] = useState<any[]>([]);
+export const BlockedUsersPage = () => {
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showBlockModal, setShowBlockModal] = useState(false);
-  const [ipToUnblock, setIpToUnblock] = useState<{ id: number; address: string } | null>(null);
+  const [userToUnblock, setUserToUnblock] = useState<{ id: number; name: string } | null>(null);
 
   useEffect(() => {
-    const fetchBlockedIPs = async () => {
+    const fetchBlockedUsers = async () => {
       try {
-        const data = await blockedIPsService.getAll();
-        setBlockedIPs(data);
+        const data = await blockedUsersService.getAll();
+        setBlockedUsers(data);
       } catch (error) {
-        console.error('Error fetching blocked IPs:', error);
+        console.error('Error fetching blocked users:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBlockedIPs();
+    fetchBlockedUsers();
   }, []);
 
-  const handleBlockIP = (ipAddress: string, reason: string) => {
+  const handleBlockUser = (userId: number, userName: string, userEmail: string, reason: string) => {
     const now = new Date().toISOString();
-    const newBlockedIP = {
-      id_blocked_ip: blockedIPs.length + 1,
-      ip_address: ipAddress,
+    const newBlockedUser: BlockedUser = {
+      id_blocked_user: blockedUsers.length + 1,
+      user_id: userId,
+      user_name: userName,
+      user_email: userEmail,
       reason: reason,
       block_date: now,
+      blocked_by: 1,
+      blocked_by_name: 'Admin Principal',
       active: true,
     };
-    setBlockedIPs([newBlockedIP, ...blockedIPs]);
+    setBlockedUsers([newBlockedUser, ...blockedUsers]);
     setShowBlockModal(false);
   };
 
-  const handleUnblockIP = (id: number) => {
-    const ip = blockedIPs.find(ip => ip.id_blocked_ip === id);
-    if (ip) {
-      setIpToUnblock({ id, address: ip.ip_address });
+  const handleUnblockUser = (id: number) => {
+    const user = blockedUsers.find(u => u.id_blocked_user === id);
+    if (user) {
+      setUserToUnblock({ id, name: user.user_name });
     }
   };
 
   const handleConfirmUnblock = () => {
-    if (ipToUnblock) {
+    if (userToUnblock) {
       const now = new Date().toISOString();
-      setBlockedIPs(blockedIPs.map(ip =>
-        ip.id_blocked_ip === ipToUnblock.id
-          ? { ...ip, active: false, unblock_date: now }
-          : ip
+      setBlockedUsers(blockedUsers.map(user =>
+        user.id_blocked_user === userToUnblock.id
+          ? { ...user, active: false, unblock_date: now }
+          : user
       ));
-      setIpToUnblock(null);
+      setUserToUnblock(null);
     }
   };
 
@@ -69,10 +74,11 @@ export const BlockedIPsPage = () => {
     });
   };
 
-  // Filtrar IPs bloqueadas por búsqueda
-  const filteredIPs = blockedIPs.filter((ip) =>
-    ip.ip_address.includes(searchTerm) ||
-    ip.reason.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filtrar usuarios bloqueados por búsqueda
+  const filteredUsers = blockedUsers.filter((user) =>
+    user.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.user_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.reason.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -80,7 +86,7 @@ export const BlockedIPsPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando IPs bloqueadas...</p>
+          <p className="mt-4 text-secondary-600">Cargando usuarios bloqueados...</p>
         </div>
       </div>
     );
@@ -90,19 +96,19 @@ export const BlockedIPsPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-heading font-bold text-secondary-900">
-          security/blocked-ips
+          security/blocked-users
         </h1>
         <button
           onClick={() => setShowBlockModal(true)}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
         >
           <FontAwesomeIcon icon={faPlus} />
-          Bloquear IP
+          Bloquear Usuario
         </button>
       </div>
 
       <h2 className="text-xl font-heading text-secondary-700">
-        Gestión de IPs Bloqueadas
+        Gestión de Usuarios Bloqueados
       </h2>
 
       {/* Buscador */}
@@ -114,7 +120,7 @@ export const BlockedIPsPage = () => {
           />
           <input
             type="text"
-            placeholder="Buscar por IP o razón..."
+            placeholder="Buscar por nombre, email o razón..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="input pl-10 w-full"
@@ -122,39 +128,39 @@ export const BlockedIPsPage = () => {
         </div>
       </div>
 
-      {/* Lista de IPs bloqueadas */}
+      {/* Lista de usuarios bloqueados */}
       <div className="grid grid-cols-1 gap-4">
-        {filteredIPs.length > 0 ? (
-          filteredIPs.map((ip) => (
-            <BlockedIPCard
-              key={ip.id_blocked_ip}
-              blockedIP={ip}
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
+            <BlockedUserCard
+              key={user.id_blocked_user}
+              blockedUser={user}
               formatDate={formatDate}
-              onUnblock={handleUnblockIP}
+              onUnblock={handleUnblockUser}
             />
           ))
         ) : (
           <div className="card p-12 text-center">
-            <p className="text-xl text-secondary-500">No se encontraron IPs bloqueadas</p>
+            <p className="text-xl text-secondary-500">No se encontraron usuarios bloqueados</p>
             <p className="text-sm text-secondary-400 mt-2">
-              {searchTerm ? 'Intenta ajustar la búsqueda' : 'No hay IPs bloqueadas en este momento'}
+              {searchTerm ? 'Intenta ajustar la búsqueda' : 'No hay usuarios bloqueados en este momento'}
             </p>
           </div>
         )}
       </div>
 
       {/* Modales */}
-      <BlockIPModal
+      <BlockUserModal
         isOpen={showBlockModal}
         onClose={() => setShowBlockModal(false)}
-        onBlock={handleBlockIP}
+        onBlock={handleBlockUser}
       />
 
-      <UnblockIPModal
-        isOpen={!!ipToUnblock}
-        ipAddress={ipToUnblock?.address || null}
+      <UnblockUserModal
+        isOpen={!!userToUnblock}
+        userName={userToUnblock?.name || null}
         onConfirm={handleConfirmUnblock}
-        onCancel={() => setIpToUnblock(null)}
+        onCancel={() => setUserToUnblock(null)}
       />
     </div>
   );

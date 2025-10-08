@@ -67,3 +67,16 @@ export interface Backup {
   backup_date: string;
   size_mb: number;
 }
+
+export interface BlockedUser {
+  id_blocked_user: number;
+  user_id: number;
+  user_name: string;
+  user_email: string;
+  reason: string;
+  block_date: string;
+  unblock_date?: string;
+  blocked_by: number;
+  blocked_by_name: string;
+  active: boolean;
+}

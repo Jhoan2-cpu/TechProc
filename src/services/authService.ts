@@ -29,7 +29,7 @@ export interface RegisterData {
 const MOCK_CREDENTIALS = [
   {
     email: 'admin@techproc.com',
-    password: 'admin123',
+    password: '123456',
     user: {
       id: '1',
       username: 'admin',
@@ -42,7 +42,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'lms@techproc.com',
-    password: 'lms123',
+    password: '123456',
     user: {
       id: '2',
       username: 'lms',
@@ -55,7 +55,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'soporte@techproc.com',
-    password: 'soporte123',
+    password: '123456',
     user: {
       id: '3',
       username: 'soporte',
@@ -68,7 +68,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'security@techproc.com',
-    password: 'security123',
+    password: '123456',
     user: {
       id: '4',
       username: 'seg',
@@ -81,7 +81,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'infra@techproc.com',
-    password: 'infra123',
+    password: '123456',
     user: {
       id: '5',
       username: 'infra',
@@ -94,7 +94,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'web@techproc.com',
-    password: 'web123',
+    password: '123456',
     user: {
       id: '6',
       username: 'web',
@@ -107,7 +107,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'data@techproc.com',
-    password: 'data123',
+    password: '123456',
     user: {
       id: '7',
       username: 'data',
