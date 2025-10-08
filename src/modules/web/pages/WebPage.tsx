@@ -18,6 +18,10 @@ import type {
   Announcement,
   ContactForm,
   ChatbotFAQ,
+  NewsStatus,
+  AlertStatus,
+  AnnouncementStatus,
+  ContactFormStatus,
 } from '../types';
 import {
   WebStatsCard,
@@ -26,6 +30,17 @@ import {
   AnnouncementCard,
   ContactFormCard,
   ChatbotFAQCard,
+} from '../components';
+import {
+  NewsFormModal,
+  DeleteNewsModal,
+  AlertFormModal,
+  DeleteAlertModal,
+  AnnouncementFormModal,
+  DeleteAnnouncementModal,
+  RespondContactModal,
+  FAQFormModal,
+  DeleteFAQModal,
 } from '../components';
 
 // Datos mock - Noticias
@@ -296,11 +311,39 @@ type WebTab = 'dashboard' | 'news' | 'alerts' | 'announcements' | 'contacts' | '
 
 export const WebPage = () => {
   const location = useLocation();
-  const [news] = useState(mockNews);
-  const [alerts] = useState(mockAlerts);
-  const [announcements] = useState(mockAnnouncements);
-  const [contacts] = useState(mockContactForms);
-  const [faqs] = useState(mockChatbotFAQs);
+  const [news, setNews] = useState(mockNews);
+  const [alerts, setAlerts] = useState(mockAlerts);
+  const [announcements, setAnnouncements] = useState(mockAnnouncements);
+  const [contacts, setContacts] = useState(mockContactForms);
+  const [faqs, setFaqs] = useState(mockChatbotFAQs);
+
+  // Estados para modales - News
+  const [showNewsFormModal, setShowNewsFormModal] = useState(false);
+  const [showDeleteNewsModal, setShowDeleteNewsModal] = useState(false);
+  const [newsToEdit, setNewsToEdit] = useState<News | null>(null);
+  const [newsToDelete, setNewsToDelete] = useState<News | null>(null);
+
+  // Estados para modales - Alerts
+  const [showAlertFormModal, setShowAlertFormModal] = useState(false);
+  const [showDeleteAlertModal, setShowDeleteAlertModal] = useState(false);
+  const [alertToEdit, setAlertToEdit] = useState<Alert | null>(null);
+  const [alertToDelete, setAlertToDelete] = useState<Alert | null>(null);
+
+  // Estados para modales - Announcements
+  const [showAnnouncementFormModal, setShowAnnouncementFormModal] = useState(false);
+  const [showDeleteAnnouncementModal, setShowDeleteAnnouncementModal] = useState(false);
+  const [announcementToEdit, setAnnouncementToEdit] = useState<Announcement | null>(null);
+  const [announcementToDelete, setAnnouncementToDelete] = useState<Announcement | null>(null);
+
+  // Estados para modales - Contacts
+  const [showRespondContactModal, setShowRespondContactModal] = useState(false);
+  const [contactToRespond, setContactToRespond] = useState<ContactForm | null>(null);
+
+  // Estados para modales - FAQs
+  const [showFAQFormModal, setShowFAQFormModal] = useState(false);
+  const [showDeleteFAQModal, setShowDeleteFAQModal] = useState(false);
+  const [faqToEdit, setFaqToEdit] = useState<ChatbotFAQ | null>(null);
+  const [faqToDelete, setFaqToDelete] = useState<ChatbotFAQ | null>(null);
 
   // Determinar la sección actual basándose en la ruta
   const getCurrentTab = (): WebTab => {
@@ -383,6 +426,245 @@ export const WebPage = () => {
     }
   };
 
+  // ==================== HANDLERS - NEWS ====================
+  const handleNewNews = () => {
+    setNewsToEdit(null);
+    setShowNewsFormModal(true);
+  };
+
+  const handleEditNews = (newsItem: News) => {
+    setNewsToEdit(newsItem);
+    setShowNewsFormModal(true);
+  };
+
+  const handleDeleteNews = (newsItem: News) => {
+    setNewsToDelete(newsItem);
+    setShowDeleteNewsModal(true);
+  };
+
+  const handlePublishNews = (newsItem: News) => {
+    const updatedNews = news.map(n =>
+      n.id_news === newsItem.id_news
+        ? { ...n, status: 'published' as NewsStatus, published_date: new Date().toISOString().split('T')[0] }
+        : n
+    );
+    setNews(updatedNews);
+  };
+
+  const handleArchiveNews = (newsItem: News) => {
+    const updatedNews = news.map(n =>
+      n.id_news === newsItem.id_news ? { ...n, status: 'archived' as NewsStatus } : n
+    );
+    setNews(updatedNews);
+  };
+
+  const handleSaveNews = (newsData: Partial<News>) => {
+    if (newsToEdit) {
+      const updatedNews = news.map(n =>
+        n.id_news === newsToEdit.id_news ? { ...n, ...newsData, updated_date: new Date().toISOString().split('T')[0] } : n
+      );
+      setNews(updatedNews);
+    } else {
+      const newNewsItem: News = {
+        id_news: Date.now(),
+        ...newsData as Omit<News, 'id_news'>,
+        views: 0,
+        created_date: new Date().toISOString().split('T')[0],
+        updated_date: null,
+        published_date: newsData.status === 'published' ? new Date().toISOString().split('T')[0] : null,
+      };
+      setNews([newNewsItem, ...news]);
+    }
+    setShowNewsFormModal(false);
+    setNewsToEdit(null);
+  };
+
+  const handleConfirmDeleteNews = () => {
+    if (newsToDelete) {
+      setNews(news.filter(n => n.id_news !== newsToDelete.id_news));
+      setShowDeleteNewsModal(false);
+      setNewsToDelete(null);
+    }
+  };
+
+  // ==================== HANDLERS - ALERTS ====================
+  const handleNewAlert = () => {
+    setAlertToEdit(null);
+    setShowAlertFormModal(true);
+  };
+
+  const handleEditAlert = (alert: Alert) => {
+    setAlertToEdit(alert);
+    setShowAlertFormModal(true);
+  };
+
+  const handleDeleteAlert = (alert: Alert) => {
+    setAlertToDelete(alert);
+    setShowDeleteAlertModal(true);
+  };
+
+  const handleToggleAlertStatus = (alert: Alert) => {
+    const newStatus: AlertStatus = alert.status === 'active' ? 'inactive' : 'active';
+    const updatedAlerts = alerts.map(a =>
+      a.id_alert === alert.id_alert ? { ...a, status: newStatus } : a
+    );
+    setAlerts(updatedAlerts);
+  };
+
+  const handleSaveAlert = (alertData: Partial<Alert>) => {
+    if (alertToEdit) {
+      const updatedAlerts = alerts.map(a =>
+        a.id_alert === alertToEdit.id_alert ? { ...a, ...alertData } : a
+      );
+      setAlerts(updatedAlerts);
+    } else {
+      const newAlert: Alert = {
+        id_alert: Date.now(),
+        ...alertData as Omit<Alert, 'id_alert'>,
+        created_date: new Date().toISOString().split('T')[0],
+      };
+      setAlerts([newAlert, ...alerts]);
+    }
+    setShowAlertFormModal(false);
+    setAlertToEdit(null);
+  };
+
+  const handleConfirmDeleteAlert = () => {
+    if (alertToDelete) {
+      setAlerts(alerts.filter(a => a.id_alert !== alertToDelete.id_alert));
+      setShowDeleteAlertModal(false);
+      setAlertToDelete(null);
+    }
+  };
+
+  // ==================== HANDLERS - ANNOUNCEMENTS ====================
+  const handleNewAnnouncement = () => {
+    setAnnouncementToEdit(null);
+    setShowAnnouncementFormModal(true);
+  };
+
+  const handleEditAnnouncement = (announcement: Announcement) => {
+    setAnnouncementToEdit(announcement);
+    setShowAnnouncementFormModal(true);
+  };
+
+  const handleDeleteAnnouncement = (announcement: Announcement) => {
+    setAnnouncementToDelete(announcement);
+    setShowDeleteAnnouncementModal(true);
+  };
+
+  const handleToggleAnnouncementStatus = (announcement: Announcement) => {
+    const newStatus: AnnouncementStatus = announcement.status === 'active' ? 'inactive' : 'active';
+    const updatedAnnouncements = announcements.map(a =>
+      a.id_announcement === announcement.id_announcement ? { ...a, status: newStatus } : a
+    );
+    setAnnouncements(updatedAnnouncements);
+  };
+
+  const handleSaveAnnouncement = (announcementData: Partial<Announcement>) => {
+    if (announcementToEdit) {
+      const updatedAnnouncements = announcements.map(a =>
+        a.id_announcement === announcementToEdit.id_announcement ? { ...a, ...announcementData } : a
+      );
+      setAnnouncements(updatedAnnouncements);
+    } else {
+      const newAnnouncement: Announcement = {
+        id_announcement: Date.now(),
+        ...announcementData as Omit<Announcement, 'id_announcement'>,
+        views: 0,
+        clicks: 0,
+        created_date: new Date().toISOString().split('T')[0],
+      };
+      setAnnouncements([newAnnouncement, ...announcements]);
+    }
+    setShowAnnouncementFormModal(false);
+    setAnnouncementToEdit(null);
+  };
+
+  const handleConfirmDeleteAnnouncement = () => {
+    if (announcementToDelete) {
+      setAnnouncements(announcements.filter(a => a.id_announcement !== announcementToDelete.id_announcement));
+      setShowDeleteAnnouncementModal(false);
+      setAnnouncementToDelete(null);
+    }
+  };
+
+  // ==================== HANDLERS - CONTACTS ====================
+  const handleRespondContact = (contact: ContactForm) => {
+    setContactToRespond(contact);
+    setShowRespondContactModal(true);
+  };
+
+  const handleSaveContactResponse = (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
+    const updatedContacts = contacts.map(c =>
+      c.id_contact === contactId
+        ? {
+            ...c,
+            response,
+            status,
+            assigned_to: assignedTo,
+            response_date: new Date().toISOString(),
+          }
+        : c
+    );
+    setContacts(updatedContacts);
+    setShowRespondContactModal(false);
+    setContactToRespond(null);
+  };
+
+  // ==================== HANDLERS - FAQS ====================
+  const handleNewFAQ = () => {
+    setFaqToEdit(null);
+    setShowFAQFormModal(true);
+  };
+
+  const handleEditFAQ = (faq: ChatbotFAQ) => {
+    setFaqToEdit(faq);
+    setShowFAQFormModal(true);
+  };
+
+  const handleDeleteFAQ = (faq: ChatbotFAQ) => {
+    setFaqToDelete(faq);
+    setShowDeleteFAQModal(true);
+  };
+
+  const handleToggleFAQActive = (faq: ChatbotFAQ) => {
+    const updatedFAQs = faqs.map(f =>
+      f.id_faq === faq.id_faq ? { ...f, active: !f.active } : f
+    );
+    setFaqs(updatedFAQs);
+  };
+
+  const handleSaveFAQ = (faqData: Partial<ChatbotFAQ>) => {
+    if (faqToEdit) {
+      const updatedFAQs = faqs.map(f =>
+        f.id_faq === faqToEdit.id_faq
+          ? { ...f, ...faqData, updated_date: new Date().toISOString().split('T')[0] }
+          : f
+      );
+      setFaqs(updatedFAQs);
+    } else {
+      const newFAQ: ChatbotFAQ = {
+        id_faq: Date.now(),
+        ...faqData as Omit<ChatbotFAQ, 'id_faq'>,
+        usage_count: 0,
+        created_date: new Date().toISOString().split('T')[0],
+        updated_date: null,
+      };
+      setFaqs([newFAQ, ...faqs]);
+    }
+    setShowFAQFormModal(false);
+    setFaqToEdit(null);
+  };
+
+  const handleConfirmDeleteFAQ = () => {
+    if (faqToDelete) {
+      setFaqs(faqs.filter(f => f.id_faq !== faqToDelete.id_faq));
+      setShowDeleteFAQModal(false);
+      setFaqToDelete(null);
+    }
+  };
+
 
   const renderDashboard = () => (
     <>
@@ -446,7 +728,10 @@ export const WebPage = () => {
                     <p className="text-sm text-secondary-700 mb-1">{contact.subject}</p>
                     <p className="text-xs text-secondary-500">{contact.email} • {formatDateTime(contact.submission_date)}</p>
                   </div>
-                  <button className="btn bg-orange-600 hover:bg-orange-700 text-white">
+                  <button
+                    onClick={() => handleRespondContact(contact)}
+                    className="btn bg-orange-600 hover:bg-orange-700 text-white"
+                  >
                     Responder
                   </button>
                 </div>
@@ -505,7 +790,10 @@ export const WebPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Noticias</h2>
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
+        <button
+          onClick={handleNewNews}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+        >
           <FontAwesomeIcon icon={faPlus} />
           Nueva Noticia
         </button>
@@ -519,9 +807,34 @@ export const WebPage = () => {
             index={index}
             formatDate={formatDate}
             getStatusColor={getStatusColor}
+            onEdit={handleEditNews}
+            onDelete={handleDeleteNews}
+            onPublish={handlePublishNews}
+            onArchive={handleArchiveNews}
           />
         ))}
       </div>
+
+      {/* Modales */}
+      <NewsFormModal
+        isOpen={showNewsFormModal}
+        news={newsToEdit}
+        onSave={handleSaveNews}
+        onCancel={() => {
+          setShowNewsFormModal(false);
+          setNewsToEdit(null);
+        }}
+      />
+
+      <DeleteNewsModal
+        isOpen={showDeleteNewsModal}
+        news={newsToDelete}
+        onConfirm={handleConfirmDeleteNews}
+        onCancel={() => {
+          setShowDeleteNewsModal(false);
+          setNewsToDelete(null);
+        }}
+      />
     </div>
   );
 
@@ -529,7 +842,10 @@ export const WebPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Alertas</h2>
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
+        <button
+          onClick={handleNewAlert}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+        >
           <FontAwesomeIcon icon={faPlus} />
           Nueva Alerta
         </button>
@@ -544,9 +860,33 @@ export const WebPage = () => {
             formatDate={formatDate}
             getStatusColor={getStatusColor}
             getAlertTypeColor={getAlertTypeColor}
+            onEdit={handleEditAlert}
+            onDelete={handleDeleteAlert}
+            onToggleStatus={handleToggleAlertStatus}
           />
         ))}
       </div>
+
+      {/* Modales */}
+      <AlertFormModal
+        isOpen={showAlertFormModal}
+        alert={alertToEdit}
+        onSave={handleSaveAlert}
+        onCancel={() => {
+          setShowAlertFormModal(false);
+          setAlertToEdit(null);
+        }}
+      />
+
+      <DeleteAlertModal
+        isOpen={showDeleteAlertModal}
+        alert={alertToDelete}
+        onConfirm={handleConfirmDeleteAlert}
+        onCancel={() => {
+          setShowDeleteAlertModal(false);
+          setAlertToDelete(null);
+        }}
+      />
     </div>
   );
 
@@ -554,7 +894,10 @@ export const WebPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Anuncios</h2>
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
+        <button
+          onClick={handleNewAnnouncement}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+        >
           <FontAwesomeIcon icon={faPlus} />
           Nuevo Anuncio
         </button>
@@ -567,9 +910,33 @@ export const WebPage = () => {
             announcement={announcement}
             index={index}
             getStatusColor={getStatusColor}
+            onEdit={handleEditAnnouncement}
+            onDelete={handleDeleteAnnouncement}
+            onToggleStatus={handleToggleAnnouncementStatus}
           />
         ))}
       </div>
+
+      {/* Modales */}
+      <AnnouncementFormModal
+        isOpen={showAnnouncementFormModal}
+        announcement={announcementToEdit}
+        onSave={handleSaveAnnouncement}
+        onCancel={() => {
+          setShowAnnouncementFormModal(false);
+          setAnnouncementToEdit(null);
+        }}
+      />
+
+      <DeleteAnnouncementModal
+        isOpen={showDeleteAnnouncementModal}
+        announcement={announcementToDelete}
+        onConfirm={handleConfirmDeleteAnnouncement}
+        onCancel={() => {
+          setShowDeleteAnnouncementModal(false);
+          setAnnouncementToDelete(null);
+        }}
+      />
     </div>
   );
 
@@ -596,6 +963,7 @@ export const WebPage = () => {
             formatDateTime={formatDateTime}
             getPriorityColor={getPriorityColor}
             getStatusColor={getStatusColor}
+            onRespond={handleRespondContact}
           />
         ))}
       </div>
@@ -636,22 +1004,49 @@ export const WebPage = () => {
       <div className="card p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-heading font-bold text-secondary-900">Preguntas Frecuentes</h3>
-          <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
+          <button
+            onClick={handleNewFAQ}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+          >
             <FontAwesomeIcon icon={faPlus} />
             Nueva FAQ
           </button>
         </div>
-        
+
         <div className="space-y-3">
           {faqs.map((faq, index) => (
             <ChatbotFAQCard
               key={faq.id_faq}
               faq={faq}
               index={index}
+              onEdit={handleEditFAQ}
+              onDelete={handleDeleteFAQ}
+              onToggleActive={handleToggleFAQActive}
             />
           ))}
         </div>
       </div>
+
+      {/* Modales */}
+      <FAQFormModal
+        isOpen={showFAQFormModal}
+        faq={faqToEdit}
+        onSave={handleSaveFAQ}
+        onCancel={() => {
+          setShowFAQFormModal(false);
+          setFaqToEdit(null);
+        }}
+      />
+
+      <DeleteFAQModal
+        isOpen={showDeleteFAQModal}
+        faq={faqToDelete}
+        onConfirm={handleConfirmDeleteFAQ}
+        onCancel={() => {
+          setShowDeleteFAQModal(false);
+          setFaqToDelete(null);
+        }}
+      />
     </div>
   );
 
@@ -663,6 +1058,18 @@ export const WebPage = () => {
       {activeTab === 'announcements' && renderAnnouncements()}
       {activeTab === 'contacts' && renderContacts()}
       {activeTab === 'chatbot' && renderChatbot()}
+
+      {/* Modal Global - RespondContact (usado desde dashboard y contacts) */}
+      <RespondContactModal
+        isOpen={showRespondContactModal}
+        contact={contactToRespond}
+        onSave={handleSaveContactResponse}
+        onCancel={() => {
+          setShowRespondContactModal(false);
+          setContactToRespond(null);
+        }}
+        formatDateTime={formatDateTime}
+      />
     </div>
   );
 };
