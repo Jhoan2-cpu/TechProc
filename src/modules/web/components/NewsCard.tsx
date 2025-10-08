@@ -14,9 +14,13 @@ interface NewsCardProps {
   index: number;
   formatDate: (dateString: string | null) => string;
   getStatusColor: (status: string) => string;
+  onEdit: (news: News) => void;
+  onDelete: (news: News) => void;
+  onPublish: (news: News) => void;
+  onArchive: (news: News) => void;
 }
 
-export const NewsCard = ({ news, index, formatDate, getStatusColor }: NewsCardProps) => {
+export const NewsCard = ({ news, index, formatDate, getStatusColor, onEdit, onDelete, onPublish, onArchive }: NewsCardProps) => {
   return (
     <div
       className="card p-6 animate-fade-in"
@@ -56,23 +60,35 @@ export const NewsCard = ({ news, index, formatDate, getStatusColor }: NewsCardPr
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
+          <button
+            onClick={() => onEdit(news)}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white"
+          >
             <FontAwesomeIcon icon={faEdit} className="mr-2" />
             Editar
           </button>
           {news.status === 'draft' && (
-            <button className="btn bg-green-600 hover:bg-green-700 text-white">
+            <button
+              onClick={() => onPublish(news)}
+              className="btn bg-green-600 hover:bg-green-700 text-white"
+            >
               <FontAwesomeIcon icon={faCheck} className="mr-2" />
               Publicar
             </button>
           )}
           {news.status === 'published' && (
-            <button className="btn bg-yellow-600 hover:bg-yellow-700 text-white">
+            <button
+              onClick={() => onArchive(news)}
+              className="btn bg-yellow-600 hover:bg-yellow-700 text-white"
+            >
               <FontAwesomeIcon icon={faEyeSlash} className="mr-2" />
               Ocultar
             </button>
           )}
-          <button className="btn bg-red-600 hover:bg-red-700 text-white">
+          <button
+            onClick={() => onDelete(news)}
+            className="btn bg-red-600 hover:bg-red-700 text-white"
+          >
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>
