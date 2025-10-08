@@ -595,6 +595,30 @@ export const WebPage = () => {
     setShowRespondContactModal(true);
   };
 
+  const handleMarkAsSpam = (contact: ContactForm) => {
+    const updatedContacts = contacts.map(c =>
+      c.id_contact === contact.id_contact
+        ? { ...c, status: 'spam' as ContactFormStatus }
+        : c
+    );
+    setContacts(updatedContacts);
+  };
+
+  const handleResolve = (contact: ContactForm) => {
+    const updatedContacts = contacts.map(c =>
+      c.id_contact === contact.id_contact
+        ? { ...c, status: 'resolved' as ContactFormStatus }
+        : c
+    );
+    setContacts(updatedContacts);
+  };
+
+  const handleViewContactDetails = (contact: ContactForm) => {
+    // Abre el mismo modal de responder pero en modo lectura
+    setContactToRespond(contact);
+    setShowRespondContactModal(true);
+  };
+
   const handleSaveContactResponse = (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
     const updatedContacts = contacts.map(c =>
       c.id_contact === contactId
@@ -964,6 +988,9 @@ export const WebPage = () => {
             getPriorityColor={getPriorityColor}
             getStatusColor={getStatusColor}
             onRespond={handleRespondContact}
+            onMarkAsSpam={handleMarkAsSpam}
+            onResolve={handleResolve}
+            onViewDetails={handleViewContactDetails}
           />
         ))}
       </div>

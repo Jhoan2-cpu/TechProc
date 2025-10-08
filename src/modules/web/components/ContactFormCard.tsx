@@ -8,6 +8,10 @@ interface ContactFormCardProps {
   formatDateTime: (dateString: string | null) => string;
   getPriorityColor: (priority: string) => string;
   getStatusColor: (status: string) => string;
+  onRespond: (contact: ContactForm) => void;
+  onMarkAsSpam?: (contact: ContactForm) => void;
+  onResolve?: (contact: ContactForm) => void;
+  onViewDetails?: (contact: ContactForm) => void;
 }
 
 export const ContactFormCard = ({
@@ -16,6 +20,10 @@ export const ContactFormCard = ({
   formatDateTime,
   getPriorityColor,
   getStatusColor,
+  onRespond,
+  onMarkAsSpam,
+  onResolve,
+  onViewDetails,
 }: ContactFormCardProps) => {
   return (
     <div
@@ -66,24 +74,44 @@ export const ContactFormCard = ({
         <div className="flex flex-col gap-2 w-40">
           {contact.status === 'pending' && (
             <>
-              <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
+              <button
+                onClick={() => onRespond(contact)}
+                className="btn bg-primary-600 hover:bg-primary-700 text-white"
+                title="Responder consulta"
+              >
                 <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
                 Responder
               </button>
-              <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                Marcar Spam
-              </button>
+              {onMarkAsSpam && (
+                <button
+                  onClick={() => onMarkAsSpam(contact)}
+                  className="btn bg-red-600 hover:bg-red-700 text-white"
+                  title="Marcar como spam"
+                >
+                  Marcar Spam
+                </button>
+              )}
             </>
           )}
-          {contact.status === 'in_progress' && (
-            <button className="btn bg-green-600 hover:bg-green-700 text-white">
+          {contact.status === 'in_progress' && onResolve && (
+            <button
+              onClick={() => onResolve(contact)}
+              className="btn bg-green-600 hover:bg-green-700 text-white"
+              title="Marcar como resuelto"
+            >
               <FontAwesomeIcon icon={faCheck} className="mr-2" />
               Resolver
             </button>
           )}
-          <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
-            Ver Detalles
-          </button>
+          {onViewDetails && (
+            <button
+              onClick={() => onViewDetails(contact)}
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              title="Ver detalles completos"
+            >
+              Ver Detalles
+            </button>
+          )}
         </div>
       </div>
     </div>
