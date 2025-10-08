@@ -6,9 +6,12 @@ interface AnnouncementCardProps {
   announcement: Announcement;
   index: number;
   getStatusColor: (status: string) => string;
+  onEdit: (announcement: Announcement) => void;
+  onDelete: (announcement: Announcement) => void;
+  onToggleStatus: (announcement: Announcement) => void;
 }
 
-export const AnnouncementCard = ({ announcement, index, getStatusColor }: AnnouncementCardProps) => {
+export const AnnouncementCard = ({ announcement, index, getStatusColor, onEdit, onDelete, onToggleStatus }: AnnouncementCardProps) => {
   return (
     <div
       className="card p-6 animate-fade-in"
@@ -51,14 +54,26 @@ export const AnnouncementCard = ({ announcement, index, getStatusColor }: Announ
         </p>
       </div>
       <div className="flex gap-2">
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1">
+        <button
+          onClick={() => onEdit(announcement)}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1"
+          title="Editar anuncio"
+        >
           <FontAwesomeIcon icon={faEdit} className="mr-2" />
           Editar
         </button>
-        <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700">
+        <button
+          onClick={() => onToggleStatus(announcement)}
+          className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+          title={`${announcement.status === 'active' ? 'Desactivar' : 'Activar'} anuncio`}
+        >
           <FontAwesomeIcon icon={faChartLine} />
         </button>
-        <button className="btn bg-red-600 hover:bg-red-700 text-white">
+        <button
+          onClick={() => onDelete(announcement)}
+          className="btn bg-red-600 hover:bg-red-700 text-white"
+          title="Eliminar anuncio"
+        >
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </div>
