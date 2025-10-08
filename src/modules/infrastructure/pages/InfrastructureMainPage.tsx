@@ -376,8 +376,8 @@ export const InfrastructureMainPage = () => {
   const location = useLocation();
   const [servers, setServers] = useState(mockServers);
   const [licenses, setLicenses] = useState(mockLicenses);
-  const [storage] = useState(mockStorage);
-  const [software] = useState(mockSoftware);
+  const [storage, setStorage] = useState(mockStorage);
+  const [software, setSoftware] = useState(mockSoftware);
   const [resources] = useState(mockResources);
   const [alerts] = useState(mockAlerts);
 
@@ -401,9 +401,9 @@ export const InfrastructureMainPage = () => {
       case 'licenses':
         return <LicensesPage licenses={licenses} onUpdateLicenses={setLicenses} />;
       case 'storage':
-        return <StoragePage storage={storage} />;
+        return <StoragePage storage={storage} onUpdateStorage={setStorage} />;
       case 'software':
-        return <SoftwarePage software={software} />;
+        return <SoftwarePage software={software} onUpdateSoftware={setSoftware} />;
       case 'resources':
         return <ResourcesPage resources={resources} />;
       case 'dashboard':

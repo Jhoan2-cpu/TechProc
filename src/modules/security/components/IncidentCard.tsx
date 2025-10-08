@@ -18,6 +18,8 @@ interface IncidentCardProps {
   };
   formatDate: (dateString: string) => string;
   onManage?: (incidentId: number) => void;
+  onChangeStatus?: (incident: Incident & { description?: string; severity?: string; assigned_to?: string }) => void;
+  onEdit?: (incident: Incident & { description?: string; severity?: string; assigned_to?: string }) => void;
   compact?: boolean; // Para vista de críticos en dashboard
 }
 
@@ -25,6 +27,8 @@ export const IncidentCard = ({
   incident,
   formatDate,
   onManage,
+  onChangeStatus,
+  onEdit,
   compact = false,
 }: IncidentCardProps) => {
   const getSeverityColor = (severity?: string) => {
@@ -177,15 +181,34 @@ export const IncidentCard = ({
         )}
       </div>
 
-      {onManage && incident.status !== 'resolved' && incident.status !== 'closed' && (
-        <div className="pt-4 border-t border-secondary-200">
-          <button
-            onClick={() => onManage(incident.id_incident)}
-            className="btn btn-primary flex items-center gap-2"
-          >
-            <FontAwesomeIcon icon={faExclamationTriangle} />
-            Gestionar Incidente
-          </button>
+      {(onManage || onChangeStatus || onEdit) && (
+        <div className="pt-4 border-t border-secondary-200 flex gap-2">
+          {onChangeStatus && (
+            <button
+              onClick={() => onChangeStatus(incident)}
+              className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faClock} />
+              Cambiar Estado
+            </button>
+          )}
+          {onEdit && (
+            <button
+              onClick={() => onEdit(incident)}
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+            >
+              Editar
+            </button>
+          )}
+          {onManage && incident.status !== 'resolved' && incident.status !== 'closed' && (
+            <button
+              onClick={() => onManage(incident.id_incident)}
+              className="btn bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faExclamationTriangle} />
+              Gestionar
+            </button>
+          )}
         </div>
       )}
     </div>

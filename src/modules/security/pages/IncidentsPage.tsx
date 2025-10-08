@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { IncidentCard } from '../components';
+import { IncidentCard, IncidentFormModal, ChangeIncidentStatusModal } from '../components';
 import { incidentsService } from '../services';
+import type { Incident, IncidentStatus } from '../types';
 
 export const IncidentsPage = () => {
   const [incidents, setIncidents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [incidentToEdit, setIncidentToEdit] = useState<any>(null);
+  const [incidentToChangeStatus, setIncidentToChangeStatus] = useState<any>(null);
 
   useEffect(() => {
     const fetchIncidents = async () => {
@@ -34,6 +39,63 @@ export const IncidentsPage = () => {
     });
   };
 
+  const handleNewIncident = () => {
+    setIncidentToEdit(null);
+    setShowFormModal(true);
+  };
+
+  const handleEdit = (incident: any) => {
+    setIncidentToEdit(incident);
+    setShowFormModal(true);
+  };
+
+  const handleChangeStatus = (incident: any) => {
+    setIncidentToChangeStatus(incident);
+    setShowStatusModal(true);
+  };
+
+  const handleSaveIncident = (incidentData: any) => {
+    if (incidentToEdit) {
+      // Editar incidente existente
+      const updatedIncidents = incidents.map(inc =>
+        inc.id_incident === incidentToEdit.id_incident
+          ? { ...inc, ...incidentData }
+          : inc
+      );
+      setIncidents(updatedIncidents);
+    } else {
+      // Crear nuevo incidente
+      const newIncident = {
+        id_incident: Date.now(),
+        ...incidentData,
+        report_date: new Date().toISOString(),
+      };
+      setIncidents([newIncident, ...incidents]);
+    }
+    setShowFormModal(false);
+    setIncidentToEdit(null);
+  };
+
+  const handleConfirmStatusChange = (incidentId: number, newStatus: IncidentStatus, notes: string) => {
+    const updatedIncidents = incidents.map(inc => {
+      if (inc.id_incident === incidentId) {
+        const updates: any = { status: newStatus };
+
+        // Si se marca como resuelto, agregar fecha de resolución
+        if (newStatus === 'resolved') {
+          updates.resolved_date = new Date().toISOString();
+        }
+
+        return { ...inc, ...updates };
+      }
+      return inc;
+    });
+
+    setIncidents(updatedIncidents);
+    setShowStatusModal(false);
+    setIncidentToChangeStatus(null);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -51,7 +113,10 @@ export const IncidentsPage = () => {
         <h1 className="text-3xl font-heading font-bold text-secondary-900">
           security/incidents
         </h1>
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
+        <button
+          onClick={handleNewIncident}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
+        >
           <FontAwesomeIcon icon={faPlus} />
           Nuevo Incidente
         </button>
@@ -67,9 +132,32 @@ export const IncidentsPage = () => {
             key={incident.id_incident}
             incident={incident}
             formatDate={formatDate}
+            onChangeStatus={handleChangeStatus}
+            onEdit={handleEdit}
           />
         ))}
       </div>
+
+      {/* Modales */}
+      <IncidentFormModal
+        isOpen={showFormModal}
+        incident={incidentToEdit}
+        onSave={handleSaveIncident}
+        onCancel={() => {
+          setShowFormModal(false);
+          setIncidentToEdit(null);
+        }}
+      />
+
+      <ChangeIncidentStatusModal
+        isOpen={showStatusModal}
+        incident={incidentToChangeStatus}
+        onConfirm={handleConfirmStatusChange}
+        onCancel={() => {
+          setShowStatusModal(false);
+          setIncidentToChangeStatus(null);
+        }}
+      />
     </div>
   );
 };

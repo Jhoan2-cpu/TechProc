@@ -12,9 +12,12 @@ interface StorageCardProps {
   storage: Storage;
   formatDate: (dateString: string | null) => string;
   index: number;
+  onDetails: (storage: Storage) => void;
+  onEdit: (storage: Storage) => void;
+  onDelete: (storage: Storage) => void;
 }
 
-export const StorageCard = ({ storage, formatDate, index }: StorageCardProps) => {
+export const StorageCard = ({ storage, formatDate, index, onDetails, onEdit, onDelete }: StorageCardProps) => {
   const getStorageStatusColor = (status: string) => {
     switch (status) {
       case 'healthy': return 'text-green-600';
@@ -87,11 +90,23 @@ export const StorageCard = ({ storage, formatDate, index }: StorageCardProps) =>
       </div>
 
       <div className="flex gap-2 mt-4 pt-4 border-t border-secondary-200">
-        <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex-1 flex items-center justify-center gap-2">
+        <button
+          onClick={() => onDetails(storage)}
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 flex items-center justify-center gap-2"
+        >
+          Detalles
+        </button>
+        <button
+          onClick={() => onEdit(storage)}
+          className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex-1 flex items-center justify-center gap-2"
+        >
           <FontAwesomeIcon icon={faEdit} />
           Editar
         </button>
-        <button className="btn bg-red-100 hover:bg-red-200 text-red-700 flex-1 flex items-center justify-center gap-2">
+        <button
+          onClick={() => onDelete(storage)}
+          className="btn bg-red-100 hover:bg-red-200 text-red-700 flex-1 flex items-center justify-center gap-2"
+        >
           <FontAwesomeIcon icon={faTrash} />
           Eliminar
         </button>

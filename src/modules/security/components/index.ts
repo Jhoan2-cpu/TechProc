@@ -11,3 +11,5 @@ export { BlockIPModal } from './BlockIPModal';
 export { UnblockIPModal } from './UnblockIPModal';
 export { BlockUserModal } from './BlockUserModal';
 export { UnblockUserModal } from './UnblockUserModal';
+export { IncidentFormModal } from './IncidentFormModal';
+export { ChangeIncidentStatusModal } from './ChangeIncidentStatusModal';

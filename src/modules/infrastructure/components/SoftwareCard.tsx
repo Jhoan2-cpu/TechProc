@@ -9,9 +9,12 @@ interface SoftwareCardProps {
   software: Software;
   formatDate: (dateString: string | null) => string;
   index: number;
+  onDetails: (software: Software) => void;
+  onEdit: (software: Software) => void;
+  onDelete: (software: Software) => void;
 }
 
-export const SoftwareCard = ({ software, formatDate, index }: SoftwareCardProps) => {
+export const SoftwareCard = ({ software, formatDate, index, onDetails, onEdit, onDelete }: SoftwareCardProps) => {
   return (
     <div className="card p-6 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
       <div className="flex flex-col lg:flex-row lg:items-start gap-4">
@@ -67,11 +70,23 @@ export const SoftwareCard = ({ software, formatDate, index }: SoftwareCardProps)
         </div>
 
         <div className="flex lg:flex-col gap-2 lg:w-32">
-          <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2">
+          <button
+            onClick={() => onDetails(software)}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center justify-center gap-2"
+          >
+            Detalles
+          </button>
+          <button
+            onClick={() => onEdit(software)}
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
-          <button className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2">
+          <button
+            onClick={() => onDelete(software)}
+            className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar
           </button>
