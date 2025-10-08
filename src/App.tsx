@@ -252,12 +252,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
                   <button
                     onClick={() => {
                       if (hasSubmodules) {
-                        // Navegar al dashboard del módulo
-                        const dashboardSubmodule = module.submodules.find((sub: any) => sub.name === 'Dashboard');
-                        if (dashboardSubmodule) {
-                          handleModuleChange(dashboardSubmodule.id);
-                        }
-                        // Expandir/contraer el módulo
+                        // Solo expandir/contraer el módulo, sin navegar
                         setExpandedModules((prev) =>
                           prev.includes(module.id)
                             ? prev.filter((id) => id !== module.id)
