@@ -11,9 +11,12 @@ interface ServerCardProps {
   server: Server;
   formatDate: (dateString: string | null) => string;
   index: number;
+  onDetails: (server: Server) => void;
+  onEdit: (server: Server) => void;
+  onDelete: (server: Server) => void;
 }
 
-export const ServerCard = ({ server, formatDate, index }: ServerCardProps) => {
+export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDelete }: ServerCardProps) => {
   const getServerStatusColor = (status: string) => {
     switch (status) {
       case 'online': return 'bg-green-100 text-green-700';
@@ -124,15 +127,24 @@ export const ServerCard = ({ server, formatDate, index }: ServerCardProps) => {
         </div>
 
         <div className="flex lg:flex-col gap-2 lg:w-32">
-          <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center justify-center gap-2">
+          <button
+            onClick={() => onDetails(server)}
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faChartLine} />
             Detalles
           </button>
-          <button className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2">
+          <button
+            onClick={() => onEdit(server)}
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
-          <button className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2">
+          <button
+            onClick={() => onDelete(server)}
+            className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+          >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar
           </button>
