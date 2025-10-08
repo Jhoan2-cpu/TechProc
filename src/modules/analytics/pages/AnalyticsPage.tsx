@@ -420,6 +420,7 @@ const mockReports: Report[] = [
 export const AnalyticsPage = () => {
   const location = useLocation();
   const [selectedCourse, setSelectedCourse] = useState<number | 'all'>('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [reportForm, setReportForm] = useState<ReportFormData>({
     report_type: 'asistencia',
     format: 'pdf',
@@ -610,74 +611,185 @@ export const AnalyticsPage = () => {
     </div>
   );
 
-  const renderAttendance = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
-          Análisis de Asistencia
-        </h2>
-        <div className="flex items-center gap-3">
+  const renderAttendance = () => {
+    // Filtrar datos de asistencia por curso y término de búsqueda
+    const filteredAttendance = mockAttendance.filter(attendance => {
+      const matchesCourse = selectedCourse === 'all' || attendance.course_id === selectedCourse;
+      const matchesSearch = searchTerm === '' ||
+        attendance.student_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        attendance.course_name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCourse && matchesSearch;
+    });
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h2 className="text-2xl font-heading font-bold text-secondary-900">
+            Análisis de Asistencia
+          </h2>
           <button
-            onClick={() => exportToCSV(mockAttendance, 'asistencia')}
+            onClick={() => exportToCSV(filteredAttendance, 'asistencia')}
             className="btn btn-secondary flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faFileCsv} />
             Exportar CSV
           </button>
-          <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
-          <select
-            className="select"
-            value={selectedCourse}
-            onChange={(e) => setSelectedCourse(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-          >
-            <option value="all">Todos los cursos</option>
-            {mockCourseAnalytics.map(course => (
-              <option key={course.course_id} value={course.course_id}>
-                {course.course_name}
-              </option>
-            ))}
-          </select>
+        </div>
+
+        {/* Filtros */}
+        <div className="card p-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
+            <div className="flex-1 min-w-[250px]">
+              <input
+                type="text"
+                className="input w-full"
+                placeholder="Buscar por estudiante o curso..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <select
+              className="select min-w-[200px]"
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+            >
+              <option value="all">Todos los cursos</option>
+              {mockCourseAnalytics.map(course => (
+                <option key={course.course_id} value={course.course_id}>
+                  {course.course_name}
+                </option>
+              ))}
+            </select>
+            {(searchTerm || selectedCourse !== 'all') && (
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCourse('all');
+                }}
+                className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              >
+                Limpiar filtros
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Resultados */}
+        <div className="text-sm text-secondary-600 mb-2">
+          Mostrando {filteredAttendance.length} de {mockAttendance.length} estudiantes
+        </div>
+
+        <div className="grid grid-cols-1 gap-4">
+          {filteredAttendance.length > 0 ? (
+            filteredAttendance.map((attendance, index) => (
+              <AttendanceCard
+                key={attendance.student_id}
+                attendance={attendance}
+                index={index}
+              />
+            ))
+          ) : (
+            <div className="card p-8 text-center">
+              <p className="text-secondary-500 text-lg">
+                No se encontraron resultados para los filtros aplicados
+              </p>
+            </div>
+          )}
         </div>
       </div>
+    );
+  };
 
-      <div className="grid grid-cols-1 gap-4">
-        {mockAttendance.map((attendance, index) => (
-          <AttendanceCard
-            key={attendance.student_id}
-            attendance={attendance}
-            index={index}
-          />
-        ))}
-      </div>
-    </div>
-  );
+  const renderProgress = () => {
+    // Filtrar datos de progreso por curso y término de búsqueda
+    const filteredProgress = mockProgress.filter(progress => {
+      const matchesCourse = selectedCourse === 'all' || progress.course_id === selectedCourse;
+      const matchesSearch = searchTerm === '' ||
+        progress.student_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        progress.course_name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCourse && matchesSearch;
+    });
 
-  const renderProgress = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
-          Seguimiento de Progreso Académico
-        </h2>
-        <button
-          onClick={() => exportToCSV(mockProgress, 'progreso_academico')}
-          className="btn btn-secondary flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faFileCsv} />
-          Exportar CSV
-        </button>
-      </div>
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h2 className="text-2xl font-heading font-bold text-secondary-900">
+            Seguimiento de Progreso Académico
+          </h2>
+          <button
+            onClick={() => exportToCSV(filteredProgress, 'progreso_academico')}
+            className="btn btn-secondary flex items-center gap-2"
+          >
+            <FontAwesomeIcon icon={faFileCsv} />
+            Exportar CSV
+          </button>
+        </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {mockProgress.map((progress, index) => (
-          <ProgressCard
-            key={progress.student_id}
-            progress={progress}
-            index={index}
-          />
-        ))}
+        {/* Filtros */}
+        <div className="card p-4">
+          <div className="flex items-center gap-3 flex-wrap">
+            <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
+            <div className="flex-1 min-w-[250px]">
+              <input
+                type="text"
+                className="input w-full"
+                placeholder="Buscar por estudiante o curso..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <select
+              className="select min-w-[200px]"
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+            >
+              <option value="all">Todos los cursos</option>
+              {mockCourseAnalytics.map(course => (
+                <option key={course.course_id} value={course.course_id}>
+                  {course.course_name}
+                </option>
+              ))}
+            </select>
+            {(searchTerm || selectedCourse !== 'all') && (
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCourse('all');
+                }}
+                className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              >
+                Limpiar filtros
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Resultados */}
+        <div className="text-sm text-secondary-600 mb-2">
+          Mostrando {filteredProgress.length} de {mockProgress.length} estudiantes
+        </div>
+
+        <div className="grid grid-cols-1 gap-4">
+          {filteredProgress.length > 0 ? (
+            filteredProgress.map((progress, index) => (
+              <ProgressCard
+                key={progress.student_id}
+                progress={progress}
+                index={index}
+              />
+            ))
+          ) : (
+            <div className="card p-8 text-center">
+              <p className="text-secondary-500 text-lg">
+                No se encontraron resultados para los filtros aplicados
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderPerformance = () => (
     <div className="space-y-6">
