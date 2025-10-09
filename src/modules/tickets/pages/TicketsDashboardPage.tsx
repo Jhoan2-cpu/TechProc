@@ -87,7 +87,7 @@ export const TicketsDashboardPage = ({
 
       {/* Mis Tickets Activos */}
       <div className="card p-6 animate-slide-up">
-        <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4">
+        <h2 className="text-xl font-heading font-bold text-white mb-4">
           Mis Tickets Activos
         </h2>
         <div className="space-y-4">
@@ -105,15 +105,15 @@ export const TicketsDashboardPage = ({
               />
             ))
           ) : (
-            <p className="text-center text-secondary-500 py-8">No tienes tickets activos en este momento</p>
+            <p className="text-center text-gray-300 py-8">No tienes tickets activos en este momento</p>
           )}
         </div>
       </div>
 
       {/* Tickets Críticos Disponibles */}
       {criticalAvailable > 0 && (
-        <div className="card p-6 animate-slide-up bg-red-50 border-red-200">
-          <h2 className="text-xl font-heading font-bold text-red-900 mb-4 flex items-center gap-2">
+        <div className="card p-6 animate-slide-up bg-danger/20 border-red-200">
+          <h2 className="text-xl font-heading font-bold text-danger mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faExclamationTriangle} />
             Tickets Críticos Disponibles - ¡Atención Inmediata!
           </h2>

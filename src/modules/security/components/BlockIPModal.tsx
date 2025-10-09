@@ -31,19 +31,19 @@ export const BlockIPModal = ({ isOpen, onClose, onBlock }: BlockIPModalProps) =>
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up">
         <div className="p-6">
-          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-danger/20 rounded-full mb-4">
             <FontAwesomeIcon icon={faBan} className="text-red-600 text-xl" />
           </div>
 
-          <h3 className="text-xl font-heading font-bold text-center text-secondary-900 mb-6">
+          <h3 className="text-xl font-heading font-bold text-center text-white mb-6">
             Bloquear Dirección IP
           </h3>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Dirección IP *
               </label>
               <input
@@ -59,7 +59,7 @@ export const BlockIPModal = ({ isOpen, onClose, onBlock }: BlockIPModalProps) =>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Razón del Bloqueo *
               </label>
               <textarea
@@ -81,7 +81,7 @@ export const BlockIPModal = ({ isOpen, onClose, onBlock }: BlockIPModalProps) =>
               <button
                 type="button"
                 onClick={handleClose}
-                className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+                className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
               >
                 Cancelar
               </button>

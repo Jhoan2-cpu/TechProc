@@ -18,9 +18,9 @@ interface LicenseCardProps {
 export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onDelete }: LicenseCardProps) => {
   const getLicenseStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-700';
-      case 'expired': return 'bg-red-100 text-red-700';
-      case 'expiring_soon': return 'bg-orange-100 text-orange-700';
+      case 'active': return 'bg-success/20 text-green-700';
+      case 'expired': return 'bg-danger/20 text-red-700';
+      case 'expiring_soon': return 'bg-orange-900/20 text-orange-700';
       case 'suspended': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
     }
@@ -42,8 +42,8 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
         <div className="flex-1">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="text-lg font-heading font-bold text-secondary-900">{license.software_name}</h3>
-              <p className="text-sm text-secondary-600">{license.provider}</p>
+              <h3 className="text-lg font-heading font-bold text-white">{license.software_name}</h3>
+              <p className="text-sm text-gray-400">{license.provider}</p>
             </div>
             <span className={`px-4 py-2 rounded-full text-sm font-medium ${getLicenseStatusColor(license.status)}`}>
               {getStatusText(license.status)}
@@ -52,35 +52,35 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div>
-              <p className="text-xs text-secondary-600">Tipo</p>
-              <p className="font-semibold text-secondary-900 capitalize">{license.license_type}</p>
+              <p className="text-xs text-gray-400">Tipo</p>
+              <p className="font-semibold text-white capitalize">{license.license_type}</p>
             </div>
             <div>
-              <p className="text-xs text-secondary-600">Licencias Usadas</p>
-              <p className="font-semibold text-secondary-900">{license.seats_used}/{license.seats_total}</p>
+              <p className="text-xs text-gray-400">Licencias Usadas</p>
+              <p className="font-semibold text-white">{license.seats_used}/{license.seats_total}</p>
             </div>
             <div>
-              <p className="text-xs text-secondary-600">Costo Anual</p>
-              <p className="font-semibold text-secondary-900">S/ {license.cost_annual.toLocaleString()}</p>
+              <p className="text-xs text-gray-400">Costo Anual</p>
+              <p className="font-semibold text-white">S/ {license.cost_annual.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-xs text-secondary-600">Vencimiento</p>
-              <p className="font-semibold text-secondary-900">{formatDate(license.expiration_date)}</p>
+              <p className="text-xs text-gray-400">Vencimiento</p>
+              <p className="font-semibold text-white">{formatDate(license.expiration_date)}</p>
             </div>
           </div>
 
-          <div className="bg-secondary-50 rounded-lg p-3 mb-3">
-            <p className="text-xs text-secondary-600 mb-1">Clave de Licencia</p>
-            <p className="font-mono text-sm text-secondary-900">{license.license_key}</p>
+          <div className="bg-secondary-600/50 rounded-lg p-3 mb-3">
+            <p className="text-xs text-gray-400 mb-1">Clave de Licencia</p>
+            <p className="font-mono text-sm text-white">{license.license_key}</p>
           </div>
 
           {license.notes && (
             <div className="bg-amber-50 border-l-4 border-amber-400 p-3">
-              <p className="text-sm text-secondary-700">{license.notes}</p>
+              <p className="text-sm text-gray-300">{license.notes}</p>
             </div>
           )}
 
-          <div className="mt-3 text-sm text-secondary-600">
+          <div className="mt-3 text-sm text-gray-400">
             <p>
               <span className="font-semibold">Compra:</span> {formatDate(license.purchase_date)}
             </p>
@@ -97,14 +97,14 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
           </button>
           <button
             onClick={() => onEdit(license)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
           <button
             onClick={() => onDelete(license)}
-            className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+            className="btn bg-danger/20 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar

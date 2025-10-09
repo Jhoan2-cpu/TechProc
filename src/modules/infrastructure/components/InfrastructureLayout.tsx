@@ -35,8 +35,8 @@ export const InfrastructureLayout = ({ children, currentSection, onSectionChange
               onClick={() => onSectionChange(section.id)}
               className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 whitespace-nowrap ${
                 currentSection === section.id
-                  ? 'border-primary-600 text-primary-600 bg-primary-50'
-                  : 'border-transparent text-secondary-600 hover:text-primary-600 hover:bg-secondary-50'
+                  ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                  : 'border-transparent text-gray-400 hover:text-primary-600 hover:bg-secondary-600/50'
               }`}
             >
               <FontAwesomeIcon icon={section.icon} />

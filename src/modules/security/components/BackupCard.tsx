@@ -25,11 +25,11 @@ export const BackupCard = ({ backup, formatDate }: BackupCardProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-900';
+        return 'bg-success/20 text-success';
       case 'failed':
-        return 'bg-red-100 text-red-900';
+        return 'bg-danger/20 text-danger';
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-900';
+        return 'bg-warning/20 text-warning';
       default:
         return 'bg-gray-100 text-gray-900';
     }
@@ -76,10 +76,10 @@ export const BackupCard = ({ backup, formatDate }: BackupCardProps) => {
           <div
             className={`w-12 h-12 rounded-full flex items-center justify-center ${
               backup.status === 'completed'
-                ? 'bg-green-100'
+                ? 'bg-success/20'
                 : backup.status === 'failed'
-                ? 'bg-red-100'
-                : 'bg-yellow-100'
+                ? 'bg-danger/20'
+                : 'bg-warning/20'
             }`}
           >
             <FontAwesomeIcon
@@ -94,10 +94,10 @@ export const BackupCard = ({ backup, formatDate }: BackupCardProps) => {
             />
           </div>
           <div>
-            <h3 className="font-heading font-bold text-lg text-secondary-900">
+            <h3 className="font-heading font-bold text-lg text-white">
               {displayName}
             </h3>
-            <p className="text-sm text-secondary-600 mt-1 flex items-center gap-2">
+            <p className="text-sm text-gray-400 mt-1 flex items-center gap-2">
               <FontAwesomeIcon icon={faDatabase} className="text-primary-600" />
               Tipo: <span className="font-medium">{displayType}</span>
             </p>
@@ -112,24 +112,24 @@ export const BackupCard = ({ backup, formatDate }: BackupCardProps) => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
         <div>
-          <p className="text-secondary-500 text-xs mb-1">Fecha de Backup</p>
-          <p className="text-secondary-900 font-medium flex items-center gap-1">
+          <p className="text-gray-300 text-xs mb-1">Fecha de Backup</p>
+          <p className="text-white font-medium flex items-center gap-1">
             <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
             {formatDate(displayDate)}
           </p>
         </div>
         {backup.end_date && (
           <div>
-            <p className="text-secondary-500 text-xs mb-1">Fecha de Fin</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">Fecha de Fin</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" />
               {formatDate(backup.end_date)}
             </p>
           </div>
         )}
         <div>
-          <p className="text-secondary-500 text-xs mb-1">Tamaño del Archivo</p>
-          <p className="text-secondary-900 font-medium flex items-center gap-1">
+          <p className="text-gray-300 text-xs mb-1">Tamaño del Archivo</p>
+          <p className="text-white font-medium flex items-center gap-1">
             <FontAwesomeIcon icon={faFileArchive} className="text-primary-600" />
             {formatFileSize(displaySize)}
           </p>
@@ -138,7 +138,7 @@ export const BackupCard = ({ backup, formatDate }: BackupCardProps) => {
 
       {backup.notes && (
         <div className="mt-4 pt-4 border-t border-secondary-200">
-          <p className="text-sm text-secondary-600">
+          <p className="text-sm text-gray-400">
             <span className="font-semibold">Notas:</span> {backup.notes}
           </p>
         </div>

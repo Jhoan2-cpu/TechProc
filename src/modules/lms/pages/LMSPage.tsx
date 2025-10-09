@@ -52,7 +52,7 @@ export const LMSPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando datos...</p>
+          <p className="mt-4 text-gray-400">Cargando datos...</p>
         </div>
       </div>
     );
@@ -60,7 +60,7 @@ export const LMSPage = () => {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+      <div className="bg-danger/20 border border-red-200 rounded-lg p-4">
         <p className="text-red-700">Error: {error}</p>
       </div>
     );
@@ -76,7 +76,7 @@ export const LMSPage = () => {
       value: stats.total_courses,
       icon: faBookOpen,
       color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
+      bgColor: 'bg-primary-900/20',
       textColor: 'text-blue-600',
     },
     {
@@ -84,7 +84,7 @@ export const LMSPage = () => {
       value: stats.published_courses,
       icon: faCheckCircle,
       color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50',
+      bgColor: 'bg-success/20',
       textColor: 'text-green-600',
     },
     {
@@ -92,7 +92,7 @@ export const LMSPage = () => {
       value: stats.total_students,
       icon: faGraduationCap,
       color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
+      bgColor: 'bg-purple-900/20',
       textColor: 'text-purple-600',
     },
     {
@@ -100,7 +100,7 @@ export const LMSPage = () => {
       value: stats.active_enrollments,
       icon: faUsers,
       color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-orange-50',
+      bgColor: 'bg-orange-900/20',
       textColor: 'text-orange-600',
     },
   ];
@@ -109,10 +109,10 @@ export const LMSPage = () => {
     <div className="animate-fade-in">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-2">
+        <h1 className="text-3xl font-heading font-bold text-white mb-2">
           lms/dashboard
         </h1>
-        <p className="text-secondary-600">
+        <p className="text-gray-400">
           Sistema de Gestión de Aprendizaje
         </p>
       </div>
@@ -137,10 +137,10 @@ export const LMSPage = () => {
         <div className="card p-6 animate-slide-up" style={{ animationDelay: '400ms' }}>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-primary-900/20 flex items-center justify-center">
                 <FontAwesomeIcon icon={faBookOpen} className="text-blue-600" />
               </div>
-              <h2 className="text-xl font-heading font-semibold text-secondary-900">
+              <h2 className="text-xl font-heading font-semibold text-white">
                 Cursos Recientes
               </h2>
             </div>
@@ -157,10 +157,10 @@ export const LMSPage = () => {
         <div className="card p-6 animate-slide-up" style={{ animationDelay: '500ms' }}>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-purple-900/20 flex items-center justify-center">
                 <FontAwesomeIcon icon={faUsers} className="text-purple-600" />
               </div>
-              <h2 className="text-xl font-heading font-semibold text-secondary-900">
+              <h2 className="text-xl font-heading font-semibold text-white">
                 Inscripciones Recientes
               </h2>
             </div>

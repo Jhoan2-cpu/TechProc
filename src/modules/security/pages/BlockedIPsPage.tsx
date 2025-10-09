@@ -80,7 +80,7 @@ export const BlockedIPsPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando IPs bloqueadas...</p>
+          <p className="mt-4 text-gray-400">Cargando IPs bloqueadas...</p>
         </div>
       </div>
     );
@@ -89,7 +89,7 @@ export const BlockedIPsPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900">
+        <h1 className="text-3xl font-heading font-bold text-white">
           security/blocked-ips
         </h1>
         <button
@@ -101,7 +101,7 @@ export const BlockedIPsPage = () => {
         </button>
       </div>
 
-      <h2 className="text-xl font-heading text-secondary-700">
+      <h2 className="text-xl font-heading text-gray-300">
         Gestión de IPs Bloqueadas
       </h2>
 
@@ -110,7 +110,7 @@ export const BlockedIPsPage = () => {
         <div className="relative">
           <FontAwesomeIcon
             icon={faSearch}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
           />
           <input
             type="text"
@@ -135,8 +135,8 @@ export const BlockedIPsPage = () => {
           ))
         ) : (
           <div className="card p-12 text-center">
-            <p className="text-xl text-secondary-500">No se encontraron IPs bloqueadas</p>
-            <p className="text-sm text-secondary-400 mt-2">
+            <p className="text-xl text-gray-300">No se encontraron IPs bloqueadas</p>
+            <p className="text-sm text-gray-400 mt-2">
               {searchTerm ? 'Intenta ajustar la búsqueda' : 'No hay IPs bloqueadas en este momento'}
             </p>
           </div>

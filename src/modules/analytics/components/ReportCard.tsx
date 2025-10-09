@@ -19,18 +19,18 @@ export const ReportCard = ({ report, index, onDownload }: ReportCardProps) => {
           <div className="flex items-center gap-3 mb-2">
             <FontAwesomeIcon icon={faFileAlt} className="text-2xl text-primary-600" />
             <div>
-              <h4 className="font-heading font-bold text-secondary-900">
+              <h4 className="font-heading font-bold text-white">
                 {report.report_name}
               </h4>
-              <p className="text-sm text-secondary-600">{report.description}</p>
+              <p className="text-sm text-gray-400">{report.description}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-sm text-secondary-600 mt-3">
-            <span className="px-2 py-1 bg-primary-100 text-primary-900 rounded text-xs font-bold uppercase">
+          <div className="flex items-center gap-4 text-sm text-gray-400 mt-3">
+            <span className="px-2 py-1 bg-primary-900/20 text-primary-400 rounded text-xs font-bold uppercase">
               {report.report_type}
             </span>
-            <span className="px-2 py-1 bg-green-100 text-green-900 rounded text-xs font-bold uppercase">
+            <span className="px-2 py-1 bg-success/20 text-success rounded text-xs font-bold uppercase">
               {report.format}
             </span>
             <span>
@@ -41,7 +41,7 @@ export const ReportCard = ({ report, index, onDownload }: ReportCardProps) => {
               <FontAwesomeIcon icon={faUser} className="mr-1" />
               {report.generated_by_name}
             </span>
-            <span className="text-secondary-500">
+            <span className="text-gray-300">
               {(report.file_size_kb / 1024).toFixed(2)} MB
             </span>
           </div>

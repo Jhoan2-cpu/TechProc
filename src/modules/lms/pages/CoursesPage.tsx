@@ -62,7 +62,7 @@ export const CoursesPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando cursos...</p>
+          <p className="mt-4 text-gray-400">Cargando cursos...</p>
         </div>
       </div>
     );
@@ -70,14 +70,14 @@ export const CoursesPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">lms/courses</h1>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/courses</h1>
       {/* Header con buscador y botón crear */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
         <div className="flex-1 max-w-md">
           <div className="relative">
             <FontAwesomeIcon
               icon={faSearch}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             />
             <input
               type="text"
@@ -129,7 +129,7 @@ export const CoursesPage = () => {
       {/* Mensaje si no hay cursos */}
       {filteredCourses.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-secondary-600 text-lg">No se encontraron cursos</p>
+          <p className="text-gray-400 text-lg">No se encontraron cursos</p>
         </div>
       )}
 

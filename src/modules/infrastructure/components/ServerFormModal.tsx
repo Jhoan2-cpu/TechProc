@@ -101,19 +101,19 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-900/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faServer} className="text-primary-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {server ? 'Editar Servidor' : 'Nuevo Servidor'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -122,12 +122,12 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información Básica */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Información Básica
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Nombre del Servidor *
                 </label>
                 <input
@@ -140,7 +140,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Dirección IP *
                 </label>
                 <input
@@ -154,7 +154,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Sistema Operativo *
                 </label>
                 <input
@@ -167,7 +167,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Estado *
                 </label>
                 <select
@@ -183,7 +183,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Ubicación *
                 </label>
                 <input
@@ -196,7 +196,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Fecha de Instalación *
                 </label>
                 <input
@@ -212,12 +212,12 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
 
           {/* Especificaciones Hardware */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Especificaciones de Hardware
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   CPU Cores *
                 </label>
                 <input
@@ -231,7 +231,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   RAM (GB) *
                 </label>
                 <input
@@ -245,7 +245,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Disco (GB) *
                 </label>
                 <input
@@ -263,7 +263,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
 
           {/* Servicios */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Servicios en Ejecución
             </h4>
             <div className="flex gap-2 mb-3">
@@ -288,13 +288,13 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
                 {formData.services_running.map((service, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full flex items-center gap-2"
+                    className="px-3 py-1 bg-primary-900/20 text-blue-700 text-sm rounded-full flex items-center gap-2"
                   >
                     {service}
                     <button
                       type="button"
                       onClick={() => handleRemoveService(index)}
-                      className="text-blue-900 hover:text-red-600"
+                      className="text-primary-400 hover:text-red-600"
                     >
                       ×
                     </button>
@@ -305,8 +305,8 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
           </div>
 
           {/* Nota de GCP */}
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-            <p className="text-sm text-blue-800">
+          <div className="bg-primary-900/20 border-l-4 border-blue-400 p-4">
+            <p className="text-sm text-primary-400">
               <span className="font-semibold">Nota:</span> Los servidores se integrarán con Google Cloud Platform para monitoreo y gestión avanzada.
             </p>
           </div>
@@ -316,7 +316,7 @@ export const ServerFormModal = ({ isOpen, server, onSave, onCancel }: ServerForm
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

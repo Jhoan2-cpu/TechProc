@@ -54,19 +54,19 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-danger/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {incident ? 'Editar Incidente' : 'Nuevo Incidente'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -75,12 +75,12 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información Básica */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Información del Incidente
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Título del Incidente *
                 </label>
                 <input
@@ -94,7 +94,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Descripción *
                 </label>
                 <textarea
@@ -109,7 +109,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Severidad *
                   </label>
                   <select
@@ -126,7 +126,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Estado *
                   </label>
                   <select
@@ -144,7 +144,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Asignado a
                 </label>
                 <input
@@ -154,13 +154,13 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
                   className="input w-full"
                   placeholder="Nombre del responsable"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Nombre del usuario o equipo responsable de gestionar este incidente
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   ID de Alerta Asociada
                 </label>
                 <input
@@ -170,7 +170,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
                   className="input w-full"
                   placeholder="0"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Vincular con una alerta de seguridad existente
                 </p>
               </div>
@@ -178,11 +178,11 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
           </div>
 
           {/* Información Adicional */}
-          <div className="card p-6 bg-blue-50 border-blue-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-2">
+          <div className="card p-6 bg-primary-900/20 border-blue-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-2">
               Recomendaciones
             </h4>
-            <ul className="text-sm text-secondary-700 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-gray-300 space-y-1 list-disc list-inside">
               <li>Documenta todos los detalles relevantes del incidente</li>
               <li>Asigna la severidad apropiada según el impacto potencial</li>
               <li>Designa un responsable para el seguimiento del incidente</li>
@@ -196,7 +196,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

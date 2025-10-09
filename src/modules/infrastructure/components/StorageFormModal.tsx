@@ -83,19 +83,19 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-900/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faHdd} className="text-primary-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {storage ? 'Editar Almacenamiento' : 'Nuevo Almacenamiento'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -104,12 +104,12 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información Básica */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Información Básica
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Nombre del Almacenamiento *
                 </label>
                 <input
@@ -122,7 +122,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Tipo de Almacenamiento *
                 </label>
                 <select
@@ -138,7 +138,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Estado *
                 </label>
                 <select
@@ -153,7 +153,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Ubicación *
                 </label>
                 <input
@@ -166,7 +166,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Punto de Montaje *
                 </label>
                 <input
@@ -183,12 +183,12 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
 
           {/* Capacidad */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Capacidad de Almacenamiento
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Capacidad Total (GB) *
                 </label>
                 <input
@@ -201,7 +201,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Espacio Usado (GB) *
                 </label>
                 <input
@@ -217,25 +217,25 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
             </div>
 
             {/* Visualización del Uso */}
-            <div className="bg-secondary-50 rounded-lg p-4">
+            <div className="bg-secondary-600/50 rounded-lg p-4">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-secondary-700">Uso de Almacenamiento</span>
-                <span className="font-bold text-secondary-900">
+                <span className="text-gray-300">Uso de Almacenamiento</span>
+                <span className="font-bold text-white">
                   {formData.used_gb} GB / {formData.capacity_gb} GB ({usagePercent.toFixed(1)}%)
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-4">
                 <div
                   className={`h-4 rounded-full ${
-                    usagePercent >= 90 ? 'bg-red-500' :
+                    usagePercent >= 90 ? 'bg-danger/20' :
                     usagePercent >= 75 ? 'bg-orange-500' :
-                    usagePercent >= 50 ? 'bg-yellow-500' :
-                    'bg-green-500'
+                    usagePercent >= 50 ? 'bg-warning/20' :
+                    'bg-success/20'
                   }`}
                   style={{ width: `${usagePercent}%` }}
                 ></div>
               </div>
-              <p className="text-xs text-secondary-600 mt-1">
+              <p className="text-xs text-gray-400 mt-1">
                 {(formData.capacity_gb - formData.used_gb).toFixed(0)} GB disponibles
               </p>
             </div>
@@ -243,11 +243,11 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
 
           {/* Configuración de Servidor */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Servidor Asociado (Opcional)
             </h4>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 ID del Servidor
               </label>
               <input
@@ -257,15 +257,15 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 className="input w-full"
                 placeholder="Deja en blanco si no está asociado a un servidor"
               />
-              <p className="text-xs text-secondary-500 mt-1">
+              <p className="text-xs text-gray-300 mt-1">
                 Si este almacenamiento pertenece a un servidor específico, ingresa su ID
               </p>
             </div>
           </div>
 
           {/* Configuración de Backup */}
-          <div className="card p-6 bg-blue-50 border-blue-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+          <div className="card p-6 bg-primary-900/20 border-blue-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Configuración de Backup
             </h4>
             <div className="flex items-center gap-3 mb-4">
@@ -276,7 +276,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
                 onChange={(e) => setFormData({ ...formData, backup_enabled: e.target.checked })}
                 className="w-5 h-5 text-primary-600 rounded"
               />
-              <label htmlFor="backup_enabled" className="text-sm font-medium text-secondary-900">
+              <label htmlFor="backup_enabled" className="text-sm font-medium text-white">
                 Habilitar Backup Automático
               </label>
             </div>
@@ -290,8 +290,8 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
           </div>
 
           {/* Nota de GCP */}
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
-            <p className="text-sm text-blue-800">
+          <div className="bg-primary-900/20 border-l-4 border-blue-400 p-4">
+            <p className="text-sm text-primary-400">
               <span className="font-semibold">Integración GCP:</span> Este almacenamiento puede ser gestionado a través de Google Cloud Storage, Persistent Disks o Cloud Filestore según el tipo seleccionado.
             </p>
           </div>
@@ -301,7 +301,7 @@ export const StorageFormModal = ({ isOpen, storage, onSave, onCancel }: StorageF
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

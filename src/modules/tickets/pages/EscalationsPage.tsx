@@ -107,7 +107,7 @@ export const EscalationsPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-blue-700 mb-1">Total Enviadas</p>
-              <p className="text-3xl font-heading font-bold text-blue-900">{sentEscalations.length}</p>
+              <p className="text-3xl font-heading font-bold text-primary-400">{sentEscalations.length}</p>
             </div>
             <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faPaperPlane} className="text-white text-xl" />
@@ -119,7 +119,7 @@ export const EscalationsPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-green-700 mb-1">Aprobadas</p>
-              <p className="text-3xl font-heading font-bold text-green-900">{sentApproved}</p>
+              <p className="text-3xl font-heading font-bold text-success">{sentApproved}</p>
             </div>
             <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faCheckCircle} className="text-white text-xl" />
@@ -131,7 +131,7 @@ export const EscalationsPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-yellow-700 mb-1">Pendientes</p>
-              <p className="text-3xl font-heading font-bold text-yellow-900">{sentPending}</p>
+              <p className="text-3xl font-heading font-bold text-warning">{sentPending}</p>
             </div>
             <div className="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faClock} className="text-white text-xl" />
@@ -151,19 +151,19 @@ export const EscalationsPage = () => {
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-heading font-bold text-secondary-900">
+                  <h3 className="text-lg font-heading font-bold text-white">
                     Escalación #{escalation.escalation_id} - Ticket #{escalation.ticket_id}
                   </h3>
-                  <div className="flex items-center gap-2 text-sm text-secondary-600 mt-1">
-                    <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
+                    <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                     <span>{formatDate(escalation.escalation_date)}</span>
                   </div>
                 </div>
                 <span
                   className={`px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 ${
                     escalation.approved
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-yellow-100 text-yellow-700'
+                      ? 'bg-success/20 text-green-700'
+                      : 'bg-warning/20 text-yellow-700'
                   }`}
                 >
                   <FontAwesomeIcon icon={escalation.approved ? faCheckCircle : faClock} />
@@ -171,25 +171,25 @@ export const EscalationsPage = () => {
                 </span>
               </div>
 
-              <div className="bg-secondary-50 rounded-lg p-4 mb-4">
+              <div className="bg-secondary-600/50 rounded-lg p-4 mb-4">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                       <FontAwesomeIcon icon={faUser} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-xs text-secondary-600">Tú (Origen)</p>
-                      <p className="font-semibold text-secondary-900">Técnico #{escalation.technician_origin_id}</p>
+                      <p className="text-xs text-gray-400">Tú (Origen)</p>
+                      <p className="font-semibold text-white">Técnico #{escalation.technician_origin_id}</p>
                     </div>
                   </div>
-                  <FontAwesomeIcon icon={faArrowRight} className="text-secondary-400 text-xl flex-shrink-0" />
+                  <FontAwesomeIcon icon={faArrowRight} className="text-gray-400 text-xl flex-shrink-0" />
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
                       <FontAwesomeIcon icon={faUser} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-xs text-secondary-600">Destino</p>
-                      <p className="font-semibold text-secondary-900">Técnico #{escalation.technician_destination_id}</p>
+                      <p className="text-xs text-gray-400">Destino</p>
+                      <p className="font-semibold text-white">Técnico #{escalation.technician_destination_id}</p>
                     </div>
                   </div>
                 </div>
@@ -199,17 +199,17 @@ export const EscalationsPage = () => {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <FontAwesomeIcon icon={faFileAlt} className="text-orange-600" />
-                    <label className="text-sm font-semibold text-secondary-700">Razón de Escalación</label>
+                    <label className="text-sm font-semibold text-gray-300">Razón de Escalación</label>
                   </div>
-                  <p className="text-secondary-900 bg-white border border-secondary-200 p-3 rounded-lg">
+                  <p className="text-white bg-white border border-secondary-200 p-3 rounded-lg">
                     {escalation.escalation_reason}
                   </p>
                 </div>
 
                 {escalation.observations && (
                   <div>
-                    <label className="text-sm font-semibold text-secondary-700 block mb-2">Observaciones</label>
-                    <p className="text-secondary-700 text-sm bg-blue-50 border-l-4 border-blue-500 p-3 rounded">
+                    <label className="text-sm font-semibold text-gray-300 block mb-2">Observaciones</label>
+                    <p className="text-gray-300 text-sm bg-primary-900/20 border-l-4 border-blue-500 p-3 rounded">
                       {escalation.observations}
                     </p>
                   </div>
@@ -220,8 +220,8 @@ export const EscalationsPage = () => {
         ) : (
           <div className="card p-12 text-center">
             <FontAwesomeIcon icon={faPaperPlane} className="text-6xl text-secondary-300 mb-4" />
-            <p className="text-xl text-secondary-500">No has enviado escalaciones</p>
-            <p className="text-sm text-secondary-400 mt-2">Cuando necesites ayuda con un ticket, podrás escalarlo desde la pestaña "Mis Tickets"</p>
+            <p className="text-xl text-gray-300">No has enviado escalaciones</p>
+            <p className="text-sm text-gray-400 mt-2">Cuando necesites ayuda con un ticket, podrás escalarlo desde la pestaña "Mis Tickets"</p>
           </div>
         )}
       </div>
@@ -236,7 +236,7 @@ export const EscalationsPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-purple-700 mb-1">Total Recibidas</p>
-              <p className="text-3xl font-heading font-bold text-purple-900">{receivedEscalations.length}</p>
+              <p className="text-3xl font-heading font-bold text-purple-400">{receivedEscalations.length}</p>
             </div>
             <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faInbox} className="text-white text-xl" />
@@ -248,7 +248,7 @@ export const EscalationsPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-orange-700 mb-1">Requieren Acción</p>
-              <p className="text-3xl font-heading font-bold text-orange-900">{receivedPending}</p>
+              <p className="text-3xl font-heading font-bold text-orange-400">{receivedPending}</p>
             </div>
             <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faExchangeAlt} className="text-white text-xl" />
@@ -270,19 +270,19 @@ export const EscalationsPage = () => {
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-heading font-bold text-secondary-900">
+                  <h3 className="text-lg font-heading font-bold text-white">
                     Escalación #{escalation.escalation_id} - Ticket #{escalation.ticket_id}
                   </h3>
-                  <div className="flex items-center gap-2 text-sm text-secondary-600 mt-1">
-                    <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
+                    <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                     <span>{formatDate(escalation.escalation_date)}</span>
                   </div>
                 </div>
                 <span
                   className={`px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 ${
                     escalation.approved
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-orange-100 text-orange-700'
+                      ? 'bg-success/20 text-green-700'
+                      : 'bg-orange-900/20 text-orange-700'
                   }`}
                 >
                   <FontAwesomeIcon icon={escalation.approved ? faCheckCircle : faExchangeAlt} />
@@ -290,25 +290,25 @@ export const EscalationsPage = () => {
                 </span>
               </div>
 
-              <div className="bg-secondary-50 rounded-lg p-4 mb-4">
+              <div className="bg-secondary-600/50 rounded-lg p-4 mb-4">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                       <FontAwesomeIcon icon={faUser} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-xs text-secondary-600">De</p>
-                      <p className="font-semibold text-secondary-900">Técnico #{escalation.technician_origin_id}</p>
+                      <p className="text-xs text-gray-400">De</p>
+                      <p className="font-semibold text-white">Técnico #{escalation.technician_origin_id}</p>
                     </div>
                   </div>
-                  <FontAwesomeIcon icon={faArrowRight} className="text-secondary-400 text-xl flex-shrink-0" />
+                  <FontAwesomeIcon icon={faArrowRight} className="text-gray-400 text-xl flex-shrink-0" />
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
                       <FontAwesomeIcon icon={faUser} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-xs text-secondary-600">Para ti</p>
-                      <p className="font-semibold text-secondary-900">Técnico #{escalation.technician_destination_id}</p>
+                      <p className="text-xs text-gray-400">Para ti</p>
+                      <p className="font-semibold text-white">Técnico #{escalation.technician_destination_id}</p>
                     </div>
                   </div>
                 </div>
@@ -318,17 +318,17 @@ export const EscalationsPage = () => {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <FontAwesomeIcon icon={faFileAlt} className="text-orange-600" />
-                    <label className="text-sm font-semibold text-secondary-700">Razón de Escalación</label>
+                    <label className="text-sm font-semibold text-gray-300">Razón de Escalación</label>
                   </div>
-                  <p className="text-secondary-900 bg-white border border-secondary-200 p-3 rounded-lg">
+                  <p className="text-white bg-white border border-secondary-200 p-3 rounded-lg">
                     {escalation.escalation_reason}
                   </p>
                 </div>
 
                 {escalation.observations && (
                   <div>
-                    <label className="text-sm font-semibold text-secondary-700 block mb-2">Observaciones</label>
-                    <p className="text-secondary-700 text-sm bg-blue-50 border-l-4 border-blue-500 p-3 rounded">
+                    <label className="text-sm font-semibold text-gray-300 block mb-2">Observaciones</label>
+                    <p className="text-gray-300 text-sm bg-primary-900/20 border-l-4 border-blue-500 p-3 rounded">
                       {escalation.observations}
                     </p>
                   </div>
@@ -358,8 +358,8 @@ export const EscalationsPage = () => {
         ) : (
           <div className="card p-12 text-center">
             <FontAwesomeIcon icon={faInbox} className="text-6xl text-secondary-300 mb-4" />
-            <p className="text-xl text-secondary-500">No tienes escalaciones recibidas</p>
-            <p className="text-sm text-secondary-400 mt-2">Cuando otros técnicos te escalen tickets aparecerán aquí</p>
+            <p className="text-xl text-gray-300">No tienes escalaciones recibidas</p>
+            <p className="text-sm text-gray-400 mt-2">Cuando otros técnicos te escalen tickets aparecerán aquí</p>
           </div>
         )}
       </div>
@@ -370,7 +370,7 @@ export const EscalationsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-heading font-bold text-secondary-900 mb-6">
+        <h2 className="text-2xl font-heading font-bold text-white mb-6">
           tickets/escalations
         </h2>
 
@@ -380,22 +380,22 @@ export const EscalationsPage = () => {
             onClick={() => setActiveTab('sent')}
             className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
               activeTab === 'sent'
-                ? 'border-primary-600 text-primary-600 bg-primary-50'
-                : 'border-transparent text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                : 'border-transparent text-gray-400 hover:text-white hover:bg-secondary-600/50'
             }`}
           >
             <FontAwesomeIcon icon={faPaperPlane} />
             <span>Escalaciones Enviadas</span>
             {sentPending > 0 && (
-              <span className="bg-yellow-500 text-white text-xs rounded-full px-2 py-0.5">{sentPending}</span>
+              <span className="bg-warning/20 text-white text-xs rounded-full px-2 py-0.5">{sentPending}</span>
             )}
           </button>
           <button
             onClick={() => setActiveTab('received')}
             className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
               activeTab === 'received'
-                ? 'border-primary-600 text-primary-600 bg-primary-50'
-                : 'border-transparent text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                : 'border-transparent text-gray-400 hover:text-white hover:bg-secondary-600/50'
             }`}
           >
             <FontAwesomeIcon icon={faInbox} />

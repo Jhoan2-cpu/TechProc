@@ -14,7 +14,7 @@ export const DeleteAlertModal = ({ isOpen, alert, onConfirm, onCancel }: DeleteA
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
         <div className="bg-red-600 text-white p-6 flex items-center gap-4 rounded-t-lg">
           <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl" />
           <div>
@@ -24,30 +24,30 @@ export const DeleteAlertModal = ({ isOpen, alert, onConfirm, onCancel }: DeleteA
         </div>
 
         <div className="p-6 space-y-4">
-          <p className="text-secondary-700">
+          <p className="text-gray-300">
             ¿Estás seguro de que deseas eliminar la siguiente alerta?
           </p>
 
-          <div className="bg-secondary-50 rounded-lg p-4 border-2 border-secondary-200">
-            <p className="text-sm text-secondary-900 mb-2">{alert.message}</p>
+          <div className="bg-secondary-600/50 rounded-lg p-4 border-2 border-secondary-200">
+            <p className="text-sm text-white mb-2">{alert.message}</p>
             <div className="flex items-center gap-4 text-xs">
-              <span className="px-2 py-1 rounded bg-blue-100 text-blue-700">{alert.type}</span>
-              <span className="px-2 py-1 rounded bg-green-100 text-green-700">{alert.status}</span>
-              <span className="text-secondary-500">Prioridad: {alert.priority}</span>
+              <span className="px-2 py-1 rounded bg-primary-900/20 text-blue-700">{alert.type}</span>
+              <span className="px-2 py-1 rounded bg-success/20 text-green-700">{alert.status}</span>
+              <span className="text-gray-300">Prioridad: {alert.priority}</span>
             </div>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-red-800 font-semibold">
+          <div className="bg-danger/20 border-l-4 border-red-400 p-4">
+            <p className="text-sm text-danger font-semibold">
               Esta alerta será eliminada permanentemente del sistema.
             </p>
           </div>
         </div>
 
-        <div className="bg-secondary-50 p-6 flex gap-3 justify-end rounded-b-lg">
+        <div className="bg-secondary-600/50 p-6 flex gap-3 justify-end rounded-b-lg">
           <button
             onClick={onCancel}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faTimes} />
             Cancelar

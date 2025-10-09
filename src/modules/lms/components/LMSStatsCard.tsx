@@ -20,10 +20,10 @@ export const LMSStatsCard = ({ title, value, icon, color, index }: LMSStatsCardP
         <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-lg`}>
           <FontAwesomeIcon icon={icon} className="text-white text-2xl" />
         </div>
-        <FontAwesomeIcon icon={faChartLine} className="text-secondary-400" />
+        <FontAwesomeIcon icon={faChartLine} className="text-gray-400" />
       </div>
-      <h3 className="text-sm font-medium text-secondary-600 mb-1">{title}</h3>
-      <p className="text-3xl font-heading font-bold text-secondary-900">{value}</p>
+      <h3 className="text-sm font-medium text-gray-400 mb-1">{title}</h3>
+      <p className="text-3xl font-heading font-bold text-white">{value}</p>
     </div>
   );
 };

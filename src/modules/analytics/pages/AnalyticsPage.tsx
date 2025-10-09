@@ -502,7 +502,7 @@ export const AnalyticsPage = () => {
           value={mockDashboard.active_students}
           subtitle={`de ${mockDashboard.total_students} totales`}
           icon={faUsers}
-          colorClass="bg-gradient-to-br from-blue-50 to-blue-100 text-blue-900"
+          colorClass="bg-gradient-to-br from-blue-50 to-blue-100 text-primary-400"
           borderColor="border-l-4 border-blue-600"
         />
         <AnalyticsStatsCard
@@ -510,7 +510,7 @@ export const AnalyticsPage = () => {
           value={`${mockDashboard.average_attendance.toFixed(1)}%`}
           subtitle="en todos los cursos"
           icon={faUserCheck}
-          colorClass="bg-gradient-to-br from-green-50 to-green-100 text-green-900"
+          colorClass="bg-gradient-to-br from-green-50 to-green-100 text-success"
           borderColor="border-l-4 border-green-600"
         />
         <AnalyticsStatsCard
@@ -518,7 +518,7 @@ export const AnalyticsPage = () => {
           value={`${mockDashboard.average_performance.toFixed(1)}%`}
           subtitle="calificaciones"
           icon={faTrophy}
-          colorClass="bg-gradient-to-br from-purple-50 to-purple-100 text-purple-900"
+          colorClass="bg-gradient-to-br from-purple-50 to-purple-100 text-purple-400"
           borderColor="border-l-4 border-purple-600"
         />
         <AnalyticsStatsCard
@@ -526,7 +526,7 @@ export const AnalyticsPage = () => {
           value={mockDashboard.at_risk_students}
           subtitle="requieren atención"
           icon={faExclamationTriangle}
-          colorClass="bg-gradient-to-br from-red-50 to-red-100 text-red-900"
+          colorClass="bg-gradient-to-br from-red-50 to-red-100 text-danger"
           borderColor="border-l-4 border-red-600"
         />
       </div>
@@ -538,7 +538,7 @@ export const AnalyticsPage = () => {
             <FontAwesomeIcon icon={faGraduationCap} className="text-2xl text-primary-600" />
             <h3 className="text-lg font-heading font-bold">Cursos Activos</h3>
           </div>
-          <p className="text-4xl font-bold text-secondary-900">{mockDashboard.total_courses}</p>
+          <p className="text-4xl font-bold text-white">{mockDashboard.total_courses}</p>
         </div>
 
         <div className="card p-6">
@@ -546,7 +546,7 @@ export const AnalyticsPage = () => {
             <FontAwesomeIcon icon={faTasks} className="text-2xl text-primary-600" />
             <h3 className="text-lg font-heading font-bold">Progreso Promedio</h3>
           </div>
-          <p className="text-4xl font-bold text-secondary-900">
+          <p className="text-4xl font-bold text-white">
             {mockDashboard.average_progress.toFixed(1)}%
           </p>
         </div>
@@ -556,7 +556,7 @@ export const AnalyticsPage = () => {
             <FontAwesomeIcon icon={faCheckCircle} className="text-2xl text-primary-600" />
             <h3 className="text-lg font-heading font-bold">Tasa de Completación</h3>
           </div>
-          <p className="text-4xl font-bold text-secondary-900">
+          <p className="text-4xl font-bold text-white">
             {mockDashboard.completion_rate.toFixed(1)}%
           </p>
         </div>
@@ -571,7 +571,7 @@ export const AnalyticsPage = () => {
             data={mockCourseAnalytics.map(course => ({
               label: course.course_name,
               value: course.average_progress,
-              color: course.average_progress >= 70 ? 'bg-green-600' : course.average_progress >= 50 ? 'bg-primary-500' : 'bg-yellow-500',
+              color: course.average_progress >= 70 ? 'bg-green-600' : course.average_progress >= 50 ? 'bg-primary-500' : 'bg-warning/20',
             }))}
           />
         </div>
@@ -581,7 +581,7 @@ export const AnalyticsPage = () => {
           <PieChart
             title="Distribución de Estudiantes por Curso"
             data={mockCourseAnalytics.map((course, index) => {
-              const colors = ['bg-primary-500', 'bg-accent-500', 'bg-green-600', 'bg-yellow-500'];
+              const colors = ['bg-primary-500', 'bg-primary-500', 'bg-green-600', 'bg-warning/20'];
               return {
                 label: course.course_name,
                 value: course.total_students,
@@ -594,7 +594,7 @@ export const AnalyticsPage = () => {
 
       {/* Análisis por Curso */}
       <div className="card p-6">
-        <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4 flex items-center gap-2">
+        <h2 className="text-xl font-heading font-bold text-white mb-4 flex items-center gap-2">
           <FontAwesomeIcon icon={faChartBar} />
           Análisis por Curso
         </h2>
@@ -624,7 +624,7 @@ export const AnalyticsPage = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <h2 className="text-2xl font-heading font-bold text-secondary-900">
+          <h2 className="text-2xl font-heading font-bold text-white">
             Análisis de Asistencia
           </h2>
           <button
@@ -639,7 +639,7 @@ export const AnalyticsPage = () => {
         {/* Filtros */}
         <div className="card p-4">
           <div className="flex items-center gap-3 flex-wrap">
-            <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
+            <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
             <div className="flex-1 min-w-[250px]">
               <input
                 type="text"
@@ -667,7 +667,7 @@ export const AnalyticsPage = () => {
                   setSearchTerm('');
                   setSelectedCourse('all');
                 }}
-                className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+                className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
               >
                 Limpiar filtros
               </button>
@@ -676,7 +676,7 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* Resultados */}
-        <div className="text-sm text-secondary-600 mb-2">
+        <div className="text-sm text-gray-400 mb-2">
           Mostrando {filteredAttendance.length} de {mockAttendance.length} estudiantes
         </div>
 
@@ -691,7 +691,7 @@ export const AnalyticsPage = () => {
             ))
           ) : (
             <div className="card p-8 text-center">
-              <p className="text-secondary-500 text-lg">
+              <p className="text-gray-300 text-lg">
                 No se encontraron resultados para los filtros aplicados
               </p>
             </div>
@@ -714,7 +714,7 @@ export const AnalyticsPage = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
-          <h2 className="text-2xl font-heading font-bold text-secondary-900">
+          <h2 className="text-2xl font-heading font-bold text-white">
             Seguimiento de Progreso Académico
           </h2>
           <button
@@ -729,7 +729,7 @@ export const AnalyticsPage = () => {
         {/* Filtros */}
         <div className="card p-4">
           <div className="flex items-center gap-3 flex-wrap">
-            <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
+            <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
             <div className="flex-1 min-w-[250px]">
               <input
                 type="text"
@@ -757,7 +757,7 @@ export const AnalyticsPage = () => {
                   setSearchTerm('');
                   setSelectedCourse('all');
                 }}
-                className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+                className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
               >
                 Limpiar filtros
               </button>
@@ -766,7 +766,7 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* Resultados */}
-        <div className="text-sm text-secondary-600 mb-2">
+        <div className="text-sm text-gray-400 mb-2">
           Mostrando {filteredProgress.length} de {mockProgress.length} estudiantes
         </div>
 
@@ -781,7 +781,7 @@ export const AnalyticsPage = () => {
             ))
           ) : (
             <div className="card p-8 text-center">
-              <p className="text-secondary-500 text-lg">
+              <p className="text-gray-300 text-lg">
                 No se encontraron resultados para los filtros aplicados
               </p>
             </div>
@@ -794,7 +794,7 @@ export const AnalyticsPage = () => {
   const renderPerformance = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
+        <h2 className="text-2xl font-heading font-bold text-white">
           Análisis de Rendimiento Académico
         </h2>
         <button
@@ -821,7 +821,7 @@ export const AnalyticsPage = () => {
   const renderDropout = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
+        <h2 className="text-2xl font-heading font-bold text-white">
           Predicción de Riesgo de Deserción
         </h2>
         <div className="flex items-center gap-3">
@@ -833,13 +833,13 @@ export const AnalyticsPage = () => {
             Exportar CSV
           </button>
           <div className="flex items-center gap-2 text-sm">
-            <span className="px-3 py-1 rounded-full bg-red-100 text-red-900 font-bold shadow-sm">
+            <span className="px-3 py-1 rounded-full bg-danger/20 text-danger font-bold shadow-sm">
               {mockDropout.filter(d => d.risk_level === 'crítico').length} Críticos
             </span>
-            <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-900 font-bold shadow-sm">
+            <span className="px-3 py-1 rounded-full bg-orange-900/20 text-orange-400 font-bold shadow-sm">
               {mockDropout.filter(d => d.risk_level === 'alto').length} Altos
             </span>
-            <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-900 font-bold shadow-sm">
+            <span className="px-3 py-1 rounded-full bg-warning/20 text-warning font-bold shadow-sm">
               {mockDropout.filter(d => d.risk_level === 'medio').length} Medios
             </span>
           </div>
@@ -861,7 +861,7 @@ export const AnalyticsPage = () => {
   const renderReports = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
+        <h2 className="text-2xl font-heading font-bold text-white">
           Generación de Reportes
         </h2>
         <button className="btn btn-primary">
@@ -878,7 +878,7 @@ export const AnalyticsPage = () => {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-secondary-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Tipo de Reporte *
             </label>
             <select
@@ -894,7 +894,7 @@ export const AnalyticsPage = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-secondary-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Formato *
             </label>
             <select
@@ -908,7 +908,7 @@ export const AnalyticsPage = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-secondary-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Fecha Inicio *
             </label>
             <input
@@ -920,7 +920,7 @@ export const AnalyticsPage = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-secondary-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Fecha Fin *
             </label>
             <input

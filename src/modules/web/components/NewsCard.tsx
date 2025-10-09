@@ -29,29 +29,29 @@ export const NewsCard = ({ news, index, formatDate, getStatusColor, onEdit, onDe
       <div className="flex gap-4">
         {news.featured_image && (
           <div className="w-32 h-32 bg-secondary-200 rounded-lg flex items-center justify-center flex-shrink-0">
-            <FontAwesomeIcon icon={faImage} className="text-secondary-400 text-3xl" />
+            <FontAwesomeIcon icon={faImage} className="text-gray-400 text-3xl" />
           </div>
         )}
         <div className="flex-1">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className="text-xl font-heading font-bold text-secondary-900">{news.title}</h3>
-              <p className="text-sm text-secondary-600">Por {news.author_name} • {formatDate(news.created_date)}</p>
+              <h3 className="text-xl font-heading font-bold text-white">{news.title}</h3>
+              <p className="text-sm text-gray-400">Por {news.author_name} • {formatDate(news.created_date)}</p>
             </div>
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(news.status)}`}>
               {news.status}
             </span>
           </div>
-          <p className="text-secondary-700 mb-3">{news.summary}</p>
+          <p className="text-gray-300 mb-3">{news.summary}</p>
           <div className="flex flex-wrap gap-2 mb-3">
-            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{news.category}</span>
+            <span className="px-2 py-1 bg-primary-900/20 text-blue-700 rounded text-xs">{news.category}</span>
             {news.tags.map((tag, i) => (
-              <span key={i} className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded text-xs">
+              <span key={i} className="px-2 py-1 bg-secondary-100 text-gray-300 rounded text-xs">
                 #{tag}
               </span>
             ))}
           </div>
-          <div className="flex items-center gap-4 text-sm text-secondary-600">
+          <div className="flex items-center gap-4 text-sm text-gray-400">
             <span className="flex items-center gap-1">
               <FontAwesomeIcon icon={faEye} />
               {news.views} vistas

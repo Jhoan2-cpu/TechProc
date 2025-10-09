@@ -19,19 +19,19 @@ export const ChatbotFAQCard = ({ faq, index, onEdit, onDelete, onToggleActive }:
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{faq.category}</span>
-            <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
+            <span className="px-2 py-1 bg-primary-900/20 text-blue-700 rounded text-xs">{faq.category}</span>
+            <span className="px-2 py-1 bg-success/20 text-green-700 rounded text-xs">
               {faq.usage_count} usos
             </span>
             {faq.active && (
-              <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Activa</span>
+              <span className="px-2 py-1 bg-success/20 text-green-700 rounded text-xs">Activa</span>
             )}
           </div>
-          <h4 className="font-semibold text-secondary-900 mb-2">{faq.question}</h4>
-          <p className="text-sm text-secondary-700 mb-2">{faq.answer}</p>
+          <h4 className="font-semibold text-white mb-2">{faq.question}</h4>
+          <p className="text-sm text-gray-300 mb-2">{faq.answer}</p>
           <div className="flex flex-wrap gap-1">
             {faq.keywords.map((keyword, i) => (
-              <span key={i} className="px-2 py-0.5 bg-secondary-100 text-secondary-600 rounded text-xs">
+              <span key={i} className="px-2 py-0.5 bg-secondary-100 text-gray-400 rounded text-xs">
                 {keyword}
               </span>
             ))}

@@ -39,24 +39,24 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-orange-900/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faEnvelope} className="text-orange-600 text-xl" />
             </div>
             <div>
-              <h3 className="text-2xl font-heading font-bold text-secondary-900">
+              <h3 className="text-2xl font-heading font-bold text-white">
                 Responder Consulta
               </h3>
-              <p className="text-sm text-secondary-600">
+              <p className="text-sm text-gray-400">
                 ID: #{contact.id_contact} • {formatDateTime(contact.submission_date)}
               </p>
             </div>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -64,24 +64,24 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
 
         <div className="p-6 space-y-6">
           {/* Información del Remitente */}
-          <div className="card p-6 bg-blue-50 border-blue-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+          <div className="card p-6 bg-primary-900/20 border-blue-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Información del Remitente
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start gap-2">
                 <FontAwesomeIcon icon={faUser} className="text-blue-600 mt-1" />
                 <div>
-                  <p className="text-xs text-secondary-600">Nombre</p>
-                  <p className="font-semibold text-secondary-900">{contact.full_name}</p>
+                  <p className="text-xs text-gray-400">Nombre</p>
+                  <p className="font-semibold text-white">{contact.full_name}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-2">
                 <FontAwesomeIcon icon={faEnvelope} className="text-blue-600 mt-1" />
                 <div>
-                  <p className="text-xs text-secondary-600">Email</p>
-                  <p className="font-semibold text-secondary-900">{contact.email}</p>
+                  <p className="text-xs text-gray-400">Email</p>
+                  <p className="font-semibold text-white">{contact.email}</p>
                 </div>
               </div>
 
@@ -89,8 +89,8 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
                 <div className="flex items-start gap-2">
                   <FontAwesomeIcon icon={faPhone} className="text-blue-600 mt-1" />
                   <div>
-                    <p className="text-xs text-secondary-600">Teléfono</p>
-                    <p className="font-semibold text-secondary-900">{contact.phone}</p>
+                    <p className="text-xs text-gray-400">Teléfono</p>
+                    <p className="font-semibold text-white">{contact.phone}</p>
                   </div>
                 </div>
               )}
@@ -99,8 +99,8 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
                 <div className="flex items-start gap-2">
                   <FontAwesomeIcon icon={faBuilding} className="text-blue-600 mt-1" />
                   <div>
-                    <p className="text-xs text-secondary-600">Empresa</p>
-                    <p className="font-semibold text-secondary-900">{contact.company}</p>
+                    <p className="text-xs text-gray-400">Empresa</p>
+                    <p className="font-semibold text-white">{contact.company}</p>
                   </div>
                 </div>
               )}
@@ -108,20 +108,20 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
 
             {(contact.utm_source || contact.utm_medium || contact.utm_campaign) && (
               <div className="mt-4 pt-4 border-t border-blue-200">
-                <p className="text-xs text-secondary-600 mb-2">Origen de la consulta:</p>
+                <p className="text-xs text-gray-400 mb-2">Origen de la consulta:</p>
                 <div className="flex gap-2 flex-wrap text-xs">
                   {contact.utm_source && (
-                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                    <span className="px-2 py-1 bg-primary-900/20 text-blue-700 rounded">
                       Fuente: {contact.utm_source}
                     </span>
                   )}
                   {contact.utm_medium && (
-                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                    <span className="px-2 py-1 bg-primary-900/20 text-blue-700 rounded">
                       Medio: {contact.utm_medium}
                     </span>
                   )}
                   {contact.utm_campaign && (
-                    <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                    <span className="px-2 py-1 bg-primary-900/20 text-blue-700 rounded">
                       Campaña: {contact.utm_campaign}
                     </span>
                   )}
@@ -132,25 +132,25 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
 
           {/* Consulta Original */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-3">
+            <h4 className="text-lg font-heading font-bold text-white mb-3">
               Consulta Original
             </h4>
             <div className="space-y-2">
               <div>
-                <p className="text-xs text-secondary-600">Asunto</p>
-                <p className="font-semibold text-secondary-900">{contact.subject}</p>
+                <p className="text-xs text-gray-400">Asunto</p>
+                <p className="font-semibold text-white">{contact.subject}</p>
               </div>
               <div>
-                <p className="text-xs text-secondary-600 mb-1">Mensaje</p>
-                <div className="bg-secondary-50 rounded-lg p-4 border border-secondary-200">
-                  <p className="text-secondary-900 whitespace-pre-wrap">{contact.message}</p>
+                <p className="text-xs text-gray-400 mb-1">Mensaje</p>
+                <div className="bg-secondary-600/50 rounded-lg p-4 border border-secondary-200">
+                  <p className="text-white whitespace-pre-wrap">{contact.message}</p>
                 </div>
               </div>
               <div className="flex gap-2 text-xs">
-                <span className="px-2 py-1 rounded bg-purple-100 text-purple-700">
+                <span className="px-2 py-1 rounded bg-purple-900/20 text-purple-700">
                   {contact.form_type}
                 </span>
-                <span className="px-2 py-1 rounded bg-orange-100 text-orange-700">
+                <span className="px-2 py-1 rounded bg-orange-900/20 text-orange-700">
                   {contact.priority}
                 </span>
               </div>
@@ -160,12 +160,12 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
           {/* Formulario de Respuesta */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="card p-6">
-              <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+              <h4 className="text-lg font-heading font-bold text-white mb-4">
                 Tu Respuesta
               </h4>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Respuesta *
                   </label>
                   <textarea
@@ -180,7 +180,7 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-secondary-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Estado *
                     </label>
                     <select
@@ -197,7 +197,7 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-secondary-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
                       Asignar a (ID Usuario)
                     </label>
                     <input
@@ -214,16 +214,16 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
 
             {/* Respuesta Anterior (si existe) */}
             {contact.response && contact.response_date && (
-              <div className="card p-6 bg-green-50 border-green-200">
-                <h4 className="text-lg font-heading font-bold text-green-900 mb-2">
+              <div className="card p-6 bg-success/20 border-green-200">
+                <h4 className="text-lg font-heading font-bold text-success mb-2">
                   Respuesta Anterior
                 </h4>
                 <p className="text-xs text-green-700 mb-3">
                   Respondido el {formatDateTime(contact.response_date)}
                   {contact.assigned_to_name && ` por ${contact.assigned_to_name}`}
                 </p>
-                <div className="bg-white rounded-lg p-4 border border-green-200">
-                  <p className="text-secondary-900 whitespace-pre-wrap">{contact.response}</p>
+                <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg p-4 border border-green-200">
+                  <p className="text-white whitespace-pre-wrap">{contact.response}</p>
                 </div>
               </div>
             )}
@@ -233,7 +233,7 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
               <button
                 type="button"
                 onClick={onCancel}
-                className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+                className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
               >
                 Cancelar
               </button>

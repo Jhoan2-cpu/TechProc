@@ -59,7 +59,7 @@ export const EditInstructorModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600">
           <h2 className="text-2xl font-heading font-bold text-white">
@@ -67,7 +67,7 @@ export const EditInstructorModal = ({
           </h2>
           <button
             onClick={onClose}
-            className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -77,7 +77,7 @@ export const EditInstructorModal = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Nombre *
               </label>
               <input
@@ -92,7 +92,7 @@ export const EditInstructorModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Apellido *
               </label>
               <input
@@ -107,7 +107,7 @@ export const EditInstructorModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email *
               </label>
               <input
@@ -122,7 +122,7 @@ export const EditInstructorModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Área de Expertise *
               </label>
               <input
@@ -137,7 +137,7 @@ export const EditInstructorModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 País *
               </label>
               <input
@@ -152,7 +152,7 @@ export const EditInstructorModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Estado *
               </label>
               <select
@@ -167,7 +167,7 @@ export const EditInstructorModal = ({
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Biografía *
               </label>
               <textarea
@@ -186,7 +186,7 @@ export const EditInstructorModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="btn bg-secondary-200 text-secondary-700 hover:bg-secondary-300"
+              className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
             >
               Cancelar
             </button>

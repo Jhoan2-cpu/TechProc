@@ -48,7 +48,7 @@ export const EscalateTicketModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-orange-500 to-orange-600">
           <div className="flex items-center gap-3">
@@ -59,7 +59,7 @@ export const EscalateTicketModal = ({
           </div>
           <button
             onClick={handleClose}
-            className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -68,8 +68,8 @@ export const EscalateTicketModal = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
           {/* Ticket Info */}
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-            <h3 className="font-heading font-bold text-lg text-orange-900 mb-2">
+          <div className="bg-orange-900/20 border border-orange-200 rounded-lg p-4">
+            <h3 className="font-heading font-bold text-lg text-orange-400 mb-2">
               Ticket #{ticket.ticket_id}
             </h3>
             <p className="text-sm text-orange-800">{ticket.title}</p>
@@ -86,7 +86,7 @@ export const EscalateTicketModal = ({
 
           {/* Technician Selection */}
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Escalar a Técnico *
             </label>
             <select
@@ -106,7 +106,7 @@ export const EscalateTicketModal = ({
 
           {/* Reason Selection */}
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Motivo de Escalación *
             </label>
             <select
@@ -127,7 +127,7 @@ export const EscalateTicketModal = ({
 
           {/* Observations */}
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Observaciones y Contexto *
             </label>
             <textarea
@@ -140,7 +140,7 @@ export const EscalateTicketModal = ({
           </div>
 
           {/* Warning */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="bg-warning/20 border border-yellow-200 rounded-lg p-4">
             <p className="text-sm text-yellow-800">
               <strong>Importante:</strong> Al escalar este ticket, será reasignado a un técnico de nivel superior.
               Asegúrate de documentar toda la información relevante que hayas recopilado.
@@ -152,7 +152,7 @@ export const EscalateTicketModal = ({
             <button
               type="button"
               onClick={handleClose}
-              className="btn bg-secondary-200 text-secondary-700 hover:bg-secondary-300"
+              className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
             >
               Cancelar
             </button>

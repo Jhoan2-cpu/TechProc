@@ -14,7 +14,7 @@ export const DeleteSoftwareModal = ({ isOpen, software, onConfirm, onCancel }: D
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
         <div className="bg-red-600 text-white p-6 flex items-center gap-4 rounded-t-lg">
           <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl" />
           <div>
@@ -24,32 +24,32 @@ export const DeleteSoftwareModal = ({ isOpen, software, onConfirm, onCancel }: D
         </div>
 
         <div className="p-6 space-y-4">
-          <p className="text-secondary-700">
+          <p className="text-gray-300">
             ¿Estás seguro de que deseas eliminar el siguiente software?
           </p>
 
-          <div className="bg-secondary-50 rounded-lg p-4 border-2 border-secondary-200">
+          <div className="bg-secondary-600/50 rounded-lg p-4 border-2 border-secondary-200">
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-secondary-600 text-sm">Nombre:</span>
-                <span className="font-bold text-secondary-900">{software.software_name}</span>
+                <span className="text-gray-400 text-sm">Nombre:</span>
+                <span className="font-bold text-white">{software.software_name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-secondary-600 text-sm">Versión:</span>
-                <span className="font-medium text-secondary-900">{software.version}</span>
+                <span className="text-gray-400 text-sm">Versión:</span>
+                <span className="font-medium text-white">{software.version}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-secondary-600 text-sm">Categoría:</span>
-                <span className="font-medium text-secondary-900">{software.category}</span>
+                <span className="text-gray-400 text-sm">Categoría:</span>
+                <span className="font-medium text-white">{software.category}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-secondary-600 text-sm">Proveedor:</span>
-                <span className="font-medium text-secondary-900">{software.vendor}</span>
+                <span className="text-gray-400 text-sm">Proveedor:</span>
+                <span className="font-medium text-white">{software.vendor}</span>
               </div>
               {software.server_ids.length > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-secondary-600 text-sm">Servidores instalados:</span>
-                  <span className="font-bold text-secondary-900">{software.server_ids.length}</span>
+                  <span className="text-gray-400 text-sm">Servidores instalados:</span>
+                  <span className="font-bold text-white">{software.server_ids.length}</span>
                 </div>
               )}
             </div>
@@ -65,25 +65,25 @@ export const DeleteSoftwareModal = ({ isOpen, software, onConfirm, onCancel }: D
           )}
 
           {software.license_id && (
-            <div className="bg-purple-50 border-l-4 border-purple-400 p-4">
-              <p className="text-sm text-purple-800">
+            <div className="bg-purple-900/20 border-l-4 border-purple-400 p-4">
+              <p className="text-sm text-purple-400">
                 <span className="font-semibold">Nota:</span> Este software está vinculado a la licencia #{software.license_id}.
                 La licencia no se eliminará.
               </p>
             </div>
           )}
 
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-red-800 font-semibold">
+          <div className="bg-danger/20 border-l-4 border-red-400 p-4">
+            <p className="text-sm text-danger font-semibold">
               Esta acción eliminará permanentemente el registro de este software del sistema.
             </p>
           </div>
         </div>
 
-        <div className="bg-secondary-50 p-6 flex gap-3 justify-end rounded-b-lg">
+        <div className="bg-secondary-600/50 p-6 flex gap-3 justify-end rounded-b-lg">
           <button
             onClick={onCancel}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faTimes} />
             Cancelar

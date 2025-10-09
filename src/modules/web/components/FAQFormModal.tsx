@@ -67,19 +67,19 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faRobot} className="text-indigo-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {faq ? 'Editar FAQ' : 'Nueva FAQ'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -88,12 +88,12 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Pregunta y Respuesta */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Pregunta y Respuesta
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Pregunta *
                 </label>
                 <input
@@ -107,7 +107,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Respuesta *
                 </label>
                 <textarea
@@ -121,7 +121,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Categoría *
                 </label>
                 <input
@@ -138,10 +138,10 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
 
           {/* Palabras Clave */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Palabras Clave para Detección
             </h4>
-            <p className="text-sm text-secondary-600 mb-4">
+            <p className="text-sm text-gray-400 mb-4">
               Agrega palabras clave que ayudarán al chatbot a identificar cuándo usar esta respuesta
             </p>
 
@@ -195,7 +195,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
 
           {/* Estado */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Estado
             </h4>
             <div className="flex items-center gap-3">
@@ -206,12 +206,12 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
                 onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                 className="w-5 h-5 text-indigo-600"
               />
-              <label htmlFor="active" className="text-sm font-medium text-secondary-700">
+              <label htmlFor="active" className="text-sm font-medium text-gray-300">
                 FAQ activa (visible para el chatbot)
               </label>
             </div>
             {!formData.active && (
-              <p className="text-xs text-secondary-500 mt-2">
+              <p className="text-xs text-gray-300 mt-2">
                 Las FAQs inactivas no serán utilizadas por el chatbot
               </p>
             )}
@@ -219,7 +219,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
 
           {/* Vista Previa */}
           <div className="card p-6 bg-indigo-50 border-indigo-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-3">
+            <h4 className="text-lg font-heading font-bold text-white mb-3">
               Vista Previa del Chatbot
             </h4>
             <div className="space-y-3">
@@ -231,12 +231,12 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
               </div>
               {/* Respuesta del Bot */}
               <div className="flex justify-start">
-                <div className="bg-white border border-indigo-200 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
+                <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 border border-indigo-200 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
                   <div className="flex items-center gap-2 mb-2">
                     <FontAwesomeIcon icon={faRobot} className="text-indigo-600" />
                     <span className="text-xs font-bold text-indigo-600">Chatbot</span>
                   </div>
-                  <p className="text-sm text-secondary-900">
+                  <p className="text-sm text-white">
                     {formData.answer || 'Respuesta del chatbot...'}
                   </p>
                 </div>
@@ -249,7 +249,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

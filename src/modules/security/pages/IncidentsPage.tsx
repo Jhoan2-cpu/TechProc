@@ -101,7 +101,7 @@ export const IncidentsPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando incidentes...</p>
+          <p className="mt-4 text-gray-400">Cargando incidentes...</p>
         </div>
       </div>
     );
@@ -110,7 +110,7 @@ export const IncidentsPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900">
+        <h1 className="text-3xl font-heading font-bold text-white">
           security/incidents
         </h1>
         <button
@@ -122,7 +122,7 @@ export const IncidentsPage = () => {
         </button>
       </div>
 
-      <h2 className="text-xl font-heading text-secondary-700">
+      <h2 className="text-xl font-heading text-gray-300">
         Gestión de Incidentes de Seguridad
       </h2>
 

@@ -88,7 +88,7 @@ export const ServersPage = ({ servers, onUpdateServers }: ServersPageProps) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Control Digital de Servidores</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Control Digital de Servidores</h2>
         <button
           onClick={handleNewServer}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"

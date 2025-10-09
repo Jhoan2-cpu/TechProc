@@ -17,10 +17,10 @@ interface AvailableTicketCardProps {
 export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, onViewDetails }: AvailableTicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'baja': return 'text-blue-600 bg-blue-100';
-      case 'media': return 'text-yellow-600 bg-yellow-100';
-      case 'alta': return 'text-orange-600 bg-orange-100';
-      case 'crítica': return 'text-red-600 bg-red-100';
+      case 'baja': return 'text-blue-600 bg-primary-900/20';
+      case 'media': return 'text-yellow-600 bg-warning/20';
+      case 'alta': return 'text-orange-600 bg-orange-900/20';
+      case 'crítica': return 'text-red-600 bg-danger/20';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
@@ -28,14 +28,14 @@ export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, o
   return (
     <div
       className={`border-2 rounded-lg p-5 hover:shadow-lg transition-all animate-fade-in ${
-        ticket.priority === 'crítica' ? 'border-red-300 bg-red-50' : 'border-secondary-200'
+        ticket.priority === 'crítica' ? 'border-red-300 bg-danger/20' : 'border-secondary-200'
       }`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex flex-col lg:flex-row lg:items-start gap-4">
         <div className="flex-1">
           <div className="flex items-start justify-between gap-4 mb-3">
-            <h3 className="font-heading font-bold text-xl text-secondary-900">
+            <h3 className="font-heading font-bold text-xl text-white">
               #{ticket.ticket_id} - {ticket.title}
             </h3>
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
@@ -43,18 +43,18 @@ export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, o
               {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
             </span>
           </div>
-          <p className="text-secondary-700 mb-4">{ticket.description}</p>
-          <div className="flex flex-wrap gap-6 text-sm text-secondary-600">
+          <p className="text-gray-300 mb-4">{ticket.description}</p>
+          <div className="flex flex-wrap gap-6 text-sm text-gray-400">
             <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faUser} className="text-secondary-400" />
+              <FontAwesomeIcon icon={faUser} className="text-gray-400" />
               <span>Usuario ID: {ticket.user_id}</span>
             </div>
             <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+              <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
               <span>{formatDate(ticket.creation_date)}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-secondary-400">Categoría:</span>
+              <span className="text-gray-400">Categoría:</span>
               <span className="font-medium text-primary-600">{ticket.category}</span>
             </div>
           </div>
@@ -72,7 +72,7 @@ export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, o
           </button>
           <button
             onClick={() => onViewDetails?.(ticket)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
           >
             Ver Detalles
           </button>

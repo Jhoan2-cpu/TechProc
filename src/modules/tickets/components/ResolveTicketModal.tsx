@@ -34,7 +34,7 @@ export const ResolveTicketModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-green-500 to-green-600">
           <div className="flex items-center gap-3">
@@ -45,7 +45,7 @@ export const ResolveTicketModal = ({
           </div>
           <button
             onClick={handleClose}
-            className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -54,8 +54,8 @@ export const ResolveTicketModal = ({
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
           {/* Ticket Info */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <h3 className="font-heading font-bold text-lg text-green-900 mb-2">
+          <div className="bg-success/20 border border-green-200 rounded-lg p-4">
+            <h3 className="font-heading font-bold text-lg text-success mb-2">
               Ticket #{ticket.ticket_id}
             </h3>
             <p className="text-sm text-green-800 mb-2">{ticket.title}</p>
@@ -77,7 +77,7 @@ export const ResolveTicketModal = ({
 
           {/* Resolution Details */}
           <div>
-            <label className="block text-sm font-medium text-secondary-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Descripción de la Solución *
             </label>
             <textarea
@@ -90,8 +90,8 @@ export const ResolveTicketModal = ({
           </div>
 
           {/* Info Note */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-800">
+          <div className="bg-primary-900/20 border border-blue-200 rounded-lg p-4">
+            <p className="text-sm text-primary-400">
               <strong>Nota:</strong> Al resolver este ticket, su estado cambiará a "Resuelto" y se registrará la fecha de resolución.
               El usuario será notificado de la solución implementada.
             </p>
@@ -102,7 +102,7 @@ export const ResolveTicketModal = ({
             <button
               type="button"
               onClick={handleClose}
-              className="btn bg-secondary-200 text-secondary-700 hover:bg-secondary-300"
+              className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
             >
               Cancelar
             </button>

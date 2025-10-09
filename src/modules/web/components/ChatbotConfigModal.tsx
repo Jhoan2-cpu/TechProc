@@ -43,19 +43,19 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faCog} className="text-indigo-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               Configuración del Chatbot
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -64,7 +64,7 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Estado General */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Estado General
             </h4>
             <div className="flex items-center gap-3">
@@ -75,7 +75,7 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
                 onChange={(e) => setFormData({ ...formData, enabled: e.target.checked })}
                 className="w-5 h-5 text-indigo-600"
               />
-              <label htmlFor="enabled" className="text-sm font-medium text-secondary-700">
+              <label htmlFor="enabled" className="text-sm font-medium text-gray-300">
                 Chatbot activo en el sitio web
               </label>
             </div>
@@ -90,12 +90,12 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
 
           {/* Mensajes Predeterminados */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Mensajes Predeterminados
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Mensaje de Bienvenida *
                 </label>
                 <textarea
@@ -106,13 +106,13 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
                   rows={3}
                   placeholder="¡Hola! Soy el asistente virtual..."
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Este mensaje se mostrará cuando un usuario inicie una conversación
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Mensaje de Fallback *
                 </label>
                 <textarea
@@ -123,7 +123,7 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
                   rows={3}
                   placeholder="Lo siento, no entendí tu pregunta..."
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Este mensaje se mostrará cuando el chatbot no pueda encontrar una respuesta
                 </p>
               </div>
@@ -132,12 +132,12 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
 
           {/* Configuración de Comportamiento */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Configuración de Comportamiento
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Retraso de Respuesta (ms)
                 </label>
                 <input
@@ -149,13 +149,13 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
                   onChange={(e) => setFormData({ ...formData, response_delay: parseInt(e.target.value) })}
                   className="input w-full"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Tiempo de espera antes de mostrar la respuesta (simula escritura)
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Máximo de Conversaciones por Día
                 </label>
                 <input
@@ -165,13 +165,13 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
                   onChange={(e) => setFormData({ ...formData, max_conversations_per_day: parseInt(e.target.value) })}
                   className="input w-full"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Límite de conversaciones simultáneas (0 = sin límite)
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Umbral para Contacto Humano
                 </label>
                 <input
@@ -182,7 +182,7 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
                   onChange={(e) => setFormData({ ...formData, contact_threshold: parseInt(e.target.value) })}
                   className="input w-full"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Después de este número de respuestas fallidas, se sugerirá contacto humano
                 </p>
               </div>
@@ -191,18 +191,18 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
 
           {/* Vista Previa */}
           <div className="card p-6 bg-indigo-50 border-indigo-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-3">
+            <h4 className="text-lg font-heading font-bold text-white mb-3">
               Vista Previa
             </h4>
             <div className="space-y-3">
               {/* Mensaje de Bienvenida */}
               <div className="flex justify-start">
-                <div className="bg-white border border-indigo-200 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
+                <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 border border-indigo-200 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
                   <div className="flex items-center gap-2 mb-2">
                     <FontAwesomeIcon icon={faRobot} className="text-indigo-600" />
                     <span className="text-xs font-bold text-indigo-600">Chatbot</span>
                   </div>
-                  <p className="text-sm text-secondary-900">
+                  <p className="text-sm text-white">
                     {formData.greeting_message}
                   </p>
                 </div>
@@ -217,12 +217,12 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
 
               {/* Mensaje de Fallback */}
               <div className="flex justify-start">
-                <div className="bg-white border border-indigo-200 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
+                <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 border border-indigo-200 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
                   <div className="flex items-center gap-2 mb-2">
                     <FontAwesomeIcon icon={faRobot} className="text-indigo-600" />
                     <span className="text-xs font-bold text-indigo-600">Chatbot</span>
                   </div>
-                  <p className="text-sm text-secondary-900">
+                  <p className="text-sm text-white">
                     {formData.fallback_message}
                   </p>
                 </div>
@@ -235,7 +235,7 @@ export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: Chatbot
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

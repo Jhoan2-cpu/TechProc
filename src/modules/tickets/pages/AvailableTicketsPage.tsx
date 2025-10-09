@@ -31,10 +31,10 @@ export const AvailableTicketsPage = ({
   return (
     <div className="card p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
+        <h2 className="text-2xl font-heading font-bold text-white">
           Tickets Disponibles para Asignar
         </h2>
-        <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full font-semibold">
+        <span className="px-4 py-2 bg-purple-900/20 text-purple-700 rounded-full font-semibold">
           {availableTickets.length} disponibles
         </span>
       </div>
@@ -54,8 +54,8 @@ export const AvailableTicketsPage = ({
         ) : (
           <div className="text-center py-12">
             <FontAwesomeIcon icon={faInbox} className="text-6xl text-secondary-300 mb-4" />
-            <p className="text-xl text-secondary-500">No hay tickets disponibles</p>
-            <p className="text-sm text-secondary-400 mt-2">Todos los tickets han sido asignados</p>
+            <p className="text-xl text-gray-300">No hay tickets disponibles</p>
+            <p className="text-sm text-gray-400 mt-2">Todos los tickets han sido asignados</p>
           </div>
         )}
       </div>

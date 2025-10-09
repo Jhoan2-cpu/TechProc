@@ -76,7 +76,7 @@ export const BackupsPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando backups...</p>
+          <p className="mt-4 text-gray-400">Cargando backups...</p>
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ export const BackupsPage = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900">
+        <h1 className="text-3xl font-heading font-bold text-white">
           security/backups
         </h1>
         <button
@@ -98,7 +98,7 @@ export const BackupsPage = () => {
         </button>
       </div>
 
-      <h2 className="text-xl font-heading text-secondary-700">
+      <h2 className="text-xl font-heading text-gray-300">
         Gestión de Backups de Seguridad
       </h2>
 
@@ -106,7 +106,7 @@ export const BackupsPage = () => {
 
       {/* Historial de Backups */}
       <div className="card p-6">
-        <h3 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+        <h3 className="text-lg font-heading font-bold text-white mb-4">
           Historial de Backups
         </h3>
         <div className="space-y-3">

@@ -67,19 +67,19 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-purple-900/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faBullhorn} className="text-purple-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {announcement ? 'Editar Anuncio' : 'Nuevo Anuncio'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -88,12 +88,12 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Contenido del Anuncio */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Contenido del Anuncio
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Título *
                 </label>
                 <input
@@ -107,7 +107,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Contenido *
                 </label>
                 <textarea
@@ -121,7 +121,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   URL de la Imagen
                 </label>
                 <input
@@ -137,12 +137,12 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
 
           {/* Configuración de Visualización */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Configuración de Visualización
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Tipo de Visualización *
                 </label>
                 <select
@@ -158,7 +158,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Página Objetivo *
                 </label>
                 <select
@@ -176,7 +176,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   URL del Enlace
                 </label>
                 <input
@@ -189,7 +189,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Texto del Botón
                 </label>
                 <input
@@ -205,12 +205,12 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
 
           {/* Estado y Fechas */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Estado y Vigencia
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Estado *
                 </label>
                 <select
@@ -226,7 +226,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Fecha de Inicio *
                 </label>
                 <input
@@ -239,7 +239,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Fecha de Fin
                 </label>
                 <input
@@ -253,15 +253,15 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
           </div>
 
           {/* Vista Previa */}
-          <div className="card p-6 bg-purple-50 border-purple-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-3">
+          <div className="card p-6 bg-purple-900/20 border-purple-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-3">
               Vista Previa ({formData.display_type})
             </h4>
-            <div className="bg-white border-2 border-purple-300 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-secondary-900 mb-2">
+            <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 border-2 border-purple-300 rounded-lg p-6">
+              <h3 className="text-xl font-bold text-white mb-2">
                 {formData.title || 'Título del anuncio'}
               </h3>
-              <p className="text-secondary-700 mb-4">
+              <p className="text-gray-300 mb-4">
                 {formData.content || 'Contenido del anuncio aparecerá aquí...'}
               </p>
               {formData.link_url && formData.button_text && (
@@ -277,7 +277,7 @@ export const AnnouncementFormModal = ({ isOpen, announcement, onSave, onCancel }
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

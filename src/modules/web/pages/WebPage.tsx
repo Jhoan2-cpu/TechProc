@@ -403,37 +403,37 @@ export const WebPage = () => {
       case 'published':
       case 'active':
       case 'resolved':
-        return 'bg-green-100 text-green-700';
+        return 'bg-success/20 text-green-700';
       case 'draft':
       case 'pending':
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-700';
+        return 'bg-warning/20 text-yellow-700';
       case 'inactive':
       case 'archived':
         return 'bg-gray-100 text-gray-700';
       case 'spam':
-        return 'bg-red-100 text-red-700';
+        return 'bg-danger/20 text-red-700';
       default:
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-primary-900/20 text-blue-700';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-red-100 text-red-700';
-      case 'high': return 'bg-orange-100 text-orange-700';
-      case 'medium': return 'bg-yellow-100 text-yellow-700';
-      case 'low': return 'bg-blue-100 text-blue-700';
+      case 'urgent': return 'bg-danger/20 text-red-700';
+      case 'high': return 'bg-orange-900/20 text-orange-700';
+      case 'medium': return 'bg-warning/20 text-yellow-700';
+      case 'low': return 'bg-primary-900/20 text-blue-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
 
   const getAlertTypeColor = (type: string) => {
     switch (type) {
-      case 'success': return 'bg-green-100 text-green-700 border-green-300';
-      case 'warning': return 'bg-yellow-100 text-yellow-700 border-yellow-300';
-      case 'error': return 'bg-red-100 text-red-700 border-red-300';
-      case 'info': return 'bg-blue-100 text-blue-700 border-blue-300';
+      case 'success': return 'bg-success/20 text-green-700 border-green-300';
+      case 'warning': return 'bg-warning/20 text-yellow-700 border-yellow-300';
+      case 'error': return 'bg-danger/20 text-red-700 border-red-300';
+      case 'info': return 'bg-primary-900/20 text-blue-700 border-blue-300';
       default: return 'bg-gray-100 text-gray-700 border-gray-300';
     }
   };
@@ -755,8 +755,8 @@ export const WebPage = () => {
 
       {/* Consultas Pendientes */}
       {pendingContacts > 0 && (
-        <div className="card p-6 bg-orange-50 border-2 border-orange-200">
-          <h2 className="text-xl font-heading font-bold text-orange-900 mb-4 flex items-center gap-2">
+        <div className="card p-6 bg-orange-900/20 border-2 border-orange-200">
+          <h2 className="text-xl font-heading font-bold text-orange-400 mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faEnvelope} />
             Consultas Pendientes - Requieren Atención
           </h2>
@@ -766,13 +766,13 @@ export const WebPage = () => {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-heading font-bold text-secondary-900">{contact.full_name}</h3>
+                      <h3 className="font-heading font-bold text-white">{contact.full_name}</h3>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(contact.priority)}`}>
                         {contact.priority}
                       </span>
                     </div>
-                    <p className="text-sm text-secondary-700 mb-1">{contact.subject}</p>
-                    <p className="text-xs text-secondary-500">{contact.email} • {formatDateTime(contact.submission_date)}</p>
+                    <p className="text-sm text-gray-300 mb-1">{contact.subject}</p>
+                    <p className="text-xs text-gray-300">{contact.email} • {formatDateTime(contact.submission_date)}</p>
                   </div>
                   <button
                     onClick={() => handleRespondContact(contact)}
@@ -790,14 +790,14 @@ export const WebPage = () => {
       {/* Noticias Recientes */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="card p-6">
-          <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4">Noticias Recientes</h2>
+          <h2 className="text-xl font-heading font-bold text-white mb-4">Noticias Recientes</h2>
           <div className="space-y-3">
             {news.slice(0, 3).map((item) => (
-              <div key={item.id_news} className="border-l-4 border-blue-500 bg-blue-50 p-3 rounded">
+              <div key={item.id_news} className="border-l-4 border-blue-500 bg-primary-900/20 p-3 rounded">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-secondary-900">{item.title}</h3>
-                    <p className="text-xs text-secondary-600 mt-1">{item.category} • {item.views} vistas</p>
+                    <h3 className="font-semibold text-white">{item.title}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{item.category} • {item.views} vistas</p>
                   </div>
                   <span className={`px-2 py-1 rounded text-xs ${getStatusColor(item.status)}`}>
                     {item.status}
@@ -809,18 +809,18 @@ export const WebPage = () => {
         </div>
 
         <div className="card p-6">
-          <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4">Anuncios Activos</h2>
+          <h2 className="text-xl font-heading font-bold text-white mb-4">Anuncios Activos</h2>
           <div className="space-y-3">
             {announcements.filter(a => a.status === 'active').map((item) => (
-              <div key={item.id_announcement} className="border-l-4 border-purple-500 bg-purple-50 p-3 rounded">
+              <div key={item.id_announcement} className="border-l-4 border-purple-500 bg-purple-900/20 p-3 rounded">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h3 className="font-semibold text-secondary-900">{item.title}</h3>
-                    <p className="text-xs text-secondary-600 mt-1">
+                    <h3 className="font-semibold text-white">{item.title}</h3>
+                    <p className="text-xs text-gray-400 mt-1">
                       {item.views} vistas • {item.clicks} clics • CTR: {((item.clicks / item.views) * 100).toFixed(1)}%
                     </p>
                   </div>
-                  <span className="px-2 py-1 rounded text-xs bg-purple-100 text-purple-700">
+                  <span className="px-2 py-1 rounded text-xs bg-purple-900/20 text-purple-700">
                     {item.display_type}
                   </span>
                 </div>
@@ -835,7 +835,7 @@ export const WebPage = () => {
   const renderNews = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Noticias</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Noticias</h2>
         <button
           onClick={handleNewNews}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
@@ -887,7 +887,7 @@ export const WebPage = () => {
   const renderAlerts = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Alertas</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Alertas</h2>
         <button
           onClick={handleNewAlert}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
@@ -939,7 +939,7 @@ export const WebPage = () => {
   const renderAnnouncements = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Anuncios</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Anuncios</h2>
         <button
           onClick={handleNewAnnouncement}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
@@ -989,7 +989,7 @@ export const WebPage = () => {
   const renderContacts = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Consultas y Formularios de Contacto</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Consultas y Formularios de Contacto</h2>
         <div className="flex gap-2">
           <select className="select">
             <option>Todos</option>
@@ -1022,7 +1022,7 @@ export const WebPage = () => {
   const renderChatbot = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión del Chatbot</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión del Chatbot</h2>
         <button
           onClick={handleOpenChatbotConfig}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
@@ -1033,16 +1033,16 @@ export const WebPage = () => {
       </div>
 
       {/* Estado del Chatbot */}
-      <div className="card p-6 bg-green-50 border-green-200">
+      <div className="card p-6 bg-success/20 border-green-200">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-heading font-bold text-green-900 mb-1">Estado del Chatbot</h3>
+            <h3 className="text-lg font-heading font-bold text-success mb-1">Estado del Chatbot</h3>
             <p className="text-sm text-green-700">El chatbot está activo y respondiendo consultas</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-xs text-green-700">Conversaciones hoy</p>
-              <p className="text-2xl font-bold text-green-900">24</p>
+              <p className="text-2xl font-bold text-success">24</p>
             </div>
             <button className="btn bg-green-600 hover:bg-green-700 text-white">
               <FontAwesomeIcon icon={faCheck} className="mr-2" />
@@ -1055,7 +1055,7 @@ export const WebPage = () => {
       {/* FAQs del Chatbot */}
       <div className="card p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-heading font-bold text-secondary-900">Preguntas Frecuentes</h3>
+          <h3 className="text-xl font-heading font-bold text-white">Preguntas Frecuentes</h3>
           <button
             onClick={handleNewFAQ}
             className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"

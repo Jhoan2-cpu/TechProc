@@ -30,28 +30,28 @@ export const AlertCard = ({ alert, index, formatDate, getStatusColor, getAlertTy
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(alert.status)}`}>
                   {alert.status}
                 </span>
-                <span className="text-xs text-secondary-600">Prioridad: {alert.priority}</span>
+                <span className="text-xs text-gray-400">Prioridad: {alert.priority}</span>
               </div>
-              <p className="text-lg text-secondary-900 font-medium">{alert.message}</p>
+              <p className="text-lg text-white font-medium">{alert.message}</p>
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
-              <p className="text-secondary-600">Inicio</p>
+              <p className="text-gray-400">Inicio</p>
               <p className="font-semibold">{formatDate(alert.start_date)}</p>
             </div>
             <div>
-              <p className="text-secondary-600">Fin</p>
+              <p className="text-gray-400">Fin</p>
               <p className="font-semibold">{formatDate(alert.end_date)}</p>
             </div>
             {alert.link_url && (
               <>
                 <div>
-                  <p className="text-secondary-600">Enlace</p>
+                  <p className="text-gray-400">Enlace</p>
                   <p className="font-mono text-xs">{alert.link_url}</p>
                 </div>
                 <div>
-                  <p className="text-secondary-600">Texto del botón</p>
+                  <p className="text-gray-400">Texto del botón</p>
                   <p className="font-semibold">{alert.link_text}</p>
                 </div>
               </>

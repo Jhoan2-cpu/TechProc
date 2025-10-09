@@ -212,15 +212,15 @@ export const UsersPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">users/management</h1>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">users/management</h1>
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="card p-6 bg-gradient-to-br from-primary-50 to-primary-100 border-l-4 border-primary-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-secondary-600 mb-1">Total Usuarios</p>
-              <p className="text-3xl font-heading font-bold text-primary-900">{totalUsers}</p>
+              <p className="text-sm text-gray-400 mb-1">Total Usuarios</p>
+              <p className="text-3xl font-heading font-bold text-primary-400">{totalUsers}</p>
             </div>
             <FontAwesomeIcon icon={faUserCircle} className="text-4xl text-primary-600 opacity-50" />
           </div>
@@ -228,8 +228,8 @@ export const UsersPage = () => {
         <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-secondary-600 mb-1">Activos</p>
-              <p className="text-3xl font-heading font-bold text-green-900">{activeUsers}</p>
+              <p className="text-sm text-gray-400 mb-1">Activos</p>
+              <p className="text-3xl font-heading font-bold text-success">{activeUsers}</p>
             </div>
             <FontAwesomeIcon icon={faToggleOn} className="text-4xl text-green-600 opacity-50" />
           </div>
@@ -237,8 +237,8 @@ export const UsersPage = () => {
         <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 border-l-4 border-red-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-secondary-600 mb-1">Inactivos</p>
-              <p className="text-3xl font-heading font-bold text-red-900">{inactiveUsers}</p>
+              <p className="text-sm text-gray-400 mb-1">Inactivos</p>
+              <p className="text-3xl font-heading font-bold text-danger">{inactiveUsers}</p>
             </div>
             <FontAwesomeIcon icon={faToggleOff} className="text-4xl text-red-600 opacity-50" />
           </div>
@@ -252,7 +252,7 @@ export const UsersPage = () => {
             <div className="relative">
               <FontAwesomeIcon
                 icon={faSearch}
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               />
               <input
                 type="text"
@@ -266,7 +266,7 @@ export const UsersPage = () => {
 
           <div className="flex gap-2 flex-wrap">
             <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
+              <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
               <select
                 value={filterRole}
                 onChange={(e) => setFilterRole(e.target.value)}
@@ -309,22 +309,22 @@ export const UsersPage = () => {
           <table className="w-full">
             <thead className="bg-secondary-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Usuario
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Rol
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Departamento
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Estado
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Acciones
                 </th>
               </tr>
@@ -332,7 +332,7 @@ export const UsersPage = () => {
             <tbody className="bg-white divide-y divide-secondary-200">
               {filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-secondary-600">
+                  <td colSpan={6} className="px-6 py-8 text-center text-gray-400">
                     No se encontraron usuarios
                   </td>
                 </tr>
@@ -340,34 +340,34 @@ export const UsersPage = () => {
                 filteredUsers.map((user) => {
                   const roleInfo = getRoleInfo(user.role);
                   return (
-                    <tr key={user.id} className="hover:bg-secondary-50 transition-colors">
+                    <tr key={user.id} className="hover:bg-secondary-600/50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div>
-                            <div className="text-sm font-medium text-secondary-900">{user.name}</div>
-                            <div className="text-sm text-secondary-500">@{user.username}</div>
+                            <div className="text-sm font-medium text-white">{user.name}</div>
+                            <div className="text-sm text-gray-300">@{user.username}</div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-secondary-900">{user.email}</div>
-                        {user.phone && <div className="text-sm text-secondary-500">{user.phone}</div>}
+                        <div className="text-sm text-white">{user.email}</div>
+                        {user.phone && <div className="text-sm text-gray-300">{user.phone}</div>}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <FontAwesomeIcon icon={roleInfo.icon} className={roleInfo.color} />
-                          <span className="text-sm text-secondary-900">{roleInfo.label}</span>
+                          <span className="text-sm text-white">{roleInfo.label}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-secondary-900">{user.department || '-'}</div>
+                        <div className="text-sm text-white">{user.department || '-'}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             user.is_active
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                              ? 'bg-success/20 text-green-800'
+                              : 'bg-danger/20 text-danger'
                           }`}
                         >
                           {user.is_active ? 'Activo' : 'Inactivo'}
@@ -452,13 +452,13 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-secondary-200">
-          <h2 className="text-2xl font-heading font-bold text-secondary-900">{title}</h2>
+          <h2 className="text-2xl font-heading font-bold text-white">{title}</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Nombre <span className="text-red-600">*</span>
               </label>
               <input
@@ -472,7 +472,7 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Apellido <span className="text-red-600">*</span>
               </label>
               <input
@@ -486,7 +486,7 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Usuario <span className="text-red-600">*</span>
               </label>
               <input
@@ -501,7 +501,7 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email <span className="text-red-600">*</span>
               </label>
               <input
@@ -515,7 +515,7 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">Teléfono</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Teléfono</label>
               <input
                 type="tel"
                 value={formData.phone}
@@ -526,7 +526,7 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-2">Departamento</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Departamento</label>
               <input
                 type="text"
                 value={formData.department}
@@ -537,7 +537,7 @@ const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => 
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Rol <span className="text-red-600">*</span>
               </label>
               <select

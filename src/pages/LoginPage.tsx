@@ -191,32 +191,29 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
   // Vista de selección de perfil
   if (step === 'select') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 flex items-center justify-center p-4 animate-fade-in">
         <div className="w-full max-w-6xl">
           {/* Header */}
           <div className="text-center mb-12 animate-slide-down">
-            <div className="inline-block p-4 bg-gradient-primary rounded-2xl shadow-lg mb-6">
-              <FontAwesomeIcon icon={faCode} className="text-white text-5xl" />
-            </div>
-            <h1 className="text-5xl font-heading font-bold text-gradient mb-4">
-              TechProc
+            <h1 className="text-6xl font-heading font-bold text-gradient mb-4">
+              INCADEV
             </h1>
-            <p className="text-secondary-600 text-lg font-medium">
-              Sistema de Gestión Modular
+            <p className="text-gray-300 text-lg font-medium leading-relaxed">
+              Instituto de Capacitación<br />y Desarrollo Virtual
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-accent-500 mx-auto mt-4 rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-primary-600 mx-auto mt-6 rounded-full shadow-lg shadow-primary-500/20"></div>
           </div>
 
           {/* User Selection Cards */}
           <div className="mb-8 animate-slide-up">
-            <h2 className="text-2xl font-heading font-semibold text-center text-secondary-800 mb-6">
+            <h2 className="text-2xl font-heading font-semibold text-center text-white mb-6">
               Seleccione su perfil
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {userCards.map((userType, index) => (
                 <div
                   key={userType.value}
-                  className="card p-6 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-primary-500/20 transition-all duration-300 border border-gray-700/50 hover:-translate-y-1 p-6 cursor-pointer transform hover:scale-105"
                   style={{
                     animationDelay: `${index * 100}ms`,
                   }}
@@ -226,27 +223,27 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-14 h-14 rounded-lg bg-gradient-to-br ${userType.color} flex items-center justify-center flex-shrink-0 transform transition-transform duration-300 ${
-                        hoveredUser === userType.value ? 'rotate-6 scale-110' : ''
+                      className={`w-14 h-14 rounded-xl bg-gradient-to-br ${userType.color} flex items-center justify-center flex-shrink-0 transform transition-transform duration-300 shadow-lg ${
+                        hoveredUser === userType.value ? 'rotate-6 scale-110 shadow-xl' : ''
                       }`}
                     >
                       <FontAwesomeIcon icon={userType.icon} className="text-white text-2xl" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-heading font-semibold text-lg text-secondary-900 mb-1">
+                      <h3 className="font-heading font-semibold text-lg text-white mb-1">
                         {userType.label}
                       </h3>
-                      <p className="text-secondary-600 text-sm">
+                      <p className="text-gray-400 text-sm">
                         {userType.description}
                       </p>
                     </div>
-                    <div className="w-6 h-6 rounded-full border-2 border-secondary-300 flex items-center justify-center transition-colors">
+                    <div className="w-6 h-6 rounded-full border-2 border-primary-500/50 flex items-center justify-center transition-colors hover:border-primary-500 hover:bg-primary-500/20">
                       <FontAwesomeIcon
                         icon={faArrowRight}
                         className={`text-xs transition-all duration-300 ${
                           hoveredUser === userType.value
-                            ? 'text-primary-600 translate-x-0.5'
-                            : 'text-secondary-400'
+                            ? 'text-primary-400 translate-x-0.5'
+                            : 'text-gray-400'
                         }`}
                       />
                     </div>
@@ -257,13 +254,13 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-12 text-center text-secondary-500 text-sm animate-fade-in">
+          <div className="mt-12 text-center text-gray-400 text-sm animate-fade-in">
             <p>Seleccione su tipo de usuario para continuar</p>
             <div className="mt-4">
-              <span className="text-secondary-600">¿No tienes cuenta? </span>
+              <span className="text-gray-400">¿No tienes cuenta? </span>
               <button
                 onClick={handleRegisterClick}
-                className="text-primary-600 hover:text-primary-700 font-semibold hover:underline"
+                className="text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
               >
                 Solicita tu registro aquí
               </button>
@@ -276,48 +273,45 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
 
   // Vista de login (formulario)
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center p-4 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 flex items-center justify-center p-4 animate-fade-in">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8 animate-slide-down">
-          <div className="inline-block p-4 bg-gradient-primary rounded-2xl shadow-lg mb-6">
-            <FontAwesomeIcon icon={faCode} className="text-white text-5xl" />
-          </div>
           <h1 className="text-5xl font-heading font-bold text-gradient mb-4">
-            TechProc
+            INCADEV
           </h1>
-          <p className="text-secondary-600 text-lg font-medium">
-            Sistema de Gestión Modular
+          <p className="text-gray-300 text-lg font-medium leading-relaxed">
+            Instituto de Capacitación<br />y Desarrollo Virtual
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-accent-500 mx-auto mt-4 rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-primary-600 mx-auto mt-4 rounded-full shadow-lg shadow-primary-500/20"></div>
         </div>
 
         {/* Login Form */}
-        <div className="card p-8 animate-slide-up">
+        <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl border border-gray-700/50 p-8 animate-slide-up">
           {/* Selected Profile Header */}
           {selectedProfile && (
-            <div className="mb-6 flex items-center gap-4 p-4 bg-secondary-50 rounded-lg">
+            <div className="mb-6 flex items-center gap-4 p-4 bg-gradient-to-br from-primary-600/20 to-primary-700/20 backdrop-blur-sm rounded-xl border border-primary-500/30">
               <div
-                className={`w-12 h-12 rounded-lg bg-gradient-to-br ${selectedProfile.color} flex items-center justify-center flex-shrink-0`}
+                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${selectedProfile.color} flex items-center justify-center flex-shrink-0 shadow-lg`}
               >
                 <FontAwesomeIcon icon={selectedProfile.icon} className="text-white text-xl" />
               </div>
               <div className="flex-1">
-                <h3 className="font-heading font-semibold text-secondary-900">
+                <h3 className="font-heading font-semibold text-white">
                   {selectedProfile.label}
                 </h3>
-                <p className="text-xs text-secondary-600">{selectedProfile.description}</p>
+                <p className="text-xs text-gray-300">{selectedProfile.description}</p>
               </div>
             </div>
           )}
 
-          <h2 className="text-2xl font-heading font-bold text-center text-secondary-900 mb-6">
+          <h2 className="text-2xl font-heading font-bold text-center text-white mb-6">
             Iniciar Sesión
           </h2>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-shake">
-              <p className="text-red-700 text-sm text-center">{error}</p>
+            <div className="mb-6 p-4 bg-gradient-to-r from-danger/20 to-danger/30 border border-danger/50 rounded-xl animate-shake">
+              <p className="text-danger text-sm text-center">{error}</p>
             </div>
           )}
 
@@ -326,7 +320,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-secondary-700 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
                 Correo Electrónico
               </label>
@@ -334,7 +328,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <FontAwesomeIcon
                     icon={faEnvelope}
-                    className="text-secondary-400"
+                    className="text-gray-400"
                   />
                 </div>
                 <input
@@ -355,7 +349,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-secondary-700 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
                 Contraseña
               </label>
@@ -363,7 +357,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <FontAwesomeIcon
                     icon={faLock}
-                    className="text-secondary-400"
+                    className="text-gray-400"
                   />
                 </div>
                 <input
@@ -380,7 +374,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-secondary-400 hover:text-secondary-600"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-primary-400 transition-colors"
                   disabled={loading}
                 >
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
@@ -392,11 +386,11 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full btn btn-primary py-3 text-lg font-semibold rounded-lg shadow-lg ${
+              className={`w-full btn btn-primary py-3 text-lg font-semibold rounded-xl shadow-lg shadow-primary-500/20 ${
                 loading
                   ? 'opacity-70 cursor-not-allowed'
-                  : 'hover:shadow-xl hover:scale-[1.02]'
-              } inline-flex items-center justify-center gap-3 transition-all duration-200`}
+                  : 'hover:shadow-xl hover:shadow-primary-500/15 hover:scale-[1.02]'
+              } inline-flex items-center justify-center gap-3 transition-all duration-300`}
             >
               {loading ? (
                 <>
@@ -416,7 +410,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               type="button"
               onClick={handleBackToSelection}
               disabled={loading}
-              className="w-full btn bg-secondary-100 text-secondary-700 hover:bg-secondary-200 py-2 text-sm rounded-lg inline-flex items-center justify-center gap-2"
+              className="w-full btn bg-gradient-to-r from-gray-700 to-gray-800 text-gray-300 hover:from-gray-600 hover:to-gray-700 hover:text-white py-2 text-sm rounded-xl inline-flex items-center justify-center gap-2 border border-gray-700/50 hover:border-primary-500/50 transition-all duration-300"
             >
               <FontAwesomeIcon icon={faArrowLeft} />
               <span>Cambiar perfil</span>
@@ -424,11 +418,11 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
           </form>
 
           {/* Demo Credentials Info */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-xs text-blue-800 font-semibold mb-2">
+          <div className="mt-6 p-4 bg-gradient-to-r from-primary-600/20 to-primary-700/20 backdrop-blur-sm border border-primary-500/30 rounded-xl">
+            <p className="text-xs text-primary-300 font-semibold mb-2">
               📝 Credenciales de prueba para este perfil:
             </p>
-            <div className="text-xs text-blue-700 space-y-1">
+            <div className="text-xs text-gray-300 space-y-1">
               <p>• Email: {selectedProfile?.suggestedEmail}</p>
               <p>• Contraseña: {selectedProfile?.value === 'administrador' ? 'admin123' :
                                selectedProfile?.value === 'gestor_lms' ? 'lms123' :
@@ -440,11 +434,11 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-center text-secondary-500 text-sm animate-fade-in">
+        <div className="mt-6 text-center text-gray-400 text-sm animate-fade-in">
           <p>¿No tienes cuenta?</p>
           <button
             onClick={handleRegisterClick}
-            className="mt-2 text-primary-600 hover:text-primary-700 font-semibold hover:underline transition-colors"
+            className="mt-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
             disabled={loading}
           >
             Solicita tu registro aquí

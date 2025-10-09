@@ -12,13 +12,13 @@ export const ProgressChart = ({ data, title }: ProgressChartProps) => {
 
   return (
     <div className="w-full">
-      {title && <h3 className="text-base font-heading font-semibold text-secondary-900 mb-4">{title}</h3>}
+      {title && <h3 className="text-base font-heading font-semibold text-white mb-4">{title}</h3>}
       <div className="space-y-4">
         {data.map((item, index) => (
           <div key={index} className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-secondary-700 font-medium">{item.label}</span>
-              <span className="text-secondary-900 font-bold">{item.value}%</span>
+              <span className="text-gray-300 font-medium">{item.label}</span>
+              <span className="text-white font-bold">{item.value}%</span>
             </div>
             <div className="w-full bg-secondary-200 rounded-full h-3 overflow-hidden">
               <div

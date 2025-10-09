@@ -82,7 +82,7 @@ export const StoragePage = ({ storage, onUpdateStorage }: StoragePageProps) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Almacenamiento</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Almacenamiento</h2>
         <button
           onClick={handleNewStorage}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"

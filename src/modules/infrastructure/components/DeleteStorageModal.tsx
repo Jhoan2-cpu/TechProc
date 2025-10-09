@@ -16,32 +16,32 @@ export const DeleteStorageModal = ({ isOpen, storage, onConfirm, onCancel }: Del
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up">
         <div className="p-6">
-          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto bg-danger/20 rounded-full mb-4">
             <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-600 text-xl" />
           </div>
 
-          <h3 className="text-xl font-heading font-bold text-center text-secondary-900 mb-2">
+          <h3 className="text-xl font-heading font-bold text-center text-white mb-2">
             Eliminar Almacenamiento
           </h3>
 
-          <p className="text-center text-secondary-600 mb-4">
-            ¿Estás seguro de que deseas eliminar el almacenamiento <span className="font-bold text-secondary-900">{storage.storage_name}</span>?
+          <p className="text-center text-gray-400 mb-4">
+            ¿Estás seguro de que deseas eliminar el almacenamiento <span className="font-bold text-white">{storage.storage_name}</span>?
           </p>
 
-          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-            <p className="text-sm text-red-800 mb-2">
+          <div className="bg-danger/20 border-l-4 border-red-400 p-4 mb-6">
+            <p className="text-sm text-danger mb-2">
               <span className="font-semibold">Advertencia:</span> Esta acción no se puede deshacer.
             </p>
             {storage.used_gb > 0 && (
-              <p className="text-sm text-red-800">
+              <p className="text-sm text-danger">
                 Este almacenamiento contiene <span className="font-bold">{storage.used_gb} GB</span> de datos que podrían perderse.
               </p>
             )}
           </div>
 
-          <div className="space-y-2 text-sm text-secondary-600 mb-6">
+          <div className="space-y-2 text-sm text-gray-400 mb-6">
             <p><span className="font-semibold">Tipo:</span> {storage.storage_type.toUpperCase()}</p>
             <p><span className="font-semibold">Ubicación:</span> {storage.location}</p>
             <p><span className="font-semibold">Capacidad:</span> {storage.capacity_gb} GB</p>
@@ -54,7 +54,7 @@ export const DeleteStorageModal = ({ isOpen, storage, onConfirm, onCancel }: Del
           <div className="flex gap-3">
             <button
               onClick={onCancel}
-              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

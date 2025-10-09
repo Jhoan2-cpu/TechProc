@@ -19,19 +19,19 @@ interface ServerCardProps {
 export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDelete }: ServerCardProps) => {
   const getServerStatusColor = (status: string) => {
     switch (status) {
-      case 'online': return 'bg-green-100 text-green-700';
+      case 'online': return 'bg-success/20 text-green-700';
       case 'offline': return 'bg-gray-100 text-gray-700';
-      case 'maintenance': return 'bg-yellow-100 text-yellow-700';
-      case 'error': return 'bg-red-100 text-red-700';
+      case 'maintenance': return 'bg-warning/20 text-yellow-700';
+      case 'error': return 'bg-danger/20 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
 
   const getUsageColor = (percent: number) => {
-    if (percent >= 90) return 'bg-red-500';
+    if (percent >= 90) return 'bg-danger/20';
     if (percent >= 75) return 'bg-orange-500';
-    if (percent >= 50) return 'bg-yellow-500';
-    return 'bg-green-500';
+    if (percent >= 50) return 'bg-warning/20';
+    return 'bg-success/20';
   };
 
   return (
@@ -40,9 +40,9 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
         <div className="flex-1">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-xl font-heading font-bold text-secondary-900">{server.server_name}</h3>
-              <p className="text-secondary-600">{server.operating_system}</p>
-              <p className="text-sm text-secondary-500 mt-1">
+              <h3 className="text-xl font-heading font-bold text-white">{server.server_name}</h3>
+              <p className="text-gray-400">{server.operating_system}</p>
+              <p className="text-sm text-gray-300 mt-1">
                 <FontAwesomeIcon icon={faServer} className="mr-1" />
                 IP: <span className="font-mono">{server.ip_address}</span>
               </p>
@@ -53,28 +53,28 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-            <div className="bg-secondary-50 rounded-lg p-3">
-              <p className="text-xs text-secondary-600">CPU</p>
-              <p className="text-lg font-bold text-secondary-900">{server.cpu_cores} Cores</p>
+            <div className="bg-secondary-600/50 rounded-lg p-3">
+              <p className="text-xs text-gray-400">CPU</p>
+              <p className="text-lg font-bold text-white">{server.cpu_cores} Cores</p>
             </div>
-            <div className="bg-secondary-50 rounded-lg p-3">
-              <p className="text-xs text-secondary-600">RAM</p>
-              <p className="text-lg font-bold text-secondary-900">{server.ram_gb} GB</p>
+            <div className="bg-secondary-600/50 rounded-lg p-3">
+              <p className="text-xs text-gray-400">RAM</p>
+              <p className="text-lg font-bold text-white">{server.ram_gb} GB</p>
             </div>
-            <div className="bg-secondary-50 rounded-lg p-3">
-              <p className="text-xs text-secondary-600">Disco</p>
-              <p className="text-lg font-bold text-secondary-900">{server.disk_gb} GB</p>
+            <div className="bg-secondary-600/50 rounded-lg p-3">
+              <p className="text-xs text-gray-400">Disco</p>
+              <p className="text-lg font-bold text-white">{server.disk_gb} GB</p>
             </div>
-            <div className="bg-secondary-50 rounded-lg p-3">
-              <p className="text-xs text-secondary-600">Uptime</p>
-              <p className="text-lg font-bold text-secondary-900">{Math.floor(server.uptime_hours / 24)}d</p>
+            <div className="bg-secondary-600/50 rounded-lg p-3">
+              <p className="text-xs text-gray-400">Uptime</p>
+              <p className="text-lg font-bold text-white">{Math.floor(server.uptime_hours / 24)}d</p>
             </div>
           </div>
 
           <div className="space-y-2">
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-secondary-700">Uso CPU</span>
+                <span className="text-gray-300">Uso CPU</span>
                 <span className="font-semibold">{server.cpu_usage_percent}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
@@ -83,7 +83,7 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-secondary-700">Uso RAM</span>
+                <span className="text-gray-300">Uso RAM</span>
                 <span className="font-semibold">{server.ram_usage_percent}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
@@ -92,7 +92,7 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
             </div>
             <div>
               <div className="flex justify-between text-sm mb-1">
-                <span className="text-secondary-700">Uso Disco</span>
+                <span className="text-gray-300">Uso Disco</span>
                 <span className="font-semibold">{server.disk_usage_percent}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
@@ -102,21 +102,21 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
           </div>
 
           <div className="mt-4 pt-4 border-t border-secondary-200">
-            <p className="text-sm text-secondary-600">
+            <p className="text-sm text-gray-400">
               <span className="font-semibold">Ubicación:</span> {server.location}
             </p>
-            <p className="text-sm text-secondary-600">
+            <p className="text-sm text-gray-400">
               <span className="font-semibold">Instalación:</span> {formatDate(server.installation_date)}
             </p>
-            <p className="text-sm text-secondary-600">
+            <p className="text-sm text-gray-400">
               <span className="font-semibold">Último Mantenimiento:</span> {formatDate(server.last_maintenance)}
             </p>
             {server.services_running.length > 0 && (
               <div className="mt-2">
-                <p className="text-sm text-secondary-600 font-semibold mb-1">Servicios:</p>
+                <p className="text-sm text-gray-400 font-semibold mb-1">Servicios:</p>
                 <div className="flex flex-wrap gap-2">
                   {server.services_running.map((service, idx) => (
-                    <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                    <span key={idx} className="px-2 py-1 bg-primary-900/20 text-blue-700 text-xs rounded-full">
                       {service}
                     </span>
                   ))}
@@ -136,14 +136,14 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
           </button>
           <button
             onClick={() => onEdit(server)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center justify-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
           <button
             onClick={() => onDelete(server)}
-            className="btn bg-red-100 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+            className="btn bg-danger/20 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar

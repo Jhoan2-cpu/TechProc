@@ -83,14 +83,14 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
-          <h3 className="text-2xl font-heading font-bold text-secondary-900">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
+          <h3 className="text-2xl font-heading font-bold text-white">
             {software ? 'Editar Software' : 'Nuevo Software'}
           </h3>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -99,12 +99,12 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información Básica */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Información Básica
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Nombre del Software *
                 </label>
                 <input
@@ -118,7 +118,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Versión *
                 </label>
                 <input
@@ -132,7 +132,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Categoría *
                 </label>
                 <input
@@ -146,7 +146,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Proveedor *
                 </label>
                 <input
@@ -163,12 +163,12 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
 
           {/* Licencia y Fechas */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Licencia y Fechas
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   ID de Licencia (opcional)
                 </label>
                 <input
@@ -178,13 +178,13 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
                   className="input w-full"
                   placeholder="Dejar vacío si no aplica"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Vincular con una licencia existente en el sistema
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Fecha de Instalación *
                 </label>
                 <input
@@ -197,7 +197,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Última Actualización *
                 </label>
                 <input
@@ -210,7 +210,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Soporte Vigente Hasta
                 </label>
                 <input
@@ -225,12 +225,12 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
 
           {/* Servidores */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Servidores con esta Instalación
             </h4>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-secondary-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Agregar Servidor
               </label>
               <div className="flex gap-2">
@@ -250,21 +250,21 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
                   Agregar
                 </button>
               </div>
-              <p className="text-xs text-secondary-500 mt-1">
+              <p className="text-xs text-gray-300 mt-1">
                 Ingresa el ID del servidor donde está instalado este software
               </p>
             </div>
 
             {formData.server_ids.length > 0 ? (
               <div className="space-y-2">
-                <p className="text-sm text-secondary-600 mb-2">
+                <p className="text-sm text-gray-400 mb-2">
                   Servidores asociados ({formData.server_ids.length}):
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {formData.server_ids.map((serverId) => (
                     <div
                       key={serverId}
-                      className="px-3 py-2 bg-primary-100 text-primary-700 font-medium rounded-lg flex items-center gap-2"
+                      className="px-3 py-2 bg-primary-900/20 text-primary-700 font-medium rounded-lg flex items-center gap-2"
                     >
                       Servidor #{serverId}
                       <button
@@ -288,8 +288,8 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
           </div>
 
           {/* Configuración de Actualizaciones */}
-          <div className="card p-6 bg-green-50 border-green-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+          <div className="card p-6 bg-success/20 border-green-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Configuración de Actualizaciones
             </h4>
             <div className="flex items-center gap-3">
@@ -300,24 +300,24 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
                 onChange={(e) => setFormData({ ...formData, auto_update: e.target.checked })}
                 className="w-5 h-5 text-primary-600"
               />
-              <label htmlFor="auto_update" className="text-sm font-medium text-secondary-700">
+              <label htmlFor="auto_update" className="text-sm font-medium text-gray-300">
                 Habilitar actualizaciones automáticas
               </label>
             </div>
-            <p className="text-xs text-secondary-600 mt-2">
+            <p className="text-xs text-gray-400 mt-2">
               Si está habilitado, el sistema verificará y aplicará actualizaciones automáticamente cuando estén disponibles.
             </p>
           </div>
 
           {/* Integración GCP */}
-          <div className="card p-6 bg-blue-50 border-blue-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-2">
+          <div className="card p-6 bg-primary-900/20 border-blue-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-2">
               Integración con Google Cloud Platform
             </h4>
-            <p className="text-sm text-secondary-600 mb-2">
+            <p className="text-sm text-gray-400 mb-2">
               Este software podrá ser gestionado a través de servicios de GCP:
             </p>
-            <ul className="text-sm text-secondary-700 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-gray-300 space-y-1 list-disc list-inside">
               <li>VM Manager para gestión de software en instancias de Compute Engine</li>
               <li>Cloud Operations para monitoreo de rendimiento</li>
               <li>OS Config para gestión de parches y actualizaciones</li>
@@ -330,7 +330,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

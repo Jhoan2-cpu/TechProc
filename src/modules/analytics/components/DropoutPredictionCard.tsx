@@ -10,10 +10,10 @@ interface DropoutPredictionCardProps {
 export const DropoutPredictionCard = ({ student, index }: DropoutPredictionCardProps) => {
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'crítico': return 'bg-red-100 border-red-500 text-red-900';
-      case 'alto': return 'bg-orange-100 border-orange-500 text-orange-900';
-      case 'medio': return 'bg-yellow-100 border-yellow-500 text-yellow-900';
-      case 'bajo': return 'bg-green-100 border-green-500 text-green-900';
+      case 'crítico': return 'bg-danger/20 border-red-500 text-danger';
+      case 'alto': return 'bg-orange-900/20 border-orange-500 text-orange-400';
+      case 'medio': return 'bg-warning/20 border-yellow-500 text-warning';
+      case 'bajo': return 'bg-success/20 border-green-500 text-success';
       default: return 'bg-gray-100 border-gray-500 text-gray-900';
     }
   };
@@ -60,9 +60,9 @@ export const DropoutPredictionCard = ({ student, index }: DropoutPredictionCardP
               <div className="flex items-center justify-between mb-1">
                 <span className="font-bold text-sm">{factor.factor_name}</span>
                 <span className={`text-xs px-2 py-1 rounded ${
-                  factor.impact === 'alto' ? 'bg-red-200 text-red-900' :
-                  factor.impact === 'medio' ? 'bg-yellow-200 text-yellow-900' :
-                  'bg-green-200 text-green-900'
+                  factor.impact === 'alto' ? 'bg-red-200 text-danger' :
+                  factor.impact === 'medio' ? 'bg-yellow-200 text-warning' :
+                  'bg-green-200 text-success'
                 }`}>
                   Impacto {factor.impact}
                 </span>

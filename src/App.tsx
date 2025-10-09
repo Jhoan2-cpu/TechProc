@@ -196,11 +196,11 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
   const currentPath = location.pathname.split('/')[1] || '';
 
   return (
-    <div className="min-h-screen bg-secondary-50 flex animate-fade-in">
+    <div className="min-h-screen bg-gradient-dark flex animate-fade-in">
       {/* Toggle Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className={`fixed top-4 z-50 bg-primary-600 text-white p-3 rounded-r-[50%] shadow-lg hover:bg-primary-700 transition-all duration-300 ${
+        className={`fixed top-4 z-50 bg-gradient-to-r from-primary-500 to-primary-600 text-white p-3 rounded-r-full shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-110 transition-all duration-300 ${
           isSidebarOpen ? 'left-[276px]' : 'left-4'
         }`}
         aria-label={isSidebarOpen ? 'Ocultar sidebar' : 'Mostrar sidebar'}
@@ -209,34 +209,38 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
       </button>
 
       {/* Sidebar */}
-      <aside className={`bg-white shadow-lg border-r border-secondary-200 flex flex-col h-screen sticky top-0 transition-all duration-300 ${
+      <aside className={`bg-gradient-to-b from-secondary-500 to-secondary-700 shadow-2xl border-r border-primary-500/30 flex flex-col h-screen sticky top-0 transition-all duration-300 ${
         isSidebarOpen ? 'w-72' : 'w-0 -translate-x-full'
       }`}>
         <div className={`${isSidebarOpen ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300 flex flex-col h-full`}>
           {/* Logo */}
-          <div className="p-6 border-b border-secondary-200 flex-shrink-0">
-            <h1 className="text-2xl font-heading font-bold text-gradient">TechProc</h1>
-            <p className="text-sm text-secondary-600 mt-1">Sistema Modular</p>
+          <div className="p-6 border-b border-primary-500/20 flex-shrink-0">
+            <div className="flex flex-col items-center gap-3">
+              <div className="text-center">
+                <h1 className="text-4xl font-heading font-bold text-gradient mb-2">INCADEV</h1>
+                <p className="text-sm text-gray-300 leading-tight">Instituto de Capacitación<br />y Desarrollo Virtual</p>
+              </div>
+            </div>
           </div>
 
         {/* User Info */}
-        <div className="p-6 border-b border-secondary-200 bg-gradient-to-br from-primary-50 to-accent-50 flex-shrink-0">
+        <div className="p-6 border-b border-primary-500/20 bg-gradient-to-br from-primary-600/20 to-primary-700/20 backdrop-blur-sm flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center shadow-lg shadow-primary-500/20">
               <span className="text-white font-bold text-lg">
                 {currentUser.name.charAt(0)}
               </span>
             </div>
             <div className="flex-1">
-              <p className="font-semibold text-secondary-900">{currentUser.name}</p>
-              <p className="text-xs text-secondary-600">{currentUser.role.replace(/_/g, ' ')}</p>
+              <p className="font-semibold text-white">{currentUser.name}</p>
+              <p className="text-xs text-gray-300">{currentUser.role.replace(/_/g, ' ')}</p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 p-4 overflow-y-auto min-h-0">
-          <p className="text-xs font-semibold text-secondary-500 uppercase tracking-wider mb-3 px-3">
+          <p className="text-xs font-semibold text-primary-400 uppercase tracking-wider mb-3 px-3">
             Módulos
           </p>
           <div className="space-y-1">
@@ -262,10 +266,10 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
                         handleModuleChange(module.id);
                       }
                     }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                       isActive && !hasSubmodules
-                        ? 'bg-gradient-primary text-white shadow-md'
-                        : 'text-secondary-700 hover:bg-secondary-100'
+                        ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-105'
+                        : 'text-gray-300 hover:bg-gradient-to-r hover:from-secondary-600 hover:to-secondary-700 hover:text-white hover:shadow-lg hover:scale-105 border border-gray-700/30 hover:border-primary-500/50'
                     }`}
                   >
                     <FontAwesomeIcon icon={module.icon} className="text-lg" />
@@ -287,10 +291,10 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
                           <button
                             key={submodule.id}
                             onClick={() => handleModuleChange(submodule.id)}
-                            className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 text-sm ${
+                            className={`w-full flex items-center gap-3 px-4 py-2 rounded-xl transition-all duration-300 text-sm ${
                               isSubActive
-                                ? 'bg-gradient-primary text-white shadow-md'
-                                : 'text-secondary-600 hover:bg-secondary-100'
+                                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15'
+                                : 'text-gray-400 hover:bg-gradient-to-r hover:from-secondary-600 hover:to-secondary-700 hover:text-white hover:shadow-md border border-gray-700/20 hover:border-primary-500/40'
                             }`}
                           >
                             <FontAwesomeIcon icon={submodule.icon} />
@@ -307,14 +311,14 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         </nav>
 
         {/* Profile & Logout Section */}
-        <div className="p-4 border-t border-secondary-200 space-y-2 flex-shrink-0">
+        <div className="p-4 border-t border-primary-500/20 space-y-2 flex-shrink-0">
           {/* Profile Button */}
           <button
             onClick={() => handleModuleChange('profile')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
               currentPath === 'profile'
-                ? 'bg-gradient-to-r from-accent-500 to-accent-600 text-white shadow-md'
-                : 'text-secondary-700 hover:bg-secondary-100'
+                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-105'
+                : 'text-gray-300 hover:bg-gradient-to-r hover:from-secondary-600 hover:to-secondary-700 hover:text-white hover:shadow-lg hover:scale-105 border border-gray-700/30 hover:border-primary-500/50'
             }`}
           >
             <FontAwesomeIcon icon={faUserCircle} className="text-lg" />
@@ -324,7 +328,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
           {/* Logout Button */}
           <button
             onClick={onLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-all duration-200"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-danger hover:bg-gradient-to-r hover:from-danger/20 hover:to-danger/30 transition-all duration-300 hover:shadow-lg hover:shadow-danger/30 hover:scale-105 border border-gray-700/30 hover:border-danger/50"
           >
             <FontAwesomeIcon icon={faRightFromBracket} className="text-lg" />
             <span className="font-medium">Cerrar Sesión</span>
@@ -334,12 +338,15 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto h-screen">
+      <main className="flex-1 overflow-auto h-screen bg-gradient-to-br from-dark-600 to-smoky-600">
         <div className="p-14">
           <Routes>
             <Route path="/" element={
               <div className="flex items-center justify-center h-96">
-                <h2 className="text-2xl text-secondary-600">Seleccione un módulo</h2>
+                <div className="text-center">
+                  <h2 className="text-3xl font-heading font-bold text-gradient mb-2">Bienvenido a TechProc</h2>
+                  <p className="text-gray-400">Seleccione un módulo del menú lateral</p>
+                </div>
               </div>
             } />
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />

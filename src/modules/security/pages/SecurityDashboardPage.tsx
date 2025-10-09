@@ -57,7 +57,7 @@ export const SecurityDashboardPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando datos de seguridad...</p>
+          <p className="mt-4 text-gray-400">Cargando datos de seguridad...</p>
         </div>
       </div>
     );
@@ -65,7 +65,7 @@ export const SecurityDashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">
         security/dashboard
       </h1>
 
@@ -80,8 +80,8 @@ export const SecurityDashboardPage = () => {
 
       {/* Incidentes Críticos */}
       {criticalIncidents > 0 && (
-        <div className="card p-6 bg-red-50 border-2 border-red-200 animate-slide-up">
-          <h2 className="text-xl font-heading font-bold text-red-900 mb-4 flex items-center gap-2">
+        <div className="card p-6 bg-danger/20 border-2 border-red-200 animate-slide-up">
+          <h2 className="text-xl font-heading font-bold text-danger mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faExclamationTriangle} />
             Incidentes Críticos - ¡Atención Inmediata!
           </h2>
@@ -102,7 +102,7 @@ export const SecurityDashboardPage = () => {
 
       {/* Sesiones Activas Recientes */}
       <div className="card p-6 animate-slide-up">
-        <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4">
+        <h2 className="text-xl font-heading font-bold text-white mb-4">
           Sesiones Activas Recientes
         </h2>
         <div className="space-y-3">

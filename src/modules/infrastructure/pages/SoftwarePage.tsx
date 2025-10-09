@@ -81,7 +81,7 @@ export const SoftwarePage = ({ software, onUpdateSoftware }: SoftwarePageProps) 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Software</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Software</h2>
         <button
           onClick={handleNewSoftware}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"

@@ -81,7 +81,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-primary-500 to-primary-600">
           <h2 className="text-2xl font-heading font-bold text-white">
@@ -89,7 +89,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
           </h2>
           <button
             onClick={onClose}
-            className="text-white hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -99,12 +99,12 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
           <div className="p-6 space-y-6">
             {/* Información Básica */}
             <div>
-              <h3 className="text-lg font-heading font-semibold text-secondary-900 mb-4">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4">
                 Información Básica
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Título del Curso *
                   </label>
                   <input
@@ -118,7 +118,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Código del Curso *
                   </label>
                   <input
@@ -132,7 +132,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Descripción *
                   </label>
                   <textarea
@@ -145,7 +145,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Instructor *
                   </label>
                   <select
@@ -162,7 +162,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Duración (semanas) *
                   </label>
                   <input
@@ -176,7 +176,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Precio (S/.) *
                   </label>
                   <input
@@ -191,7 +191,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Estado *
                   </label>
                   <select
@@ -209,7 +209,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
 
             {/* Contenido del Curso */}
             <div className="border-t border-secondary-200 pt-6">
-              <h3 className="text-lg font-heading font-semibold text-secondary-900 mb-4">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4">
                 Contenido del Curso
               </h3>
 
@@ -223,7 +223,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                     className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
                       currentWeek === week
                         ? 'bg-primary-600 text-white'
-                        : 'bg-secondary-100 text-secondary-700 hover:bg-secondary-200'
+                        : 'bg-secondary-100 text-gray-300 hover:bg-secondary-200'
                     }`}
                   >
                     Semana {week}
@@ -251,9 +251,9 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 {contentsByWeek.map((item) => {
                   const typeInfo = contentTypes.find(t => t.value === item.type);
                   return (
-                    <div key={item.id} className="card p-4 bg-secondary-50">
+                    <div key={item.id} className="card p-4 bg-secondary-600/50">
                       <div className="flex items-start gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-white flex items-center justify-center flex-shrink-0 ${typeInfo?.color}`}>
+                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-br from-secondary-600 to-secondary-700 flex items-center justify-center flex-shrink-0 ${typeInfo?.color}`}>
                           <FontAwesomeIcon icon={typeInfo?.icon!} />
                         </div>
                         <div className="flex-1 space-y-2">
@@ -275,7 +275,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                         <button
                           type="button"
                           onClick={() => handleRemoveContent(item.id)}
-                          className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                          className="text-red-600 hover:bg-danger/20 p-2 rounded-lg transition-colors"
                         >
                           <FontAwesomeIcon icon={faTrash} />
                         </button>
@@ -285,7 +285,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                 })}
 
                 {contentsByWeek.length === 0 && (
-                  <p className="text-center text-secondary-500 py-4">
+                  <p className="text-center text-gray-300 py-4">
                     No hay contenido para esta semana. Agrega recursos usando los botones de arriba.
                   </p>
                 )}
@@ -294,11 +294,11 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-secondary-200 bg-secondary-50 flex gap-3 justify-end">
+          <div className="p-6 border-t border-secondary-200 bg-secondary-600/50 flex gap-3 justify-end">
             <button
               type="button"
               onClick={onClose}
-              className="btn bg-secondary-200 text-secondary-700 hover:bg-secondary-300"
+              className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
             >
               Cancelar
             </button>

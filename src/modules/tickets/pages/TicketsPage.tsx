@@ -214,10 +214,10 @@ export const TicketsPage = () => {
   const renderMyTickets = () => (
     <div className="card p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
+        <h2 className="text-2xl font-heading font-bold text-white">
           Mis Tickets Asignados
         </h2>
-        <span className="px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-semibold">
+        <span className="px-4 py-2 bg-primary-900/20 text-blue-700 rounded-full font-semibold">
           {myTickets.length} tickets
         </span>
       </div>
@@ -237,8 +237,8 @@ export const TicketsPage = () => {
         ) : (
           <div className="text-center py-12">
             <FontAwesomeIcon icon={faClipboardList} className="text-6xl text-secondary-300 mb-4" />
-            <p className="text-xl text-secondary-500">No tienes tickets asignados</p>
-            <p className="text-sm text-secondary-400 mt-2">Los tickets aparecerán aquí cuando te sean asignados o los tomes del pool disponible</p>
+            <p className="text-xl text-gray-300">No tienes tickets asignados</p>
+            <p className="text-sm text-gray-400 mt-2">Los tickets aparecerán aquí cuando te sean asignados o los tomes del pool disponible</p>
           </div>
         )}
       </div>
@@ -248,10 +248,10 @@ export const TicketsPage = () => {
   const renderAvailableTickets = () => (
     <div className="card p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">
+        <h2 className="text-2xl font-heading font-bold text-white">
           Tickets Disponibles para Asignar
         </h2>
-        <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full font-semibold">
+        <span className="px-4 py-2 bg-purple-900/20 text-purple-700 rounded-full font-semibold">
           {availableTickets.length} disponibles
         </span>
       </div>
@@ -271,8 +271,8 @@ export const TicketsPage = () => {
         ) : (
           <div className="text-center py-12">
             <FontAwesomeIcon icon={faInbox} className="text-6xl text-secondary-300 mb-4" />
-            <p className="text-xl text-secondary-500">No hay tickets disponibles</p>
-            <p className="text-sm text-secondary-400 mt-2">Todos los tickets han sido asignados</p>
+            <p className="text-xl text-gray-300">No hay tickets disponibles</p>
+            <p className="text-sm text-gray-400 mt-2">Todos los tickets han sido asignados</p>
           </div>
         )}
       </div>
@@ -315,7 +315,7 @@ export const TicketsPage = () => {
 
       {/* Mis Tickets Activos */}
       <div className="card p-6 animate-slide-up">
-        <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4">
+        <h2 className="text-xl font-heading font-bold text-white mb-4">
           Mis Tickets Activos
         </h2>
         <div className="space-y-4">
@@ -332,15 +332,15 @@ export const TicketsPage = () => {
               />
             ))
           ) : (
-            <p className="text-center text-secondary-500 py-8">No tienes tickets activos en este momento</p>
+            <p className="text-center text-gray-300 py-8">No tienes tickets activos en este momento</p>
           )}
         </div>
       </div>
 
       {/* Tickets Críticos Disponibles */}
       {criticalAvailable > 0 && (
-        <div className="card p-6 animate-slide-up bg-red-50 border-red-200">
-          <h2 className="text-xl font-heading font-bold text-red-900 mb-4 flex items-center gap-2">
+        <div className="card p-6 animate-slide-up bg-danger/20 border-red-200">
+          <h2 className="text-xl font-heading font-bold text-danger mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faExclamationTriangle} />
             Tickets Críticos Disponibles - ¡Atención Inmediata!
           </h2>
@@ -363,7 +363,7 @@ export const TicketsPage = () => {
     <div className="space-y-6">
       {/* Header con navegación por pestañas */}
       <div>
-        <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
+        <h1 className="text-3xl font-heading font-bold text-white mb-6">
           tickets/dashboard
         </h1>
 
@@ -375,8 +375,8 @@ export const TicketsPage = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
                 activeTab === tab.id
-                  ? 'border-primary-600 text-primary-600 bg-primary-50'
-                  : 'border-transparent text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                  ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                  : 'border-transparent text-gray-400 hover:text-white hover:bg-secondary-600/50'
               }`}
             >
               <FontAwesomeIcon icon={tab.icon} />

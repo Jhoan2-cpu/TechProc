@@ -133,14 +133,14 @@ export const PendingRegistrationsPage = () => {
   const rejectedCount = registrations.filter(r => r.status === 'rejected').length;
 
   return (
-    <div className="min-h-screen bg-secondary-50 p-6">
+    <div className="min-h-screen bg-secondary-600/50 p-6">
       {/* Header */}
       <div className="mb-6 pb-6 border-b-2 border-secondary-200">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900 flex items-center">
+        <h1 className="text-3xl font-heading font-bold text-white flex items-center">
           <FontAwesomeIcon icon={faUserClock} className="mr-3 text-primary-600" />
           users/pending-registrations
         </h1>
-        <p className="text-secondary-600 mt-2">
+        <p className="text-gray-400 mt-2">
           Revisa y aprueba las solicitudes de registro de nuevos usuarios
         </p>
       </div>
@@ -150,8 +150,8 @@ export const PendingRegistrationsPage = () => {
         <div className="card p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border-l-4 border-yellow-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-secondary-600 mb-1">Pendientes</p>
-              <p className="text-3xl font-heading font-bold text-yellow-900">{pendingCount}</p>
+              <p className="text-sm text-gray-400 mb-1">Pendientes</p>
+              <p className="text-3xl font-heading font-bold text-warning">{pendingCount}</p>
             </div>
             <FontAwesomeIcon icon={faUserClock} className="text-4xl text-yellow-600 opacity-50" />
           </div>
@@ -159,8 +159,8 @@ export const PendingRegistrationsPage = () => {
         <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-secondary-600 mb-1">Aprobados</p>
-              <p className="text-3xl font-heading font-bold text-green-900">{approvedCount}</p>
+              <p className="text-sm text-gray-400 mb-1">Aprobados</p>
+              <p className="text-3xl font-heading font-bold text-success">{approvedCount}</p>
             </div>
             <FontAwesomeIcon icon={faCheckCircle} className="text-4xl text-green-600 opacity-50" />
           </div>
@@ -168,8 +168,8 @@ export const PendingRegistrationsPage = () => {
         <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 border-l-4 border-red-600">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-secondary-600 mb-1">Rechazados</p>
-              <p className="text-3xl font-heading font-bold text-red-900">{rejectedCount}</p>
+              <p className="text-sm text-gray-400 mb-1">Rechazados</p>
+              <p className="text-3xl font-heading font-bold text-danger">{rejectedCount}</p>
             </div>
             <FontAwesomeIcon icon={faTimesCircle} className="text-4xl text-red-600 opacity-50" />
           </div>
@@ -178,7 +178,7 @@ export const PendingRegistrationsPage = () => {
 
       {/* Filter */}
       <div className="mb-6 flex items-center gap-3">
-        <FontAwesomeIcon icon={faFilter} className="text-secondary-400" />
+        <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
         <select
           className="select max-w-xs"
           value={filterStatus}
@@ -195,7 +195,7 @@ export const PendingRegistrationsPage = () => {
       <div className="grid grid-cols-1 gap-4">
         {filteredRegistrations.length === 0 ? (
           <div className="card p-8 text-center">
-            <p className="text-secondary-600">No hay solicitudes con este estado</p>
+            <p className="text-gray-400">No hay solicitudes con este estado</p>
           </div>
         ) : (
           filteredRegistrations.map((registration) => {
@@ -213,18 +213,18 @@ export const PendingRegistrationsPage = () => {
                         className={`text-2xl ${roleInfo.color}`}
                       />
                       <div>
-                        <h3 className="font-heading font-bold text-lg text-secondary-900">
+                        <h3 className="font-heading font-bold text-lg text-white">
                           {registration.firstName} {registration.lastName}
                         </h3>
-                        <p className="text-sm text-secondary-600">{roleInfo.label}</p>
+                        <p className="text-sm text-gray-400">{roleInfo.label}</p>
                       </div>
                       <span
                         className={`ml-auto px-3 py-1 rounded-full text-xs font-bold ${
                           registration.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-900'
+                            ? 'bg-warning/20 text-warning'
                             : registration.status === 'approved'
-                            ? 'bg-green-100 text-green-900'
-                            : 'bg-red-100 text-red-900'
+                            ? 'bg-success/20 text-success'
+                            : 'bg-danger/20 text-danger'
                         }`}
                       >
                         {registration.status === 'pending'
@@ -235,35 +235,35 @@ export const PendingRegistrationsPage = () => {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-secondary-600">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-400">
                       <div className="flex items-center gap-2">
-                        <FontAwesomeIcon icon={faEnvelope} className="text-secondary-400" />
+                        <FontAwesomeIcon icon={faEnvelope} className="text-gray-400" />
                         <span>{registration.email}</span>
                       </div>
                       {registration.phone && (
                         <div className="flex items-center gap-2">
-                          <FontAwesomeIcon icon={faPhone} className="text-secondary-400" />
+                          <FontAwesomeIcon icon={faPhone} className="text-gray-400" />
                           <span>{registration.phone}</span>
                         </div>
                       )}
                       {registration.department && (
                         <div className="flex items-center gap-2">
-                          <FontAwesomeIcon icon={faBuilding} className="text-secondary-400" />
+                          <FontAwesomeIcon icon={faBuilding} className="text-gray-400" />
                           <span>{registration.department}</span>
                         </div>
                       )}
                       <div className="flex items-center gap-2">
-                        <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+                        <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                         <span>{registration.submittedAt}</span>
                       </div>
                     </div>
 
                     {selectedRegistration?.id === registration.id && (
-                      <div className="mt-4 p-4 bg-secondary-50 rounded-lg">
-                        <p className="text-sm font-semibold text-secondary-700 mb-2">
+                      <div className="mt-4 p-4 bg-secondary-600/50 rounded-lg">
+                        <p className="text-sm font-semibold text-gray-300 mb-2">
                           Motivo de registro:
                         </p>
-                        <p className="text-sm text-secondary-600">{registration.reason}</p>
+                        <p className="text-sm text-gray-400">{registration.reason}</p>
                       </div>
                     )}
                   </div>

@@ -28,7 +28,7 @@ export const SecurityStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-green-700 mb-1">Sesiones Activas</p>
-            <p className="text-3xl font-heading font-bold text-green-900">{activeSessions}</p>
+            <p className="text-3xl font-heading font-bold text-success">{activeSessions}</p>
           </div>
           <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faUsers} className="text-white text-xl" />
@@ -44,7 +44,7 @@ export const SecurityStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-red-700 mb-1">IPs Bloqueadas</p>
-            <p className="text-3xl font-heading font-bold text-red-900">{activeBlockedIPs}</p>
+            <p className="text-3xl font-heading font-bold text-danger">{activeBlockedIPs}</p>
           </div>
           <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faBan} className="text-white text-xl" />
@@ -60,7 +60,7 @@ export const SecurityStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-orange-700 mb-1">Incidentes Críticos</p>
-            <p className="text-3xl font-heading font-bold text-orange-900">{criticalIncidents}</p>
+            <p className="text-3xl font-heading font-bold text-orange-400">{criticalIncidents}</p>
           </div>
           <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faExclamationTriangle} className="text-white text-xl" />
@@ -76,7 +76,7 @@ export const SecurityStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-blue-700 mb-1">Backups Exitosos</p>
-            <p className="text-3xl font-heading font-bold text-blue-900">
+            <p className="text-3xl font-heading font-bold text-primary-400">
               {successfulBackups}/{totalBackups}
             </p>
           </div>

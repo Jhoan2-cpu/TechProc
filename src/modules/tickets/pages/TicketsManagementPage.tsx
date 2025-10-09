@@ -111,21 +111,21 @@ export const TicketsManagementPage = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'baja': return 'text-blue-600 bg-blue-100';
-      case 'media': return 'text-yellow-600 bg-yellow-100';
-      case 'alta': return 'text-orange-600 bg-orange-100';
-      case 'cr�tica': return 'text-red-600 bg-red-100';
+      case 'baja': return 'text-blue-600 bg-primary-900/20';
+      case 'media': return 'text-yellow-600 bg-warning/20';
+      case 'alta': return 'text-orange-600 bg-orange-900/20';
+      case 'cr�tica': return 'text-red-600 bg-danger/20';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'abierto': return 'bg-blue-100 text-blue-700';
-      case 'en_progreso': return 'bg-yellow-100 text-yellow-700';
-      case 'resuelto': return 'bg-green-100 text-green-700';
+      case 'abierto': return 'bg-primary-900/20 text-blue-700';
+      case 'en_progreso': return 'bg-warning/20 text-yellow-700';
+      case 'resuelto': return 'bg-success/20 text-green-700';
       case 'cerrado': return 'bg-gray-100 text-gray-700';
-      case 'escalado': return 'bg-red-100 text-red-700';
+      case 'escalado': return 'bg-danger/20 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -146,7 +146,7 @@ export const TicketsManagementPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900">
+        <h1 className="text-3xl font-heading font-bold text-white">
           tickets/management
         </h1>
         <button className="btn btn-primary flex items-center gap-2 whitespace-nowrap">
@@ -162,7 +162,7 @@ export const TicketsManagementPage = () => {
             <div className="relative">
               <FontAwesomeIcon
                 icon={faSearch}
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               />
               <input
                 type="text"
@@ -203,27 +203,27 @@ export const TicketsManagementPage = () => {
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-secondary-200">
-            <thead className="bg-secondary-50">
+            <thead className="bg-secondary-600/50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   ID
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   T�tulo
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Categor�a
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Prioridad
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Estado
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Creaci�n
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                   Acciones
                 </th>
               </tr>
@@ -232,19 +232,19 @@ export const TicketsManagementPage = () => {
               {filteredTickets.map((ticket, index) => (
                 <tr
                   key={ticket.ticket_id}
-                  className="hover:bg-secondary-50 transition-colors animate-fade-in"
+                  className="hover:bg-secondary-600/50 transition-colors animate-fade-in"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-secondary-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                     #{ticket.ticket_id}
                   </td>
-                  <td className="px-6 py-4 text-sm text-secondary-900">
+                  <td className="px-6 py-4 text-sm text-white">
                     <div className="max-w-xs">
                       <p className="font-medium truncate">{ticket.title}</p>
-                      <p className="text-secondary-600 text-xs truncate">{ticket.description}</p>
+                      <p className="text-gray-400 text-xs truncate">{ticket.description}</p>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                     {ticket.category}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -258,22 +258,22 @@ export const TicketsManagementPage = () => {
                       {ticket.status.replace('_', ' ').charAt(0).toUpperCase() + ticket.status.replace('_', ' ').slice(1)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                     {formatDate(ticket.creation_date)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <div className="flex gap-2">
                       <button
                         onClick={() => setSelectedTicket(ticket)}
-                        className="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                        className="text-blue-600 hover:bg-primary-900/20 p-2 rounded-lg transition-colors"
                         title="Ver detalles"
                       >
                         <FontAwesomeIcon icon={faEye} />
                       </button>
-                      <button className="text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-colors" title="Editar">
+                      <button className="text-orange-600 hover:bg-orange-900/20 p-2 rounded-lg transition-colors" title="Editar">
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
-                      <button className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors" title="Eliminar">
+                      <button className="text-red-600 hover:bg-danger/20 p-2 rounded-lg transition-colors" title="Eliminar">
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </div>
@@ -286,7 +286,7 @@ export const TicketsManagementPage = () => {
 
         {filteredTickets.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-secondary-600 text-lg">No se encontraron tickets</p>
+            <p className="text-gray-400 text-lg">No se encontraron tickets</p>
           </div>
         )}
       </div>
@@ -297,12 +297,12 @@ export const TicketsManagementPage = () => {
           <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
             <div className="p-6 border-b border-secondary-200 sticky top-0 bg-white">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-heading font-bold text-secondary-900">
+                <h2 className="text-2xl font-heading font-bold text-white">
                   Detalles del Ticket #{selectedTicket.ticket_id}
                 </h2>
                 <button
                   onClick={() => setSelectedTicket(null)}
-                  className="text-secondary-400 hover:text-secondary-600 text-2xl"
+                  className="text-gray-400 hover:text-gray-400 text-2xl"
                 >
                   <FontAwesomeIcon icon={faTimes} />
                 </button>
@@ -311,7 +311,7 @@ export const TicketsManagementPage = () => {
             <div className="p-6 space-y-6">
               {/* T�tulo y Estado */}
               <div>
-                <h3 className="text-xl font-bold text-secondary-900 mb-2">{selectedTicket.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{selectedTicket.title}</h3>
                 <div className="flex gap-2 flex-wrap">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(selectedTicket.priority)}`}>
                     <FontAwesomeIcon icon={faArrowUp} className="mr-1" />
@@ -325,41 +325,41 @@ export const TicketsManagementPage = () => {
 
               {/* Descripci�n */}
               <div>
-                <label className="text-sm font-medium text-secondary-600 block mb-1">Descripci�n</label>
-                <p className="text-secondary-900 bg-secondary-50 p-3 rounded-lg">{selectedTicket.description}</p>
+                <label className="text-sm font-medium text-gray-400 block mb-1">Descripci�n</label>
+                <p className="text-white bg-secondary-600/50 p-3 rounded-lg">{selectedTicket.description}</p>
               </div>
 
               {/* Informaci�n del Ticket */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">
+                  <label className="text-sm font-medium text-gray-400 block mb-1">
                     <FontAwesomeIcon icon={faUser} className="mr-2" />
                     Usuario ID
                   </label>
-                  <p className="font-semibold text-secondary-900">{selectedTicket.user_id}</p>
+                  <p className="font-semibold text-white">{selectedTicket.user_id}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">Categor�a</label>
-                  <p className="font-semibold text-secondary-900">{selectedTicket.category}</p>
+                  <label className="text-sm font-medium text-gray-400 block mb-1">Categor�a</label>
+                  <p className="font-semibold text-white">{selectedTicket.category}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">
+                  <label className="text-sm font-medium text-gray-400 block mb-1">
                     <FontAwesomeIcon icon={faCalendar} className="mr-2" />
                     Fecha de Creaci�n
                   </label>
-                  <p className="font-semibold text-secondary-900">{formatDate(selectedTicket.creation_date)}</p>
+                  <p className="font-semibold text-white">{formatDate(selectedTicket.creation_date)}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">Fecha de Asignaci�n</label>
-                  <p className="font-semibold text-secondary-900">{formatDate(selectedTicket.assignment_date)}</p>
+                  <label className="text-sm font-medium text-gray-400 block mb-1">Fecha de Asignaci�n</label>
+                  <p className="font-semibold text-white">{formatDate(selectedTicket.assignment_date)}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">Fecha de Resoluci�n</label>
-                  <p className="font-semibold text-secondary-900">{formatDate(selectedTicket.resolution_date)}</p>
+                  <label className="text-sm font-medium text-gray-400 block mb-1">Fecha de Resoluci�n</label>
+                  <p className="font-semibold text-white">{formatDate(selectedTicket.resolution_date)}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">T�cnico Asignado</label>
-                  <p className="font-semibold text-secondary-900">
+                  <label className="text-sm font-medium text-gray-400 block mb-1">T�cnico Asignado</label>
+                  <p className="font-semibold text-white">
                     {selectedTicket.assigned_technician ? `T�cnico #${selectedTicket.assigned_technician}` : 'Sin asignar'}
                   </p>
                 </div>
@@ -368,8 +368,8 @@ export const TicketsManagementPage = () => {
               {/* Notas */}
               {selectedTicket.notes && (
                 <div>
-                  <label className="text-sm font-medium text-secondary-600 block mb-1">Notas</label>
-                  <p className="text-secondary-900 bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded">
+                  <label className="text-sm font-medium text-gray-400 block mb-1">Notas</label>
+                  <p className="text-white bg-warning/20 border-l-4 border-yellow-500 p-3 rounded">
                     {selectedTicket.notes}
                   </p>
                 </div>

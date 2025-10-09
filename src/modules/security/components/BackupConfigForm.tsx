@@ -37,13 +37,13 @@ export const BackupConfigForm = () => {
   };
 
   return (
-    <div className="card p-6 bg-blue-50 border-blue-200">
-      <h3 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+    <div className="card p-6 bg-primary-900/20 border-blue-200">
+      <h3 className="text-lg font-heading font-bold text-white mb-4">
         Configuración de Backup Automático
       </h3>
 
       {showSuccessMessage && (
-        <div className="mb-4 bg-green-100 border-l-4 border-green-500 p-4 animate-fade-in">
+        <div className="mb-4 bg-success/20 border-l-4 border-green-500 p-4 animate-fade-in">
           <div className="flex items-center">
             <FontAwesomeIcon icon={faCheckCircle} className="text-green-600 mr-2" />
             <p className="text-green-800 font-semibold">
@@ -55,7 +55,7 @@ export const BackupConfigForm = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white rounded-lg p-4">
-          <label className="block text-sm font-semibold text-secondary-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-300 mb-2">
             Tipo de Backup
           </label>
           <select
@@ -69,7 +69,7 @@ export const BackupConfigForm = () => {
           </select>
         </div>
         <div className="bg-white rounded-lg p-4">
-          <label className="block text-sm font-semibold text-secondary-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-300 mb-2">
             Frecuencia
           </label>
           <select
@@ -83,7 +83,7 @@ export const BackupConfigForm = () => {
           </select>
         </div>
         <div className="bg-white rounded-lg p-4">
-          <label className="block text-sm font-semibold text-secondary-700 mb-2">
+          <label className="block text-sm font-semibold text-gray-300 mb-2">
             Hora de Ejecución
           </label>
           <input
@@ -97,7 +97,7 @@ export const BackupConfigForm = () => {
       <div className="flex justify-end gap-3 mt-4">
         <button
           onClick={handleCancel}
-          className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+          className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
         >
           Cancelar
         </button>

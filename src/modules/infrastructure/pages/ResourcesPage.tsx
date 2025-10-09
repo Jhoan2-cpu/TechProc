@@ -21,7 +21,7 @@ export const ResourcesPage = ({ resources }: ResourcesPageProps) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Recursos Tecnológicos</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Recursos Tecnológicos</h2>
         <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
           <FontAwesomeIcon icon={faPlus} />
           Nuevo Recurso

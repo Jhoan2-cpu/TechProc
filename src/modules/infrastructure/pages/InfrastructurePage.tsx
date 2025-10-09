@@ -412,19 +412,19 @@ export const InfrastructurePage = () => {
 
   const getServerStatusColor = (status: string) => {
     switch (status) {
-      case 'online': return 'bg-green-100 text-green-700';
+      case 'online': return 'bg-success/20 text-green-700';
       case 'offline': return 'bg-gray-100 text-gray-700';
-      case 'maintenance': return 'bg-yellow-100 text-yellow-700';
-      case 'error': return 'bg-red-100 text-red-700';
+      case 'maintenance': return 'bg-warning/20 text-yellow-700';
+      case 'error': return 'bg-danger/20 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
 
   const getUsageColor = (percent: number) => {
-    if (percent >= 90) return 'bg-red-500';
+    if (percent >= 90) return 'bg-danger/20';
     if (percent >= 75) return 'bg-orange-500';
-    if (percent >= 50) return 'bg-yellow-500';
-    return 'bg-green-500';
+    if (percent >= 50) return 'bg-warning/20';
+    return 'bg-success/20';
   };
 
   const tabs = [
@@ -451,8 +451,8 @@ export const InfrastructurePage = () => {
 
       {/* Alertas Críticas */}
       {criticalAlerts > 0 && (
-        <div className="card p-6 bg-red-50 border-2 border-red-200">
-          <h2 className="text-xl font-heading font-bold text-red-900 mb-4 flex items-center gap-2">
+        <div className="card p-6 bg-danger/20 border-2 border-red-200">
+          <h2 className="text-xl font-heading font-bold text-danger mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faExclamationTriangle} />
             Alertas Críticas - ¡Atención Inmediata!
           </h2>
@@ -461,8 +461,8 @@ export const InfrastructurePage = () => {
               <div key={alert.id_alert} className="bg-white border border-red-300 rounded-lg p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <h3 className="font-heading font-bold text-secondary-900 mb-1">{alert.message}</h3>
-                    <p className="text-sm text-secondary-600">{formatDate(alert.detection_date)}</p>
+                    <h3 className="font-heading font-bold text-white mb-1">{alert.message}</h3>
+                    <p className="text-sm text-gray-400">{formatDate(alert.detection_date)}</p>
                   </div>
                   <button className="btn bg-red-600 hover:bg-red-700 text-white">
                     Resolver
@@ -476,14 +476,14 @@ export const InfrastructurePage = () => {
 
       {/* Resumen de Servidores */}
       <div className="card p-6">
-        <h2 className="text-xl font-heading font-bold text-secondary-900 mb-4">Estado de Servidores</h2>
+        <h2 className="text-xl font-heading font-bold text-white mb-4">Estado de Servidores</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {servers.slice(0, 4).map((server) => (
             <div key={server.id_server} className="border border-secondary-200 rounded-lg p-4">
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="font-heading font-bold text-secondary-900">{server.server_name}</h3>
-                  <p className="text-sm text-secondary-600">{server.ip_address}</p>
+                  <h3 className="font-heading font-bold text-white">{server.server_name}</h3>
+                  <p className="text-sm text-gray-400">{server.ip_address}</p>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${getServerStatusColor(server.status)}`}>
                   {server.status}
@@ -528,7 +528,7 @@ export const InfrastructurePage = () => {
   const renderServers = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Control Digital de Servidores</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Control Digital de Servidores</h2>
         <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
           <FontAwesomeIcon icon={faPlus} />
           Nuevo Servidor
@@ -551,7 +551,7 @@ export const InfrastructurePage = () => {
   const renderLicenses = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Licencias</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Licencias</h2>
         <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
           <FontAwesomeIcon icon={faPlus} />
           Nueva Licencia
@@ -574,7 +574,7 @@ export const InfrastructurePage = () => {
   const renderStorage = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Almacenamiento</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Almacenamiento</h2>
         <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
           <FontAwesomeIcon icon={faPlus} />
           Nuevo Almacenamiento
@@ -597,7 +597,7 @@ export const InfrastructurePage = () => {
   const renderSoftware = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Gestión de Software</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Software</h2>
         <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
           <FontAwesomeIcon icon={faPlus} />
           Registrar Software
@@ -620,7 +620,7 @@ export const InfrastructurePage = () => {
   const renderResources = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-secondary-900">Recursos Tecnológicos</h2>
+        <h2 className="text-2xl font-heading font-bold text-white">Recursos Tecnológicos</h2>
         <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
           <FontAwesomeIcon icon={faPlus} />
           Nuevo Recurso
@@ -644,7 +644,7 @@ export const InfrastructurePage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">
+        <h1 className="text-3xl font-heading font-bold text-white mb-6">
           infrastructure/dashboard
         </h1>
 
@@ -656,8 +656,8 @@ export const InfrastructurePage = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'border-primary-600 text-primary-600 bg-primary-50'
-                  : 'border-transparent text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                  ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                  : 'border-transparent text-gray-400 hover:text-white hover:bg-secondary-600/50'
               }`}
             >
               <FontAwesomeIcon icon={tab.icon} />

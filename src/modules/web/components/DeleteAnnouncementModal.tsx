@@ -16,7 +16,7 @@ export const DeleteAnnouncementModal = ({ isOpen, announcement, onConfirm, onCan
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
         <div className="bg-red-600 text-white p-6 flex items-center gap-4 rounded-t-lg">
           <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl" />
           <div>
@@ -26,30 +26,30 @@ export const DeleteAnnouncementModal = ({ isOpen, announcement, onConfirm, onCan
         </div>
 
         <div className="p-6 space-y-4">
-          <p className="text-secondary-700">
+          <p className="text-gray-300">
             ¿Estás seguro de que deseas eliminar el siguiente anuncio?
           </p>
 
-          <div className="bg-secondary-50 rounded-lg p-4 border-2 border-secondary-200">
-            <h4 className="font-bold text-secondary-900 mb-2">{announcement.title}</h4>
-            <p className="text-sm text-secondary-600 mb-3">{announcement.content}</p>
+          <div className="bg-secondary-600/50 rounded-lg p-4 border-2 border-secondary-200">
+            <h4 className="font-bold text-white mb-2">{announcement.title}</h4>
+            <p className="text-sm text-gray-400 mb-3">{announcement.content}</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div>
-                <span className="text-secondary-500">Tipo:</span>
-                <span className="ml-2 px-2 py-1 rounded bg-purple-100 text-purple-700">
+                <span className="text-gray-300">Tipo:</span>
+                <span className="ml-2 px-2 py-1 rounded bg-purple-900/20 text-purple-700">
                   {announcement.display_type}
                 </span>
               </div>
               <div>
-                <span className="text-secondary-500">Estado:</span>
-                <span className="ml-2 px-2 py-1 rounded bg-green-100 text-green-700">
+                <span className="text-gray-300">Estado:</span>
+                <span className="ml-2 px-2 py-1 rounded bg-success/20 text-green-700">
                   {announcement.status}
                 </span>
               </div>
-              <div className="text-secondary-600">
+              <div className="text-gray-400">
                 Vistas: <span className="font-bold">{announcement.views}</span>
               </div>
-              <div className="text-secondary-600">
+              <div className="text-gray-400">
                 Clics: <span className="font-bold">{announcement.clicks}</span> ({ctr}% CTR)
               </div>
             </div>
@@ -61,17 +61,17 @@ export const DeleteAnnouncementModal = ({ isOpen, announcement, onConfirm, onCan
             </p>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-red-800 font-semibold">
+          <div className="bg-danger/20 border-l-4 border-red-400 p-4">
+            <p className="text-sm text-danger font-semibold">
               Este anuncio será eliminado permanentemente del sistema.
             </p>
           </div>
         </div>
 
-        <div className="bg-secondary-50 p-6 flex gap-3 justify-end rounded-b-lg">
+        <div className="bg-secondary-600/50 p-6 flex gap-3 justify-end rounded-b-lg">
           <button
             onClick={onCancel}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faTimes} />
             Cancelar

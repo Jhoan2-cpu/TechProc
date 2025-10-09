@@ -30,16 +30,16 @@ export const SessionCard = ({
   if (compact) {
     // Vista compacta para el dashboard
     return (
-      <div className="border border-secondary-200 rounded-lg p-4 bg-green-50">
+      <div className="border border-secondary-200 rounded-lg p-4 bg-success/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faUser} className="text-white" />
             </div>
             <div>
-              <p className="font-semibold text-secondary-900">{session.user_name}</p>
-              <p className="text-sm text-secondary-600">{session.user_email}</p>
-              <div className="flex gap-4 text-xs text-secondary-500 mt-1">
+              <p className="font-semibold text-white">{session.user_name}</p>
+              <p className="text-sm text-gray-400">{session.user_email}</p>
+              <div className="flex gap-4 text-xs text-gray-300 mt-1">
                 <span className="flex items-center gap-1">
                   <FontAwesomeIcon icon={faGlobe} />
                   {session.ip_address}
@@ -52,8 +52,8 @@ export const SessionCard = ({
             </div>
           </div>
           <div className="text-right text-sm">
-            <p className="text-secondary-600">Última actividad:</p>
-            <p className="font-medium text-secondary-900">{formatDate(session.last_activity)}</p>
+            <p className="text-gray-400">Última actividad:</p>
+            <p className="font-medium text-white">{formatDate(session.last_activity)}</p>
           </div>
         </div>
       </div>
@@ -69,38 +69,38 @@ export const SessionCard = ({
             <FontAwesomeIcon icon={faUser} className="text-white text-2xl" />
           </div>
           <div>
-            <p className="font-heading font-bold text-lg text-secondary-900">
+            <p className="font-heading font-bold text-lg text-white">
               {session.user_name}
             </p>
-            <p className="text-sm text-secondary-600">{session.user_email}</p>
+            <p className="text-sm text-gray-400">{session.user_email}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm flex-1">
           <div>
-            <p className="text-secondary-500 text-xs mb-1">IP Address</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">IP Address</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faGlobe} className="text-primary-600" />
               {session.ip_address}
             </p>
           </div>
           <div>
-            <p className="text-secondary-500 text-xs mb-1">Dispositivo</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">Dispositivo</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faDesktop} className="text-primary-600" />
               {session.device}
             </p>
           </div>
           <div>
-            <p className="text-secondary-500 text-xs mb-1">Inicio</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">Inicio</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
               {formatDate(session.start_date)}
             </p>
           </div>
           <div>
-            <p className="text-secondary-500 text-xs mb-1">Última Actividad</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">Última Actividad</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faClock} className="text-primary-600" />
               {formatDate(session.last_activity)}
             </p>
@@ -109,7 +109,7 @@ export const SessionCard = ({
 
         {onTerminate && (
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+            <span className="px-3 py-1 bg-success/20 text-green-700 rounded-full text-sm font-semibold">
               Activa
             </span>
             <button

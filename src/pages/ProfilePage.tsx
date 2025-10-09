@@ -64,10 +64,10 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
     <div className="animate-fade-in">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-2">
+        <h1 className="text-3xl font-heading font-bold text-white mb-2">
           Mi Perfil
         </h1>
-        <p className="text-secondary-600">
+        <p className="text-gray-400">
           Gestiona tu información personal y configuración
         </p>
       </div>
@@ -86,26 +86,26 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
             </div>
 
             {/* Nombre y Rol */}
-            <h2 className="text-2xl font-heading font-bold text-secondary-900 mb-2">
+            <h2 className="text-2xl font-heading font-bold text-white mb-2">
               {user.name}
             </h2>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-100 rounded-full mb-6">
               <FontAwesomeIcon icon={config.icon} className="text-primary-600" />
-              <span className="text-sm font-medium text-secondary-700">
+              <span className="text-sm font-medium text-gray-300">
                 {config.label}
               </span>
             </div>
 
             {/* Stats */}
             <div className="space-y-4 mt-6">
-              <div className="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
-                <span className="text-sm text-secondary-600">ID de Usuario</span>
+              <div className="flex items-center justify-between p-3 bg-primary-900/20 rounded-lg">
+                <span className="text-sm text-gray-400">ID de Usuario</span>
                 <span className="font-semibold text-primary-700">#{user.id}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-accent-50 rounded-lg">
-                <span className="text-sm text-secondary-600">Estado</span>
+              <div className="flex items-center justify-between p-3 bg-primary-900/20 rounded-lg">
+                <span className="text-sm text-gray-400">Estado</span>
                 <span className="inline-flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <div className="w-2 h-2 rounded-full bg-success/20"></div>
                   <span className="font-semibold text-green-700">Activo</span>
                 </span>
               </div>
@@ -128,7 +128,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
         <div className="lg:col-span-2">
           <div className="card p-6 animate-slide-up" style={{ animationDelay: '100ms' }}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-heading font-semibold text-secondary-900">
+              <h3 className="text-xl font-heading font-semibold text-white">
                 Información Personal
               </h3>
               {isEditing && (
@@ -142,7 +142,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="btn bg-secondary-200 text-secondary-700 hover:bg-secondary-300 px-4 py-2"
+                    className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300 px-4 py-2"
                   >
                     <FontAwesomeIcon icon={faTimes} className="mr-2" />
                     Cancelar
@@ -154,7 +154,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
             <div className="space-y-6">
               {/* Nombre Completo */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                   <FontAwesomeIcon icon={faUser} className="text-primary-600" />
                   Nombre Completo
                 </label>
@@ -166,7 +166,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                     className="input"
                   />
                 ) : (
-                  <p className="text-secondary-900 font-medium bg-secondary-50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
                     {formData.name}
                   </p>
                 )}
@@ -174,7 +174,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
               {/* Email */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                   <FontAwesomeIcon icon={faEnvelope} className="text-primary-600" />
                   Correo Electrónico
                 </label>
@@ -186,7 +186,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                     className="input"
                   />
                 ) : (
-                  <p className="text-secondary-900 font-medium bg-secondary-50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
                     {formData.email}
                   </p>
                 )}
@@ -194,7 +194,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
               {/* Teléfono */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                   <FontAwesomeIcon icon={faPhone} className="text-primary-600" />
                   Teléfono
                 </label>
@@ -206,7 +206,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                     className="input"
                   />
                 ) : (
-                  <p className="text-secondary-900 font-medium bg-secondary-50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
                     {formData.phone}
                   </p>
                 )}
@@ -215,22 +215,22 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Departamento */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                     <FontAwesomeIcon icon={faBriefcase} className="text-primary-600" />
                     Departamento
                   </label>
-                  <p className="text-secondary-900 font-medium bg-secondary-50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
                     {formData.department}
                   </p>
                 </div>
 
                 {/* Fecha de Ingreso */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                     <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
                     Fecha de Ingreso
                   </label>
-                  <p className="text-secondary-900 font-medium bg-secondary-50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
                     {new Date(formData.joinDate).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
@@ -244,21 +244,21 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
           {/* Card de Actividad Reciente */}
           <div className="card p-6 mt-6 animate-slide-up" style={{ animationDelay: '200ms' }}>
-            <h3 className="text-xl font-heading font-semibold text-secondary-900 mb-4">
+            <h3 className="text-xl font-heading font-semibold text-white mb-4">
               Actividad Reciente
             </h3>
             <div className="space-y-3">
               {[
-                { action: 'Inicio de sesión', time: 'Hace 2 horas', color: 'bg-green-100 text-green-700' },
-                { action: 'Actualización de perfil', time: 'Hace 1 día', color: 'bg-blue-100 text-blue-700' },
-                { action: 'Acceso al módulo', time: 'Hace 3 días', color: 'bg-purple-100 text-purple-700' },
+                { action: 'Inicio de sesión', time: 'Hace 2 horas', color: 'bg-success/20 text-green-700' },
+                { action: 'Actualización de perfil', time: 'Hace 1 día', color: 'bg-primary-900/20 text-blue-700' },
+                { action: 'Acceso al módulo', time: 'Hace 3 días', color: 'bg-purple-900/20 text-purple-700' },
               ].map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors">
+                <div key={index} className="flex items-center justify-between p-3 bg-secondary-600/50 rounded-lg hover:bg-secondary-100 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className={`w-2 h-2 rounded-full ${activity.color.split(' ')[0].replace('100', '500')}`}></div>
-                    <span className="text-secondary-900 font-medium">{activity.action}</span>
+                    <span className="text-white font-medium">{activity.action}</span>
                   </div>
-                  <span className="text-sm text-secondary-600">{activity.time}</span>
+                  <span className="text-sm text-gray-400">{activity.time}</span>
                 </div>
               ))}
             </div>

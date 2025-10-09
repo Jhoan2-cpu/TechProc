@@ -29,21 +29,21 @@ export const TicketCard = ({
 }: TicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'baja': return 'text-blue-600 bg-blue-100';
-      case 'media': return 'text-yellow-600 bg-yellow-100';
-      case 'alta': return 'text-orange-600 bg-orange-100';
-      case 'crítica': return 'text-red-600 bg-red-100';
+      case 'baja': return 'text-blue-600 bg-primary-900/20';
+      case 'media': return 'text-yellow-600 bg-warning/20';
+      case 'alta': return 'text-orange-600 bg-orange-900/20';
+      case 'crítica': return 'text-red-600 bg-danger/20';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'abierto': return 'bg-blue-100 text-blue-700';
-      case 'en_progreso': return 'bg-yellow-100 text-yellow-700';
-      case 'resuelto': return 'bg-green-100 text-green-700';
+      case 'abierto': return 'bg-primary-900/20 text-blue-700';
+      case 'en_progreso': return 'bg-warning/20 text-yellow-700';
+      case 'resuelto': return 'bg-success/20 text-green-700';
       case 'cerrado': return 'bg-gray-100 text-gray-700';
-      case 'escalado': return 'bg-red-100 text-red-700';
+      case 'escalado': return 'bg-danger/20 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -57,7 +57,7 @@ export const TicketCard = ({
         <div className="flex flex-col md:flex-row md:items-start gap-4">
           <div className="flex-1">
             <div className="flex items-start justify-between gap-4 mb-2">
-              <h3 className="font-heading font-bold text-lg text-secondary-900">
+              <h3 className="font-heading font-bold text-lg text-white">
                 #{ticket.ticket_id} - {ticket.title}
               </h3>
               <div className="flex gap-2 flex-shrink-0">
@@ -70,25 +70,25 @@ export const TicketCard = ({
                 </span>
               </div>
             </div>
-            <p className="text-sm text-secondary-700 mb-3">
+            <p className="text-sm text-gray-300 mb-3">
               {ticket.description}
             </p>
-            <div className="flex flex-wrap gap-4 text-sm text-secondary-600">
+            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon={faUser} className="text-secondary-400" />
+                <FontAwesomeIcon icon={faUser} className="text-gray-400" />
                 <span>Usuario ID: {ticket.user_id}</span>
               </div>
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+                <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                 <span>{formatDate(ticket.creation_date)}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-secondary-400">Categoría:</span>
+                <span className="text-gray-400">Categoría:</span>
                 <span className="font-medium">{ticket.category}</span>
               </div>
             </div>
             {ticket.notes && (
-              <div className="mt-2 text-sm text-secondary-600 bg-secondary-50 p-2 rounded">
+              <div className="mt-2 text-sm text-gray-400 bg-secondary-600/50 p-2 rounded">
                 <span className="font-medium">Nota:</span> {ticket.notes}
               </div>
             )}
@@ -132,7 +132,7 @@ export const TicketCard = ({
       <div className="flex flex-col lg:flex-row lg:items-start gap-4">
         <div className="flex-1">
           <div className="flex items-start justify-between gap-4 mb-3">
-            <h3 className="font-heading font-bold text-xl text-secondary-900">
+            <h3 className="font-heading font-bold text-xl text-white">
               #{ticket.ticket_id} - {ticket.title}
             </h3>
             <div className="flex gap-2 flex-shrink-0">
@@ -145,29 +145,29 @@ export const TicketCard = ({
               </span>
             </div>
           </div>
-          <p className="text-secondary-700 mb-4">{ticket.description}</p>
-          <div className="flex flex-wrap gap-6 text-sm text-secondary-600">
+          <p className="text-gray-300 mb-4">{ticket.description}</p>
+          <div className="flex flex-wrap gap-6 text-sm text-gray-400">
             <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faUser} className="text-secondary-400" />
+              <FontAwesomeIcon icon={faUser} className="text-gray-400" />
               <span>Usuario ID: {ticket.user_id}</span>
             </div>
             <div className="flex items-center gap-2">
-              <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+              <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
               <span>Creado: {formatDate(ticket.creation_date)}</span>
             </div>
             {ticket.assignment_date && (
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon={faCalendar} className="text-secondary-400" />
+                <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                 <span>Asignado: {formatDate(ticket.assignment_date)}</span>
               </div>
             )}
             <div className="flex items-center gap-2">
-              <span className="text-secondary-400">Categoría:</span>
+              <span className="text-gray-400">Categoría:</span>
               <span className="font-medium text-primary-600">{ticket.category}</span>
             </div>
           </div>
           {ticket.notes && (
-            <div className="mt-3 text-sm text-secondary-700 bg-amber-50 border-l-4 border-amber-400 p-3 rounded">
+            <div className="mt-3 text-sm text-gray-300 bg-amber-50 border-l-4 border-amber-400 p-3 rounded">
               <span className="font-semibold">Nota:</span> {ticket.notes}
             </div>
           )}

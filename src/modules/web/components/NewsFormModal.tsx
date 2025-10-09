@@ -102,19 +102,19 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary-900/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faNewspaper} className="text-blue-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {news ? 'Editar Noticia' : 'Nueva Noticia'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -123,12 +123,12 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información Básica */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Información Básica
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Título *
                 </label>
                 <input
@@ -142,7 +142,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Slug (URL amigable)
                 </label>
                 <input
@@ -152,13 +152,13 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
                   className="input w-full font-mono text-sm"
                   placeholder="url-amigable-de-la-noticia"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Se genera automáticamente del título
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Resumen *
                 </label>
                 <textarea
@@ -170,13 +170,13 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
                   placeholder="Breve resumen de la noticia"
                   maxLength={200}
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   {formData.summary.length}/200 caracteres
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Contenido Completo *
                 </label>
                 <textarea
@@ -191,7 +191,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Categoría *
                   </label>
                   <input
@@ -205,7 +205,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Estado *
                   </label>
                   <select
@@ -222,7 +222,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   URL de Imagen Destacada
                 </label>
                 <input
@@ -238,7 +238,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
 
           {/* Tags */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Etiquetas
             </h4>
             <div className="mb-4">
@@ -266,7 +266,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
                 {formData.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm flex items-center gap-2"
+                    className="px-3 py-1 bg-primary-900/20 text-blue-700 rounded-full text-sm flex items-center gap-2"
                   >
                     {tag}
                     <button
@@ -283,13 +283,13 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
           </div>
 
           {/* SEO */}
-          <div className="card p-6 bg-purple-50 border-purple-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+          <div className="card p-6 bg-purple-900/20 border-purple-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               SEO (Opcional)
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Título SEO
                 </label>
                 <input
@@ -300,13 +300,13 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
                   placeholder="Título optimizado para motores de búsqueda"
                   maxLength={60}
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   {formData.seo_title.length}/60 caracteres
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Descripción SEO
                 </label>
                 <textarea
@@ -317,7 +317,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
                   placeholder="Descripción para motores de búsqueda"
                   maxLength={160}
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   {formData.seo_description.length}/160 caracteres
                 </p>
               </div>
@@ -329,7 +329,7 @@ export const NewsFormModal = ({ isOpen, news, onSave, onCancel }: NewsFormModalP
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

@@ -32,7 +32,7 @@ export const InfrastructureStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-green-700 mb-1">Servidores Online</p>
-            <p className="text-3xl font-heading font-bold text-green-900">{onlineServers}/{totalServers}</p>
+            <p className="text-3xl font-heading font-bold text-success">{onlineServers}/{totalServers}</p>
           </div>
           <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faServer} className="text-white text-xl" />
@@ -45,7 +45,7 @@ export const InfrastructureStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-blue-700 mb-1">Licencias Activas</p>
-            <p className="text-3xl font-heading font-bold text-blue-900">{activeLicenses}/{totalLicenses}</p>
+            <p className="text-3xl font-heading font-bold text-primary-400">{activeLicenses}/{totalLicenses}</p>
           </div>
           <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faKey} className="text-white text-xl" />
@@ -58,7 +58,7 @@ export const InfrastructureStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-red-700 mb-1">Alertas Críticas</p>
-            <p className="text-3xl font-heading font-bold text-red-900">{criticalAlerts}</p>
+            <p className="text-3xl font-heading font-bold text-danger">{criticalAlerts}</p>
           </div>
           <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faExclamationTriangle} className="text-white text-xl" />
@@ -71,7 +71,7 @@ export const InfrastructureStats = ({
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-purple-700 mb-1">Recursos en Uso</p>
-            <p className="text-3xl font-heading font-bold text-purple-900">{resourcesInUse}/{totalResources}</p>
+            <p className="text-3xl font-heading font-bold text-purple-400">{resourcesInUse}/{totalResources}</p>
           </div>
           <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faLaptop} className="text-white text-xl" />

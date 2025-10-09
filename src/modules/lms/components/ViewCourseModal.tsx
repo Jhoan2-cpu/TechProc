@@ -41,8 +41,8 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      publicado: 'bg-green-100 text-green-700',
-      borrador: 'bg-yellow-100 text-yellow-700',
+      publicado: 'bg-success/20 text-green-700',
+      borrador: 'bg-warning/20 text-yellow-700',
       archivado: 'bg-gray-100 text-gray-700',
     };
     return styles[status as keyof typeof styles] || styles.borrador;
@@ -50,9 +50,9 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
 
   const getEnrollmentStatusBadge = (status: string) => {
     const styles = {
-      activo: 'bg-blue-100 text-blue-700',
-      completado: 'bg-green-100 text-green-700',
-      abandonado: 'bg-red-100 text-red-700',
+      activo: 'bg-primary-900/20 text-blue-700',
+      completado: 'bg-success/20 text-green-700',
+      abandonado: 'bg-danger/20 text-red-700',
     };
     return styles[status as keyof typeof styles] || styles.activo;
   };
@@ -67,14 +67,14 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col animate-fade-in">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col animate-fade-in">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-secondary-200">
           <div className="flex-1">
-            <h2 className="text-2xl font-heading font-bold text-secondary-900">
+            <h2 className="text-2xl font-heading font-bold text-white">
               {course.title}
             </h2>
-            <p className="text-sm text-secondary-600 mt-1">
+            <p className="text-sm text-gray-400 mt-1">
               Detalles del curso
             </p>
           </div>
@@ -84,7 +84,7 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
             </span>
             <button
               onClick={onClose}
-              className="text-secondary-400 hover:text-secondary-600 transition-colors"
+              className="text-gray-400 hover:text-gray-400 transition-colors"
             >
               <FontAwesomeIcon icon={faTimes} className="text-xl" />
             </button>
@@ -96,85 +96,85 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Columna Izquierda - Detalles del Curso */}
             <div className="space-y-6">
-              <h3 className="text-lg font-heading font-semibold text-secondary-900 border-b pb-2">
+              <h3 className="text-lg font-heading font-semibold text-white border-b pb-2">
                 Detalles del Curso
               </h3>
 
               {/* Información básica */}
               <div className="space-y-4">
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                     <FontAwesomeIcon icon={faCode} className="text-primary-600" />
                     Código del Curso
                   </label>
-                  <div className="p-3 bg-secondary-50 rounded-lg">
-                    <p className="text-secondary-900 font-semibold">{course.code}</p>
+                  <div className="p-3 bg-secondary-600/50 rounded-lg">
+                    <p className="text-white font-semibold">{course.code}</p>
                   </div>
                 </div>
 
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                     <FontAwesomeIcon icon={faChalkboardTeacher} className="text-blue-600" />
                     Instructor
                   </label>
-                  <div className="p-3 bg-secondary-50 rounded-lg">
-                    <p className="text-secondary-900">
+                  <div className="p-3 bg-secondary-600/50 rounded-lg">
+                    <p className="text-white">
                       {course.instructor
                         ? `${course.instructor.first_name} ${course.instructor.last_name}`
                         : 'No asignado'}
                     </p>
                     {course.instructor?.email && (
-                      <p className="text-sm text-secondary-600 mt-1">{course.instructor.email}</p>
+                      <p className="text-sm text-gray-400 mt-1">{course.instructor.email}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                       <FontAwesomeIcon icon={faClock} className="text-purple-600" />
                       Duración
                     </label>
-                    <div className="p-3 bg-secondary-50 rounded-lg">
-                      <p className="text-secondary-900 font-semibold">{course.duration_weeks} sesiones</p>
+                    <div className="p-3 bg-secondary-600/50 rounded-lg">
+                      <p className="text-white font-semibold">{course.duration_weeks} sesiones</p>
                     </div>
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                       <FontAwesomeIcon icon={faMoneyBill} className="text-green-600" />
                       Precio
                     </label>
-                    <div className="p-3 bg-secondary-50 rounded-lg">
-                      <p className="text-secondary-900 font-semibold">S/. {course.price.toFixed(2)}</p>
+                    <div className="p-3 bg-secondary-600/50 rounded-lg">
+                      <p className="text-white font-semibold">S/. {course.price.toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                     <FontAwesomeIcon icon={faFileAlt} className="text-orange-600" />
                     Descripción
                   </label>
-                  <div className="p-4 bg-secondary-50 rounded-lg">
-                    <p className="text-secondary-900 whitespace-pre-wrap">{course.description}</p>
+                  <div className="p-4 bg-secondary-600/50 rounded-lg">
+                    <p className="text-white whitespace-pre-wrap">{course.description}</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 pt-2">
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                       <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
                       Creación
                     </label>
-                    <p className="text-sm text-secondary-900">{formatDate(course.created_at)}</p>
+                    <p className="text-sm text-white">{formatDate(course.created_at)}</p>
                   </div>
                   <div>
-                    <label className="flex items-center gap-2 text-sm font-medium text-secondary-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
                       <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
                       Actualización
                     </label>
-                    <p className="text-sm text-secondary-900">{formatDate(course.updated_at)}</p>
+                    <p className="text-sm text-white">{formatDate(course.updated_at)}</p>
                   </div>
                 </div>
               </div>
@@ -183,11 +183,11 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
             {/* Columna Derecha - Estudiantes Inscritos */}
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b pb-2">
-                <h3 className="text-lg font-heading font-semibold text-secondary-900 flex items-center gap-2">
+                <h3 className="text-lg font-heading font-semibold text-white flex items-center gap-2">
                   <FontAwesomeIcon icon={faUsers} className="text-primary-600" />
                   Estudiantes Inscritos
                 </h3>
-                <span className="text-sm bg-primary-100 text-primary-700 px-3 py-1 rounded-full font-semibold">
+                <span className="text-sm bg-primary-900/20 text-primary-700 px-3 py-1 rounded-full font-semibold">
                   {enrollments.length}
                 </span>
               </div>
@@ -196,27 +196,27 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
                 <div className="flex items-center justify-center py-12">
                   <div className="text-center">
                     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600 mx-auto"></div>
-                    <p className="mt-3 text-sm text-secondary-600">Cargando estudiantes...</p>
+                    <p className="mt-3 text-sm text-gray-400">Cargando estudiantes...</p>
                   </div>
                 </div>
               ) : enrollments.length === 0 ? (
-                <div className="text-center py-12 bg-secondary-50 rounded-lg">
-                  <FontAwesomeIcon icon={faUsers} className="text-4xl text-secondary-400 mb-3" />
-                  <p className="text-secondary-600">No hay estudiantes inscritos</p>
+                <div className="text-center py-12 bg-secondary-600/50 rounded-lg">
+                  <FontAwesomeIcon icon={faUsers} className="text-4xl text-gray-400 mb-3" />
+                  <p className="text-gray-400">No hay estudiantes inscritos</p>
                 </div>
               ) : (
                 <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
                   {enrollments.map((enrollment) => (
                     <div
                       key={enrollment.id}
-                      className="p-4 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors"
+                      className="p-4 bg-secondary-600/50 rounded-lg hover:bg-secondary-100 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
-                          <p className="font-semibold text-secondary-900">
+                          <p className="font-semibold text-white">
                             {enrollment.student?.first_name} {enrollment.student?.last_name}
                           </p>
-                          <div className="flex items-center gap-1 text-sm text-secondary-600 mt-1">
+                          <div className="flex items-center gap-1 text-sm text-gray-400 mt-1">
                             <FontAwesomeIcon icon={faEnvelope} className="text-xs" />
                             <span>{enrollment.student?.email}</span>
                           </div>
@@ -228,7 +228,7 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
 
                       <div className="flex items-center gap-3 mt-3">
                         <div className="flex-1">
-                          <div className="flex items-center justify-between text-xs text-secondary-600 mb-1">
+                          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
                             <span>Progreso</span>
                             <span className="font-semibold">{enrollment.progress}%</span>
                           </div>
@@ -241,7 +241,7 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
                         </div>
                       </div>
 
-                      <div className="mt-2 text-xs text-secondary-500">
+                      <div className="mt-2 text-xs text-gray-300">
                         <FontAwesomeIcon icon={faCalendar} className="mr-1" />
                         Inscrito: {formatDate(enrollment.enrolled_at)}
                       </div>
@@ -254,10 +254,10 @@ export const ViewCourseModal = ({ course, onClose }: ViewCourseModalProps) => {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 p-6 border-t border-secondary-200 bg-secondary-50">
+        <div className="flex justify-end gap-3 p-6 border-t border-secondary-200 bg-secondary-600/50">
           <button
             onClick={onClose}
-            className="btn bg-secondary-200 text-secondary-700 hover:bg-secondary-300"
+            className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
           >
             Cerrar
           </button>

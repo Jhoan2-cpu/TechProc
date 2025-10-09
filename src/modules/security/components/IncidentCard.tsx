@@ -34,13 +34,13 @@ export const IncidentCard = ({
   const getSeverityColor = (severity?: string) => {
     switch (severity) {
       case 'critical':
-        return 'bg-red-100 text-red-700 border-red-300';
+        return 'bg-danger/20 text-red-700 border-red-300';
       case 'high':
-        return 'bg-orange-100 text-orange-700 border-orange-300';
+        return 'bg-orange-900/20 text-orange-700 border-orange-300';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-300';
+        return 'bg-warning/20 text-yellow-700 border-yellow-300';
       case 'low':
-        return 'bg-blue-100 text-blue-700 border-blue-300';
+        return 'bg-primary-900/20 text-blue-700 border-blue-300';
       default:
         return 'bg-gray-100 text-gray-700 border-gray-300';
     }
@@ -49,11 +49,11 @@ export const IncidentCard = ({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-primary-900/20 text-blue-700';
       case 'investigating':
-        return 'bg-yellow-100 text-yellow-700';
+        return 'bg-warning/20 text-yellow-700';
       case 'resolved':
-        return 'bg-green-100 text-green-700';
+        return 'bg-success/20 text-green-700';
       case 'closed':
         return 'bg-gray-100 text-gray-700';
       default:
@@ -100,11 +100,11 @@ export const IncidentCard = ({
       <div className="bg-white border border-red-300 rounded-lg p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <h3 className="font-heading font-bold text-secondary-900 mb-1">
+            <h3 className="font-heading font-bold text-white mb-1">
               #{incident.id_incident} - {incident.title}
             </h3>
-            <p className="text-sm text-secondary-700 mb-2">{incident.description}</p>
-            <div className="flex gap-4 text-xs text-secondary-600">
+            <p className="text-sm text-gray-300 mb-2">{incident.description}</p>
+            <div className="flex gap-4 text-xs text-gray-400">
               <span>{formatDate(incident.report_date)}</span>
               {incident.assigned_to && <span>Asignado a: {incident.assigned_to}</span>}
             </div>
@@ -127,14 +127,14 @@ export const IncidentCard = ({
     <div className="card p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-start gap-3">
-          <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-danger/20 rounded-full flex items-center justify-center">
             <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-600 text-xl" />
           </div>
           <div>
-            <h3 className="font-heading font-bold text-lg text-secondary-900">
+            <h3 className="font-heading font-bold text-lg text-white">
               #{incident.id_incident} - {incident.title}
             </h3>
-            <p className="text-sm text-secondary-600 mt-1">{incident.description}</p>
+            <p className="text-sm text-gray-400 mt-1">{incident.description}</p>
           </div>
         </div>
 
@@ -155,16 +155,16 @@ export const IncidentCard = ({
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
         <div>
-          <p className="text-secondary-500 text-xs mb-1">Fecha de Reporte</p>
-          <p className="text-secondary-900 font-medium flex items-center gap-1">
+          <p className="text-gray-300 text-xs mb-1">Fecha de Reporte</p>
+          <p className="text-white font-medium flex items-center gap-1">
             <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
             {formatDate(incident.report_date)}
           </p>
         </div>
         {incident.assigned_to && (
           <div>
-            <p className="text-secondary-500 text-xs mb-1">Asignado a</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">Asignado a</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faUser} className="text-primary-600" />
               {incident.assigned_to}
             </p>
@@ -172,8 +172,8 @@ export const IncidentCard = ({
         )}
         {incident.resolved_date && (
           <div>
-            <p className="text-secondary-500 text-xs mb-1">Fecha de Resolución</p>
-            <p className="text-secondary-900 font-medium flex items-center gap-1">
+            <p className="text-gray-300 text-xs mb-1">Fecha de Resolución</p>
+            <p className="text-white font-medium flex items-center gap-1">
               <FontAwesomeIcon icon={faCheckCircle} className="text-green-600" />
               {formatDate(incident.resolved_date)}
             </p>
@@ -195,7 +195,7 @@ export const IncidentCard = ({
           {onEdit && (
             <button
               onClick={() => onEdit(incident)}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
             >
               Editar
             </button>

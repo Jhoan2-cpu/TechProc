@@ -14,7 +14,7 @@ export const DeleteFAQModal = ({ isOpen, faq, onConfirm, onCancel }: DeleteFAQMo
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
         <div className="bg-red-600 text-white p-6 flex items-center gap-4 rounded-t-lg">
           <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl" />
           <div>
@@ -24,29 +24,29 @@ export const DeleteFAQModal = ({ isOpen, faq, onConfirm, onCancel }: DeleteFAQMo
         </div>
 
         <div className="p-6 space-y-4">
-          <p className="text-secondary-700">
+          <p className="text-gray-300">
             ¿Estás seguro de que deseas eliminar la siguiente pregunta frecuente?
           </p>
 
-          <div className="bg-secondary-50 rounded-lg p-4 border-2 border-secondary-200">
+          <div className="bg-secondary-600/50 rounded-lg p-4 border-2 border-secondary-200">
             <div className="space-y-2">
               <div>
-                <p className="text-xs text-secondary-600">Pregunta</p>
-                <p className="font-bold text-secondary-900">{faq.question}</p>
+                <p className="text-xs text-gray-400">Pregunta</p>
+                <p className="font-bold text-white">{faq.question}</p>
               </div>
               <div>
-                <p className="text-xs text-secondary-600">Respuesta</p>
-                <p className="text-sm text-secondary-700">{faq.answer}</p>
+                <p className="text-xs text-gray-400">Respuesta</p>
+                <p className="text-sm text-gray-300">{faq.answer}</p>
               </div>
               <div className="flex items-center gap-4 text-xs pt-2">
                 <span className="px-2 py-1 rounded bg-indigo-100 text-indigo-700">
                   {faq.category}
                 </span>
-                <span className="text-secondary-600">
+                <span className="text-gray-400">
                   Usada {faq.usage_count} veces
                 </span>
                 <span className={`px-2 py-1 rounded ${
-                  faq.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                  faq.active ? 'bg-success/20 text-green-700' : 'bg-gray-100 text-gray-700'
                 }`}>
                   {faq.active ? 'Activa' : 'Inactiva'}
                 </span>
@@ -63,17 +63,17 @@ export const DeleteFAQModal = ({ isOpen, faq, onConfirm, onCancel }: DeleteFAQMo
             </div>
           )}
 
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-red-800 font-semibold">
+          <div className="bg-danger/20 border-l-4 border-red-400 p-4">
+            <p className="text-sm text-danger font-semibold">
               Esta FAQ será eliminada permanentemente del chatbot.
             </p>
           </div>
         </div>
 
-        <div className="bg-secondary-50 p-6 flex gap-3 justify-end rounded-b-lg">
+        <div className="bg-secondary-600/50 p-6 flex gap-3 justify-end rounded-b-lg">
           <button
             onClick={onCancel}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faTimes} />
             Cancelar

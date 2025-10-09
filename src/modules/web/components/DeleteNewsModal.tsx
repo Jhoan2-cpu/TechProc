@@ -14,7 +14,7 @@ export const DeleteNewsModal = ({ isOpen, news, onConfirm, onCancel }: DeleteNew
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-lg w-full animate-slide-up">
         <div className="bg-red-600 text-white p-6 flex items-center gap-4 rounded-t-lg">
           <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl" />
           <div>
@@ -24,31 +24,31 @@ export const DeleteNewsModal = ({ isOpen, news, onConfirm, onCancel }: DeleteNew
         </div>
 
         <div className="p-6 space-y-4">
-          <p className="text-secondary-700">
+          <p className="text-gray-300">
             ¿Estás seguro de que deseas eliminar la siguiente noticia?
           </p>
 
-          <div className="bg-secondary-50 rounded-lg p-4 border-2 border-secondary-200">
-            <h4 className="font-bold text-secondary-900 mb-2">{news.title}</h4>
-            <p className="text-sm text-secondary-600 mb-2">{news.summary}</p>
-            <div className="flex items-center gap-4 text-xs text-secondary-500">
+          <div className="bg-secondary-600/50 rounded-lg p-4 border-2 border-secondary-200">
+            <h4 className="font-bold text-white mb-2">{news.title}</h4>
+            <p className="text-sm text-gray-400 mb-2">{news.summary}</p>
+            <div className="flex items-center gap-4 text-xs text-gray-300">
               <span>Categoría: {news.category}</span>
               <span>Vistas: {news.views}</span>
-              <span className="px-2 py-1 rounded bg-blue-100 text-blue-700">{news.status}</span>
+              <span className="px-2 py-1 rounded bg-primary-900/20 text-blue-700">{news.status}</span>
             </div>
           </div>
 
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-red-800 font-semibold">
+          <div className="bg-danger/20 border-l-4 border-red-400 p-4">
+            <p className="text-sm text-danger font-semibold">
               Esta noticia será eliminada permanentemente del sistema.
             </p>
           </div>
         </div>
 
-        <div className="bg-secondary-50 p-6 flex gap-3 justify-end rounded-b-lg">
+        <div className="bg-secondary-600/50 p-6 flex gap-3 justify-end rounded-b-lg">
           <button
             onClick={onCancel}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700 flex items-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faTimes} />
             Cancelar

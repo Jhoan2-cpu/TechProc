@@ -48,7 +48,7 @@ export const InstructorsPage = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-secondary-600">Cargando instructores...</p>
+          <p className="mt-4 text-gray-400">Cargando instructores...</p>
         </div>
       </div>
     );
@@ -87,14 +87,14 @@ export const InstructorsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-secondary-900 mb-6">lms/instructors</h1>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/instructors</h1>
       {/* Header */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
         <div className="flex-1 max-w-md">
           <div className="relative">
             <FontAwesomeIcon
               icon={faSearch}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             />
             <input
               type="text"
@@ -144,12 +144,12 @@ export const InstructorsPage = () => {
                 </span>
               </div>
               <div className="flex-1">
-                <h3 className="font-heading font-bold text-lg text-secondary-900 mb-1">
+                <h3 className="font-heading font-bold text-lg text-white mb-1">
                   {instructor.first_name} {instructor.last_name}
                 </h3>
                 <div className="flex items-center gap-2 text-sm">
-                  <FontAwesomeIcon icon={faEnvelope} className="text-secondary-400" />
-                  <span className="text-secondary-600">{instructor.email}</span>
+                  <FontAwesomeIcon icon={faEnvelope} className="text-gray-400" />
+                  <span className="text-gray-400">{instructor.email}</span>
                   {instructor.email_verified_at && (
                     <FontAwesomeIcon icon={faCheckCircle} className="text-green-600 text-xs" />
                   )}
@@ -158,7 +158,7 @@ export const InstructorsPage = () => {
             </div>
 
             {/* Bio */}
-            <p className="text-sm text-secondary-700 mb-4 line-clamp-2">
+            <p className="text-sm text-gray-300 mb-4 line-clamp-2">
               {instructor.bio}
             </p>
 
@@ -166,11 +166,11 @@ export const InstructorsPage = () => {
             <div className="space-y-2 mb-4 pb-4 border-b border-secondary-200">
               <div className="flex items-start gap-2 text-sm">
                 <FontAwesomeIcon icon={faBriefcase} className="text-blue-600 mt-1" />
-                <span className="text-secondary-700 flex-1">{instructor.expertise_area}</span>
+                <span className="text-gray-300 flex-1">{instructor.expertise_area}</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="text-purple-600" />
-                <span className="text-secondary-700">{instructor.country_location}</span>
+                <span className="text-gray-300">{instructor.country_location}</span>
               </div>
             </div>
 
@@ -179,10 +179,10 @@ export const InstructorsPage = () => {
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${
                   instructor.status === 'activo'
-                    ? 'bg-green-100 text-green-700'
+                    ? 'bg-success/20 text-green-700'
                     : instructor.status === 'inactivo'
                     ? 'bg-gray-100 text-gray-700'
-                    : 'bg-red-100 text-red-700'
+                    : 'bg-danger/20 text-red-700'
                 }`}
               >
                 {instructor.status.charAt(0).toUpperCase() + instructor.status.slice(1)}
@@ -191,21 +191,21 @@ export const InstructorsPage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setSelectedInstructor(instructor)}
-                  className="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                  className="text-blue-600 hover:bg-primary-900/20 p-2 rounded-lg transition-colors"
                   title="Ver detalles"
                 >
                   <FontAwesomeIcon icon={faEye} />
                 </button>
                 <button
                   onClick={() => setInstructorToEdit(instructor)}
-                  className="text-orange-600 hover:bg-orange-50 p-2 rounded-lg transition-colors"
+                  className="text-orange-600 hover:bg-orange-900/20 p-2 rounded-lg transition-colors"
                   title="Editar"
                 >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
                 <button
                   onClick={() => setInstructorToDelete(instructor)}
-                  className="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                  className="text-red-600 hover:bg-danger/20 p-2 rounded-lg transition-colors"
                   title="Eliminar"
                 >
                   <FontAwesomeIcon icon={faTrash} />
@@ -218,7 +218,7 @@ export const InstructorsPage = () => {
 
       {filteredInstructors.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-secondary-600 text-lg">No se encontraron instructores</p>
+          <p className="text-gray-400 text-lg">No se encontraron instructores</p>
         </div>
       )}
 
@@ -226,17 +226,17 @@ export const InstructorsPage = () => {
       <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="card p-4 bg-gradient-to-br from-blue-50 to-blue-100">
           <p className="text-sm text-blue-700 mb-1">Total de Instructores</p>
-          <p className="text-3xl font-heading font-bold text-blue-900">{instructors.length}</p>
+          <p className="text-3xl font-heading font-bold text-primary-400">{instructors.length}</p>
         </div>
         <div className="card p-4 bg-gradient-to-br from-green-50 to-green-100">
           <p className="text-sm text-green-700 mb-1">Instructores Activos</p>
-          <p className="text-3xl font-heading font-bold text-green-900">
+          <p className="text-3xl font-heading font-bold text-success">
             {instructors.filter(i => i.status === 'activo').length}
           </p>
         </div>
         <div className="card p-4 bg-gradient-to-br from-orange-50 to-orange-100">
           <p className="text-sm text-orange-700 mb-1">Áreas de Expertise</p>
-          <p className="text-3xl font-heading font-bold text-orange-900">
+          <p className="text-3xl font-heading font-bold text-orange-400">
             {new Set(instructors.map(i => i.expertise_area.split(',')[0])).size}
           </p>
         </div>
@@ -248,12 +248,12 @@ export const InstructorsPage = () => {
           <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full animate-scale-in">
             <div className="p-6 border-b border-secondary-200">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-heading font-bold text-secondary-900">
+                <h2 className="text-2xl font-heading font-bold text-white">
                   Detalles del Instructor
                 </h2>
                 <button
                   onClick={() => setSelectedInstructor(null)}
-                  className="text-secondary-400 hover:text-secondary-600"
+                  className="text-gray-400 hover:text-gray-400"
                 >
                   <FontAwesomeIcon icon={faTimesCircle} className="text-2xl" />
                 </button>
@@ -267,29 +267,29 @@ export const InstructorsPage = () => {
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-secondary-900">
+                  <h3 className="text-xl font-bold text-white">
                     {selectedInstructor.first_name} {selectedInstructor.last_name}
                   </h3>
-                  <p className="text-secondary-600">{selectedInstructor.email}</p>
+                  <p className="text-gray-400">{selectedInstructor.email}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-secondary-600">Estado</label>
-                  <p className="font-semibold text-secondary-900">{selectedInstructor.status}</p>
+                  <label className="text-sm font-medium text-gray-400">Estado</label>
+                  <p className="font-semibold text-white">{selectedInstructor.status}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-secondary-600">País</label>
-                  <p className="font-semibold text-secondary-900">{selectedInstructor.country_location}</p>
+                  <label className="text-sm font-medium text-gray-400">País</label>
+                  <p className="font-semibold text-white">{selectedInstructor.country_location}</p>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-sm font-medium text-secondary-600">Biografía</label>
-                  <p className="text-secondary-900">{selectedInstructor.bio}</p>
+                  <label className="text-sm font-medium text-gray-400">Biografía</label>
+                  <p className="text-white">{selectedInstructor.bio}</p>
                 </div>
                 <div className="col-span-2">
-                  <label className="text-sm font-medium text-secondary-600">Áreas de Expertise</label>
-                  <p className="text-secondary-900">{selectedInstructor.expertise_area}</p>
+                  <label className="text-sm font-medium text-gray-400">Áreas de Expertise</label>
+                  <p className="text-white">{selectedInstructor.expertise_area}</p>
                 </div>
               </div>
             </div>

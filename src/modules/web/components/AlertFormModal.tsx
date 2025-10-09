@@ -61,19 +61,19 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-white border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
+        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-success/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faBell} className="text-green-600 text-xl" />
             </div>
-            <h3 className="text-2xl font-heading font-bold text-secondary-900">
+            <h3 className="text-2xl font-heading font-bold text-white">
               {alert ? 'Editar Alerta' : 'Nueva Alerta'}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="text-secondary-400 hover:text-secondary-600 transition-colors"
+            className="text-gray-400 hover:text-gray-400 transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-2xl" />
           </button>
@@ -82,12 +82,12 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Información de la Alerta */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Contenido de la Alerta
             </h4>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Mensaje *
                 </label>
                 <textarea
@@ -102,7 +102,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Tipo *
                   </label>
                   <select
@@ -119,7 +119,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Estado *
                   </label>
                   <select
@@ -135,7 +135,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-secondary-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
                     Prioridad *
                   </label>
                   <input
@@ -147,7 +147,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                     onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) })}
                     className="input w-full"
                   />
-                  <p className="text-xs text-secondary-500 mt-1">
+                  <p className="text-xs text-gray-300 mt-1">
                     Orden de visualización (1-10)
                   </p>
                 </div>
@@ -157,12 +157,12 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
 
           {/* Enlace (Opcional) */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Enlace (Opcional)
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   URL del Enlace
                 </label>
                 <input
@@ -175,7 +175,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Texto del Enlace
                 </label>
                 <input
@@ -191,12 +191,12 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
 
           {/* Fechas */}
           <div className="card p-6">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+            <h4 className="text-lg font-heading font-bold text-white mb-4">
               Periodo de Vigencia
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Fecha de Inicio *
                 </label>
                 <input
@@ -209,7 +209,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-secondary-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Fecha de Fin
                 </label>
                 <input
@@ -218,7 +218,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                   onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
                   className="input w-full"
                 />
-                <p className="text-xs text-secondary-500 mt-1">
+                <p className="text-xs text-gray-300 mt-1">
                   Dejar vacío para alerta sin fecha de fin
                 </p>
               </div>
@@ -226,17 +226,17 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
           </div>
 
           {/* Vista Previa */}
-          <div className="card p-6 bg-blue-50 border-blue-200">
-            <h4 className="text-lg font-heading font-bold text-secondary-900 mb-3">
+          <div className="card p-6 bg-primary-900/20 border-blue-200">
+            <h4 className="text-lg font-heading font-bold text-white mb-3">
               Vista Previa
             </h4>
             <div className={`p-4 rounded-lg border-2 ${
-              formData.type === 'success' ? 'bg-green-100 border-green-300' :
-              formData.type === 'warning' ? 'bg-yellow-100 border-yellow-300' :
-              formData.type === 'error' ? 'bg-red-100 border-red-300' :
-              'bg-blue-100 border-blue-300'
+              formData.type === 'success' ? 'bg-success/20 border-green-300' :
+              formData.type === 'warning' ? 'bg-warning/20 border-yellow-300' :
+              formData.type === 'error' ? 'bg-danger/20 border-red-300' :
+              'bg-primary-900/20 border-blue-300'
             }`}>
-              <p className="text-sm font-medium text-secondary-900">
+              <p className="text-sm font-medium text-white">
                 {formData.message || 'Tu mensaje aparecerá aquí...'}
                 {formData.link_url && formData.link_text && (
                   <span className="ml-2 underline font-bold">
@@ -252,7 +252,7 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
             >
               Cancelar
             </button>

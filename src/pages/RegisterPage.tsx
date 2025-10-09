@@ -159,15 +159,15 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center p-4">
-        <div className="card p-8 max-w-md text-center animate-scale-in">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <FontAwesomeIcon icon={faCheckCircle} className="text-green-600 text-4xl" />
+      <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 flex items-center justify-center p-4">
+        <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl border border-gray-700/50 p-8 max-w-md text-center animate-scale-in">
+          <div className="w-20 h-20 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-success/50">
+            <FontAwesomeIcon icon={faCheckCircle} className="text-white text-4xl" />
           </div>
-          <h2 className="text-2xl font-heading font-bold text-secondary-900 mb-4">
+          <h2 className="text-2xl font-heading font-bold text-white mb-4">
             ¡Solicitud Enviada!
           </h2>
-          <p className="text-secondary-600 mb-6">
+          <p className="text-gray-300 mb-6">
             Tu solicitud de registro ha sido enviada exitosamente. El administrador la revisará y te
             contactará pronto.
           </p>
@@ -184,88 +184,91 @@ export const RegisterPage = ({}: RegisterPageProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 p-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 p-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 animate-slide-down">
-          <div className="inline-block p-4 bg-gradient-primary rounded-2xl shadow-lg mb-4">
-            <FontAwesomeIcon icon={faUserPlus} className="text-white text-4xl" />
-          </div>
-          <h1 className="text-4xl font-heading font-bold text-gradient mb-2">
-            Registro de Usuario
+          <h1 className="text-5xl font-heading font-bold text-gradient mb-3">
+            INCADEV
           </h1>
-          <p className="text-secondary-600">
+          <p className="text-gray-300 text-lg mb-4 leading-relaxed">
+            Instituto de Capacitación<br />y Desarrollo Virtual
+          </p>
+          <h2 className="text-2xl font-heading font-bold text-white mb-2">
+            Registro de Usuario
+          </h2>
+          <p className="text-gray-400">
             Complete el formulario para solicitar acceso al sistema
           </p>
         </div>
 
         {/* Form */}
-        <div className="card p-8 animate-slide-up">
+        <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl border border-gray-700/50 p-8 animate-slide-up">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Información Personal */}
             <div>
-              <h3 className="text-lg font-heading font-bold text-secondary-900 mb-4 flex items-center gap-2">
-                <FontAwesomeIcon icon={faUser} className="text-primary-600" />
+              <h3 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
+                <FontAwesomeIcon icon={faUser} className="text-primary-400" />
                 Información Personal
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Nombre *
                   </label>
                   <input
                     type="text"
-                    className={`input ${errors.firstName ? 'border-red-500' : ''}`}
+                    className={`input ${errors.firstName ? 'border-danger' : ''}`}
                     value={formData.firstName}
                     onChange={(e) => handleChange('firstName', e.target.value)}
                     placeholder="Juan"
                   />
                   {errors.firstName && (
-                    <p className="text-red-600 text-xs mt-1">{errors.firstName}</p>
+                    <p className="text-danger text-xs mt-1">{errors.firstName}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Apellido *
                   </label>
                   <input
                     type="text"
-                    className={`input ${errors.lastName ? 'border-red-500' : ''}`}
+                    className={`input ${errors.lastName ? 'border-danger' : ''}`}
                     value={formData.lastName}
                     onChange={(e) => handleChange('lastName', e.target.value)}
                     placeholder="Pérez"
                   />
                   {errors.lastName && (
-                    <p className="text-red-600 text-xs mt-1">{errors.lastName}</p>
+                    <p className="text-danger text-xs mt-1">{errors.lastName}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Email *
                   </label>
                   <div className="relative">
                     <FontAwesomeIcon
                       icon={faEnvelope}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
                     />
                     <input
                       type="email"
-                      className={`input pl-12 ${errors.email ? 'border-red-500' : ''}`}
+                      className={`input pl-12 ${errors.email ? 'border-danger' : ''}`}
                       value={formData.email}
                       onChange={(e) => handleChange('email', e.target.value)}
                       placeholder="juan.perez@email.com"
                     />
                   </div>
-                  {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email}</p>}
+                  {errors.email && <p className="text-danger text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Teléfono
                   </label>
                   <div className="relative">
                     <FontAwesomeIcon
                       icon={faPhone}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
                     />
                     <input
                       type="tel"
@@ -281,34 +284,34 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
             {/* Información de Cuenta */}
             <div>
-              <h3 className="text-lg font-heading font-bold text-secondary-900 mb-4 flex items-center gap-2">
-                <FontAwesomeIcon icon={faIdCard} className="text-primary-600" />
+              <h3 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
+                <FontAwesomeIcon icon={faIdCard} className="text-primary-400" />
                 Información de Cuenta
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Nombre de Usuario *
                   </label>
                   <input
                     type="text"
-                    className={`input ${errors.username ? 'border-red-500' : ''}`}
+                    className={`input ${errors.username ? 'border-danger' : ''}`}
                     value={formData.username}
                     onChange={(e) => handleChange('username', e.target.value)}
                     placeholder="juan.perez"
                   />
                   {errors.username && (
-                    <p className="text-red-600 text-xs mt-1">{errors.username}</p>
+                    <p className="text-danger text-xs mt-1">{errors.username}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Departamento
                   </label>
                   <div className="relative">
                     <FontAwesomeIcon
                       icon={faBuilding}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
                     />
                     <input
                       type="text"
@@ -320,45 +323,45 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Contraseña *
                   </label>
                   <div className="relative">
                     <FontAwesomeIcon
                       icon={faLock}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
                     />
                     <input
                       type="password"
-                      className={`input pl-12 ${errors.password ? 'border-red-500' : ''}`}
+                      className={`input pl-12 ${errors.password ? 'border-danger' : ''}`}
                       value={formData.password}
                       onChange={(e) => handleChange('password', e.target.value)}
                       placeholder="••••••••"
                     />
                   </div>
                   {errors.password && (
-                    <p className="text-red-600 text-xs mt-1">{errors.password}</p>
+                    <p className="text-danger text-xs mt-1">{errors.password}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-secondary-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Confirmar Contraseña *
                   </label>
                   <div className="relative">
                     <FontAwesomeIcon
                       icon={faLock}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-secondary-400"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
                     />
                     <input
                       type="password"
-                      className={`input pl-12 ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                      className={`input pl-12 ${errors.confirmPassword ? 'border-danger' : ''}`}
                       value={formData.confirmPassword}
                       onChange={(e) => handleChange('confirmPassword', e.target.value)}
                       placeholder="••••••••"
                     />
                   </div>
                   {errors.confirmPassword && (
-                    <p className="text-red-600 text-xs mt-1">{errors.confirmPassword}</p>
+                    <p className="text-danger text-xs mt-1">{errors.confirmPassword}</p>
                   )}
                 </div>
               </div>
@@ -366,7 +369,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
             {/* Selección de Rol */}
             <div>
-              <h3 className="text-lg font-heading font-bold text-secondary-900 mb-4">
+              <h3 className="text-lg font-heading font-bold text-white mb-4">
                 Rol Solicitado *
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -374,19 +377,19 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                   <div
                     key={role.value}
                     onClick={() => handleChange('role', role.value)}
-                    className={`card p-4 cursor-pointer transition-all duration-300 ${
+                    className={`bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border p-4 cursor-pointer transform hover:scale-105 ${
                       formData.role === role.value
-                        ? 'ring-2 ring-primary-500 bg-primary-50'
-                        : 'hover:shadow-lg'
+                        ? 'ring-2 ring-primary-500 border-primary-500 shadow-primary-500/20'
+                        : 'border-gray-700/50 hover:border-primary-500/50'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <FontAwesomeIcon icon={role.icon} className={`text-2xl ${role.color}`} />
                       <div className="flex-1">
-                        <p className="font-semibold text-secondary-900">{role.label}</p>
+                        <p className="font-semibold text-white">{role.label}</p>
                       </div>
                       {formData.role === role.value && (
-                        <div className="w-5 h-5 rounded-full bg-primary-500 flex items-center justify-center">
+                        <div className="w-5 h-5 rounded-full bg-primary-500 flex items-center justify-center shadow-lg shadow-primary-500/20">
                           <svg
                             className="w-3 h-3 text-white"
                             fill="none"
@@ -404,30 +407,30 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                   </div>
                 ))}
               </div>
-              {errors.role && <p className="text-red-600 text-sm mt-2">{errors.role}</p>}
+              {errors.role && <p className="text-danger text-sm mt-2">{errors.role}</p>}
             </div>
 
             {/* Motivo de Registro */}
             <div>
-              <label className="block text-sm font-semibold text-secondary-700 mb-2">
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
                 Motivo de Registro *
               </label>
               <textarea
-                className={`input min-h-[100px] ${errors.reason ? 'border-red-500' : ''}`}
+                className={`input min-h-[100px] ${errors.reason ? 'border-danger' : ''}`}
                 value={formData.reason}
                 onChange={(e) => handleChange('reason', e.target.value)}
                 placeholder="Explique brevemente por qué necesita acceso al sistema y cómo lo utilizará..."
                 rows={4}
               />
-              {errors.reason && <p className="text-red-600 text-xs mt-1">{errors.reason}</p>}
+              {errors.reason && <p className="text-danger text-xs mt-1">{errors.reason}</p>}
             </div>
 
             {/* Botones */}
-            <div className="flex items-center justify-between pt-4 border-t border-secondary-200">
+            <div className="flex items-center justify-between pt-4 border-t border-primary-500/20">
               <button
                 type="button"
                 onClick={handleBackToLogin}
-                className="btn btn-outline flex items-center gap-2"
+                className="btn bg-gradient-to-r from-gray-700 to-gray-800 text-gray-300 hover:from-gray-600 hover:to-gray-700 hover:text-white border border-gray-700/50 hover:border-primary-500/50 flex items-center gap-2 transition-all duration-300 hover:scale-105"
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
                 Volver al Login
@@ -441,7 +444,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-6 text-secondary-500 text-sm">
+        <div className="text-center mt-6 text-gray-400 text-sm">
           <p>Su solicitud será revisada por un administrador</p>
         </div>
       </div>

@@ -35,37 +35,37 @@ export const ContactFormCard = ({
           <div className="flex items-start justify-between mb-3">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-heading font-bold text-secondary-900">{contact.full_name}</h3>
+                <h3 className="text-lg font-heading font-bold text-white">{contact.full_name}</h3>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(contact.priority)}`}>
                   {contact.priority}
                 </span>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contact.status)}`}>
                   {contact.status}
                 </span>
-                <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">
+                <span className="px-2 py-1 bg-purple-900/20 text-purple-700 rounded text-xs">
                   {contact.form_type}
                 </span>
               </div>
-              <p className="text-sm text-secondary-600">{contact.email} {contact.phone && `• ${contact.phone}`}</p>
-              {contact.company && <p className="text-sm text-secondary-600">Empresa: {contact.company}</p>}
+              <p className="text-sm text-gray-400">{contact.email} {contact.phone && `• ${contact.phone}`}</p>
+              {contact.company && <p className="text-sm text-gray-400">Empresa: {contact.company}</p>}
             </div>
           </div>
           <div className="mb-3">
-            <p className="text-sm font-semibold text-secondary-700 mb-1">Asunto:</p>
-            <p className="text-secondary-900">{contact.subject}</p>
+            <p className="text-sm font-semibold text-gray-300 mb-1">Asunto:</p>
+            <p className="text-white">{contact.subject}</p>
           </div>
-          <div className="bg-secondary-50 rounded p-3 mb-3">
-            <p className="text-sm font-semibold text-secondary-700 mb-1">Mensaje:</p>
-            <p className="text-sm text-secondary-900">{contact.message}</p>
+          <div className="bg-secondary-600/50 rounded p-3 mb-3">
+            <p className="text-sm font-semibold text-gray-300 mb-1">Mensaje:</p>
+            <p className="text-sm text-white">{contact.message}</p>
           </div>
           {contact.response && (
-            <div className="bg-green-50 border-l-4 border-green-500 rounded p-3 mb-3">
+            <div className="bg-success/20 border-l-4 border-green-500 rounded p-3 mb-3">
               <p className="text-sm font-semibold text-green-800 mb-1">Respuesta enviada:</p>
-              <p className="text-sm text-secondary-700">{contact.response}</p>
-              <p className="text-xs text-secondary-600 mt-2">Por {contact.assigned_to_name} • {formatDateTime(contact.response_date)}</p>
+              <p className="text-sm text-gray-300">{contact.response}</p>
+              <p className="text-xs text-gray-400 mt-2">Por {contact.assigned_to_name} • {formatDateTime(contact.response_date)}</p>
             </div>
           )}
-          <div className="flex gap-4 text-xs text-secondary-600">
+          <div className="flex gap-4 text-xs text-gray-400">
             <span><FontAwesomeIcon icon={faClock} className="mr-1" />Recibido: {formatDateTime(contact.submission_date)}</span>
             {contact.assigned_to_name && <span>Asignado a: {contact.assigned_to_name}</span>}
             {contact.utm_source && <span>Fuente: {contact.utm_source}/{contact.utm_medium}</span>}
@@ -106,7 +106,7 @@ export const ContactFormCard = ({
           {onViewDetails && (
             <button
               onClick={() => onViewDetails(contact)}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-secondary-700"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
               title="Ver detalles completos"
             >
               Ver Detalles
