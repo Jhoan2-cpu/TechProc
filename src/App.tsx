@@ -196,7 +196,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
   const currentPath = location.pathname.split('/')[1] || '';
 
   return (
-    <div className="min-h-screen bg-gradient-dark flex animate-fade-in">
+    <div className="min-h-screen flex animate-fade-in">
       {/* Toggle Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -338,7 +338,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto h-screen bg-gradient-to-br from-dark-600 to-smoky-600">
+      <main className="flex-1 overflow-auto h-screen bg-gradient-to-br from-dark-600/50 to-smoky-600/50 backdrop-blur-sm">
         <div className="p-14">
           <Routes>
             <Route path="/" element={

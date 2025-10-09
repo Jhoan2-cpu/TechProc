@@ -159,33 +159,37 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 flex items-center justify-center p-4">
-        <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl border border-gray-700/50 p-8 max-w-md text-center animate-scale-in">
-          <div className="w-20 h-20 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-success/50">
-            <FontAwesomeIcon icon={faCheckCircle} className="text-white text-4xl" />
+      <div className="min-h-screen flex items-center justify-center p-4 relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-dark-500/30 to-smoky-500/30 backdrop-blur-sm"></div>
+        <div className="relative z-10 w-full max-w-md">
+          <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl border border-gray-700/50 p-8 text-center animate-scale-in">
+            <div className="w-20 h-20 bg-gradient-to-br from-success to-success/80 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-success/50">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-white text-4xl" />
+            </div>
+            <h2 className="text-2xl font-heading font-bold text-white mb-4">
+              ¡Solicitud Enviada!
+            </h2>
+            <p className="text-gray-300 mb-6">
+              Tu solicitud de registro ha sido enviada exitosamente. El administrador la revisará y te
+              contactará pronto.
+            </p>
+            <button
+              onClick={handleBackToLogin}
+              className="btn btn-primary inline-flex items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
+              Volver al Login
+            </button>
           </div>
-          <h2 className="text-2xl font-heading font-bold text-white mb-4">
-            ¡Solicitud Enviada!
-          </h2>
-          <p className="text-gray-300 mb-6">
-            Tu solicitud de registro ha sido enviada exitosamente. El administrador la revisará y te
-            contactará pronto.
-          </p>
-          <button
-            onClick={handleBackToLogin}
-            className="btn btn-primary inline-flex items-center gap-2"
-          >
-            <FontAwesomeIcon icon={faArrowLeft} />
-            Volver al Login
-          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 p-4 py-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen p-4 py-8 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-dark-500/30 to-smoky-500/30 backdrop-blur-sm"></div>
+      <div className="relative z-10 max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 animate-slide-down">
           <h1 className="text-5xl font-heading font-bold text-gradient mb-3">

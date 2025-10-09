@@ -191,8 +191,9 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
   // Vista de selección de perfil
   if (step === 'select') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 flex items-center justify-center p-4 animate-fade-in">
-        <div className="w-full max-w-6xl">
+      <div className="min-h-screen flex items-center justify-center p-4 animate-fade-in relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-dark-500/30 to-smoky-500/30 backdrop-blur-sm"></div>
+        <div className="relative z-10 w-full max-w-6xl">
           {/* Header */}
           <div className="text-center mb-12 animate-slide-down">
             <h1 className="text-6xl font-heading font-bold text-gradient mb-4">
@@ -273,8 +274,9 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
 
   // Vista de login (formulario)
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-500 to-smoky-500 flex items-center justify-center p-4 animate-fade-in">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4 animate-fade-in relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-dark-500/30 to-smoky-500/30 backdrop-blur-sm"></div>
+      <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8 animate-slide-down">
           <h1 className="text-5xl font-heading font-bold text-gradient mb-4">
