@@ -146,7 +146,7 @@ export const EscalationsPage = () => {
           sentEscalations.map((escalation, index) => (
             <div
               key={escalation.escalation_id}
-              className="card p-6 hover:shadow-lg transition-all animate-fade-in"
+              className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div className="flex items-start justify-between mb-4">
@@ -263,8 +263,8 @@ export const EscalationsPage = () => {
           receivedEscalations.map((escalation, index) => (
             <div
               key={escalation.escalation_id}
-              className={`card p-6 hover:shadow-lg transition-all animate-fade-in ${
-                !escalation.approved ? 'border-2 border-orange-300' : ''
+              className={`card p-6 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${
+                !escalation.approved ? 'border-2 border-orange-300' : 'border border-transparent'
               }`}
               style={{ animationDelay: `${index * 50}ms` }}
             >

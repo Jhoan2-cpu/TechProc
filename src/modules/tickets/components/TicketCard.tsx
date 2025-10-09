@@ -51,7 +51,7 @@ export const TicketCard = ({
   if (variant === 'compact') {
     return (
       <div
-        className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow animate-fade-in"
+        className="border border-secondary-200 rounded-lg p-4 hover:shadow-md hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
         style={{ animationDelay: `${index * 100}ms` }}
       >
         <div className="flex flex-col md:flex-row md:items-start gap-4">
@@ -126,7 +126,7 @@ export const TicketCard = ({
 
   return (
     <div
-      className="border border-secondary-200 rounded-lg p-5 hover:shadow-lg transition-all animate-fade-in"
+      className="border border-secondary-200 rounded-lg p-5 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex flex-col lg:flex-row lg:items-start gap-4">

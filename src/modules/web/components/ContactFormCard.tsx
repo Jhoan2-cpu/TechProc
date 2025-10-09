@@ -27,7 +27,7 @@ export const ContactFormCard = ({
 }: ContactFormCardProps) => {
   return (
     <div
-      className={`card p-6 animate-fade-in ${contact.status === 'spam' ? 'opacity-50' : ''}`}
+      className={`card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${contact.status === 'spam' ? 'opacity-50' : ''}`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex items-start gap-4">

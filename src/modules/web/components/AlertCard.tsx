@@ -16,7 +16,7 @@ interface AlertCardProps {
 export const AlertCard = ({ alert, index, formatDate, getStatusColor, getAlertTypeColor, onEdit, onDelete, onToggleStatus }: AlertCardProps) => {
   return (
     <div
-      className={`card p-6 border-2 animate-fade-in ${getAlertTypeColor(alert.type)}`}
+      className={`card p-6 border-2 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${getAlertTypeColor(alert.type)}`}
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex items-start gap-4">

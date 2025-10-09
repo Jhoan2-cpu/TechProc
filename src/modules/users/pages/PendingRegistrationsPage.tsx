@@ -203,7 +203,7 @@ export const PendingRegistrationsPage = () => {
             return (
               <div
                 key={registration.id}
-                className="card p-6 hover:shadow-lg transition-shadow"
+                className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">

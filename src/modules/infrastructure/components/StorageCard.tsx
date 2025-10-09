@@ -37,7 +37,7 @@ export const StorageCard = ({ storage, formatDate, index, onDetails, onEdit, onD
   const usagePercent = (storage.used_gb / storage.capacity_gb) * 100;
 
   return (
-    <div className={`card p-6 animate-fade-in ${storage.status === 'critical' ? 'border-2 border-red-300' : ''}`} style={{ animationDelay: `${index * 50}ms` }}>
+    <div className={`card p-6 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${storage.status === 'critical' ? 'border-2 border-red-300' : 'border border-transparent'}`} style={{ animationDelay: `${index * 50}ms` }}>
       <div className="flex items-start justify-between mb-4">
         <div>
           <h3 className="text-lg font-heading font-bold text-white">{storage.storage_name}</h3>

@@ -27,7 +27,7 @@ export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, o
 
   return (
     <div
-      className={`border-2 rounded-lg p-5 hover:shadow-lg transition-all animate-fade-in ${
+      className={`border-2 rounded-lg p-5 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${
         ticket.priority === 'crítica' ? 'border-red-300 bg-danger/20' : 'border-secondary-200'
       }`}
       style={{ animationDelay: `${index * 50}ms` }}

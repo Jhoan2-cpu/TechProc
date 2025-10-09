@@ -17,7 +17,7 @@ export const AttendanceCard = ({ attendance, index }: AttendanceCardProps) => {
 
   return (
     <div
-      className="card p-6 hover:shadow-lg transition-shadow"
+      className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className="flex items-center justify-between mb-4">

@@ -23,7 +23,7 @@ interface NewsCardProps {
 export const NewsCard = ({ news, index, formatDate, getStatusColor, onEdit, onDelete, onPublish, onArchive }: NewsCardProps) => {
   return (
     <div
-      className="card p-6 animate-fade-in"
+      className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex gap-4">

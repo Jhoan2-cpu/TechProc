@@ -11,7 +11,7 @@ interface ReportCardProps {
 export const ReportCard = ({ report, index, onDownload }: ReportCardProps) => {
   return (
     <div
-      className="card p-6 hover:shadow-lg transition-shadow cursor-pointer"
+      className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 cursor-pointer"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className="flex items-start justify-between">

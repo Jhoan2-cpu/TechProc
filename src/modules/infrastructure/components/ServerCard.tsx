@@ -35,7 +35,7 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
   };
 
   return (
-    <div className="card p-6 hover:shadow-lg transition-all animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+    <div className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1">
           <div className="flex items-start justify-between mb-4">

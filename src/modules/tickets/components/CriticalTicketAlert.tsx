@@ -8,7 +8,7 @@ interface CriticalTicketAlertProps {
 
 export const CriticalTicketAlert = ({ ticket, formatDate, onTakeTicket }: CriticalTicketAlertProps) => {
   return (
-    <div className="bg-white border border-red-300 rounded-lg p-4 hover:shadow-md transition-shadow">
+    <div className="bg-white border border-red-300 rounded-lg p-4 hover:shadow-md hover:border-primary-500/20 transition-all duration-300">
       <div className="flex items-center justify-between gap-4">
         <div className="flex-1">
           <h3 className="font-heading font-bold text-white mb-1">

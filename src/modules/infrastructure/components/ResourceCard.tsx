@@ -25,7 +25,7 @@ export const ResourceCard = ({ resource, formatDate, index }: ResourceCardProps)
   const isWarrantyValid = resource.warranty_until && new Date(resource.warranty_until) > new Date();
 
   return (
-    <div className="card p-6 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+    <div className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
       <div className="flex items-start justify-between mb-4">
         <div>
           <h3 className="text-lg font-heading font-bold text-white capitalize">

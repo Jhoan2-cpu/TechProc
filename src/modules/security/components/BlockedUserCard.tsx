@@ -17,7 +17,7 @@ interface BlockedUserCardProps {
 
 export const BlockedUserCard = ({ blockedUser, formatDate, onUnblock }: BlockedUserCardProps) => {
   return (
-    <div className="card p-6 hover:shadow-lg transition-shadow">
+    <div className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-start gap-3">
           <div className="w-12 h-12 bg-danger/20 rounded-full flex items-center justify-center">

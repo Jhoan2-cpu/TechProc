@@ -14,7 +14,7 @@ interface AnnouncementCardProps {
 export const AnnouncementCard = ({ announcement, index, getStatusColor, onEdit, onDelete, onToggleStatus }: AnnouncementCardProps) => {
   return (
     <div
-      className="card p-6 animate-fade-in"
+      className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       {announcement.image_url && (

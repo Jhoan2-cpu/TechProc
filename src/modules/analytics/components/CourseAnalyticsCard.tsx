@@ -10,7 +10,7 @@ interface CourseAnalyticsCardProps {
 export const CourseAnalyticsCard = ({ course, index }: CourseAnalyticsCardProps) => {
   return (
     <div
-      className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-secondary-600/50"
+      className="border border-secondary-200 rounded-lg p-4 hover:shadow-md hover:border-primary-500/20 transition-all duration-300 bg-secondary-600/50"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <div className="flex items-center justify-between mb-3">

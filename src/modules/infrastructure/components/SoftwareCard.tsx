@@ -16,7 +16,7 @@ interface SoftwareCardProps {
 
 export const SoftwareCard = ({ software, formatDate, index, onDetails, onEdit, onDelete }: SoftwareCardProps) => {
   return (
-    <div className="card p-6 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+    <div className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
       <div className="flex flex-col lg:flex-row lg:items-start gap-4">
         <div className="flex-1">
           <div className="flex items-start justify-between mb-3">

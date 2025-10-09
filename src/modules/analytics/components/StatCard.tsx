@@ -26,7 +26,7 @@ export const StatCard = ({ title, value, subtitle, icon, color, trend }: StatCar
   const [bgGradient, borderColor, textColor, iconColor] = colorClasses[color].split(' ');
 
   return (
-    <div className={`card p-6 bg-gradient-to-br ${bgGradient} border-l-4 ${borderColor} hover:shadow-lg transition-shadow`}>
+    <div className={`card p-6 bg-gradient-to-br ${bgGradient} border-l-4 ${borderColor} hover:shadow-lg hover:border-primary-500/20 transition-all duration-300`}>
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <p className="text-sm text-gray-400 mb-1">{title}</p>

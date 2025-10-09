@@ -37,7 +37,7 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
   };
 
   return (
-    <div className={`card p-6 animate-fade-in ${license.status === 'expired' || license.status === 'expiring_soon' ? 'border-2 border-orange-300' : ''}`} style={{ animationDelay: `${index * 50}ms` }}>
+    <div className={`card p-6 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${license.status === 'expired' || license.status === 'expiring_soon' ? 'border-2 border-orange-300' : 'border border-transparent'}`} style={{ animationDelay: `${index * 50}ms` }}>
       <div className="flex flex-col lg:flex-row lg:items-start gap-4">
         <div className="flex-1">
           <div className="flex items-start justify-between mb-3">

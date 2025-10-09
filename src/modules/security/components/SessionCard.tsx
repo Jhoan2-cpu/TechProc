@@ -62,7 +62,7 @@ export const SessionCard = ({
 
   // Vista completa para la página de sesiones
   return (
-    <div className="card p-6 hover:shadow-lg transition-all animate-fade-in">
+    <div className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in">
       <div className="flex flex-col lg:flex-row lg:items-center gap-4">
         <div className="flex items-center gap-4 flex-1">
           <div className="w-14 h-14 bg-gradient-primary rounded-full flex items-center justify-center">

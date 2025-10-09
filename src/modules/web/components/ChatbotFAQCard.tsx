@@ -13,7 +13,7 @@ interface ChatbotFAQCardProps {
 export const ChatbotFAQCard = ({ faq, index, onEdit, onDelete, onToggleActive }: ChatbotFAQCardProps) => {
   return (
     <div
-      className="border border-secondary-200 rounded-lg p-4 hover:shadow-md transition-shadow animate-fade-in"
+      className="border border-secondary-200 rounded-lg p-4 hover:shadow-md hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
       style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex items-start gap-4">

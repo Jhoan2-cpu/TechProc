@@ -20,7 +20,7 @@ export const RecentCourseCard = ({ course }: RecentCourseCardProps) => {
   };
 
   return (
-    <div className="p-4 bg-secondary-600/50 rounded-lg hover:bg-secondary-100 transition-colors">
+    <div className="p-4 bg-secondary-600/50 rounded-lg hover:bg-secondary-600/70 transition-all duration-300 cursor-pointer border border-transparent hover:border-primary-500/20">
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1">
           <h3 className="font-semibold text-white mb-1">
