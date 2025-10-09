@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelope,
   faLock,
-  faCode,
   faArrowRight,
   faSpinner,
   faEye,
@@ -20,6 +19,7 @@ import {
 import type { User, UserRole } from '../shared/types/auth';
 import { authService } from '../services/authService';
 import { MODULE_ACCESS } from '../shared/types/auth';
+import { Preloader } from '../shared/components/Preloader';
 
 interface LoginPageProps {
   onLogin: (user: User) => void;
@@ -35,7 +35,7 @@ type UserCardType = {
 };
 
 export const LoginPage = ({ onLogin }: LoginPageProps) => {
-  const [step, setStep] = useState<'select' | 'login'>('select');
+  const [step, setStep] = useState<'select' | 'loading' | 'login'>('select');
   const [selectedProfile, setSelectedProfile] = useState<UserCardType | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -108,8 +108,13 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
   const handleSelectProfile = (profile: UserCardType) => {
     setSelectedProfile(profile);
     setEmail(profile.suggestedEmail);
-    setStep('login');
+    setStep('loading');
     setError('');
+
+    // Simular carga de componentes (como en otras páginas)
+    setTimeout(() => {
+      setStep('login');
+    }, 1500);
   };
 
   // Volver a selección de perfil
@@ -188,16 +193,23 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     navigate('/register');
   };
 
+  // Vista de carga (Preloader)
+  if (step === 'loading') {
+    return <Preloader />;
+  }
+
   // Vista de selección de perfil
   if (step === 'select') {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 animate-fade-in relative">
         <div className="absolute inset-0 bg-gradient-to-br from-dark-500/30 to-smoky-500/30 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-white/5"></div>
         <div className="relative z-10 w-full max-w-6xl">
           {/* Header */}
           <div className="text-center mb-12 animate-slide-down">
-            <h1 className="text-6xl font-heading font-bold text-gradient mb-4">
+            <h1 className="relative inline-block group text-6xl font-heading font-bold text-gradient mb-4">
               INCADEV
+              <span className="absolute left-1/2 bottom-[-10px] w-1 h-[4px] bg-blue-500 transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
             </h1>
             <p className="text-gray-300 text-lg font-medium leading-relaxed">
               Instituto de Capacitación<br />y Desarrollo Virtual
@@ -276,12 +288,14 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 animate-fade-in relative">
       <div className="absolute inset-0 bg-gradient-to-br from-dark-500/30 to-smoky-500/30 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-white/5"></div>
       <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8 animate-slide-down">
-          <h1 className="text-5xl font-heading font-bold text-gradient mb-4">
-            INCADEV
-          </h1>
+            <h1 className="relative inline-block group text-5xl font-heading font-bold text-gradient mb-4">
+              INCADEV
+              <span className="absolute left-1/2 bottom-[-10px] w-1 h-[4px] bg-blue-500 transition-all duration-500 group-hover:w-full group-hover:left-0"></span>
+            </h1>
           <p className="text-gray-300 text-lg font-medium leading-relaxed">
             Instituto de Capacitación<br />y Desarrollo Virtual
           </p>
@@ -391,8 +405,8 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               className={`w-full btn btn-primary py-3 text-lg font-semibold rounded-xl shadow-lg shadow-primary-500/20 ${
                 loading
                   ? 'opacity-70 cursor-not-allowed'
-                  : 'hover:shadow-xl hover:shadow-primary-500/15 hover:scale-[1.02]'
-              } inline-flex items-center justify-center gap-3 transition-all duration-300`}
+                  : 'hover:shadow-xl hover:shadow-primary-500/15 hover:scale-[1.01]'
+              } inline-flex items-center justify-center gap-3 transition-all duration-200`}
             >
               {loading ? (
                 <>
