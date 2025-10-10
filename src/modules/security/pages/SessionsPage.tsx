@@ -84,7 +84,7 @@ export const SessionsPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-heading font-bold text-white">
-          security/sessions
+          Sessions
         </h1>
         <span className="px-4 py-2 bg-success/20 text-green-700 rounded-full font-semibold">
           {activeSessions} activas

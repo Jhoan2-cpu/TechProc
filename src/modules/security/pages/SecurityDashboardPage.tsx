@@ -66,7 +66,7 @@ export const SecurityDashboardPage = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-heading font-bold text-white mb-6">
-        security/dashboard
+        Dashboard
       </h1>
 
       {/* Estadísticas */}
