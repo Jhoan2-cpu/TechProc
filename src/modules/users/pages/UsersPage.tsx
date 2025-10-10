@@ -102,7 +102,7 @@ export const UsersPage = () => {
           title="Total Usuarios"
           value={totalUsers}
           icon={faUserCircle}
-          color="text-gradient"
+          color="text-primary-200"
           borderColor="border-primary-500/20"
           shadowColor="shadow-primary-500/10"
         />
