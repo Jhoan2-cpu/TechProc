@@ -161,7 +161,7 @@ export const UsersPage = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-700/50">
+            <tbody>
               {filteredUsers.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center">

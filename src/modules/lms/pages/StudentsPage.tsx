@@ -133,7 +133,7 @@ export const StudentsPage = () => {
               {filteredStudents.map((student, index) => (
                 <tr
                   key={student.id}
-                  className={`border-b border-secondary-100 hover:bg-secondary-600/50 transition-colors animate-slide-up`}
+                  className={`border-b border-secondary-100 hover:border-transparent transition-colors animate-slide-up`}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <td className="p-4">

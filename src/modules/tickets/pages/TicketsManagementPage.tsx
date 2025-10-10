@@ -228,11 +228,11 @@ export const TicketsManagementPage = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-secondary-200">
+            <tbody className="bg-white">
               {filteredTickets.map((ticket, index) => (
                 <tr
                   key={ticket.ticket_id}
-                  className="hover:bg-secondary-600/50 transition-colors animate-fade-in"
+                  className="border-b border-secondary-200 hover:border-transparent transition-colors animate-fade-in"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">

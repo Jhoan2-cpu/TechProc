@@ -16,7 +16,7 @@ export const UserTableRow = ({
   onToggleStatus,
 }: UserTableRowProps) => {
   return (
-    <tr className="hover:bg-secondary-700/50 transition-all duration-300">
+    <tr className="border-b border-gray-700/50 hover:border-transparent transition-colors duration-300">
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-primary-500/20 to-primary-600/20 rounded-full flex items-center justify-center border border-primary-500/30">
