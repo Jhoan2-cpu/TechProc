@@ -21,6 +21,7 @@ import { AnalyticsPage } from './modules/analytics/pages/AnalyticsPage';
 import { UsersPage } from './modules/users/pages/UsersPage';
 import { PendingRegistrationsPage } from './modules/users/pages/PendingRegistrationsPage';
 import { Preloader } from './shared/components/Preloader';
+import { Breadcrumb } from './shared/components/Breadcrumb';
 import type { User } from './shared/types/auth';
 import { hasAccess } from './shared/utils/auth';
 import { authService } from './services/authService';
@@ -339,7 +340,12 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto h-screen bg-gradient-to-br from-dark-600/50 to-smoky-600/50 backdrop-blur-sm">
-        <div className="p-14">
+        <div className="p-12">
+          {/* Breadcrumb Navigation */}
+          <div className="mb-6 animate-fade-in">
+            <Breadcrumb />
+          </div>
+
           <Routes>
             <Route path="/" element={
               <div className="flex items-center justify-center h-96">

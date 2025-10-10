@@ -133,69 +133,77 @@ export const PendingRegistrationsPage = () => {
   const rejectedCount = registrations.filter(r => r.status === 'rejected').length;
 
   return (
-    <div className="min-h-screen bg-secondary-600/50 p-6">
+    <div className="animate-fade-in">
       {/* Header */}
-      <div className="mb-6 pb-6 border-b-2 border-secondary-200">
-        <h1 className="text-3xl font-heading font-bold text-white flex items-center">
-          <FontAwesomeIcon icon={faUserClock} className="mr-3 text-primary-600" />
+      <div className="mb-6">
+        <h1 className="text-3xl font-heading font-bold text-gradient mb-2">
           users/pending-registrations
         </h1>
-        <p className="text-gray-400 mt-2">
+        <p className="text-gray-300">
           Revisa y aprueba las solicitudes de registro de nuevos usuarios
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="card p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border-l-4 border-yellow-600">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-warning/20 shadow-lg shadow-warning/10 hover:shadow-xl hover:shadow-warning/20 hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 mb-1">Pendientes</p>
-              <p className="text-3xl font-heading font-bold text-warning">{pendingCount}</p>
+              <p className="text-sm text-gray-300 mb-1 font-medium">Pendientes</p>
+              <p className="text-4xl font-heading font-bold text-warning">{pendingCount}</p>
             </div>
-            <FontAwesomeIcon icon={faUserClock} className="text-4xl text-yellow-600 opacity-50" />
+            <div className="w-16 h-16 bg-gradient-to-br from-warning/20 to-warning/30 rounded-full flex items-center justify-center">
+              <FontAwesomeIcon icon={faUserClock} className="text-3xl text-warning" />
+            </div>
           </div>
         </div>
-        <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-600">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-success/20 shadow-lg shadow-success/10 hover:shadow-xl hover:shadow-success/20 hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 mb-1">Aprobados</p>
-              <p className="text-3xl font-heading font-bold text-success">{approvedCount}</p>
+              <p className="text-sm text-gray-300 mb-1 font-medium">Aprobados</p>
+              <p className="text-4xl font-heading font-bold text-success">{approvedCount}</p>
             </div>
-            <FontAwesomeIcon icon={faCheckCircle} className="text-4xl text-green-600 opacity-50" />
+            <div className="w-16 h-16 bg-gradient-to-br from-success/20 to-success/30 rounded-full flex items-center justify-center">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-3xl text-success" />
+            </div>
           </div>
         </div>
-        <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 border-l-4 border-red-600">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-danger/20 shadow-lg shadow-danger/10 hover:shadow-xl hover:shadow-danger/20 hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-400 mb-1">Rechazados</p>
-              <p className="text-3xl font-heading font-bold text-danger">{rejectedCount}</p>
+              <p className="text-sm text-gray-300 mb-1 font-medium">Rechazados</p>
+              <p className="text-4xl font-heading font-bold text-danger">{rejectedCount}</p>
             </div>
-            <FontAwesomeIcon icon={faTimesCircle} className="text-4xl text-red-600 opacity-50" />
+            <div className="w-16 h-16 bg-gradient-to-br from-danger/20 to-danger/30 rounded-full flex items-center justify-center">
+              <FontAwesomeIcon icon={faTimesCircle} className="text-3xl text-danger" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Filter */}
-      <div className="mb-6 flex items-center gap-3">
-        <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
-        <select
-          className="select max-w-xs"
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value as any)}
-        >
-          <option value="all">Todas las solicitudes</option>
-          <option value="pending">Pendientes</option>
-          <option value="approved">Aprobadas</option>
-          <option value="rejected">Rechazadas</option>
-        </select>
+      <div className="mb-6 bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-4 border border-gray-700/30 shadow-lg">
+        <div className="flex items-center gap-3">
+          <FontAwesomeIcon icon={faFilter} className="text-primary-400" />
+          <select
+            className="px-4 py-2 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value as any)}
+          >
+            <option value="all" className="bg-secondary-700">Todas las solicitudes</option>
+            <option value="pending" className="bg-secondary-700">Pendientes</option>
+            <option value="approved" className="bg-secondary-700">Aprobadas</option>
+            <option value="rejected" className="bg-secondary-700">Rechazadas</option>
+          </select>
+        </div>
       </div>
 
       {/* Registrations List */}
       <div className="grid grid-cols-1 gap-4">
         {filteredRegistrations.length === 0 ? (
-          <div className="card p-8 text-center">
-            <p className="text-gray-400">No hay solicitudes con este estado</p>
+          <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-12 text-center border border-gray-700/30 shadow-lg">
+            <FontAwesomeIcon icon={faUserClock} className="text-5xl text-gray-500 mb-4" />
+            <p className="text-gray-300 font-medium">No hay solicitudes con este estado</p>
           </div>
         ) : (
           filteredRegistrations.map((registration) => {
@@ -203,28 +211,30 @@ export const PendingRegistrationsPage = () => {
             return (
               <div
                 key={registration.id}
-                className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300"
+                className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-lg hover:shadow-xl hover:border-primary-500/30 transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <FontAwesomeIcon
-                        icon={roleInfo.icon}
-                        className={`text-2xl ${roleInfo.color}`}
-                      />
-                      <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary-500/20 to-primary-600/20 rounded-full flex items-center justify-center border border-primary-500/30">
+                        <FontAwesomeIcon
+                          icon={roleInfo.icon}
+                          className="text-xl text-primary-400"
+                        />
+                      </div>
+                      <div className="flex-1">
                         <h3 className="font-heading font-bold text-lg text-white">
                           {registration.firstName} {registration.lastName}
                         </h3>
-                        <p className="text-sm text-gray-400">{roleInfo.label}</p>
+                        <p className="text-sm text-gray-300">{roleInfo.label}</p>
                       </div>
                       <span
-                        className={`ml-auto px-3 py-1 rounded-full text-xs font-bold ${
+                        className={`px-4 py-1.5 rounded-lg text-xs font-semibold border ${
                           registration.status === 'pending'
-                            ? 'bg-warning/20 text-warning'
+                            ? 'bg-warning/20 text-warning border-warning/30'
                             : registration.status === 'approved'
-                            ? 'bg-success/20 text-success'
-                            : 'bg-danger/20 text-danger'
+                            ? 'bg-success/20 text-success border-success/30'
+                            : 'bg-danger/20 text-danger border-danger/30'
                         }`}
                       >
                         {registration.status === 'pending'
@@ -235,35 +245,35 @@ export const PendingRegistrationsPage = () => {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <FontAwesomeIcon icon={faEnvelope} className="text-gray-400" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                      <div className="flex items-center gap-2 text-gray-300">
+                        <FontAwesomeIcon icon={faEnvelope} className="text-primary-400" />
                         <span>{registration.email}</span>
                       </div>
                       {registration.phone && (
-                        <div className="flex items-center gap-2">
-                          <FontAwesomeIcon icon={faPhone} className="text-gray-400" />
+                        <div className="flex items-center gap-2 text-gray-300">
+                          <FontAwesomeIcon icon={faPhone} className="text-primary-400" />
                           <span>{registration.phone}</span>
                         </div>
                       )}
                       {registration.department && (
-                        <div className="flex items-center gap-2">
-                          <FontAwesomeIcon icon={faBuilding} className="text-gray-400" />
+                        <div className="flex items-center gap-2 text-gray-300">
+                          <FontAwesomeIcon icon={faBuilding} className="text-primary-400" />
                           <span>{registration.department}</span>
                         </div>
                       )}
-                      <div className="flex items-center gap-2">
-                        <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
+                      <div className="flex items-center gap-2 text-gray-300">
+                        <FontAwesomeIcon icon={faCalendar} className="text-primary-400" />
                         <span>{registration.submittedAt}</span>
                       </div>
                     </div>
 
                     {selectedRegistration?.id === registration.id && (
-                      <div className="mt-4 p-4 bg-secondary-600/50 rounded-lg">
-                        <p className="text-sm font-semibold text-gray-300 mb-2">
+                      <div className="mt-4 p-4 bg-secondary-700/50 rounded-lg border border-gray-700/50 animate-slide-down">
+                        <p className="text-sm font-semibold text-primary-400 mb-2">
                           Motivo de registro:
                         </p>
-                        <p className="text-sm text-gray-400">{registration.reason}</p>
+                        <p className="text-sm text-gray-300 leading-relaxed">{registration.reason}</p>
                       </div>
                     )}
                   </div>
@@ -275,7 +285,7 @@ export const PendingRegistrationsPage = () => {
                           selectedRegistration?.id === registration.id ? null : registration
                         )
                       }
-                      className="btn btn-outline px-3 py-2 text-sm"
+                      className="p-2 bg-secondary-700/50 hover:bg-primary-500/20 text-gray-300 hover:text-primary-400 rounded-lg border border-gray-700/50 hover:border-primary-500/50 transition-all duration-300 hover:scale-110"
                       title="Ver detalles"
                     >
                       <FontAwesomeIcon icon={faEye} />
@@ -284,14 +294,14 @@ export const PendingRegistrationsPage = () => {
                       <>
                         <button
                           onClick={() => handleApprove(registration.id)}
-                          className="btn bg-green-600 hover:bg-green-700 text-white px-3 py-2 text-sm"
+                          className="p-2 bg-success/20 hover:bg-success/30 text-success rounded-lg border border-success/30 hover:border-success/50 transition-all duration-300 hover:scale-110"
                           title="Aprobar"
                         >
                           <FontAwesomeIcon icon={faCheck} />
                         </button>
                         <button
                           onClick={() => handleReject(registration.id)}
-                          className="btn bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-sm"
+                          className="p-2 bg-danger/20 hover:bg-danger/30 text-danger rounded-lg border border-danger/30 hover:border-danger/50 transition-all duration-300 hover:scale-110"
                           title="Rechazar"
                         >
                           <FontAwesomeIcon icon={faTimes} />

@@ -123,7 +123,33 @@
   }
 
   .select {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-600 bg-secondary-700 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/50 outline-none transition-all duration-200 hover:border-gray-500;
+    @apply w-full px-4 py-3 rounded-lg border border-gray-700/50 bg-secondary-700/50 text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all duration-300 hover:border-primary-500/50 cursor-pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2326BBFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    appearance: none;
+  }
+
+  .select:hover {
+    @apply bg-secondary-600/50 shadow-md;
+  }
+
+  .select:focus {
+    @apply bg-secondary-700 shadow-lg shadow-primary-500/10;
+  }
+
+  .select option {
+    @apply bg-secondary-700 text-white py-2;
+  }
+
+  .select option:hover {
+    @apply bg-primary-500/20;
+  }
+
+  .select option:checked {
+    @apply bg-primary-500/30 font-semibold;
   }
 }
 
