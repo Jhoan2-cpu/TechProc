@@ -28,53 +28,53 @@ export const InfrastructureStats = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {/* Servidores Online */}
-      <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 animate-fade-in">
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-green-700 mb-1">Servidores Online</p>
-            <p className="text-3xl font-heading font-bold text-success">{onlineServers}/{totalServers}</p>
+            <p className="text-sm text-gray-400 mb-1">Servidores Online</p>
+            <p className="text-3xl font-heading font-bold text-white">{onlineServers}/{totalServers}</p>
           </div>
-          <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-            <FontAwesomeIcon icon={faServer} className="text-white text-xl" />
+          <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20">
+            <FontAwesomeIcon icon={faServer} className="text-white text-2xl" />
           </div>
         </div>
       </div>
 
       {/* Licencias Activas */}
-      <div className="card p-6 bg-gradient-to-br from-blue-50 to-blue-100 animate-fade-in" style={{ animationDelay: '100ms' }}>
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '100ms' }}>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-blue-700 mb-1">Licencias Activas</p>
-            <p className="text-3xl font-heading font-bold text-primary-400">{activeLicenses}/{totalLicenses}</p>
+            <p className="text-sm text-gray-400 mb-1">Licencias Activas</p>
+            <p className="text-3xl font-heading font-bold text-white">{activeLicenses}/{totalLicenses}</p>
           </div>
-          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-            <FontAwesomeIcon icon={faKey} className="text-white text-xl" />
+          <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <FontAwesomeIcon icon={faKey} className="text-white text-2xl" />
           </div>
         </div>
       </div>
 
       {/* Alertas Críticas */}
-      <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 animate-fade-in" style={{ animationDelay: '200ms' }}>
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '200ms' }}>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-red-700 mb-1">Alertas Críticas</p>
-            <p className="text-3xl font-heading font-bold text-danger">{criticalAlerts}</p>
+            <p className="text-sm text-gray-400 mb-1">Alertas Críticas</p>
+            <p className="text-3xl font-heading font-bold text-white">{criticalAlerts}</p>
           </div>
-          <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-            <FontAwesomeIcon icon={faExclamationTriangle} className="text-white text-xl" />
+          <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/20">
+            <FontAwesomeIcon icon={faExclamationTriangle} className="text-white text-2xl" />
           </div>
         </div>
       </div>
 
       {/* Recursos en Uso */}
-      <div className="card p-6 bg-gradient-to-br from-purple-50 to-purple-100 animate-fade-in" style={{ animationDelay: '300ms' }}>
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '300ms' }}>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-purple-700 mb-1">Recursos en Uso</p>
-            <p className="text-3xl font-heading font-bold text-purple-400">{resourcesInUse}/{totalResources}</p>
+            <p className="text-sm text-gray-400 mb-1">Recursos en Uso</p>
+            <p className="text-3xl font-heading font-bold text-white">{resourcesInUse}/{totalResources}</p>
           </div>
-          <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-            <FontAwesomeIcon icon={faLaptop} className="text-white text-xl" />
+          <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <FontAwesomeIcon icon={faLaptop} className="text-white text-2xl" />
           </div>
         </div>
       </div>

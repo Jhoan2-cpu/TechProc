@@ -1,5 +1,7 @@
 // Exportar componentes del módulo infrastructure
 export { InfrastructureStats } from './InfrastructureStats';
+export { CriticalAlertsSection } from './CriticalAlertsSection';
+export { ServerStatusCard } from './ServerStatusCard';
 export { ServerCard } from './ServerCard';
 export { LicenseCard } from './LicenseCard';
 export { StorageCard } from './StorageCard';
