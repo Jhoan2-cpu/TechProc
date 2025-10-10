@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle,
   faExclamationTriangle,
@@ -9,7 +8,6 @@ import type { Ticket } from '../types';
 import {
   TicketStatsCard,
   TicketCard,
-  CriticalTicketAlert,
 } from '../components';
 
 interface TicketsDashboardPageProps {
@@ -86,7 +84,7 @@ export const TicketsDashboardPage = ({
       </div>
 
       {/* Mis Tickets Activos */}
-      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl mb-6 animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl animate-slide-up">
         <h2 className="text-xl font-heading font-bold text-white mb-4">
           Mis Tickets Activos
         </h2>
@@ -109,26 +107,6 @@ export const TicketsDashboardPage = ({
           )}
         </div>
       </div>
-
-      {/* Tickets Críticos Disponibles */}
-      {criticalAvailable > 0 && (
-        <div className="bg-gradient-to-br from-red-900/40 to-red-800/40 backdrop-blur-sm rounded-xl p-6 border border-red-500/30 shadow-xl shadow-red-500/20 animate-slide-up">
-          <h2 className="text-xl font-heading font-bold text-red-400 mb-4 flex items-center gap-2">
-            <FontAwesomeIcon icon={faExclamationTriangle} />
-            Tickets Críticos Disponibles - ¡Atención Inmediata!
-          </h2>
-          <div className="space-y-3">
-            {availableTickets.filter(t => t.priority === 'crítica').map((ticket) => (
-              <CriticalTicketAlert
-                key={ticket.ticket_id}
-                ticket={ticket}
-                formatDate={formatDate}
-                onTakeTicket={onTakeTicket}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </>
   );
 };
