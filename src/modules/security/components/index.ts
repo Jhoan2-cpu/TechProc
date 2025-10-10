@@ -6,6 +6,8 @@ export { BlockedIPCard } from './BlockedIPCard';
 export { BlockedIPsStats } from './BlockedIPsStats';
 export { BlockedIPsFilters } from './BlockedIPsFilters';
 export { BlockedUserCard } from './BlockedUserCard';
+export { BlockedUsersStats } from './BlockedUsersStats';
+export { BlockedUsersFilters } from './BlockedUsersFilters';
 export { BackupCard } from './BackupCard';
 export { BackupConfigForm } from './BackupConfigForm';
 export { TerminateSessionModal } from './TerminateSessionModal';
