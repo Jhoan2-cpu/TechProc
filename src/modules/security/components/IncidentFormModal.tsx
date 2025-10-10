@@ -54,8 +54,8 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
-      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up">
-        <div className="sticky top-0 bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col animate-slide-up">
+        <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 border-b border-secondary-200 p-6 flex justify-between items-center flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-danger/20 rounded-full flex items-center justify-center">
               <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-600 text-xl" />
@@ -72,7 +72,7 @@ export const IncidentFormModal = ({ isOpen, incident, onSave, onCancel }: Incide
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-6 space-y-6 overflow-y-auto flex-1">
           {/* Información Básica */}
           <div className="card p-6">
             <h4 className="text-lg font-heading font-bold text-white mb-4">
