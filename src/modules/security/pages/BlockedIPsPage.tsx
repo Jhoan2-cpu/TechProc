@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { BlockedIPCard, BlockIPModal, UnblockIPModal } from '../components';
+import { BlockedIPCard, BlockIPModal, UnblockIPModal, BlockedIPsStats, BlockedIPsFilters } from '../components';
 import { blockedIPsService } from '../services';
 
 export const BlockedIPsPage = () => {
@@ -75,6 +73,13 @@ export const BlockedIPsPage = () => {
     ip.reason.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Estadísticas
+  const activeBlocked = blockedIPs.filter(ip => ip.active).length;
+  const today = new Date().toDateString();
+  const unblockedToday = blockedIPs.filter(ip =>
+    !ip.active && ip.unblock_date && new Date(ip.unblock_date).toDateString() === today
+  ).length;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -88,39 +93,23 @@ export const BlockedIPsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-heading font-bold text-white">
-          security/blocked-ips
-        </h1>
-        <button
-          onClick={() => setShowBlockModal(true)}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          Bloquear IP
-        </button>
-      </div>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">
+        Blocked IPs
+      </h1>
 
-      <h2 className="text-xl font-heading text-gray-300">
-        Gestión de IPs Bloqueadas
-      </h2>
+      {/* Estadísticas */}
+      <BlockedIPsStats
+        totalBlocked={blockedIPs.length}
+        activeBlocked={activeBlocked}
+        unblockedToday={unblockedToday}
+      />
 
-      {/* Buscador */}
-      <div className="max-w-md">
-        <div className="relative">
-          <FontAwesomeIcon
-            icon={faSearch}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-          />
-          <input
-            type="text"
-            placeholder="Buscar por IP o razón..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="input pl-10 w-full"
-          />
-        </div>
-      </div>
+      {/* Filtros */}
+      <BlockedIPsFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        onBlockClick={() => setShowBlockModal(true)}
+      />
 
       {/* Lista de IPs bloqueadas */}
       <div className="grid grid-cols-1 gap-4">
@@ -134,7 +123,7 @@ export const BlockedIPsPage = () => {
             />
           ))
         ) : (
-          <div className="card p-12 text-center">
+          <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-12 border border-gray-700/30 text-center">
             <p className="text-xl text-gray-300">No se encontraron IPs bloqueadas</p>
             <p className="text-sm text-gray-400 mt-2">
               {searchTerm ? 'Intenta ajustar la búsqueda' : 'No hay IPs bloqueadas en este momento'}

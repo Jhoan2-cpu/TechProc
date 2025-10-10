@@ -3,6 +3,8 @@ export { SecurityStats } from './SecurityStats';
 export { SessionCard } from './SessionCard';
 export { IncidentCard } from './IncidentCard';
 export { BlockedIPCard } from './BlockedIPCard';
+export { BlockedIPsStats } from './BlockedIPsStats';
+export { BlockedIPsFilters } from './BlockedIPsFilters';
 export { BlockedUserCard } from './BlockedUserCard';
 export { BackupCard } from './BackupCard';
 export { BackupConfigForm } from './BackupConfigForm';
