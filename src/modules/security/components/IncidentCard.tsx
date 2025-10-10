@@ -209,7 +209,7 @@ export const IncidentCard = ({
           {onEdit && (
             <button
               onClick={() => onEdit(incident)}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300 flex items-center gap-2"
             >
               Editar
             </button>

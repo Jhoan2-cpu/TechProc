@@ -111,7 +111,7 @@ export const IncidentsPage = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-heading font-bold text-white">
-          security/incidents
+          Incidents
         </h1>
         <button
           onClick={handleNewIncident}
