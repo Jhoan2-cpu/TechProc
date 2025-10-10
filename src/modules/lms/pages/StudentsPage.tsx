@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faSearch,
-  faUserPlus,
   faEye,
   faEdit,
   faTrash,
@@ -14,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student } from '../types';
 import { studentsService } from '../services';
-import { EditStudentModal, ViewStudentModal, CreateStudentModal } from '../components';
+import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const StudentsPage = () => {
@@ -87,44 +85,15 @@ export const StudentsPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/students</h1>
-      {/* Header */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="text"
-              placeholder="Buscar estudiantes..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10"
-            />
-          </div>
-        </div>
 
-        <div className="flex gap-2 flex-wrap">
-          <select
-            value={filterState}
-            onChange={(e) => setFilterState(e.target.value)}
-            className="select"
-          >
-            <option value="all">Todos los estados</option>
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
-          >
-            <FontAwesomeIcon icon={faUserPlus} />
-            Agregar Estudiante
-          </button>
-        </div>
-      </div>
+      {/* Header con filtros */}
+      <StudentFilters
+        searchTerm={searchTerm}
+        filterState={filterState}
+        onSearchChange={setSearchTerm}
+        onStateChange={setFilterState}
+        onCreateClick={() => setShowCreateModal(true)}
+      />
 
       {/* Tabla de estudiantes */}
       <div className="card overflow-hidden">

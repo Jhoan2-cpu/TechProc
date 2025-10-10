@@ -12,3 +12,4 @@ export { CreateStudentModal } from './CreateStudentModal';
 export { EditInstructorModal } from './EditInstructorModal';
 export { CreateInstructorModal } from './CreateInstructorModal';
 export { CourseFilters } from './CourseFilters';
+export { StudentFilters } from './StudentFilters';
