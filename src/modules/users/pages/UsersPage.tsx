@@ -94,7 +94,7 @@ export const UsersPage = () => {
 
   return (
     <div className="animate-fade-in">
-      <h1 className="text-3xl font-heading font-bold text-gradient mb-6">users/management</h1>
+      <h1 className="text-3xl font-heading font-bold text-gradient mb-6">Gestión de Usuarios</h1>
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">

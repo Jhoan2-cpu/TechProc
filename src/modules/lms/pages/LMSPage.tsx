@@ -110,7 +110,7 @@ export const LMSPage = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-heading font-bold text-white mb-2">
-          lms/dashboard
+          Dashboard
         </h1>
         <p className="text-gray-400">
           Sistema de Gestión de Aprendizaje

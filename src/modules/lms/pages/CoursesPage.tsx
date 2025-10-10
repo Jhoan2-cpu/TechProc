@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlus,
-  faSearch,
-} from '@fortawesome/free-solid-svg-icons';
 import type { Course } from '../types';
-import { CreateCourseModal, CourseCard, ViewCourseModal } from '../components';
+import { CreateCourseModal, CourseCard, ViewCourseModal, CourseFilters } from '../components';
 import { coursesService } from '../services';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
@@ -70,47 +65,16 @@ export const CoursesPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/courses</h1>
-      {/* Header con buscador y botón crear */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="text"
-              placeholder="Buscar cursos..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10"
-            />
-          </div>
-        </div>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">Cursos</h1>
 
-        <div className="flex gap-2 flex-wrap">
-          {/* Filtros */}
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="select"
-          >
-            <option value="all">Todos los estados</option>
-            <option value="publicado">Publicado</option>
-            <option value="borrador">Borrador</option>
-            <option value="archivado">Archivado</option>
-          </select>
-
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
-          >
-            <FontAwesomeIcon icon={faPlus} />
-            Crear Curso
-          </button>
-        </div>
-      </div>
+      {/* Header con filtros */}
+      <CourseFilters
+        searchTerm={searchTerm}
+        filterStatus={filterStatus}
+        onSearchChange={setSearchTerm}
+        onStatusChange={setFilterStatus}
+        onCreateClick={() => setShowCreateModal(true)}
+      />
 
       {/* Grid de cursos */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
