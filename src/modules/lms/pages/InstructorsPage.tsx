@@ -85,7 +85,7 @@ export const InstructorsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/instructors</h1>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">instructors</h1>
 
       {/* Resumen */}
       <InstructorStatsCards instructors={instructors} />

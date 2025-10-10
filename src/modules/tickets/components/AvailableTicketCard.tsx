@@ -72,7 +72,7 @@ export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, o
           </button>
           <button
             onClick={() => onViewDetails?.(ticket)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
+            className="btn bg-secondary-500 hover:bg-secondary-400 text-white-500 border-primary-300"
           >
             Ver Detalles
           </button>

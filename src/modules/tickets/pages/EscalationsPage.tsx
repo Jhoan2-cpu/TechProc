@@ -103,38 +103,38 @@ export const EscalationsPage = () => {
     <div className="space-y-6">
       {/* Estadísticas de Enviadas */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card p-6 bg-gradient-to-br from-blue-50 to-blue-100">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-blue-700 mb-1">Total Enviadas</p>
-              <p className="text-3xl font-heading font-bold text-primary-400">{sentEscalations.length}</p>
+              <p className="text-sm text-gray-400 mb-1">Total Enviadas</p>
+              <p className="text-3xl font-heading font-bold text-white">{sentEscalations.length}</p>
             </div>
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faPaperPlane} className="text-white text-xl" />
+            <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <FontAwesomeIcon icon={faPaperPlane} className="text-white text-2xl" />
             </div>
           </div>
         </div>
 
-        <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-700 mb-1">Aprobadas</p>
-              <p className="text-3xl font-heading font-bold text-success">{sentApproved}</p>
+              <p className="text-sm text-gray-400 mb-1">Aprobadas</p>
+              <p className="text-3xl font-heading font-bold text-white">{sentApproved}</p>
             </div>
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faCheckCircle} className="text-white text-xl" />
+            <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-white text-2xl" />
             </div>
           </div>
         </div>
 
-        <div className="card p-6 bg-gradient-to-br from-yellow-50 to-yellow-100">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-yellow-700 mb-1">Pendientes</p>
-              <p className="text-3xl font-heading font-bold text-warning">{sentPending}</p>
+              <p className="text-sm text-gray-400 mb-1">Pendientes</p>
+              <p className="text-3xl font-heading font-bold text-white">{sentPending}</p>
             </div>
-            <div className="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faClock} className="text-white text-xl" />
+            <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/20">
+              <FontAwesomeIcon icon={faClock} className="text-white text-2xl" />
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@ export const EscalationsPage = () => {
           sentEscalations.map((escalation, index) => (
             <div
               key={escalation.escalation_id}
-              className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
+              className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 hover:shadow-xl hover:border-primary-500/30 transition-all duration-300 animate-fade-in"
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div className="flex items-start justify-between mb-4">
@@ -201,7 +201,7 @@ export const EscalationsPage = () => {
                     <FontAwesomeIcon icon={faFileAlt} className="text-orange-600" />
                     <label className="text-sm font-semibold text-gray-300">Razón de Escalación</label>
                   </div>
-                  <p className="text-white bg-white border border-secondary-200 p-3 rounded-lg">
+                  <p className="text-gray-300 bg-secondary-600/30 border border-secondary-200/30 p-3 rounded-lg">
                     {escalation.escalation_reason}
                   </p>
                 </div>
@@ -218,8 +218,8 @@ export const EscalationsPage = () => {
             </div>
           ))
         ) : (
-          <div className="card p-12 text-center">
-            <FontAwesomeIcon icon={faPaperPlane} className="text-6xl text-secondary-300 mb-4" />
+          <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-12 border border-gray-700/30 text-center">
+            <FontAwesomeIcon icon={faPaperPlane} className="text-6xl text-gray-500 mb-4" />
             <p className="text-xl text-gray-300">No has enviado escalaciones</p>
             <p className="text-sm text-gray-400 mt-2">Cuando necesites ayuda con un ticket, podrás escalarlo desde la pestaña "Mis Tickets"</p>
           </div>
@@ -232,26 +232,26 @@ export const EscalationsPage = () => {
     <div className="space-y-6">
       {/* Estadísticas de Recibidas */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="card p-6 bg-gradient-to-br from-purple-50 to-purple-100">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-purple-700 mb-1">Total Recibidas</p>
-              <p className="text-3xl font-heading font-bold text-purple-400">{receivedEscalations.length}</p>
+              <p className="text-sm text-gray-400 mb-1">Total Recibidas</p>
+              <p className="text-3xl font-heading font-bold text-white">{receivedEscalations.length}</p>
             </div>
-            <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faInbox} className="text-white text-xl" />
+            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+              <FontAwesomeIcon icon={faInbox} className="text-white text-2xl" />
             </div>
           </div>
         </div>
 
-        <div className="card p-6 bg-gradient-to-br from-orange-50 to-orange-100">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-orange-700 mb-1">Requieren Acción</p>
-              <p className="text-3xl font-heading font-bold text-orange-400">{receivedPending}</p>
+              <p className="text-sm text-gray-400 mb-1">Requieren Acción</p>
+              <p className="text-3xl font-heading font-bold text-white">{receivedPending}</p>
             </div>
-            <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faExchangeAlt} className="text-white text-xl" />
+            <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
+              <FontAwesomeIcon icon={faExchangeAlt} className="text-white text-2xl" />
             </div>
           </div>
         </div>
@@ -263,8 +263,8 @@ export const EscalationsPage = () => {
           receivedEscalations.map((escalation, index) => (
             <div
               key={escalation.escalation_id}
-              className={`card p-6 hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 animate-fade-in ${
-                !escalation.approved ? 'border-2 border-orange-300' : 'border border-transparent'
+              className={`bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl transition-all duration-300 animate-fade-in ${
+                !escalation.approved ? 'border-2 border-orange-500/50' : 'border border-gray-700/30 hover:border-primary-500/30'
               }`}
               style={{ animationDelay: `${index * 50}ms` }}
             >
@@ -320,7 +320,7 @@ export const EscalationsPage = () => {
                     <FontAwesomeIcon icon={faFileAlt} className="text-orange-600" />
                     <label className="text-sm font-semibold text-gray-300">Razón de Escalación</label>
                   </div>
-                  <p className="text-white bg-white border border-secondary-200 p-3 rounded-lg">
+                  <p className="text-gray-300 bg-secondary-600/30 border border-secondary-200/30 p-3 rounded-lg">
                     {escalation.escalation_reason}
                   </p>
                 </div>
@@ -356,8 +356,8 @@ export const EscalationsPage = () => {
             </div>
           ))
         ) : (
-          <div className="card p-12 text-center">
-            <FontAwesomeIcon icon={faInbox} className="text-6xl text-secondary-300 mb-4" />
+          <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-12 border border-gray-700/30 text-center">
+            <FontAwesomeIcon icon={faInbox} className="text-6xl text-gray-500 mb-4" />
             <p className="text-xl text-gray-300">No tienes escalaciones recibidas</p>
             <p className="text-sm text-gray-400 mt-2">Cuando otros técnicos te escalen tickets aparecerán aquí</p>
           </div>
@@ -375,33 +375,33 @@ export const EscalationsPage = () => {
         </h2>
 
         {/* Pestañas */}
-        <div className="flex gap-2 border-b border-secondary-200">
+        <div className="flex gap-2 border-b border-gray-700/50">
           <button
             onClick={() => setActiveTab('sent')}
-            className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
+            className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 rounded-t-lg ${
               activeTab === 'sent'
-                ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                ? 'border-primary-500 text-primary-500 bg-primary-900/30'
                 : 'border-transparent text-gray-400 hover:text-white hover:bg-secondary-600/50'
             }`}
           >
             <FontAwesomeIcon icon={faPaperPlane} />
             <span>Escalaciones Enviadas</span>
             {sentPending > 0 && (
-              <span className="bg-warning/20 text-white text-xs rounded-full px-2 py-0.5">{sentPending}</span>
+              <span className="bg-yellow-500/20 text-yellow-400 text-xs font-semibold rounded-full px-2 py-0.5">{sentPending}</span>
             )}
           </button>
           <button
             onClick={() => setActiveTab('received')}
-            className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 ${
+            className={`flex items-center gap-2 px-6 py-3 font-medium transition-all duration-200 border-b-2 rounded-t-lg ${
               activeTab === 'received'
-                ? 'border-primary-600 text-primary-600 bg-primary-900/20'
+                ? 'border-primary-500 text-primary-500 bg-primary-900/30'
                 : 'border-transparent text-gray-400 hover:text-white hover:bg-secondary-600/50'
             }`}
           >
             <FontAwesomeIcon icon={faInbox} />
             <span>Escalaciones Recibidas</span>
             {receivedPending > 0 && (
-              <span className="bg-orange-500 text-white text-xs rounded-full px-2 py-0.5">{receivedPending}</span>
+              <span className="bg-orange-500/20 text-orange-400 text-xs font-semibold rounded-full px-2 py-0.5">{receivedPending}</span>
             )}
           </button>
         </div>

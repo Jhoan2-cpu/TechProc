@@ -101,7 +101,7 @@ export const StudentsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/students</h1>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">Students</h1>
 
       {/* Resumen */}
       <StudentStatsCards students={students} />

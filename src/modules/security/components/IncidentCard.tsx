@@ -97,23 +97,37 @@ export const IncidentCard = ({
   if (compact) {
     // Vista compacta para incidentes críticos en dashboard
     return (
-      <div className="bg-white border border-red-300 rounded-lg p-4">
+      <div className="bg-gradient-to-br from-red-900/20 to-red-800/20 backdrop-blur-sm rounded-xl p-4 border border-red-500/40 hover:border-red-500/60 transition-all duration-300">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="font-heading font-bold text-white mb-1">
-              #{incident.id_incident} - {incident.title}
-            </h3>
-            <p className="text-sm text-gray-300 mb-2">{incident.description}</p>
-            <div className="flex gap-4 text-xs text-gray-400">
-              <span>{formatDate(incident.report_date)}</span>
-              {incident.assigned_to && <span>Asignado a: {incident.assigned_to}</span>}
+          <div className="flex items-start gap-3 flex-1">
+            <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg shadow-red-500/20">
+              <FontAwesomeIcon icon={faExclamationTriangle} className="text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-heading font-bold text-white mb-1">
+                #{incident.id_incident} - {incident.title}
+              </h3>
+              <p className="text-sm text-gray-300 mb-2">{incident.description}</p>
+              <div className="flex gap-4 text-xs text-gray-400">
+                <span className="flex items-center gap-1">
+                  <FontAwesomeIcon icon={faCalendar} />
+                  {formatDate(incident.report_date)}
+                </span>
+                {incident.assigned_to && (
+                  <span className="flex items-center gap-1">
+                    <FontAwesomeIcon icon={faUser} />
+                    {incident.assigned_to}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           {onManage && (
             <button
               onClick={() => onManage(incident.id_incident)}
-              className="btn bg-red-600 hover:bg-red-700 text-white"
+              className="btn bg-red-600 hover:bg-red-700 text-white flex items-center gap-2 flex-shrink-0"
             >
+              <FontAwesomeIcon icon={faExclamationTriangle} />
               Gestionar
             </button>
           )}

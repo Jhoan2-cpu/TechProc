@@ -30,22 +30,22 @@ export const SessionCard = ({
   if (compact) {
     // Vista compacta para el dashboard
     return (
-      <div className="border border-secondary-200 rounded-lg p-4 bg-success/20">
+      <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-4 border border-green-500/30 hover:border-green-500/50 transition-all duration-300">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
-              <FontAwesomeIcon icon={faUser} className="text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20">
+              <FontAwesomeIcon icon={faUser} className="text-white text-lg" />
             </div>
             <div>
               <p className="font-semibold text-white">{session.user_name}</p>
               <p className="text-sm text-gray-400">{session.user_email}</p>
               <div className="flex gap-4 text-xs text-gray-300 mt-1">
                 <span className="flex items-center gap-1">
-                  <FontAwesomeIcon icon={faGlobe} />
+                  <FontAwesomeIcon icon={faGlobe} className="text-gray-400" />
                   {session.ip_address}
                 </span>
                 <span className="flex items-center gap-1">
-                  <FontAwesomeIcon icon={faDesktop} />
+                  <FontAwesomeIcon icon={faDesktop} className="text-gray-400" />
                   {session.device}
                 </span>
               </div>

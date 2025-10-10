@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { SecurityStats, SessionCard, IncidentCard } from '../components';
 import { sessionsService, blockedIPsService, incidentsService, backupsService } from '../services';
 
@@ -80,9 +80,11 @@ export const SecurityDashboardPage = () => {
 
       {/* Incidentes Críticos */}
       {criticalIncidents > 0 && (
-        <div className="card p-6 bg-danger/20 border-2 border-red-200 animate-slide-up">
-          <h2 className="text-xl font-heading font-bold text-danger mb-4 flex items-center gap-2">
-            <FontAwesomeIcon icon={faExclamationTriangle} />
+        <div className="bg-gradient-to-br from-red-900/30 to-red-800/30 backdrop-blur-sm rounded-xl p-6 border-2 border-red-500/50 shadow-xl shadow-red-500/10 animate-slide-up">
+          <h2 className="text-xl font-heading font-bold text-red-400 mb-4 flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/30">
+              <FontAwesomeIcon icon={faExclamationTriangle} className="text-white" />
+            </div>
             Incidentes Críticos - ¡Atención Inmediata!
           </h2>
           <div className="space-y-3">
@@ -101,8 +103,11 @@ export const SecurityDashboardPage = () => {
       )}
 
       {/* Sesiones Activas Recientes */}
-      <div className="card p-6 animate-slide-up">
-        <h2 className="text-xl font-heading font-bold text-white mb-4">
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl animate-slide-up">
+        <h2 className="text-xl font-heading font-bold text-white mb-4 flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center shadow-lg shadow-green-500/20">
+            <FontAwesomeIcon icon={faUsers} className="text-white" />
+          </div>
           Sesiones Activas Recientes
         </h2>
         <div className="space-y-3">
