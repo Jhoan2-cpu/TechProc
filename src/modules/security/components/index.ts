@@ -10,6 +10,8 @@ export { BlockedUsersStats } from './BlockedUsersStats';
 export { BlockedUsersFilters } from './BlockedUsersFilters';
 export { BackupCard } from './BackupCard';
 export { BackupConfigForm } from './BackupConfigForm';
+export { BackupsStats } from './BackupsStats';
+export { BackupsHeader } from './BackupsHeader';
 export { TerminateSessionModal } from './TerminateSessionModal';
 export { BlockIPModal } from './BlockIPModal';
 export { UnblockIPModal } from './UnblockIPModal';

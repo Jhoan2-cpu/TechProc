@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { BackupCard, BackupConfigForm } from '../components';
+import { BackupCard, BackupConfigForm, BackupsStats, BackupsHeader } from '../components';
 import { backupsService } from '../services';
 import type { Backup } from '../types';
 
@@ -71,6 +69,11 @@ export const BackupsPage = () => {
     });
   };
 
+  // Estadísticas
+  const completedBackups = backups.filter(b => b.status === 'completed').length;
+  const failedBackups = backups.filter(b => b.status === 'failed').length;
+  const inProgressBackups = backups.filter(b => b.status === 'in_progress').length;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -84,35 +87,42 @@ export const BackupsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-heading font-bold text-white">
-          security/backups
-        </h1>
-        <button
-          onClick={handleStartManualBackup}
-          disabled={startingBackup}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <FontAwesomeIcon icon={startingBackup ? faSpinner : faPlay} className={startingBackup ? 'animate-spin' : ''} />
-          {startingBackup ? 'Iniciando...' : 'Iniciar Backup Manual'}
-        </button>
-      </div>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">
+        Backups
+      </h1>
 
-      <h2 className="text-xl font-heading text-gray-300">
-        Gestión de Backups de Seguridad
-      </h2>
+      {/* Estadísticas */}
+      <BackupsStats
+        totalBackups={backups.length}
+        completedBackups={completedBackups}
+        failedBackups={failedBackups}
+        inProgressBackups={inProgressBackups}
+      />
 
+      {/* Header con botón de backup manual */}
+      <BackupsHeader
+        onStartBackup={handleStartManualBackup}
+        isStarting={startingBackup}
+      />
+
+      {/* Configuración */}
       <BackupConfigForm />
 
       {/* Historial de Backups */}
-      <div className="card p-6">
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl">
         <h3 className="text-lg font-heading font-bold text-white mb-4">
           Historial de Backups
         </h3>
         <div className="space-y-3">
-          {backups.map((backup) => (
-            <BackupCard key={backup.id_backup} backup={backup} formatDate={formatDate} />
-          ))}
+          {backups.length > 0 ? (
+            backups.map((backup) => (
+              <BackupCard key={backup.id_backup} backup={backup} formatDate={formatDate} />
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-400">
+              No hay backups registrados aún
+            </div>
+          )}
         </div>
       </div>
     </div>

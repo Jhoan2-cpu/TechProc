@@ -37,16 +37,16 @@ export const BackupConfigForm = () => {
   };
 
   return (
-    <div className="card p-6 bg-primary-900/20 border-blue-200">
+    <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl">
       <h3 className="text-lg font-heading font-bold text-white mb-4">
         Configuración de Backup Automático
       </h3>
 
       {showSuccessMessage && (
-        <div className="mb-4 bg-success/20 border-l-4 border-green-500 p-4 animate-fade-in">
+        <div className="mb-4 bg-gradient-to-br from-green-900/30 to-green-800/30 border-l-4 border-green-500 p-4 rounded-lg animate-fade-in">
           <div className="flex items-center">
-            <FontAwesomeIcon icon={faCheckCircle} className="text-green-600 mr-2" />
-            <p className="text-green-800 font-semibold">
+            <FontAwesomeIcon icon={faCheckCircle} className="text-green-400 mr-2" />
+            <p className="text-green-300 font-semibold">
               Configuración guardada exitosamente
             </p>
           </div>
@@ -54,7 +54,7 @@ export const BackupConfigForm = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg p-4">
+        <div className="bg-secondary-600/50 rounded-lg p-4 border border-gray-700/30">
           <label className="block text-sm font-semibold text-gray-300 mb-2">
             Tipo de Backup
           </label>
@@ -68,7 +68,7 @@ export const BackupConfigForm = () => {
             <option value="differential">Diferencial</option>
           </select>
         </div>
-        <div className="bg-white rounded-lg p-4">
+        <div className="bg-secondary-600/50 rounded-lg p-4 border border-gray-700/30">
           <label className="block text-sm font-semibold text-gray-300 mb-2">
             Frecuencia
           </label>
@@ -82,7 +82,7 @@ export const BackupConfigForm = () => {
             <option value="monthly">Mensual</option>
           </select>
         </div>
-        <div className="bg-white rounded-lg p-4">
+        <div className="bg-secondary-600/50 rounded-lg p-4 border border-gray-700/30">
           <label className="block text-sm font-semibold text-gray-300 mb-2">
             Hora de Ejecución
           </label>
@@ -97,7 +97,7 @@ export const BackupConfigForm = () => {
       <div className="flex justify-end gap-3 mt-4">
         <button
           onClick={handleCancel}
-          className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
+          className="btn bg-secondary-200 hover:bg-secondary-300 text-white"
         >
           Cancelar
         </button>
