@@ -54,39 +54,39 @@ export const TicketsDashboardPage = ({
   return (
     <>
       {/* Estadísticas Personales */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <TicketStatsCard
           title="Mis Tickets Activos"
           value={myActiveTickets}
           icon={faClipboardList}
-          colorClass="from-blue-50 to-blue-100 text-blue-700 bg-blue-600"
+          iconBgColor="bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/20"
           index={0}
         />
         <TicketStatsCard
           title="Resueltos Hoy"
           value={myResolvedToday}
           icon={faCheckCircle}
-          colorClass="from-green-50 to-green-100 text-green-700 bg-green-600"
+          iconBgColor="bg-gradient-to-br from-green-500 to-green-600 shadow-green-500/20"
           index={1}
         />
         <TicketStatsCard
           title="Tickets Disponibles"
           value={totalAvailable}
           icon={faInbox}
-          colorClass="from-purple-50 to-purple-100 text-purple-700 bg-purple-600"
+          iconBgColor="bg-gradient-to-br from-purple-500 to-purple-600 shadow-purple-500/20"
           index={2}
         />
         <TicketStatsCard
           title="Críticos Disponibles"
           value={criticalAvailable}
           icon={faExclamationTriangle}
-          colorClass="from-red-50 to-red-100 text-red-700 bg-red-600"
+          iconBgColor="bg-gradient-to-br from-red-500 to-red-600 shadow-red-500/20"
           index={3}
         />
       </div>
 
       {/* Mis Tickets Activos */}
-      <div className="card p-6 animate-slide-up">
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl mb-6 animate-slide-up">
         <h2 className="text-xl font-heading font-bold text-white mb-4">
           Mis Tickets Activos
         </h2>
@@ -105,15 +105,15 @@ export const TicketsDashboardPage = ({
               />
             ))
           ) : (
-            <p className="text-center text-gray-300 py-8">No tienes tickets activos en este momento</p>
+            <p className="text-center text-gray-400 py-8">No tienes tickets activos en este momento</p>
           )}
         </div>
       </div>
 
       {/* Tickets Críticos Disponibles */}
       {criticalAvailable > 0 && (
-        <div className="card p-6 animate-slide-up bg-danger/20 border-red-200">
-          <h2 className="text-xl font-heading font-bold text-danger mb-4 flex items-center gap-2">
+        <div className="bg-gradient-to-br from-red-900/40 to-red-800/40 backdrop-blur-sm rounded-xl p-6 border border-red-500/30 shadow-xl shadow-red-500/20 animate-slide-up">
+          <h2 className="text-xl font-heading font-bold text-red-400 mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faExclamationTriangle} />
             Tickets Críticos Disponibles - ¡Atención Inmediata!
           </h2>
