@@ -1,28 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import type { Course } from '../types';
 
-interface StudentFiltersProps {
+interface InstructorFiltersProps {
   searchTerm: string;
-  filterState: string;
-  filterCourse: string;
-  courses: Course[];
+  filterStatus: string;
   onSearchChange: (value: string) => void;
-  onStateChange: (value: string) => void;
-  onCourseChange: (value: string) => void;
+  onStatusChange: (value: string) => void;
   onCreateClick: () => void;
 }
 
-export const StudentFilters = ({
+export const InstructorFilters = ({
   searchTerm,
-  filterState,
-  filterCourse,
-  courses,
+  filterStatus,
   onSearchChange,
-  onStateChange,
-  onCourseChange,
+  onStatusChange,
   onCreateClick,
-}: StudentFiltersProps) => {
+}: InstructorFiltersProps) => {
   return (
     <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 mb-6 border border-gray-700/30 shadow-xl">
       <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
@@ -34,7 +27,7 @@ export const StudentFilters = ({
             />
             <input
               type="text"
-              placeholder="Buscar estudiantes..."
+              placeholder="Buscar instructores..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
@@ -46,8 +39,8 @@ export const StudentFilters = ({
           <div className="flex items-center gap-2 bg-secondary-700/50 px-4 py-2 rounded-lg border border-gray-700/50">
             <FontAwesomeIcon icon={faFilter} className="text-primary-400" />
             <select
-              value={filterState}
-              onChange={(e) => onStateChange(e.target.value)}
+              value={filterStatus}
+              onChange={(e) => onStatusChange(e.target.value)}
               className="bg-transparent border-none text-white focus:outline-none cursor-pointer"
             >
               <option value="all" className="bg-secondary-700">
@@ -59,24 +52,9 @@ export const StudentFilters = ({
               <option value="inactivo" className="bg-secondary-700">
                 Inactivo
               </option>
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2 bg-secondary-700/50 px-4 py-2 rounded-lg border border-gray-700/50">
-            <FontAwesomeIcon icon={faFilter} className="text-primary-400" />
-            <select
-              value={filterCourse}
-              onChange={(e) => onCourseChange(e.target.value)}
-              className="bg-transparent border-none text-white focus:outline-none cursor-pointer"
-            >
-              <option value="all" className="bg-secondary-700">
-                Todos los cursos
+              <option value="suspendido" className="bg-secondary-700">
+                Suspendido
               </option>
-              {courses.map((course) => (
-                <option key={course.id} value={course.id} className="bg-secondary-700">
-                  {course.title}
-                </option>
-              ))}
             </select>
           </div>
 
@@ -85,7 +63,7 @@ export const StudentFilters = ({
             className="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-3 rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 flex items-center gap-2 font-medium whitespace-nowrap"
           >
             <FontAwesomeIcon icon={faUserPlus} />
-            Agregar Estudiante
+            Agregar Instructor
           </button>
         </div>
       </div>

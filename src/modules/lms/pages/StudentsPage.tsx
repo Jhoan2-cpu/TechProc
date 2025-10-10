@@ -10,35 +10,44 @@ import {
   faCheckCircle,
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import type { Student } from '../types';
-import { studentsService } from '../services';
+import type { Student, Course, Enrollment } from '../types';
+import { studentsService, coursesService, enrollmentsService } from '../services';
 import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const StudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterState, setFilterState] = useState<string>('all');
+  const [filterCourse, setFilterCourse] = useState<string>('all');
   const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
   const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
   const [studentToView, setStudentToView] = useState<Student | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await studentsService.getAll();
-        setStudents(data);
+        const [studentsData, coursesData, enrollmentsData] = await Promise.all([
+          studentsService.getAll(),
+          coursesService.getAll(),
+          enrollmentsService.getAll(),
+        ]);
+        setStudents(studentsData);
+        setCourses(coursesData);
+        setEnrollments(enrollmentsData);
       } catch (error) {
-        console.error('Error fetching students:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -78,8 +87,16 @@ export const StudentsPage = () => {
       student.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterState === 'all' || student.state === filterState;
-    return matchesSearch && matchesFilter;
+    const matchesState = filterState === 'all' || student.state === filterState;
+
+    // Filtrar por curso: verificar si el estudiante está inscrito en el curso seleccionado
+    const matchesCourse = filterCourse === 'all' ||
+      enrollments.some(enrollment =>
+        enrollment.student_id === student.id &&
+        enrollment.course_id === filterCourse
+      );
+
+    return matchesSearch && matchesState && matchesCourse;
   });
 
   return (
@@ -90,8 +107,11 @@ export const StudentsPage = () => {
       <StudentFilters
         searchTerm={searchTerm}
         filterState={filterState}
+        filterCourse={filterCourse}
+        courses={courses}
         onSearchChange={setSearchTerm}
         onStateChange={setFilterState}
+        onCourseChange={setFilterCourse}
         onCreateClick={() => setShowCreateModal(true)}
       />
 
