@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student, Course, Enrollment } from '../types';
 import { studentsService, coursesService, enrollmentsService } from '../services';
-import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters } from '../components';
+import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters, StudentStatsCards } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const StudentsPage = () => {
@@ -102,6 +102,9 @@ export const StudentsPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/students</h1>
+
+      {/* Resumen */}
+      <StudentStatsCards students={students} />
 
       {/* Header con filtros */}
       <StudentFilters
@@ -227,26 +230,6 @@ export const StudentsPage = () => {
             <p className="text-gray-400">No se encontraron estudiantes</p>
           </div>
         )}
-      </div>
-
-      {/* Resumen */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="card p-4 bg-gradient-to-br from-purple-50 to-purple-100">
-          <p className="text-sm text-purple-700 mb-1">Total de Estudiantes</p>
-          <p className="text-3xl font-heading font-bold text-purple-400">{students.length}</p>
-        </div>
-        <div className="card p-4 bg-gradient-to-br from-green-50 to-green-100">
-          <p className="text-sm text-green-700 mb-1">Estudiantes Activos</p>
-          <p className="text-3xl font-heading font-bold text-success">
-            {students.filter(s => s.state === 'activo').length}
-          </p>
-        </div>
-        <div className="card p-4 bg-gradient-to-br from-blue-50 to-blue-100">
-          <p className="text-sm text-blue-700 mb-1">Emails Verificados</p>
-          <p className="text-3xl font-heading font-bold text-primary-400">
-            {students.filter(s => s.email_verified_at).length}
-          </p>
-        </div>
       </div>
 
       {/* Modales */}
