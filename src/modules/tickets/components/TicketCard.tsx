@@ -1,17 +1,20 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUp,
   faUser,
   faCalendar,
-} from '@fortawesome/free-solid-svg-icons';
-import type { Ticket } from '../types';
+  faEye,
+  faCheckCircle,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
+import type { Ticket } from "../types";
 
 interface TicketCardProps {
   ticket: Ticket;
   formatDate: (dateString: string | null) => string;
   index: number;
   showActions?: boolean;
-  variant?: 'default' | 'compact';
+  variant?: "default" | "compact";
   onViewDetails?: (ticket: Ticket) => void;
   onEscalate?: (ticket: Ticket) => void;
   onResolve?: (ticket: Ticket) => void;
@@ -22,33 +25,44 @@ export const TicketCard = ({
   formatDate,
   index,
   showActions = true,
-  variant = 'default',
+  variant = "default",
   onViewDetails,
   onEscalate,
   onResolve,
 }: TicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'baja': return 'text-blue-600 bg-primary-900/20';
-      case 'media': return 'text-yellow-600 bg-warning/20';
-      case 'alta': return 'text-orange-600 bg-orange-900/20';
-      case 'crítica': return 'text-red-600 bg-danger/20';
-      default: return 'text-gray-600 bg-gray-100';
+      case "baja":
+        return "text-blue-600 bg-primary-900/20";
+      case "media":
+        return "text-yellow-600 bg-warning/20";
+      case "alta":
+        return "text-orange-600 bg-orange-900/20";
+      case "crítica":
+        return "text-red-600 bg-danger/20";
+      default:
+        return "text-gray-600 bg-gray-100";
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'abierto': return 'bg-primary-900/20 text-blue-700';
-      case 'en_progreso': return 'bg-warning/20 text-yellow-700';
-      case 'resuelto': return 'bg-success/20 text-green-700';
-      case 'cerrado': return 'bg-gray-100 text-gray-700';
-      case 'escalado': return 'bg-danger/20 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case "abierto":
+        return "bg-primary-900/20 text-blue-700";
+      case "en_progreso":
+        return "bg-warning/20 text-yellow-700";
+      case "resuelto":
+        return "bg-success/20 text-green-700";
+      case "cerrado":
+        return "bg-gray-100 text-gray-700";
+      case "escalado":
+        return "bg-danger/20 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
     }
   };
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <div
         className="border border-secondary-200 rounded-lg p-4 hover:shadow-md hover:border-primary-500/20 transition-all duration-300 animate-fade-in"
@@ -61,18 +75,26 @@ export const TicketCard = ({
                 #{ticket.ticket_id} - {ticket.title}
               </h3>
               <div className="flex gap-2 flex-shrink-0">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(
+                    ticket.priority
+                  )}`}
+                >
                   <FontAwesomeIcon icon={faArrowUp} className="mr-1" />
-                  {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
+                  {ticket.priority.charAt(0).toUpperCase() +
+                    ticket.priority.slice(1)}
                 </span>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(ticket.status)}`}>
-                  {ticket.status.replace('_', ' ').charAt(0).toUpperCase() + ticket.status.replace('_', ' ').slice(1)}
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                    ticket.status
+                  )}`}
+                >
+                  {ticket.status.replace("_", " ").charAt(0).toUpperCase() +
+                    ticket.status.replace("_", " ").slice(1)}
                 </span>
               </div>
             </div>
-            <p className="text-sm text-gray-300 mb-3">
-              {ticket.description}
-            </p>
+            <p className="text-sm text-gray-300 mb-3">{ticket.description}</p>
             <div className="flex flex-wrap gap-4 text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faUser} className="text-gray-400" />
@@ -97,22 +119,25 @@ export const TicketCard = ({
             <div className="flex md:flex-col gap-2">
               <button
                 onClick={() => onViewDetails?.(ticket)}
-                className="btn bg-primary-600 hover:bg-primary-700 text-white text-sm"
+                className="btn bg-primary-600 hover:bg-primary-700 text-white text-sm flex items-center gap-2"
               >
-                Ver Detalles
+                <FontAwesomeIcon icon={faEye} />
+                Detalles
               </button>
-              {ticket.status !== 'resuelto' && ticket.status !== 'cerrado' && (
+              {ticket.status !== "resuelto" && ticket.status !== "cerrado" && (
                 <>
                   <button
                     onClick={() => onResolve?.(ticket)}
-                    className="btn bg-green-600 hover:bg-green-700 text-white text-sm"
+                    className="btn bg-green-600 hover:bg-green-700 text-white text-sm flex items-center gap-2"
                   >
+                    <FontAwesomeIcon icon={faCheckCircle} />
                     Resolver
                   </button>
                   <button
                     onClick={() => onEscalate?.(ticket)}
-                    className="btn bg-orange-600 hover:bg-orange-700 text-white text-sm"
+                    className="btn bg-orange-600 hover:bg-orange-700 text-white text-sm flex items-center gap-2"
                   >
+                    <FontAwesomeIcon icon={faExclamationTriangle} />
                     Escalar
                   </button>
                 </>
@@ -136,12 +161,22 @@ export const TicketCard = ({
               #{ticket.ticket_id} - {ticket.title}
             </h3>
             <div className="flex gap-2 flex-shrink-0">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(ticket.priority)}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(
+                  ticket.priority
+                )}`}
+              >
                 <FontAwesomeIcon icon={faArrowUp} className="mr-1" />
-                {ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
+                {ticket.priority.charAt(0).toUpperCase() +
+                  ticket.priority.slice(1)}
               </span>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(ticket.status)}`}>
-                {ticket.status.replace('_', ' ').charAt(0).toUpperCase() + ticket.status.replace('_', ' ').slice(1)}
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                  ticket.status
+                )}`}
+              >
+                {ticket.status.replace("_", " ").charAt(0).toUpperCase() +
+                  ticket.status.replace("_", " ").slice(1)}
               </span>
             </div>
           </div>
@@ -163,11 +198,14 @@ export const TicketCard = ({
             )}
             <div className="flex items-center gap-2">
               <span className="text-gray-400">Categoría:</span>
-              <span className="font-medium text-primary-600">{ticket.category}</span>
+              <span className="font-medium text-primary-600">
+                {ticket.category}
+              </span>
             </div>
           </div>
           {ticket.notes && (
-            <div className="mt-3 text-sm text-gray-300 bg-amber-50 border-l-4 border-amber-400 p-3 rounded">
+            <div className="mt-3 text-sm text-yellow-200 bg-danger-100/70 border-l-4 border-danger p-3 rounded">
+              {" "}
               <span className="font-semibold">Nota:</span> {ticket.notes}
             </div>
           )}
@@ -176,22 +214,25 @@ export const TicketCard = ({
           <div className="flex lg:flex-col gap-2 lg:w-40">
             <button
               onClick={() => onViewDetails?.(ticket)}
-              className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none"
+              className="btn bg-primary-600 hover:bg-primary-700 text-white flex-1 lg:flex-none flex items-center justify-center gap-2"
             >
-              Ver Detalles
+              <FontAwesomeIcon icon={faEye} />
+              Detalles
             </button>
-            {ticket.status !== 'resuelto' && ticket.status !== 'cerrado' && (
+            {ticket.status !== "resuelto" && ticket.status !== "cerrado" && (
               <>
                 <button
                   onClick={() => onResolve?.(ticket)}
-                  className="btn bg-green-600 hover:bg-green-700 text-white flex-1 lg:flex-none"
+                  className="btn bg-green-600 hover:bg-green-700 text-white flex-1 lg:flex-none flex items-center justify-center gap-2"
                 >
+                  <FontAwesomeIcon icon={faCheckCircle} />
                   Resolver
                 </button>
                 <button
                   onClick={() => onEscalate?.(ticket)}
-                  className="btn bg-orange-600 hover:bg-orange-700 text-white flex-1 lg:flex-none"
+                  className="btn bg-orange-600 hover:bg-orange-700 text-white flex-1 lg:flex-none flex items-center justify-center gap-2"
                 >
+                  <FontAwesomeIcon icon={faExclamationTriangle} />
                   Escalar
                 </button>
               </>

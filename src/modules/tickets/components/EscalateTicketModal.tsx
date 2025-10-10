@@ -50,7 +50,7 @@ export const EscalateTicketModal = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
       <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
-        <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-orange-500 to-orange-600">
+        <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-yellow-500/30">
           <div className="flex items-center gap-3">
             <FontAwesomeIcon icon={faExclamationTriangle} className="text-2xl text-white" />
             <h2 className="text-2xl font-heading font-bold text-white">
@@ -59,7 +59,7 @@ export const EscalateTicketModal = ({
           </div>
           <button
             onClick={handleClose}
-            className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            className="text-white hover:bg-opacity-90 p-2 rounded-lg transition-colors"
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -72,13 +72,13 @@ export const EscalateTicketModal = ({
             <h3 className="font-heading font-bold text-lg text-orange-400 mb-2">
               Ticket #{ticket.ticket_id}
             </h3>
-            <p className="text-sm text-orange-800">{ticket.title}</p>
+            <p className="text-sm text-white-400">{ticket.title}</p>
             <div className="mt-2 flex gap-2 items-center">
-              <span className="text-xs text-orange-700">
+              <span className="text-xs text-white-700">
                 Prioridad: <span className="font-semibold">{ticket.priority}</span>
               </span>
               <span className="text-orange-300">•</span>
-              <span className="text-xs text-orange-700">
+              <span className="text-xs text-white-700">
                 Usuario ID: <span className="font-semibold">{ticket.user_id}</span>
               </span>
             </div>
@@ -141,7 +141,7 @@ export const EscalateTicketModal = ({
 
           {/* Warning */}
           <div className="bg-warning/20 border border-yellow-200 rounded-lg p-4">
-            <p className="text-sm text-yellow-800">
+            <p className="text-sm text-white/85">
               <strong>Importante:</strong> Al escalar este ticket, será reasignado a un técnico de nivel superior.
               Asegúrate de documentar toda la información relevante que hayas recopilado.
             </p>
@@ -152,7 +152,7 @@ export const EscalateTicketModal = ({
             <button
               type="button"
               onClick={handleClose}
-              className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
+              className="btn bg-red-700 text-white hover:bg-red-800"
             >
               Cancelar
             </button>
