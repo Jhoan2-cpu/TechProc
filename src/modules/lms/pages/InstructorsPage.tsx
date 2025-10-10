@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { Instructor } from '../types';
 import { instructorsService } from '../services';
-import { EditInstructorModal, CreateInstructorModal, InstructorFilters } from '../components';
+import { EditInstructorModal, CreateInstructorModal, InstructorFilters, InstructorStatsCards } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const InstructorsPage = () => {
@@ -86,6 +86,9 @@ export const InstructorsPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/instructors</h1>
+
+      {/* Resumen */}
+      <InstructorStatsCards instructors={instructors} />
 
       {/* Header con filtros */}
       <InstructorFilters
@@ -190,25 +193,6 @@ export const InstructorsPage = () => {
         </div>
       )}
 
-      {/* Resumen */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="card p-4 bg-gradient-to-br from-blue-50 to-blue-100">
-          <p className="text-sm text-blue-700 mb-1">Total de Instructores</p>
-          <p className="text-3xl font-heading font-bold text-primary-400">{instructors.length}</p>
-        </div>
-        <div className="card p-4 bg-gradient-to-br from-green-50 to-green-100">
-          <p className="text-sm text-green-700 mb-1">Instructores Activos</p>
-          <p className="text-3xl font-heading font-bold text-success">
-            {instructors.filter(i => i.status === 'activo').length}
-          </p>
-        </div>
-        <div className="card p-4 bg-gradient-to-br from-orange-50 to-orange-100">
-          <p className="text-sm text-orange-700 mb-1">Áreas de Expertise</p>
-          <p className="text-3xl font-heading font-bold text-orange-400">
-            {new Set(instructors.map(i => i.expertise_area.split(',')[0])).size}
-          </p>
-        </div>
-      </div>
 
       {/* Modal de detalles */}
       {selectedInstructor && (

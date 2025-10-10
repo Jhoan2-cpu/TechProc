@@ -15,3 +15,4 @@ export { CourseFilters } from './CourseFilters';
 export { StudentFilters } from './StudentFilters';
 export { InstructorFilters } from './InstructorFilters';
 export { StudentStatsCards } from './StudentStatsCards';
+export { InstructorStatsCards } from './InstructorStatsCards';
