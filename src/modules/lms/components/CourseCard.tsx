@@ -35,7 +35,7 @@ export const CourseCard = ({
 
   return (
     <div
-      className="card p-6 hover:shadow-2xl transition-all duration-300 animate-slide-up"
+      className="group relative bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-xl p-4 transition-all duration-500 ease-out animate-slide-up border-2 border-secondary-500/30 hover:border-primary-500 hover:shadow-2xl hover:shadow-primary-500/30 before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-primary-500/0 before:via-primary-500/0 before:to-primary-500/0 hover:before:from-primary-500/50 hover:before:via-primary-400/50 hover:before:to-primary-500/50 before:transition-all before:duration-500 before:-z-10 before:blur-sm"
       style={{ animationDelay: `${index * 100}ms` }}
     >
       {/* Header del card */}
@@ -80,21 +80,21 @@ export const CourseCard = ({
       <div className="flex gap-2">
         <button
           onClick={() => onView?.(course)}
-          className="flex-1 btn bg-primary-900/20 text-blue-700 hover:bg-blue-200 py-2 text-sm"
+          className="flex-1 btn bg-primary-300/20 text-primary-300 hover:bg-primary-500/30 border border-primary-500/30 hover:border-primary-500 py-2 text-sm transition-all duration-300"
         >
           <FontAwesomeIcon icon={faEye} className="mr-1" />
           Ver
         </button>
         <button
           onClick={() => onEdit?.(course)}
-          className="flex-1 btn bg-orange-900/20 text-orange-700 hover:bg-orange-200 py-2 text-sm"
+          className="flex-1 btn bg-warning/20 text-warning hover:bg-warning/25 border border-warning/30 hover:border-warning py-2 text-sm transition-all duration-300"
         >
           <FontAwesomeIcon icon={faEdit} className="mr-1" />
           Editar
         </button>
         <button
           onClick={() => onDelete?.(course)}
-          className="btn bg-danger/20 text-red-700 hover:bg-red-200 py-2 px-3 text-sm"
+          className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-2 px-3 text-sm transition-all duration-300"
         >
           <FontAwesomeIcon icon={faTrash} />
         </button>
