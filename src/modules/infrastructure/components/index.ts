@@ -2,6 +2,8 @@
 export { InfrastructureStats } from './InfrastructureStats';
 export { CriticalAlertsSection } from './CriticalAlertsSection';
 export { ServerStatusCard } from './ServerStatusCard';
+export { ServersStats } from './ServersStats';
+export { ServersHeader } from './ServersHeader';
 export { ServerCard } from './ServerCard';
 export { LicenseCard } from './LicenseCard';
 export { StorageCard } from './StorageCard';

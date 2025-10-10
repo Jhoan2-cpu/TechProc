@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import type { Server } from '../types';
-import { ServerCard, ServerDetailsModal, ServerFormModal, DeleteServerModal } from '../components';
+import { ServerCard, ServerDetailsModal, ServerFormModal, DeleteServerModal, ServersStats, ServersHeader } from '../components';
 
 interface ServersPageProps {
   servers: Server[];
@@ -85,31 +83,46 @@ export const ServersPage = ({ servers, onUpdateServers }: ServersPageProps) => {
     }
   };
 
+  // Estadísticas
+  const onlineServers = servers.filter(s => s.status === 'online').length;
+  const offlineServers = servers.filter(s => s.status === 'offline').length;
+  const maintenanceServers = servers.filter(s => s.status === 'maintenance').length;
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-white">Control Digital de Servidores</h2>
-        <button
-          onClick={handleNewServer}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          Nuevo Servidor
-        </button>
-      </div>
+      {/* Estadísticas */}
+      <ServersStats
+        totalServers={servers.length}
+        onlineServers={onlineServers}
+        offlineServers={offlineServers}
+        maintenanceServers={maintenanceServers}
+      />
 
+      {/* Header */}
+      <ServersHeader onNewServer={handleNewServer} />
+
+      {/* Lista de servidores */}
       <div className="grid grid-cols-1 gap-4">
-        {servers.map((server, index) => (
-          <ServerCard
-            key={server.id_server}
-            server={server}
-            formatDate={formatDate}
-            index={index}
-            onDetails={handleDetails}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
+        {servers.length > 0 ? (
+          servers.map((server, index) => (
+            <ServerCard
+              key={server.id_server}
+              server={server}
+              formatDate={formatDate}
+              index={index}
+              onDetails={handleDetails}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))
+        ) : (
+          <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-12 border border-gray-700/30 text-center">
+            <p className="text-xl text-gray-300">No hay servidores registrados</p>
+            <p className="text-sm text-gray-400 mt-2">
+              Comienza agregando un nuevo servidor usando el botón "Nuevo Servidor"
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Modales */}
