@@ -28,10 +28,10 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
   };
 
   const getUsageColor = (percent: number) => {
-    if (percent >= 90) return 'bg-danger/20';
+    if (percent >= 90) return 'bg-red-500';
     if (percent >= 75) return 'bg-orange-500';
-    if (percent >= 50) return 'bg-warning/20';
-    return 'bg-success/20';
+    if (percent >= 50) return 'bg-yellow-500';
+    return 'bg-green-500';
   };
 
   return (
@@ -71,32 +71,41 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-300">Uso CPU</span>
-                <span className="font-semibold">{server.cpu_usage_percent}%</span>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-gray-300 font-medium">Uso CPU</span>
+                <span className="font-semibold text-white">{server.cpu_usage_percent}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className={`h-3 rounded-full ${getUsageColor(server.cpu_usage_percent)}`} style={{ width: `${server.cpu_usage_percent}%` }}></div>
+              <div className="w-full bg-secondary-700/50 rounded-full h-2.5 overflow-hidden">
+                <div
+                  className={`h-2.5 rounded-full transition-all duration-300 ${getUsageColor(server.cpu_usage_percent)}`}
+                  style={{ width: `${server.cpu_usage_percent}%` }}
+                ></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-300">Uso RAM</span>
-                <span className="font-semibold">{server.ram_usage_percent}%</span>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-gray-300 font-medium">Uso RAM</span>
+                <span className="font-semibold text-white">{server.ram_usage_percent}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className={`h-3 rounded-full ${getUsageColor(server.ram_usage_percent)}`} style={{ width: `${server.ram_usage_percent}%` }}></div>
+              <div className="w-full bg-secondary-700/50 rounded-full h-2.5 overflow-hidden">
+                <div
+                  className={`h-2.5 rounded-full transition-all duration-300 ${getUsageColor(server.ram_usage_percent)}`}
+                  style={{ width: `${server.ram_usage_percent}%` }}
+                ></div>
               </div>
             </div>
             <div>
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-gray-300">Uso Disco</span>
-                <span className="font-semibold">{server.disk_usage_percent}%</span>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-gray-300 font-medium">Uso Disco</span>
+                <span className="font-semibold text-white">{server.disk_usage_percent}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className={`h-3 rounded-full ${getUsageColor(server.disk_usage_percent)}`} style={{ width: `${server.disk_usage_percent}%` }}></div>
+              <div className="w-full bg-secondary-700/50 rounded-full h-2.5 overflow-hidden">
+                <div
+                  className={`h-2.5 rounded-full transition-all duration-300 ${getUsageColor(server.disk_usage_percent)}`}
+                  style={{ width: `${server.disk_usage_percent}%` }}
+                ></div>
               </div>
             </div>
           </div>
