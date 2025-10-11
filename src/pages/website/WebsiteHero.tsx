@@ -30,7 +30,7 @@ export const WebsiteHero = ({ activeAlerts }: WebsiteHeroProps) => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-dark-600 to-smoky-700 overflow-hidden">
+    <section id="hero" className="mt-4 relative min-h-screen flex items-center justify-center bg-gradient-to-br from-dark-600 to-smoky-700 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
