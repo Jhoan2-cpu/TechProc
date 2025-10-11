@@ -46,7 +46,7 @@ export const NewsCard = ({ news, index, formatDate, getStatusColor, onEdit, onDe
           <div className="flex flex-wrap gap-2 mb-3">
             <span className="px-2 py-1 bg-primary-900/20 text-blue-700 rounded text-xs">{news.category}</span>
             {news.tags.map((tag, i) => (
-              <span key={i} className="px-2 py-1 bg-secondary-100 text-gray-300 rounded text-xs">
+              <span key={i} className="px-2 py-1 bg-secondary-100/90 text-primary-800 rounded text-xs">
                 #{tag}
               </span>
             ))}

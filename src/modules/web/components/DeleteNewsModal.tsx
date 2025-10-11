@@ -48,7 +48,7 @@ export const DeleteNewsModal = ({ isOpen, news, onConfirm, onCancel }: DeleteNew
         <div className="bg-secondary-600/50 p-6 flex gap-3 justify-end rounded-b-lg">
           <button
             onClick={onCancel}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300 flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faTimes} />
             Cancelar
