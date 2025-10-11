@@ -1,35 +1,29 @@
-// Authentication Service
+// Authentication Service - Implementado según BACKEND_API_SPECIFICATION.md
 import { mockApiCall } from './mockService';
 import { apiRequest } from './api.config';
-import type { User } from '../shared/types/auth';
+import type {
+  User,
+  LoginCredentials,
+  LoginResponse,
+  RegisterData,
+  RefreshTokenResponse,
+} from '../shared/types/auth';
 
-const USE_MOCK = true; // Cambiar a false cuando la API esté lista
+/**
+ * Cambiar a FALSE cuando la API real esté lista
+ * URL de la API se configura en .env: VITE_API_BASE_URL
+ */
+const USE_MOCK = false;
 
-// Tipos para autenticación
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  user: User;
-  token: string;
-  refreshToken?: string;
-}
-
-export interface RegisterData {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-  role?: string;
-}
-
-// Mock de usuarios con credenciales
+/**
+ * Mock de usuarios con credenciales
+ * Estos son los usuarios de prueba esperados por el backend según especificación
+ * Cuando USE_MOCK = false, estos datos deben existir en la base de datos del backend
+ */
 const MOCK_CREDENTIALS = [
   {
     email: 'admin@techproc.com',
-    password: '123456',
+    password: 'admin123', // Según especificación
     user: {
       id: '1',
       username: 'admin',
@@ -42,7 +36,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'lms@techproc.com',
-    password: '123456',
+    password: 'lms123',
     user: {
       id: '2',
       username: 'lms',
@@ -55,7 +49,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'soporte@techproc.com',
-    password: '123456',
+    password: 'soporte123',
     user: {
       id: '3',
       username: 'soporte',
@@ -68,7 +62,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'security@techproc.com',
-    password: '123456',
+    password: 'security123',
     user: {
       id: '4',
       username: 'seg',
@@ -81,7 +75,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'infra@techproc.com',
-    password: '123456',
+    password: 'infra123',
     user: {
       id: '5',
       username: 'infra',
@@ -94,7 +88,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'web@techproc.com',
-    password: '123456',
+    password: 'web123',
     user: {
       id: '6',
       username: 'web',
@@ -107,7 +101,7 @@ const MOCK_CREDENTIALS = [
   },
   {
     email: 'data@techproc.com',
-    password: '123456',
+    password: 'data123',
     user: {
       id: '7',
       username: 'data',
@@ -215,8 +209,8 @@ export const authService = {
     });
   },
 
-  // Refresh token
-  async refreshToken(refreshToken: string): Promise<{ token: string }> {
+  // Refresh token - Endpoint: POST /auth/refresh
+  async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
     if (USE_MOCK) {
       await new Promise((resolve) => setTimeout(resolve, 300));
       return mockApiCall({
@@ -224,13 +218,14 @@ export const authService = {
       });
     }
 
-    return apiRequest<{ token: string }>('/auth/refresh', {
+    // API real según especificación
+    return apiRequest<RefreshTokenResponse>('/auth/refresh', {
       method: 'POST',
       body: JSON.stringify({ refreshToken }),
     });
   },
 
-  // Verificar token
+  // Verificar token - Endpoint: POST /auth/verify
   async verifyToken(token: string): Promise<User> {
     if (USE_MOCK) {
       try {
@@ -243,6 +238,7 @@ export const authService = {
       }
     }
 
+    // API real según especificación
     return apiRequest<User>('/auth/verify', {
       method: 'POST',
       body: JSON.stringify({ token }),

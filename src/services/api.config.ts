@@ -1,29 +1,74 @@
-// Configuración global de la API
+// Configuración global de la API según especificación BACKEND_API_SPECIFICATION.md
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
+  // Base URL según especificación
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
   TIMEOUT: 30000,
   HEADERS: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 };
 
+// Tipos de error según especificación
+export interface ApiError {
+  error: {
+    code: string;
+    message: string;
+    details?: Array<{
+      field: string;
+      message: string;
+    }>;
+    timestamp?: string;
+    request_id?: string;
+  };
+}
+
 // Helper para construir URLs
 export const buildUrl = (endpoint: string): string => {
-  return `${API_CONFIG.BASE_URL}${endpoint}`;
+  // Asegurar que el endpoint empiece con /
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  return `${API_CONFIG.BASE_URL}${cleanEndpoint}`;
 };
 
-// Helper para manejar respuestas
+// Helper para manejar respuestas según especificación
 export const handleResponse = async <T>(response: Response): Promise<T> => {
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({
-      message: 'Error en la solicitud',
-    }));
-    throw new Error(error.message || `HTTP error! status: ${response.status}`);
+  // Para respuestas 204 No Content
+  if (response.status === 204) {
+    return undefined as T;
   }
-  return response.json();
+
+  const contentType = response.headers.get('content-type');
+  const isJson = contentType?.includes('application/json');
+
+  if (!response.ok) {
+    if (isJson) {
+      const errorData: ApiError = await response.json();
+
+      // Crear mensaje de error detallado
+      let errorMessage = errorData.error.message || 'Error en la solicitud';
+
+      // Agregar detalles de validación si existen
+      if (errorData.error.details && errorData.error.details.length > 0) {
+        const fieldErrors = errorData.error.details
+          .map(d => `${d.field}: ${d.message}`)
+          .join(', ');
+        errorMessage += ` (${fieldErrors})`;
+      }
+
+      const error: any = new Error(errorMessage);
+      error.code = errorData.error.code;
+      error.status = response.status;
+      error.details = errorData.error.details;
+      throw error;
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  }
+
+  return isJson ? response.json() : (response.text() as any);
 };
 
-// Helper para hacer peticiones
+// Helper para hacer peticiones con auto-refresh de token
 export const apiRequest = async <T>(
   endpoint: string,
   options: RequestInit = {}
@@ -50,7 +95,40 @@ export const apiRequest = async <T>(
   try {
     const response = await fetch(url, config);
     return handleResponse<T>(response);
-  } catch (error) {
+  } catch (error: any) {
+    // Si el token expiró, intentar refrescar
+    if (error.code === 'TOKEN_EXPIRED' && !endpoint.includes('/auth/')) {
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (refreshToken) {
+        try {
+          // Intentar refrescar el token
+          const refreshResponse = await fetch(buildUrl('/auth/refresh'), {
+            method: 'POST',
+            headers: API_CONFIG.HEADERS,
+            body: JSON.stringify({ refreshToken }),
+          });
+
+          if (refreshResponse.ok) {
+            const { token: newToken } = await refreshResponse.json();
+            localStorage.setItem('auth_token', newToken);
+
+            // Reintentar la petición original con el nuevo token
+            config.headers = {
+              ...config.headers,
+              Authorization: `Bearer ${newToken}`,
+            };
+            const retryResponse = await fetch(url, config);
+            return handleResponse<T>(retryResponse);
+          }
+        } catch (refreshError) {
+          // Si falla el refresh, limpiar sesión
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('refresh_token');
+          window.location.href = '/login';
+        }
+      }
+    }
+
     console.error('API Request Error:', error);
     throw error;
   }
