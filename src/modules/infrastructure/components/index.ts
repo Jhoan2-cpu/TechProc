@@ -5,6 +5,8 @@ export { ServerStatusCard } from './ServerStatusCard';
 export { ServersStats } from './ServersStats';
 export { ServersHeader } from './ServersHeader';
 export { ServerCard } from './ServerCard';
+export { LicensesStats } from './LicensesStats';
+export { LicensesHeader } from './LicensesHeader';
 export { LicenseCard } from './LicenseCard';
 export { StorageCard } from './StorageCard';
 export { SoftwareCard } from './SoftwareCard';

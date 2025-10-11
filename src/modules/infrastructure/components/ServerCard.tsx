@@ -145,14 +145,14 @@ export const ServerCard = ({ server, formatDate, index, onDetails, onEdit, onDel
           </button>
           <button
             onClick={() => onEdit(server)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center justify-center gap-2"
+            className="btn bg-primary-800 hover:bg-secondary-300 text-white flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
           <button
             onClick={() => onDelete(server)}
-            className="btn bg-danger/20 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+            className="btn bg-danger/20 hover:bg-danger/30 text-red-400 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar

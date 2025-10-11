@@ -98,14 +98,14 @@ export const StorageCard = ({ storage, formatDate, index, onDetails, onEdit, onD
         </button>
         <button
           onClick={() => onEdit(storage)}
-          className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex-1 flex items-center justify-center gap-2"
+          className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300 flex-1 flex items-center justify-center gap-2"
         >
           <FontAwesomeIcon icon={faEdit} />
           Editar
         </button>
         <button
           onClick={() => onDelete(storage)}
-          className="btn bg-danger/20 hover:bg-red-200 text-red-700 flex-1 flex items-center justify-center gap-2"
+          className="btn bg-danger/20 hover:bg-danger/40 text-red-500 flex-1 flex items-center justify-center gap-2"
         >
           <FontAwesomeIcon icon={faTrash} />
           Eliminar

@@ -54,7 +54,7 @@ export const DeleteStorageModal = ({ isOpen, storage, onConfirm, onCancel }: Del
           <div className="flex gap-3">
             <button
               onClick={onCancel}
-              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
+              className="flex-1 btn bg-secondary-200 hover:bg-secondary-300 text-white-300"
             >
               Cancelar
             </button>

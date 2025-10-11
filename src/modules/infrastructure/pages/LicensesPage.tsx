@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import type { License } from '../types';
-import { LicenseCard, LicenseDetailsModal, LicenseFormModal, DeleteLicenseModal } from '../components';
+import { LicenseCard, LicenseDetailsModal, LicenseFormModal, DeleteLicenseModal, LicensesStats, LicensesHeader } from '../components';
 
 interface LicensesPageProps {
   licenses: License[];
@@ -80,31 +78,54 @@ export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) 
     }
   };
 
+  // Estadísticas
+  const activeLicenses = licenses.filter(l => l.status === 'active').length;
+  const expiredLicenses = licenses.filter(l => l.status === 'expired').length;
+
+  // Licencias por vencer en los próximos 30 días
+  const today = new Date();
+  const thirtyDaysFromNow = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+  const expiringLicenses = licenses.filter(l => {
+    if (!l.expiration_date) return false;
+    const expirationDate = new Date(l.expiration_date);
+    return expirationDate > today && expirationDate <= thirtyDaysFromNow && l.status === 'active';
+  }).length;
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-white">Gestión de Licencias</h2>
-        <button
-          onClick={handleNewLicense}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faPlus} />
-          Nueva Licencia
-        </button>
-      </div>
+      {/* Estadísticas */}
+      <LicensesStats
+        totalLicenses={licenses.length}
+        activeLicenses={activeLicenses}
+        expiredLicenses={expiredLicenses}
+        expiringLicenses={expiringLicenses}
+      />
 
+      {/* Header */}
+      <LicensesHeader onNewLicense={handleNewLicense} />
+
+      {/* Lista de licencias */}
       <div className="grid grid-cols-1 gap-4">
-        {licenses.map((license, index) => (
-          <LicenseCard
-            key={license.id_license}
-            license={license}
-            formatDate={formatDate}
-            index={index}
-            onDetails={handleDetails}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
+        {licenses.length > 0 ? (
+          licenses.map((license, index) => (
+            <LicenseCard
+              key={license.id_license}
+              license={license}
+              formatDate={formatDate}
+              index={index}
+              onDetails={handleDetails}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))
+        ) : (
+          <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-12 border border-gray-700/30 text-center">
+            <p className="text-xl text-gray-300">No hay licencias registradas</p>
+            <p className="text-sm text-gray-400 mt-2">
+              Comienza agregando una nueva licencia usando el botón "Nueva Licencia"
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Modales */}

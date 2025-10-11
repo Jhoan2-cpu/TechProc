@@ -75,7 +75,7 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
           </div>
 
           {license.notes && (
-            <div className="bg-amber-50 border-l-4 border-amber-400 p-3">
+            <div className="bg-amber-200/10 border-l-4 border-amber-400 p-3">
               <p className="text-sm text-gray-300">{license.notes}</p>
             </div>
           )}
@@ -97,14 +97,14 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
           </button>
           <button
             onClick={() => onEdit(license)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center justify-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
           <button
             onClick={() => onDelete(license)}
-            className="btn bg-danger/20 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+            className="btn bg-danger/20 hover:bg-danger/40 text-red-500 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar

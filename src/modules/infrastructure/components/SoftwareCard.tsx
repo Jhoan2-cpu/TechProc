@@ -78,14 +78,14 @@ export const SoftwareCard = ({ software, formatDate, index, onDetails, onEdit, o
           </button>
           <button
             onClick={() => onEdit(software)}
-            className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300 flex items-center justify-center gap-2"
+            className="btn bg-secondary-200 hover:bg-secondary-300 text-whtie-300 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faEdit} />
             Editar
           </button>
           <button
             onClick={() => onDelete(software)}
-            className="btn bg-danger/20 hover:bg-red-200 text-red-700 flex items-center justify-center gap-2"
+            className="btn bg-danger/20 hover:bg-danger/40 text-red-500 flex items-center justify-center gap-2"
           >
             <FontAwesomeIcon icon={faTrash} />
             Eliminar
