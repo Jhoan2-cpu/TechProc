@@ -106,7 +106,7 @@ export const ContactFormCard = ({
           {onViewDetails && (
             <button
               onClick={() => onViewDetails(contact)}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300"
               title="Ver detalles completos"
             >
               Ver Detalles

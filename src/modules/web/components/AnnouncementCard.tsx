@@ -64,7 +64,7 @@ export const AnnouncementCard = ({ announcement, index, getStatusColor, onEdit, 
         </button>
         <button
           onClick={() => onToggleStatus(announcement)}
-          className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
+          className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300"
           title={`${announcement.status === 'active' ? 'Desactivar' : 'Activar'} anuncio`}
         >
           <FontAwesomeIcon icon={faChartLine} />
