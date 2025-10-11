@@ -31,7 +31,9 @@ import type {
 import {
   ProgressChart,
   PieChart,
-  AnalyticsStatsCard,
+  AnalyticsDashboardStats,
+  FilterSection,
+  ReportGeneratorForm,
   CourseAnalyticsCard,
   AttendanceCard,
   ProgressCard,
@@ -496,65 +498,38 @@ export const AnalyticsPage = () => {
   const renderDashboard = () => (
     <div className="space-y-6">
       {/* Métricas Generales */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <AnalyticsStatsCard
-          title="Estudiantes Activos"
-          value={mockDashboard.active_students}
-          subtitle={`de ${mockDashboard.total_students} totales`}
-          icon={faUsers}
-          colorClass="bg-gradient-to-br from-blue-50 to-blue-100 text-primary-400"
-          borderColor="border-l-4 border-blue-600"
-        />
-        <AnalyticsStatsCard
-          title="Asistencia Promedio"
-          value={`${mockDashboard.average_attendance.toFixed(1)}%`}
-          subtitle="en todos los cursos"
-          icon={faUserCheck}
-          colorClass="bg-gradient-to-br from-green-50 to-green-100 text-success"
-          borderColor="border-l-4 border-green-600"
-        />
-        <AnalyticsStatsCard
-          title="Rendimiento Promedio"
-          value={`${mockDashboard.average_performance.toFixed(1)}%`}
-          subtitle="calificaciones"
-          icon={faTrophy}
-          colorClass="bg-gradient-to-br from-purple-50 to-purple-100 text-purple-400"
-          borderColor="border-l-4 border-purple-600"
-        />
-        <AnalyticsStatsCard
-          title="Estudiantes en Riesgo"
-          value={mockDashboard.at_risk_students}
-          subtitle="requieren atención"
-          icon={faExclamationTriangle}
-          colorClass="bg-gradient-to-br from-red-50 to-red-100 text-danger"
-          borderColor="border-l-4 border-red-600"
-        />
-      </div>
+      <AnalyticsDashboardStats
+        activeStudents={mockDashboard.active_students}
+        totalStudents={mockDashboard.total_students}
+        averageAttendance={mockDashboard.average_attendance}
+        averagePerformance={mockDashboard.average_performance}
+        atRiskStudents={mockDashboard.at_risk_students}
+      />
 
       {/* Métricas Adicionales */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card p-6">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl">
           <div className="flex items-center gap-3 mb-3">
-            <FontAwesomeIcon icon={faGraduationCap} className="text-2xl text-primary-600" />
-            <h3 className="text-lg font-heading font-bold">Cursos Activos</h3>
+            <FontAwesomeIcon icon={faGraduationCap} className="text-2xl text-blue-400" />
+            <h3 className="text-lg font-heading font-bold text-white">Cursos Activos</h3>
           </div>
           <p className="text-4xl font-bold text-white">{mockDashboard.total_courses}</p>
         </div>
 
-        <div className="card p-6">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl">
           <div className="flex items-center gap-3 mb-3">
-            <FontAwesomeIcon icon={faTasks} className="text-2xl text-primary-600" />
-            <h3 className="text-lg font-heading font-bold">Progreso Promedio</h3>
+            <FontAwesomeIcon icon={faTasks} className="text-2xl text-green-400" />
+            <h3 className="text-lg font-heading font-bold text-white">Progreso Promedio</h3>
           </div>
           <p className="text-4xl font-bold text-white">
             {mockDashboard.average_progress.toFixed(1)}%
           </p>
         </div>
 
-        <div className="card p-6">
+        <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl">
           <div className="flex items-center gap-3 mb-3">
-            <FontAwesomeIcon icon={faCheckCircle} className="text-2xl text-primary-600" />
-            <h3 className="text-lg font-heading font-bold">Tasa de Completación</h3>
+            <FontAwesomeIcon icon={faCheckCircle} className="text-2xl text-purple-400" />
+            <h3 className="text-lg font-heading font-bold text-white">Tasa de Completación</h3>
           </div>
           <p className="text-4xl font-bold text-white">
             {mockDashboard.completion_rate.toFixed(1)}%
@@ -593,9 +568,9 @@ export const AnalyticsPage = () => {
       </div>
 
       {/* Análisis por Curso */}
-      <div className="card p-6">
+      <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl">
         <h2 className="text-xl font-heading font-bold text-white mb-4 flex items-center gap-2">
-          <FontAwesomeIcon icon={faChartBar} />
+          <FontAwesomeIcon icon={faChartBar} className="text-blue-400" />
           Análisis por Curso
         </h2>
         <div className="space-y-4">
@@ -629,7 +604,7 @@ export const AnalyticsPage = () => {
           </h2>
           <button
             onClick={() => exportToCSV(filteredAttendance, 'asistencia')}
-            className="btn btn-secondary flex items-center gap-2"
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faFileCsv} />
             Exportar CSV
@@ -637,43 +612,17 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* Filtros */}
-        <div className="card p-4">
-          <div className="flex items-center gap-3 flex-wrap">
-            <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
-            <div className="flex-1 min-w-[250px]">
-              <input
-                type="text"
-                className="input w-full"
-                placeholder="Buscar por estudiante o curso..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <select
-              className="select min-w-[200px]"
-              value={selectedCourse}
-              onChange={(e) => setSelectedCourse(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-            >
-              <option value="all">Todos los cursos</option>
-              {mockCourseAnalytics.map(course => (
-                <option key={course.course_id} value={course.course_id}>
-                  {course.course_name}
-                </option>
-              ))}
-            </select>
-            {(searchTerm || selectedCourse !== 'all') && (
-              <button
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedCourse('all');
-                }}
-                className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
-              >
-                Limpiar filtros
-              </button>
-            )}
-          </div>
-        </div>
+        <FilterSection
+          searchTerm={searchTerm}
+          selectedCourse={selectedCourse}
+          courses={mockCourseAnalytics}
+          onSearchChange={setSearchTerm}
+          onCourseChange={setSelectedCourse}
+          onClearFilters={() => {
+            setSearchTerm('');
+            setSelectedCourse('all');
+          }}
+        />
 
         {/* Resultados */}
         <div className="text-sm text-gray-400 mb-2">
@@ -719,7 +668,7 @@ export const AnalyticsPage = () => {
           </h2>
           <button
             onClick={() => exportToCSV(filteredProgress, 'progreso_academico')}
-            className="btn btn-secondary flex items-center gap-2"
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faFileCsv} />
             Exportar CSV
@@ -727,43 +676,17 @@ export const AnalyticsPage = () => {
         </div>
 
         {/* Filtros */}
-        <div className="card p-4">
-          <div className="flex items-center gap-3 flex-wrap">
-            <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
-            <div className="flex-1 min-w-[250px]">
-              <input
-                type="text"
-                className="input w-full"
-                placeholder="Buscar por estudiante o curso..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <select
-              className="select min-w-[200px]"
-              value={selectedCourse}
-              onChange={(e) => setSelectedCourse(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-            >
-              <option value="all">Todos los cursos</option>
-              {mockCourseAnalytics.map(course => (
-                <option key={course.course_id} value={course.course_id}>
-                  {course.course_name}
-                </option>
-              ))}
-            </select>
-            {(searchTerm || selectedCourse !== 'all') && (
-              <button
-                onClick={() => {
-                  setSearchTerm('');
-                  setSelectedCourse('all');
-                }}
-                className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
-              >
-                Limpiar filtros
-              </button>
-            )}
-          </div>
-        </div>
+        <FilterSection
+          searchTerm={searchTerm}
+          selectedCourse={selectedCourse}
+          courses={mockCourseAnalytics}
+          onSearchChange={setSearchTerm}
+          onCourseChange={setSelectedCourse}
+          onClearFilters={() => {
+            setSearchTerm('');
+            setSelectedCourse('all');
+          }}
+        />
 
         {/* Resultados */}
         <div className="text-sm text-gray-400 mb-2">
@@ -799,7 +722,7 @@ export const AnalyticsPage = () => {
         </h2>
         <button
           onClick={() => exportToCSV(mockPerformance, 'rendimiento_academico')}
-          className="btn btn-secondary flex items-center gap-2"
+          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
         >
           <FontAwesomeIcon icon={faFileCsv} />
           Exportar CSV
@@ -827,7 +750,7 @@ export const AnalyticsPage = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => exportToCSV(mockDropout, 'riesgo_desercion')}
-            className="btn btn-secondary flex items-center gap-2"
+            className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faFileCsv} />
             Exportar CSV
@@ -864,111 +787,16 @@ export const AnalyticsPage = () => {
         <h2 className="text-2xl font-heading font-bold text-white">
           Generación de Reportes
         </h2>
-        <button className="btn btn-primary">
-          <FontAwesomeIcon icon={faPlus} className="mr-2" />
-          Generar Nuevo Reporte
-        </button>
       </div>
 
       {/* Formulario de Nuevo Reporte */}
-      <div className="card p-6 bg-gradient-to-br from-primary-50 to-blue-50">
-        <h3 className="font-heading font-bold text-lg mb-4 flex items-center gap-2">
-          <FontAwesomeIcon icon={faFileExport} />
-          Crear Reporte Personalizado
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Tipo de Reporte *
-            </label>
-            <select
-              className="select"
-              value={reportForm.report_type}
-              onChange={(e) => setReportForm({ ...reportForm, report_type: e.target.value as ReportType })}
-            >
-              <option value="asistencia">Asistencia</option>
-              <option value="rendimiento">Rendimiento</option>
-              <option value="progreso">Progreso</option>
-              <option value="desercion">Riesgo de Deserción</option>
-              <option value="general">General</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Formato *
-            </label>
-            <select
-              className="select"
-              value={reportForm.format}
-              onChange={(e) => setReportForm({ ...reportForm, format: e.target.value as ReportFormat })}
-            >
-              <option value="pdf">PDF</option>
-              <option value="excel">Excel</option>
-              <option value="csv">CSV</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Fecha Inicio *
-            </label>
-            <input
-              type="date"
-              className="input"
-              value={reportForm.date_from}
-              onChange={(e) => setReportForm({ ...reportForm, date_from: e.target.value })}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Fecha Fin *
-            </label>
-            <input
-              type="date"
-              className="input"
-              value={reportForm.date_to}
-              onChange={(e) => setReportForm({ ...reportForm, date_to: e.target.value })}
-              required
-            />
-          </div>
-        </div>
-        <div className="flex items-center gap-4 mt-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="rounded"
-              checked={reportForm.include_charts}
-              onChange={(e) => setReportForm({ ...reportForm, include_charts: e.target.checked })}
-            />
-            <span className="text-sm">Incluir gráficos</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="rounded"
-              checked={reportForm.include_raw_data}
-              onChange={(e) => setReportForm({ ...reportForm, include_raw_data: e.target.checked })}
-            />
-            <span className="text-sm">Incluir datos crudos</span>
-          </label>
-        </div>
-        <div className="flex items-center gap-3 mt-4">
-          <button
-            className="btn btn-primary flex items-center gap-2"
-            onClick={handleGenerateReport}
-            disabled={isGeneratingReport}
-          >
-            <FontAwesomeIcon icon={faFileExport} className={isGeneratingReport ? 'animate-spin' : ''} />
-            {isGeneratingReport ? 'Generando...' : 'Generar Reporte'}
-          </button>
-          {reportSuccess && (
-            <span className="text-green-600 font-semibold flex items-center gap-2 animate-fade-in">
-              <FontAwesomeIcon icon={faCheckCircle} />
-              ¡Reporte generado exitosamente!
-            </span>
-          )}
-        </div>
-      </div>
+      <ReportGeneratorForm
+        reportForm={reportForm}
+        isGenerating={isGeneratingReport}
+        success={reportSuccess}
+        onFormChange={setReportForm}
+        onGenerate={handleGenerateReport}
+      />
 
       {/* Reportes Generados */}
       <div>

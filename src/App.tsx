@@ -17,7 +17,7 @@ import {
 import { InfrastructurePage } from './modules/infrastructure/pages/InfrastructurePage';
 import { InfrastructureMainPage } from './modules/infrastructure/pages/InfrastructureMainPage';
 import { WebPage } from './modules/web/pages/WebPage';
-import { AnalyticsPage } from './modules/analytics/pages/AnalyticsPage';
+import { AnalyticsMainPage } from './modules/analytics/pages/AnalyticsMainPage';
 import { UsersPage } from './modules/users/pages/UsersPage';
 import { PendingRegistrationsPage } from './modules/users/pages/PendingRegistrationsPage';
 import { Preloader } from './shared/components/Preloader';
@@ -381,12 +381,12 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             <Route path="/web-announcements" element={<WebPage />} />
             <Route path="/web-contacts" element={<WebPage />} />
             <Route path="/web-chatbot" element={<WebPage />} />
-            <Route path="/analytics-dashboard" element={<AnalyticsPage />} />
-            <Route path="/analytics-attendance" element={<AnalyticsPage />} />
-            <Route path="/analytics-progress" element={<AnalyticsPage />} />
-            <Route path="/analytics-performance" element={<AnalyticsPage />} />
-            <Route path="/analytics-dropout" element={<AnalyticsPage />} />
-            <Route path="/analytics-reports" element={<AnalyticsPage />} />
+            <Route path="/analytics-dashboard" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-attendance" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-progress" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-performance" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-dropout" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-reports" element={<AnalyticsMainPage />} />
           </Routes>
         </div>
       </main>

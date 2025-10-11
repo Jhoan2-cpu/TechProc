@@ -10,17 +10,17 @@ interface DropoutPredictionCardProps {
 export const DropoutPredictionCard = ({ student, index }: DropoutPredictionCardProps) => {
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'crítico': return 'bg-danger/20 border-red-500 text-danger';
-      case 'alto': return 'bg-orange-900/20 border-orange-500 text-orange-400';
-      case 'medio': return 'bg-warning/20 border-yellow-500 text-warning';
-      case 'bajo': return 'bg-success/20 border-green-500 text-success';
-      default: return 'bg-gray-100 border-gray-500 text-gray-900';
+      case 'crítico': return 'border-danger/70 bg-danger/10';
+      case 'alto': return 'border-orange-500/70 bg-orange-500/10';
+      case 'medio': return 'border-yellow-500/70 bg-yellow-500/10';
+      case 'bajo': return 'border-green-500/70 bg-green-500/10';
+      default: return 'border-gray-400/70 bg-gray-200/10';
     }
   };
 
   const getRiskBadge = (level: string) => {
     switch (level) {
-      case 'crítico': return 'bg-red-600 text-white';
+      case 'crítico': return 'bg-danger text-white';
       case 'alto': return 'bg-orange-600 text-white';
       case 'medio': return 'bg-yellow-600 text-white';
       case 'bajo': return 'bg-green-600 text-white';
@@ -30,70 +30,81 @@ export const DropoutPredictionCard = ({ student, index }: DropoutPredictionCardP
 
   return (
     <div
-      className={`border-l-4 rounded-lg p-6 ${getRiskColor(student.risk_level)}`}
-      style={{ animationDelay: `${index * 0.1}s` }}
+      className={`relative rounded-2xl border-2 p-6 shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${getRiskColor(student.risk_level)}`}
+      style={{ animationDelay: `${index * 100}ms` }}
     >
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h3 className="font-heading font-bold text-xl">
+            <h3 className="font-semibold text-lg text-white">
               {student.student_name}
             </h3>
-            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${getRiskBadge(student.risk_level)}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${getRiskBadge(student.risk_level)}`}>
               Riesgo {student.risk_level}
             </span>
           </div>
-          <p className="text-sm opacity-80">{student.course_name}</p>
-          <p className="text-xs opacity-70">{student.email}</p>
+          <p className="text-sm text-gray-200/90">{student.course_name}</p>
+          <p className="text-xs text-gray-400">{student.email}</p>
         </div>
+
         <div className="text-right">
-          <p className="text-4xl font-bold">{student.risk_score}</p>
-          <p className="text-xs opacity-70">puntuación de riesgo</p>
+          <p className="text-4xl font-extrabold text-white drop-shadow-sm">{student.risk_score}</p>
+          <p className="text-xs text-gray-300/80">Puntuación de riesgo</p>
         </div>
       </div>
 
-      <div className="mb-4">
-        <h4 className="font-heading font-bold text-sm mb-2 uppercase">Factores de Riesgo</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+      {/* Factores */}
+      <div className="mb-5">
+        <h4 className="text-sm font-semibold text-white uppercase mb-2 flex items-center gap-2">
+          Factores de Riesgo
+        </h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {student.factors.map((factor, idx) => (
-            <div key={idx} className="bg-white bg-opacity-50 rounded p-3">
+            <div key={idx} className="rounded-xl bg-white/10 p-3 border border-white/10 hover:bg-white/20 transition-all duration-200">
               <div className="flex items-center justify-between mb-1">
-                <span className="font-bold text-sm">{factor.factor_name}</span>
-                <span className={`text-xs px-2 py-1 rounded ${
-                  factor.impact === 'alto' ? 'bg-red-200 text-danger' :
-                  factor.impact === 'medio' ? 'bg-yellow-200 text-warning' :
-                  'bg-green-200 text-success'
-                }`}>
-                  Impacto {factor.impact}
+                <span className="font-medium text-sm text-white">{factor.factor_name}</span>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                    factor.impact === 'alto'
+                      ? 'bg-red-200 text-red-800'
+                      : factor.impact === 'medio'
+                      ? 'bg-yellow-200 text-yellow-800'
+                      : 'bg-green-200 text-green-800'
+                  }`}
+                >
+                  {factor.impact.toUpperCase()}
                 </span>
               </div>
-              <p className="text-xs opacity-80">{factor.description}</p>
-              <p className="text-sm font-bold mt-1">Valor: {factor.value}</p>
+              <p className="text-xs text-gray-200/90">{factor.description}</p>
+              <p className="text-sm font-bold text-gray-100 mt-1">Valor: {factor.value}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="mb-4 flex items-center gap-6 text-sm">
-        <span>
-          <FontAwesomeIcon icon={faClock} className="mr-2" />
+      {/* Estado de acceso */}
+      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-200 mb-4">
+        <span className="flex items-center gap-2">
+          <FontAwesomeIcon icon={faClock} className="text-primary-400" />
           Último acceso: <strong>{student.last_login}</strong>
         </span>
-        <span className="text-red-700 font-bold">
-          <FontAwesomeIcon icon={faTimesCircle} className="mr-2" />
+        <span className="flex items-center gap-2 text-danger font-semibold">
+          <FontAwesomeIcon icon={faTimesCircle} />
           {student.days_inactive} días inactivo
         </span>
       </div>
 
+      {/* Acciones recomendadas */}
       <div>
-        <h4 className="font-heading font-bold text-sm mb-2 uppercase flex items-center gap-2">
-          <FontAwesomeIcon icon={faCheckCircle} />
+        <h4 className="text-sm font-semibold text-white uppercase mb-2 flex items-center gap-2">
+          <FontAwesomeIcon icon={faCheckCircle} className="text-success" />
           Acciones Recomendadas
         </h4>
         <ul className="space-y-1">
           {student.recommended_actions.map((action, idx) => (
-            <li key={idx} className="text-sm flex items-start gap-2">
-              <FontAwesomeIcon icon={faCheckCircle} className="mt-1 text-green-700" />
+            <li key={idx} className="text-sm flex items-start gap-2 text-gray-200">
+              <FontAwesomeIcon icon={faCheckCircle} className="mt-1 text-green-500" />
               <span>{action}</span>
             </li>
           ))}
