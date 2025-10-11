@@ -31,7 +31,7 @@ export const ChatbotFAQCard = ({ faq, index, onEdit, onDelete, onToggleActive }:
           <p className="text-sm text-gray-300 mb-2">{faq.answer}</p>
           <div className="flex flex-wrap gap-1">
             {faq.keywords.map((keyword, i) => (
-              <span key={i} className="px-2 py-0.5 bg-secondary-100 text-gray-400 rounded text-xs">
+              <span key={i} className="px-2 py-0.5 bg-secondary-100 text-primary-800 rounded text-xs">
                 {keyword}
               </span>
             ))}

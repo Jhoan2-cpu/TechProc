@@ -249,7 +249,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
             <button
               type="button"
               onClick={onCancel}
-              className="btn bg-secondary-200 hover:bg-secondary-300 text-gray-300"
+              className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300"
             >
               Cancelar
             </button>
