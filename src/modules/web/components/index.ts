@@ -1,5 +1,9 @@
 // Exportar componentes del módulo web
 export { WebStatsCard } from './WebStatsCard';
+export { WebDashboardStats } from './WebDashboardStats';
+export { PendingContactsSection } from './PendingContactsSection';
+export { RecentNewsSection } from './RecentNewsSection';
+export { ActiveAnnouncementsSection } from './ActiveAnnouncementsSection';
 export { NewsCard } from './NewsCard';
 export { AlertCard } from './AlertCard';
 export { AnnouncementCard } from './AnnouncementCard';

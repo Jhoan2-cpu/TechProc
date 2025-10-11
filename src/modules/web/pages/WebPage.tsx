@@ -2,12 +2,6 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faNewspaper,
-  faBullhorn,
-  faBell,
-  faEnvelope,
-  faRobot,
-  faTachometerAlt,
   faPlus,
   faCheck,
   faCog,
@@ -24,14 +18,15 @@ import type {
   ContactFormStatus,
 } from '../types';
 import {
-  WebStatsCard,
+  WebDashboardStats,
+  PendingContactsSection,
+  RecentNewsSection,
+  ActiveAnnouncementsSection,
   NewsCard,
   AlertCard,
   AnnouncementCard,
   ContactFormCard,
   ChatbotFAQCard,
-} from '../components';
-import {
   NewsFormModal,
   DeleteNewsModal,
   AlertFormModal,
@@ -715,119 +710,26 @@ export const WebPage = () => {
   const renderDashboard = () => (
     <>
       {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <WebStatsCard
-          title="Noticias Publicadas"
-          value={publishedNews}
-          icon={faNewspaper}
-          colorClass="from-blue-50 to-blue-100 text-blue-700 bg-blue-600"
-          index={0}
-        />
-        <WebStatsCard
-          title="Alertas Activas"
-          value={activeAlerts}
-          icon={faBell}
-          colorClass="from-green-50 to-green-100 text-green-700 bg-green-600"
-          index={1}
-        />
-        <WebStatsCard
-          title="Anuncios Activos"
-          value={activeAnnouncements}
-          icon={faBullhorn}
-          colorClass="from-purple-50 to-purple-100 text-purple-700 bg-purple-600"
-          index={2}
-        />
-        <WebStatsCard
-          title="Consultas Pendientes"
-          value={pendingContacts}
-          icon={faEnvelope}
-          colorClass="from-orange-50 to-orange-100 text-orange-700 bg-orange-600"
-          index={3}
-        />
-        <WebStatsCard
-          title="FAQs Chatbot"
-          value={totalFAQs}
-          icon={faRobot}
-          colorClass="from-indigo-50 to-indigo-100 text-indigo-700 bg-indigo-600"
-          index={4}
-        />
-      </div>
+      <WebDashboardStats
+        publishedNews={publishedNews}
+        activeAlerts={activeAlerts}
+        activeAnnouncements={activeAnnouncements}
+        pendingContacts={pendingContacts}
+        totalFAQs={totalFAQs}
+      />
 
       {/* Consultas Pendientes */}
-      {pendingContacts > 0 && (
-        <div className="card p-6 bg-orange-900/20 border-2 border-orange-200">
-          <h2 className="text-xl font-heading font-bold text-orange-400 mb-4 flex items-center gap-2">
-            <FontAwesomeIcon icon={faEnvelope} />
-            Consultas Pendientes - Requieren Atención
-          </h2>
-          <div className="space-y-3">
-            {contacts.filter(c => c.status === 'pending').map((contact) => (
-              <div key={contact.id_contact} className="bg-white border border-orange-300 rounded-lg p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-heading font-bold text-white">{contact.full_name}</h3>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(contact.priority)}`}>
-                        {contact.priority}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-300 mb-1">{contact.subject}</p>
-                    <p className="text-xs text-gray-300">{contact.email} • {formatDateTime(contact.submission_date)}</p>
-                  </div>
-                  <button
-                    onClick={() => handleRespondContact(contact)}
-                    className="btn bg-orange-600 hover:bg-orange-700 text-white"
-                  >
-                    Responder
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <PendingContactsSection
+        contacts={contacts}
+        formatDateTime={formatDateTime}
+        getPriorityColor={getPriorityColor}
+        onRespond={handleRespondContact}
+      />
 
-      {/* Noticias Recientes */}
+      {/* Noticias Recientes y Anuncios Activos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="card p-6">
-          <h2 className="text-xl font-heading font-bold text-white mb-4">Noticias Recientes</h2>
-          <div className="space-y-3">
-            {news.slice(0, 3).map((item) => (
-              <div key={item.id_news} className="border-l-4 border-blue-500 bg-primary-900/20 p-3 rounded">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-white">{item.title}</h3>
-                    <p className="text-xs text-gray-400 mt-1">{item.category} • {item.views} vistas</p>
-                  </div>
-                  <span className={`px-2 py-1 rounded text-xs ${getStatusColor(item.status)}`}>
-                    {item.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="card p-6">
-          <h2 className="text-xl font-heading font-bold text-white mb-4">Anuncios Activos</h2>
-          <div className="space-y-3">
-            {announcements.filter(a => a.status === 'active').map((item) => (
-              <div key={item.id_announcement} className="border-l-4 border-purple-500 bg-purple-900/20 p-3 rounded">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-white">{item.title}</h3>
-                    <p className="text-xs text-gray-400 mt-1">
-                      {item.views} vistas • {item.clicks} clics • CTR: {((item.clicks / item.views) * 100).toFixed(1)}%
-                    </p>
-                  </div>
-                  <span className="px-2 py-1 rounded text-xs bg-purple-900/20 text-purple-700">
-                    {item.display_type}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <RecentNewsSection news={news} getStatusColor={getStatusColor} />
+        <ActiveAnnouncementsSection announcements={announcements} />
       </div>
     </>
   );
