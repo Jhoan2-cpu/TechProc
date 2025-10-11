@@ -20,6 +20,13 @@ export const WebsiteHero = ({ activeAlerts }: WebsiteHeroProps) => {
     }
   };
 
+  const scrollToNews = () => {
+    const element = document.getElementById('news');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const getAlertColor = (type: string) => {
     switch (type) {
       case 'success': return 'bg-green-500/20 border-green-400 text-green-300';
@@ -90,12 +97,12 @@ export const WebsiteHero = ({ activeAlerts }: WebsiteHeroProps) => {
               <FontAwesomeIcon icon={faRocket} className="mr-2" />
               Comienza Ahora
             </button>
-            <a
-              href="#news"
+            <button
+              onClick={scrollToNews}
               className="px-8 py-4 bg-secondary-600/50 border-2 border-primary-500/30 text-white text-lg font-semibold rounded-lg hover:bg-secondary-600 hover:border-primary-500/50 transition-all duration-300"
             >
               Ver Noticias
-            </a>
+            </button>
           </div>
 
           {/* Stats */}
