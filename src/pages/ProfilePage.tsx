@@ -75,10 +75,10 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Card de Perfil Principal */}
         <div className="lg:col-span-1">
-          <div className="card p-6 text-center animate-slide-up">
+          <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl text-center animate-slide-up">
             {/* Avatar */}
             <div className="mb-6">
-              <div className={`w-32 h-32 mx-auto rounded-full bg-gradient-to-br ${config.color} flex items-center justify-center shadow-xl`}>
+              <div className={`w-32 h-32 mx-auto rounded-full bg-gradient-to-br ${config.color} flex items-center justify-center shadow-xl shadow-${config.color.split('-')[1]}-500/30`}>
                 <span className="text-white font-bold text-5xl">
                   {user.name.charAt(0)}
                 </span>
@@ -86,27 +86,27 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
             </div>
 
             {/* Nombre y Rol */}
-            <h2 className="text-2xl font-heading font-bold text-white mb-2">
+            <h2 className="text-2xl font-heading font-bold text-white mb-3">
               {user.name}
             </h2>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary-100 rounded-full mb-6">
-              <FontAwesomeIcon icon={config.icon} className="text-primary-600" />
-              <span className="text-sm font-medium text-gray-300">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-primary-600/30 to-primary-700/30 rounded-full mb-6 border border-primary-500/30">
+              <FontAwesomeIcon icon={config.icon} className="text-primary-400" />
+              <span className="text-sm font-medium text-white">
                 {config.label}
               </span>
             </div>
 
             {/* Stats */}
-            <div className="space-y-4 mt-6">
-              <div className="flex items-center justify-between p-3 bg-primary-900/20 rounded-lg">
+            <div className="space-y-3 mt-6">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 rounded-xl border border-gray-700/30">
                 <span className="text-sm text-gray-400">ID de Usuario</span>
-                <span className="font-semibold text-primary-700">#{user.id}</span>
+                <span className="font-semibold text-primary-400">#{user.id}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-primary-900/20 rounded-lg">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 rounded-xl border border-gray-700/30">
                 <span className="text-sm text-gray-400">Estado</span>
-                <span className="inline-flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-success/20"></div>
-                  <span className="font-semibold text-green-700">Activo</span>
+                <span className="inline-flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                  <span className="font-semibold text-green-400">Activo</span>
                 </span>
               </div>
             </div>
@@ -115,9 +115,9 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="btn btn-primary w-full mt-6"
+                className="btn bg-primary-600 hover:bg-primary-700 text-white w-full mt-6 flex items-center justify-center gap-2 shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300"
               >
-                <FontAwesomeIcon icon={faEdit} className="mr-2" />
+                <FontAwesomeIcon icon={faEdit} />
                 Editar Perfil
               </button>
             )}
@@ -126,8 +126,8 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
         {/* Card de Información Detallada */}
         <div className="lg:col-span-2">
-          <div className="card p-6 animate-slide-up" style={{ animationDelay: '100ms' }}>
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
               <h3 className="text-xl font-heading font-semibold text-white">
                 Información Personal
               </h3>
@@ -135,16 +135,16 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                 <div className="flex gap-2">
                   <button
                     onClick={handleSave}
-                    className="btn btn-primary px-4 py-2"
+                    className="btn bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 flex items-center gap-2 shadow-lg shadow-primary-500/20"
                   >
-                    <FontAwesomeIcon icon={faSave} className="mr-2" />
+                    <FontAwesomeIcon icon={faSave} />
                     Guardar
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300 px-4 py-2"
+                    className="btn bg-primary-800 hover:bg-secondary-300 text-white px-4 py-2 flex items-center gap-2"
                   >
-                    <FontAwesomeIcon icon={faTimes} className="mr-2" />
+                    <FontAwesomeIcon icon={faTimes} />
                     Cancelar
                   </button>
                 </div>
@@ -154,8 +154,8 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
             <div className="space-y-6">
               {/* Nombre Completo */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                  <FontAwesomeIcon icon={faUser} className="text-primary-600" />
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-400 mb-2">
+                  <FontAwesomeIcon icon={faUser} className="text-primary-400" />
                   Nombre Completo
                 </label>
                 {isEditing ? (
@@ -166,7 +166,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                     className="input"
                   />
                 ) : (
-                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
                     {formData.name}
                   </p>
                 )}
@@ -174,8 +174,8 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
               {/* Email */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                  <FontAwesomeIcon icon={faEnvelope} className="text-primary-600" />
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-400 mb-2">
+                  <FontAwesomeIcon icon={faEnvelope} className="text-primary-400" />
                   Correo Electrónico
                 </label>
                 {isEditing ? (
@@ -186,7 +186,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                     className="input"
                   />
                 ) : (
-                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
                     {formData.email}
                   </p>
                 )}
@@ -194,8 +194,8 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
               {/* Teléfono */}
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                  <FontAwesomeIcon icon={faPhone} className="text-primary-600" />
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-400 mb-2">
+                  <FontAwesomeIcon icon={faPhone} className="text-primary-400" />
                   Teléfono
                 </label>
                 {isEditing ? (
@@ -206,7 +206,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                     className="input"
                   />
                 ) : (
-                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
                     {formData.phone}
                   </p>
                 )}
@@ -215,22 +215,22 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Departamento */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                    <FontAwesomeIcon icon={faBriefcase} className="text-primary-600" />
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-400 mb-2">
+                    <FontAwesomeIcon icon={faBriefcase} className="text-primary-400" />
                     Departamento
                   </label>
-                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
                     {formData.department}
                   </p>
                 </div>
 
                 {/* Fecha de Ingreso */}
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
-                    <FontAwesomeIcon icon={faCalendar} className="text-primary-600" />
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-400 mb-2">
+                    <FontAwesomeIcon icon={faCalendar} className="text-primary-400" />
                     Fecha de Ingreso
                   </label>
-                  <p className="text-white font-medium bg-secondary-600/50 p-3 rounded-lg">
+                  <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
                     {new Date(formData.joinDate).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
@@ -243,19 +243,19 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
           </div>
 
           {/* Card de Actividad Reciente */}
-          <div className="card p-6 mt-6 animate-slide-up" style={{ animationDelay: '200ms' }}>
+          <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl mt-6 animate-slide-up" style={{ animationDelay: '200ms' }}>
             <h3 className="text-xl font-heading font-semibold text-white mb-4">
               Actividad Reciente
             </h3>
             <div className="space-y-3">
               {[
-                { action: 'Inicio de sesión', time: 'Hace 2 horas', color: 'bg-success/20 text-green-700' },
-                { action: 'Actualización de perfil', time: 'Hace 1 día', color: 'bg-primary-900/20 text-blue-700' },
-                { action: 'Acceso al módulo', time: 'Hace 3 días', color: 'bg-purple-900/20 text-purple-700' },
+                { action: 'Inicio de sesión', time: 'Hace 2 horas', color: 'bg-green-500' },
+                { action: 'Actualización de perfil', time: 'Hace 1 día', color: 'bg-blue-500' },
+                { action: 'Acceso al módulo', time: 'Hace 3 días', color: 'bg-purple-500' },
               ].map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-secondary-600/50 rounded-lg hover:bg-secondary-100 transition-colors">
+                <div key={index} className="flex items-center justify-between p-4 bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 rounded-xl border border-gray-700/30 hover:border-primary-500/50 hover:shadow-lg transition-all duration-300">
                   <div className="flex items-center gap-3">
-                    <div className={`w-2 h-2 rounded-full ${activity.color.split(' ')[0].replace('100', '500')}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${activity.color}`}></div>
                     <span className="text-white font-medium">{activity.action}</span>
                   </div>
                   <span className="text-sm text-gray-400">{activity.time}</span>
