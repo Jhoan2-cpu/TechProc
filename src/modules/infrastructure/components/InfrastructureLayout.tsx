@@ -5,7 +5,6 @@ import {
   faKey,
   faHdd,
   faCog,
-  faLaptop,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface InfrastructureLayoutProps {
@@ -21,7 +20,6 @@ export const InfrastructureLayout = ({ children, currentSection, onSectionChange
     { id: 'licenses', name: 'Licencias', icon: faKey },
     { id: 'storage', name: 'Almacenamiento', icon: faHdd },
     { id: 'software', name: 'Software', icon: faCog },
-    { id: 'resources', name: 'Recursos', icon: faLaptop },
   ];
 
   return (

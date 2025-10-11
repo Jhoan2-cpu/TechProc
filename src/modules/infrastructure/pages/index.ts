@@ -5,4 +5,3 @@ export { ServersPage } from './ServersPage';
 export { LicensesPage } from './LicensesPage';
 export { StoragePage } from './StoragePage';
 export { SoftwarePage } from './SoftwarePage';
-export { ResourcesPage } from './ResourcesPage';

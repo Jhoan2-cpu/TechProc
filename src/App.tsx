@@ -50,7 +50,6 @@ import {
   faKey,
   faHdd,
   faCog,
-  faLaptop,
   faClipboardList,
   faInbox,
   faExchangeAlt,
@@ -163,7 +162,6 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         { id: 'infrastructure-licenses', name: 'Licencias', icon: faKey },
         { id: 'infrastructure-storage', name: 'Almacenamiento', icon: faHdd },
         { id: 'infrastructure-software', name: 'Software', icon: faCog },
-        { id: 'infrastructure-resources', name: 'Recursos', icon: faLaptop },
       ],
     },
     {
@@ -377,7 +375,6 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             <Route path="/infrastructure-licenses" element={<InfrastructureMainPage />} />
             <Route path="/infrastructure-storage" element={<InfrastructureMainPage />} />
             <Route path="/infrastructure-software" element={<InfrastructureMainPage />} />
-            <Route path="/infrastructure-resources" element={<InfrastructureMainPage />} />
             <Route path="/web-dashboard" element={<WebPage />} />
             <Route path="/web-news" element={<WebPage />} />
             <Route path="/web-alerts" element={<WebPage />} />

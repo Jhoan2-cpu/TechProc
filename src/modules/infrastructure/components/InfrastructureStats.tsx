@@ -3,7 +3,7 @@ import {
   faServer,
   faKey,
   faExclamationTriangle,
-  faLaptop,
+  faHdd,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface InfrastructureStatsProps {
@@ -12,8 +12,7 @@ interface InfrastructureStatsProps {
   activeLicenses: number;
   totalLicenses: number;
   criticalAlerts: number;
-  resourcesInUse: number;
-  totalResources: number;
+  totalStorage: number;
 }
 
 export const InfrastructureStats = ({
@@ -22,8 +21,7 @@ export const InfrastructureStats = ({
   activeLicenses,
   totalLicenses,
   criticalAlerts,
-  resourcesInUse,
-  totalResources,
+  totalStorage,
 }: InfrastructureStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -66,15 +64,15 @@ export const InfrastructureStats = ({
         </div>
       </div>
 
-      {/* Recursos en Uso */}
+      {/* Almacenamiento Total */}
       <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: '300ms' }}>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-400 mb-1">Recursos en Uso</p>
-            <p className="text-3xl font-heading font-bold text-white">{resourcesInUse}/{totalResources}</p>
+            <p className="text-sm text-gray-400 mb-1">Almacenamiento</p>
+            <p className="text-3xl font-heading font-bold text-white">{totalStorage} GB</p>
           </div>
           <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-            <FontAwesomeIcon icon={faLaptop} className="text-white text-2xl" />
+            <FontAwesomeIcon icon={faHdd} className="text-white text-2xl" />
           </div>
         </div>
       </div>

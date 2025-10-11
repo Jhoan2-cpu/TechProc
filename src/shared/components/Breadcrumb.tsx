@@ -27,7 +27,6 @@ import {
   faKey,
   faHdd,
   faCog,
-  faLaptop,
   faNewspaper,
   faBell,
   faBullhorn,
@@ -88,7 +87,6 @@ const routeMap: Record<string, { label: string; icon: IconDefinition; parent?: s
   '/infrastructure-licenses': { label: 'Licencias', icon: faKey, parent: '/infrastructure' },
   '/infrastructure-storage': { label: 'Almacenamiento', icon: faHdd, parent: '/infrastructure' },
   '/infrastructure-software': { label: 'Software', icon: faCog, parent: '/infrastructure' },
-  '/infrastructure-resources': { label: 'Recursos', icon: faLaptop, parent: '/infrastructure' },
   '/infrastructure': { label: 'Infraestructura', icon: faServer },
 
   // Web

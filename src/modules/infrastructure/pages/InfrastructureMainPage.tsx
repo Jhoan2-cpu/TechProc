@@ -5,7 +5,6 @@ import { ServersPage } from './ServersPage';
 import { LicensesPage } from './LicensesPage';
 import { StoragePage } from './StoragePage';
 import { SoftwarePage } from './SoftwarePage';
-import { ResourcesPage } from './ResourcesPage';
 import type {
   Server,
   License,
@@ -388,7 +387,6 @@ export const InfrastructureMainPage = () => {
     if (path.includes('licenses')) return 'licenses';
     if (path.includes('storage')) return 'storage';
     if (path.includes('software')) return 'software';
-    if (path.includes('resources')) return 'resources';
     return 'dashboard';
   };
 
@@ -404,8 +402,6 @@ export const InfrastructureMainPage = () => {
         return <StoragePage storage={storage} onUpdateStorage={setStorage} />;
       case 'software':
         return <SoftwarePage software={software} onUpdateSoftware={setSoftware} />;
-      case 'resources':
-        return <ResourcesPage resources={resources} />;
       case 'dashboard':
       default:
         return (
@@ -413,7 +409,6 @@ export const InfrastructureMainPage = () => {
             servers={servers}
             licenses={licenses}
             storage={storage}
-            resources={resources}
             alerts={alerts}
           />
         );

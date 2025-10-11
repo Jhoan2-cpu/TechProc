@@ -1,12 +1,10 @@
-import { useState } from 'react';
-import type { Server, License, Storage, TechResource, InfrastructureAlert } from '../types';
+import type { Server, License, Storage, InfrastructureAlert } from '../types';
 import { InfrastructureStats, CriticalAlertsSection, ServerStatusCard } from '../components';
 
 interface InfrastructureDashboardPageProps {
   servers: Server[];
   licenses: License[];
   storage: Storage[];
-  resources: TechResource[];
   alerts: InfrastructureAlert[];
 }
 
@@ -14,13 +12,12 @@ export const InfrastructureDashboardPage = ({
   servers,
   licenses,
   storage,
-  resources,
   alerts,
 }: InfrastructureDashboardPageProps) => {
   const onlineServers = servers.filter(s => s.status === 'online').length;
   const activeLicenses = licenses.filter(l => l.status === 'active').length;
   const criticalAlerts = alerts.filter(a => !a.resolved && a.severity === 'critical').length;
-  const resourcesInUse = resources.filter(r => r.status === 'in_use').length;
+  const totalStorageCapacity = storage.reduce((sum, s) => sum + s.capacity_gb, 0);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '-';
@@ -41,8 +38,7 @@ export const InfrastructureDashboardPage = ({
         activeLicenses={activeLicenses}
         totalLicenses={licenses.length}
         criticalAlerts={criticalAlerts}
-        resourcesInUse={resourcesInUse}
-        totalResources={resources.length}
+        totalStorage={totalStorageCapacity}
       />
 
       {/* Alertas Críticas */}

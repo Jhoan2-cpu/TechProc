@@ -4,7 +4,6 @@ import {
   faServer,
   faKey,
   faHdd,
-  faLaptop,
   faExclamationTriangle,
   faPlus,
   faTachometerAlt,
@@ -24,7 +23,6 @@ import {
   LicenseCard,
   StorageCard,
   SoftwareCard,
-  ResourceCard,
 } from '../components';
 
 // Datos mock - Servidores
@@ -384,7 +382,7 @@ const mockAlerts: InfrastructureAlert[] = [
   },
 ];
 
-type InfraTab = 'dashboard' | 'servers' | 'licenses' | 'storage' | 'software' | 'resources';
+type InfraTab = 'dashboard' | 'servers' | 'licenses' | 'storage' | 'software';
 
 export const InfrastructurePage = () => {
   const [activeTab, setActiveTab] = useState<InfraTab>('dashboard');
@@ -398,7 +396,7 @@ export const InfrastructurePage = () => {
   const onlineServers = servers.filter(s => s.status === 'online').length;
   const activeLicenses = licenses.filter(l => l.status === 'active').length;
   const criticalAlerts = alerts.filter(a => !a.resolved && a.severity === 'critical').length;
-  const resourcesInUse = resources.filter(r => r.status === 'in_use').length;
+  const totalStorageCapacity = storage.reduce((sum, s) => sum + s.capacity_gb, 0);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '-';
@@ -433,7 +431,6 @@ export const InfrastructurePage = () => {
     { id: 'licenses' as InfraTab, name: 'Licencias', icon: faKey },
     { id: 'storage' as InfraTab, name: 'Almacenamiento', icon: faHdd },
     { id: 'software' as InfraTab, name: 'Software', icon: faCog },
-    { id: 'resources' as InfraTab, name: 'Recursos', icon: faLaptop },
   ];
 
   const renderDashboard = () => (
@@ -445,8 +442,7 @@ export const InfrastructurePage = () => {
         activeLicenses={activeLicenses}
         totalLicenses={licenses.length}
         criticalAlerts={criticalAlerts}
-        resourcesInUse={resourcesInUse}
-        totalResources={resources.length}
+        totalStorage={totalStorageCapacity}
       />
 
       {/* Alertas Críticas */}
@@ -617,29 +613,6 @@ export const InfrastructurePage = () => {
     </div>
   );
 
-  const renderResources = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-white">Recursos Tecnológicos</h2>
-        <button className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2">
-          <FontAwesomeIcon icon={faPlus} />
-          Nuevo Recurso
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {resources.map((resource, index) => (
-          <ResourceCard
-            key={resource.id_resource}
-            resource={resource}
-            formatDate={formatDate}
-            index={index}
-          />
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -673,7 +646,6 @@ export const InfrastructurePage = () => {
       {activeTab === 'licenses' && renderLicenses()}
       {activeTab === 'storage' && renderStorage()}
       {activeTab === 'software' && renderSoftware()}
-      {activeTab === 'resources' && renderResources()}
     </div>
   );
 };
