@@ -1,0 +1,225 @@
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faEnvelope,
+  faPhone,
+  faMapMarkerAlt,
+  faPaperPlane,
+  faCheckCircle
+} from '@fortawesome/free-solid-svg-icons';
+
+export const WebsiteContact = () => {
+  const [formData, setFormData] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
+    form_type: 'contact' as const
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulación de envío
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+
+      // Resetear formulario
+      setFormData({
+        full_name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        form_type: 'contact'
+      });
+
+      // Ocultar mensaje de éxito después de 5 segundos
+      setTimeout(() => setIsSuccess(false), 5000);
+    }, 2000);
+  };
+
+  return (
+    <section id="contact" className="py-20 bg-gradient-to-br from-dark-600/50 to-smoky-600/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12 animate-fade-in">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl mb-4 shadow-lg shadow-green-500/30">
+            <FontAwesomeIcon icon={faEnvelope} className="text-white text-2xl" />
+          </div>
+          <h2 className="text-4xl font-heading font-bold text-white mb-4">
+            Contáctanos
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            ¿Tienes preguntas? Estamos aquí para ayudarte
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl border border-gray-700/30 shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FontAwesomeIcon icon={faEnvelope} className="text-blue-400 text-xl" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Email</h3>
+                  <p className="text-gray-400">contacto@incadev.edu.pe</p>
+                  <p className="text-gray-400">admision@incadev.edu.pe</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl border border-gray-700/30 shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FontAwesomeIcon icon={faPhone} className="text-green-400 text-xl" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Teléfono</h3>
+                  <p className="text-gray-400">+51 999 999 999</p>
+                  <p className="text-gray-400">+51 888 888 888</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl border border-gray-700/30 shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className="text-purple-400 text-xl" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Ubicación</h3>
+                  <p className="text-gray-400">Lima, Perú</p>
+                  <p className="text-gray-400">100% Online</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Working Hours */}
+            <div className="bg-gradient-to-br from-primary-600/20 to-primary-700/20 border border-primary-500/30 rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-white mb-3">Horario de Atención</h3>
+              <div className="space-y-2 text-gray-400">
+                <p>Lunes - Viernes: 9:00 AM - 6:00 PM</p>
+                <p>Sábados: 10:00 AM - 2:00 PM</p>
+                <p>Domingos: Cerrado</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl border border-gray-700/30 shadow-xl p-8">
+            {isSuccess ? (
+              <div className="text-center py-12 animate-fade-in">
+                <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FontAwesomeIcon icon={faCheckCircle} className="text-green-400 text-4xl" />
+                </div>
+                <h3 className="text-2xl font-heading font-bold text-white mb-2">
+                  ¡Mensaje Enviado!
+                </h3>
+                <p className="text-gray-400">
+                  Gracias por contactarnos. Te responderemos pronto.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Nombre Completo <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.full_name}
+                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                    className="input w-full"
+                    placeholder="Juan Pérez"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Email <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="input w-full"
+                      placeholder="correo@ejemplo.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Teléfono
+                    </label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="input w-full"
+                      placeholder="+51 999 999 999"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Asunto <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.subject}
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="input w-full"
+                    placeholder="¿En qué podemos ayudarte?"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Mensaje <span className="text-red-400">*</span>
+                  </label>
+                  <textarea
+                    required
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="input w-full"
+                    rows={6}
+                    placeholder="Escribe tu mensaje aquí..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {isSubmitting ? (
+                    'Enviando...'
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
+                      Enviar Mensaje
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

@@ -35,7 +35,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
         vendor: software.vendor,
         license_id: software.license_id,
         installation_date: software.installation_date,
-        last_update: software.last_update,
+        last_update: software.last_update || '',
         server_ids: software.server_ids,
         auto_update: software.auto_update,
         support_until: software.support_until || '',

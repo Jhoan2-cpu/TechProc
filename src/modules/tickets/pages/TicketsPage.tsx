@@ -181,10 +181,10 @@ export const TicketsPage = () => {
     setTicketToEscalate(ticket);
   };
 
-  const handleEscalateConfirm = (ticketId: number, reason: string, observations: string) => {
+  const handleEscalateConfirm = (ticketId: number, technicianId: number, _reason: string, _observations: string) => {
     setTickets(tickets.map(t =>
       t.ticket_id === ticketId
-        ? { ...t, status: 'escalado' as const }
+        ? { ...t, status: 'escalado' as const, assigned_technician: technicianId }
         : t
     ));
     setTicketToEscalate(null);
@@ -287,28 +287,28 @@ export const TicketsPage = () => {
           title="Mis Tickets Activos"
           value={myActiveTickets}
           icon={faClipboardList}
-          colorClass="from-blue-50 to-blue-100 text-blue-700 bg-blue-600"
+          iconBgColor="bg-blue-600"
           index={0}
         />
         <TicketStatsCard
           title="Resueltos Hoy"
           value={myResolvedToday}
           icon={faCheckCircle}
-          colorClass="from-green-50 to-green-100 text-green-700 bg-green-600"
+          iconBgColor="bg-green-600"
           index={1}
         />
         <TicketStatsCard
           title="Tickets Disponibles"
           value={totalAvailable}
           icon={faInbox}
-          colorClass="from-purple-50 to-purple-100 text-purple-700 bg-purple-600"
+          iconBgColor="bg-purple-600"
           index={2}
         />
         <TicketStatsCard
           title="Críticos Disponibles"
           value={criticalAvailable}
           icon={faExclamationTriangle}
-          colorClass="from-red-50 to-red-100 text-red-700 bg-red-600"
+          iconBgColor="bg-red-600"
           index={3}
         />
       </div>

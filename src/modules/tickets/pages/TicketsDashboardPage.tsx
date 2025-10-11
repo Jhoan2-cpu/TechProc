@@ -15,7 +15,6 @@ interface TicketsDashboardPageProps {
   currentTechnicianId: number;
   onViewDetails: (ticket: Ticket) => void;
   onEscalate: (ticket: Ticket) => void;
-  onTakeTicket: (ticket: Ticket) => void;
   onResolve: (ticket: Ticket) => void;
 }
 
@@ -24,7 +23,6 @@ export const TicketsDashboardPage = ({
   currentTechnicianId,
   onViewDetails,
   onEscalate,
-  onTakeTicket,
   onResolve
 }: TicketsDashboardPageProps) => {
   // Filtrar tickets del técnico actual

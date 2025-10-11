@@ -257,7 +257,9 @@ const mockSoftware: Software[] = [
   },
 ];
 
-// Datos mock - Recursos Tecnológicos
+// Datos mock - Recursos Tecnológicos (no usado actualmente)
+// @ts-ignore - Reserved for future use
+// eslint-disable-next-line
 const mockResources: TechResource[] = [
   {
     id_resource: 1,
@@ -377,7 +379,6 @@ export const InfrastructureMainPage = () => {
   const [licenses, setLicenses] = useState(mockLicenses);
   const [storage, setStorage] = useState(mockStorage);
   const [software, setSoftware] = useState(mockSoftware);
-  const [resources] = useState(mockResources);
   const [alerts] = useState(mockAlerts);
 
   // Determinar la sección actual basándose en la ruta

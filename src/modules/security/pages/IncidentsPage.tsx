@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { IncidentCard, IncidentFormModal, ChangeIncidentStatusModal } from '../components';
 import { incidentsService } from '../services';
-import type { Incident, IncidentStatus } from '../types';
+import type { IncidentStatus } from '../types';
 
 export const IncidentsPage = () => {
   const [incidents, setIncidents] = useState<any[]>([]);
@@ -76,7 +76,7 @@ export const IncidentsPage = () => {
     setIncidentToEdit(null);
   };
 
-  const handleConfirmStatusChange = (incidentId: number, newStatus: IncidentStatus, notes: string) => {
+  const handleConfirmStatusChange = (incidentId: number, newStatus: IncidentStatus, _notes: string) => {
     const updatedIncidents = incidents.map(inc => {
       if (inc.id_incident === incidentId) {
         const updates: any = { status: newStatus };

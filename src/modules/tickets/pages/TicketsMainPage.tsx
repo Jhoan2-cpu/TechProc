@@ -143,7 +143,7 @@ export const TicketsMainPage = () => {
     setTicketToEscalate(ticket);
   };
 
-  const handleEscalateConfirm = (ticketId: number, technicianId: number, reason: string, observations: string) => {
+  const handleEscalateConfirm = (ticketId: number, technicianId: number, _reason: string, _observations: string) => {
     setTickets(tickets.map(t =>
       t.ticket_id === ticketId
         ? {
@@ -155,7 +155,7 @@ export const TicketsMainPage = () => {
     ));
     setTicketToEscalate(null);
     // Aquí podrías mostrar una notificación de éxito
-    console.log(`Ticket ${ticketId} escalado al técnico ${technicianId}. Motivo: ${reason}`);
+    console.log(`Ticket ${ticketId} escalado al técnico ${technicianId}`);
   };
 
   const handleTakeTicket = (ticket: Ticket) => {
@@ -239,7 +239,6 @@ export const TicketsMainPage = () => {
             currentTechnicianId={currentTechnicianId}
             onViewDetails={handleViewDetails}
             onEscalate={handleEscalate}
-            onTakeTicket={handleTakeTicket}
             onResolve={handleResolve}
           />
         );

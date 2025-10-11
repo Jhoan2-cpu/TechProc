@@ -2,20 +2,11 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChartLine,
-  faUserCheck,
-  faTasks,
-  faTrophy,
-  faExclamationTriangle,
-  faFileAlt,
-  faUsers,
   faGraduationCap,
   faCheckCircle,
   faChartBar,
-  faFileExport,
-  faFilter,
-  faPlus,
   faFileCsv,
+  faTasks,
 } from '@fortawesome/free-solid-svg-icons';
 import type {
   AnalyticsDashboard,

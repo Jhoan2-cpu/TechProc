@@ -4,7 +4,6 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LMSMainPage } from './modules/lms/pages/LMSMainPage';
-import { TicketsPage } from './modules/tickets/pages/TicketsPage';
 import { TicketsMainPage } from './modules/tickets/pages/TicketsMainPage';
 import {
   SecurityDashboardPage,
@@ -14,12 +13,12 @@ import {
   IncidentsPage,
   BackupsPage,
 } from './modules/security/pages';
-import { InfrastructurePage } from './modules/infrastructure/pages/InfrastructurePage';
 import { InfrastructureMainPage } from './modules/infrastructure/pages/InfrastructureMainPage';
 import { WebPage } from './modules/web/pages/WebPage';
 import { AnalyticsMainPage } from './modules/analytics/pages/AnalyticsMainPage';
 import { UsersPage } from './modules/users/pages/UsersPage';
 import { PendingRegistrationsPage } from './modules/users/pages/PendingRegistrationsPage';
+import { WebsitePage } from './pages/website';
 import { Preloader } from './shared/components/Preloader';
 import { Breadcrumb } from './shared/components/Breadcrumb';
 import type { User } from './shared/types/auth';
@@ -439,12 +438,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Website Route */}
+        <Route path="/website" element={<WebsitePage />} />
+
+        {/* Auth Routes */}
         <Route path="/login" element={
           currentUser ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} />
         } />
         <Route path="/register" element={
           currentUser ? <Navigate to="/" replace /> : <RegisterPage onBackToLogin={() => {}} />
         } />
+
+        {/* Protected Admin Routes */}
         <Route path="/*" element={
           <ProtectedRoute currentUser={currentUser}>
             <Layout currentUser={currentUser!} onLogout={handleLogout} />

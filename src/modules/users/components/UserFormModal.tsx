@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { User } from '../types';
+import type { User, UserRole } from '../types';
 
 interface UserFormModalProps {
   title: string;
@@ -16,7 +16,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
     email: user?.email || '',
     phone: user?.phone || '',
     department: user?.department || '',
-    role: user?.role || 'analista_datos',
+    role: user?.role || ('analista_datos' as UserRole),
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -119,7 +119,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
               <select
                 required
                 value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
                 className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
               >
                 <option value="administrador" className="bg-secondary-700">

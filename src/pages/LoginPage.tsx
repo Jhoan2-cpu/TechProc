@@ -267,9 +267,9 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-12 text-center text-gray-400 text-sm animate-fade-in">
+          <div className="mt-12 text-center text-gray-400 text-sm animate-fade-in space-y-4">
             <p>Seleccione su tipo de usuario para continuar</p>
-            <div className="mt-4">
+            <div>
               <span className="text-gray-400">¿No tienes cuenta? </span>
               <button
                 onClick={handleRegisterClick}
@@ -277,6 +277,15 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               >
                 Solicita tu registro aquí
               </button>
+            </div>
+            <div>
+              <a
+                href="/website"
+                className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
+              >
+                <FontAwesomeIcon icon={faGlobe} />
+                Visitar nuestro sitio web
+              </a>
             </div>
           </div>
         </div>
@@ -450,15 +459,26 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-center text-gray-400 text-sm animate-fade-in">
-          <p>¿No tienes cuenta?</p>
-          <button
-            onClick={handleRegisterClick}
-            className="mt-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
-            disabled={loading}
-          >
-            Solicita tu registro aquí
-          </button>
+        <div className="mt-6 text-center text-gray-400 text-sm animate-fade-in space-y-3">
+          <div>
+            <p>¿No tienes cuenta?</p>
+            <button
+              onClick={handleRegisterClick}
+              className="mt-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
+              disabled={loading}
+            >
+              Solicita tu registro aquí
+            </button>
+          </div>
+          <div>
+            <a
+              href="/website"
+              className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
+            >
+              <FontAwesomeIcon icon={faGlobe} />
+              Visitar nuestro sitio web
+            </a>
+          </div>
         </div>
       </div>
     </div>

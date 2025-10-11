@@ -268,7 +268,9 @@ const mockSoftware: Software[] = [
   },
 ];
 
-// Datos mock - Recursos Tecnológicos
+// Datos mock - Recursos Tecnológicos (no usado actualmente)
+// @ts-ignore - Reserved for future use
+// eslint-disable-next-line
 const mockResources: TechResource[] = [
   {
     id_resource: 1,
@@ -390,7 +392,6 @@ export const InfrastructurePage = () => {
   const [licenses] = useState(mockLicenses);
   const [storage] = useState(mockStorage);
   const [software] = useState(mockSoftware);
-  const [resources] = useState(mockResources);
   const [alerts] = useState(mockAlerts);
 
   const onlineServers = servers.filter(s => s.status === 'online').length;
@@ -406,6 +407,19 @@ export const InfrastructurePage = () => {
       month: 'short',
       year: 'numeric',
     });
+  };
+
+  // Placeholder handlers for card actions
+  const handleDetails = (item: any) => {
+    console.log('View details:', item);
+  };
+
+  const handleEdit = (item: any) => {
+    console.log('Edit:', item);
+  };
+
+  const handleDelete = (item: any) => {
+    console.log('Delete:', item);
   };
 
   const getServerStatusColor = (status: string) => {
@@ -538,6 +552,9 @@ export const InfrastructurePage = () => {
             server={server}
             formatDate={formatDate}
             index={index}
+            onDetails={handleDetails}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
         ))}
       </div>
@@ -561,6 +578,9 @@ export const InfrastructurePage = () => {
             license={license}
             formatDate={formatDate}
             index={index}
+            onDetails={handleDetails}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
         ))}
       </div>
@@ -584,6 +604,9 @@ export const InfrastructurePage = () => {
             storage={store}
             formatDate={formatDate}
             index={index}
+            onDetails={handleDetails}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
         ))}
       </div>
@@ -607,6 +630,9 @@ export const InfrastructurePage = () => {
             software={soft}
             formatDate={formatDate}
             index={index}
+            onDetails={handleDetails}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
           />
         ))}
       </div>
