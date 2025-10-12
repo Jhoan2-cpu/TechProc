@@ -23,6 +23,8 @@ export const UsersPage = () => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Filtrar usuarios
   const filteredUsers = users.filter((user) => {
@@ -38,14 +40,31 @@ export const UsersPage = () => {
     return matchesSearch && matchesRole && matchesStatus;
   });
 
+  // Auto-ocultar mensajes después de 5 segundos
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => setSuccessMessage(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   // Recargar usuarios desde API
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await usersService.getAll();
       setUsers(data.users);
-    } catch (error) {
-      console.error('Error fetching users:', error);
+    } catch (err: any) {
+      console.error('Error fetching users:', err);
+      setError(err.message || 'Error al cargar los usuarios. Por favor, intenta nuevamente.');
     } finally {
       setLoading(false);
     }
@@ -58,6 +77,7 @@ export const UsersPage = () => {
       const action = user.is_active ? 'desactivar' : 'activar';
       if (window.confirm(`¿Está seguro de ${action} a ${user.name}?`)) {
         try {
+          setError(null);
           await usersService.update(userId, {
             status: user.is_active ? 'inactive' : 'active',
           });
@@ -65,9 +85,10 @@ export const UsersPage = () => {
           setUsers((prev) =>
             prev.map((u) => (u.id === userId ? { ...u, is_active: !u.is_active } : u))
           );
-        } catch (error) {
-          console.error('Error updating user status:', error);
-          alert('Error al cambiar el estado del usuario');
+          setSuccessMessage(`Usuario ${user.name} ${action === 'activar' ? 'activado' : 'desactivado'} exitosamente`);
+        } catch (err: any) {
+          console.error('Error updating user status:', err);
+          setError(err.message || 'Error al cambiar el estado del usuario. Por favor, intenta nuevamente.');
         }
       }
     }
@@ -77,12 +98,14 @@ export const UsersPage = () => {
   const handleCreateUser = (newUser: User) => {
     setUsers((prev) => [newUser, ...prev]);
     setShowCreateModal(false);
+    setSuccessMessage(`Usuario ${newUser.name} creado exitosamente`);
   };
 
   // Editar usuario
   const handleEditUser = (updatedUser: User) => {
     setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
     setEditingUser(null);
+    setSuccessMessage(`Usuario ${updatedUser.name} actualizado exitosamente`);
   };
 
   // Estadísticas

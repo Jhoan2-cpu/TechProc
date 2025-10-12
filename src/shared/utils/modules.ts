@@ -34,8 +34,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export const modules = [
-    { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
-    { id: 'pending-registrations', name: 'Solicitudes de Registro', icon: faUserClock },
+    {
+      id: 'users',
+      name: 'Usuarios',
+      icon: faUsers,
+      submodules: [
+        { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
+        { id: 'pending-registrations', name: 'Solicitudes Pendientes', icon: faUserClock },
+      ],
+    },
     {
       id: 'lms',
       name: 'LMS',
