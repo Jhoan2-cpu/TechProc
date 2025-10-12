@@ -30,18 +30,42 @@ export const CoursesPage = () => {
     fetchCourses();
   }, []);
 
-  const handleEditCourse = (updatedCourse: Partial<Course>) => {
-    if (courseToEdit && updatedCourse) {
-      const fullCourse: Course = { ...courseToEdit, ...updatedCourse };
-      setCourses(courses.map(c => c.id === courseToEdit.id ? fullCourse : c));
+  const handleCreateCourse = async (courseData: Partial<Course>) => {
+    try {
+      // TODO: Adaptar los datos al formato de la API
+      // const newCourse = await coursesService.create(courseData);
+      // setCourses([...courses, newCourse]);
+      console.log('Curso creado:', courseData);
+      setShowCreateModal(false);
+    } catch (error) {
+      console.error('Error creating course:', error);
     }
-    setCourseToEdit(null);
   };
 
-  const handleDeleteCourse = () => {
+  const handleEditCourse = async (updatedCourse: Partial<Course>) => {
+    if (courseToEdit && updatedCourse) {
+      try {
+        // TODO: Adaptar los datos al formato de la API
+        // const updated = await coursesService.update(courseToEdit.id, updatedCourse);
+        // setCourses(courses.map(c => c.id === courseToEdit.id ? updated : c));
+        const fullCourse: Course = { ...courseToEdit, ...updatedCourse };
+        setCourses(courses.map(c => c.id === courseToEdit.id ? fullCourse : c));
+        setCourseToEdit(null);
+      } catch (error) {
+        console.error('Error updating course:', error);
+      }
+    }
+  };
+
+  const handleDeleteCourse = async () => {
     if (courseToDelete) {
-      setCourses(courses.filter(c => c.id !== courseToDelete.id));
-      setCourseToDelete(null);
+      try {
+        await coursesService.delete(courseToDelete.id);
+        setCourses(courses.filter(c => c.id !== courseToDelete.id));
+        setCourseToDelete(null);
+      } catch (error) {
+        console.error('Error deleting course:', error);
+      }
     }
   };
 
@@ -101,10 +125,7 @@ export const CoursesPage = () => {
       {showCreateModal && (
         <CreateCourseModal
           onClose={() => setShowCreateModal(false)}
-          onSave={(course) => {
-            console.log('Curso creado:', course);
-            setShowCreateModal(false);
-          }}
+          onSave={handleCreateCourse}
         />
       )}
 

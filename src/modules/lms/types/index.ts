@@ -107,3 +107,65 @@ export interface RecentEnrollment {
   course_title: string;
   enrolled_at: string;
 }
+
+// Tipos para sub-objetos (actualizados según API)
+export interface ApiCategory {
+  category_id: number;
+  name: string;
+  slug: string;
+  image?: string;
+  courses_count?: number;
+}
+
+export interface ApiInstructor {
+  instructor_id: number;
+  user_id: number;
+  name: string;
+  expertise_area: string;
+}
+
+export interface ApiContent {
+  id: number;
+  session: number;
+  type: string; // 'video', 'quiz', etc.
+  title: string;
+  order_number: number;
+}
+
+// Tipo principal del curso detallado (actualizado según API)
+export interface CourseDetail {
+  id: string;
+  course_id?: number;
+  title: string;
+  description: string;
+  level: 'basic' | 'intermediate' | 'advanced';
+  course_image?: string;
+  video_url?: string;
+  duration: number; // duración en días
+  sessions: number; // número de sesiones
+  selling_price: number;
+  discount_price?: number;
+  prerequisites?: string;
+  certificate_name?: boolean;
+  certificate_issuer?: string;
+  bestseller?: boolean;
+  featured?: boolean;
+  highest_rated?: boolean;
+  status: boolean;
+  categories?: ApiCategory[];
+  instructors?: ApiInstructor[];
+  contents?: ApiContent[];
+  created_at: string; // ISO date string
+  updated_at?: string; // ISO date string
+}
+
+// Mantener compatibilidad con nombres antiguos
+export type Category = ApiCategory;
+export type Content = ApiContent;
+
+// Tipo Instructor duplicado, usar el extendido de BaseUser
+export interface InstructorExtended extends Instructor {
+  instructor_id?: number;
+  user_id?: number;
+  name?: string;
+}

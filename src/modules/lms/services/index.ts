@@ -4,3 +4,4 @@ export { coursesService } from './coursesService';
 export { studentsService } from './studentsService';
 export { instructorsService } from './instructorsService';
 export { enrollmentsService } from './enrollmentsService';
+export { categoriesService } from './categoriesService';

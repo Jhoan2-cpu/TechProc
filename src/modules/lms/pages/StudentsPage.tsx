@@ -61,25 +61,44 @@ export const StudentsPage = () => {
     );
   }
 
-  const handleDeleteStudent = () => {
+  const handleDeleteStudent = async () => {
     if (studentToDelete) {
-      setStudents(students.filter(s => s.id !== studentToDelete.id));
-      setStudentToDelete(null);
+      try {
+        await studentsService.delete(studentToDelete.id);
+        setStudents(students.filter(s => s.id !== studentToDelete.id));
+        setStudentToDelete(null);
+      } catch (error) {
+        console.error('Error deleting student:', error);
+      }
     }
   };
 
-  const handleEditStudent = (updatedStudent: Student) => {
-    setStudents(students.map(s => s.id === updatedStudent.id ? updatedStudent : s));
-    setStudentToEdit(null);
+  const handleEditStudent = async (updatedStudent: Student) => {
+    try {
+      // TODO: Adaptar los datos al formato de la API
+      // const updated = await studentsService.update(updatedStudent.id, updatedStudent);
+      // setStudents(students.map(s => s.id === updatedStudent.id ? updated : s));
+      setStudents(students.map(s => s.id === updatedStudent.id ? updatedStudent : s));
+      setStudentToEdit(null);
+    } catch (error) {
+      console.error('Error updating student:', error);
+    }
   };
 
-  const handleCreateStudent = (newStudentData: Omit<Student, 'id'>) => {
-    const newStudent: Student = {
-      ...newStudentData,
-      id: String(Math.max(...students.map(s => Number(s.id)), 0) + 1),
-    };
-    setStudents([newStudent, ...students]);
-    setShowCreateModal(false);
+  const handleCreateStudent = async (newStudentData: Omit<Student, 'id'>) => {
+    try {
+      // TODO: Adaptar los datos al formato de la API
+      // const newStudent = await studentsService.create(newStudentData);
+      // setStudents([newStudent, ...students]);
+      const newStudent: Student = {
+        ...newStudentData,
+        id: String(Math.max(...students.map(s => Number(s.id)), 0) + 1),
+      };
+      setStudents([newStudent, ...students]);
+      setShowCreateModal(false);
+    } catch (error) {
+      console.error('Error creating student:', error);
+    }
   };
 
   const filteredStudents = students.filter((student) => {

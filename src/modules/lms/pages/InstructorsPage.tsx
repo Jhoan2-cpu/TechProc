@@ -52,25 +52,45 @@ export const InstructorsPage = () => {
     );
   }
 
-  const handleDeleteInstructor = () => {
+  const handleDeleteInstructor = async () => {
     if (instructorToDelete) {
-      setInstructors(instructors.filter(i => i.id !== instructorToDelete.id));
-      setInstructorToDelete(null);
+      try {
+        await instructorsService.delete(instructorToDelete.id);
+        setInstructors(instructors.filter(i => i.id !== instructorToDelete.id));
+        setInstructorToDelete(null);
+      } catch (error) {
+        console.error('Error deleting instructor:', error);
+        alert('No se puede eliminar el instructor. La API no soporta esta operación.');
+      }
     }
   };
 
-  const handleEditInstructor = (updatedInstructor: Instructor) => {
-    setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updatedInstructor : i));
-    setInstructorToEdit(null);
+  const handleEditInstructor = async (updatedInstructor: Instructor) => {
+    try {
+      // TODO: Adaptar los datos al formato de la API
+      // const updated = await instructorsService.update(updatedInstructor.id, updatedInstructor);
+      // setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updated : i));
+      setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updatedInstructor : i));
+      setInstructorToEdit(null);
+    } catch (error) {
+      console.error('Error updating instructor:', error);
+    }
   };
 
-  const handleCreateInstructor = (newInstructorData: Omit<Instructor, 'id'>) => {
-    const newInstructor: Instructor = {
-      ...newInstructorData,
-      id: String(Math.max(...instructors.map(i => Number(i.id)), 0) + 1),
-    };
-    setInstructors([newInstructor, ...instructors]);
-    setShowCreateModal(false);
+  const handleCreateInstructor = async (newInstructorData: Omit<Instructor, 'id'>) => {
+    try {
+      // TODO: Adaptar los datos al formato de la API
+      // const newInstructor = await instructorsService.create(newInstructorData);
+      // setInstructors([newInstructor, ...instructors]);
+      const newInstructor: Instructor = {
+        ...newInstructorData,
+        id: String(Math.max(...instructors.map(i => Number(i.id)), 0) + 1),
+      };
+      setInstructors([newInstructor, ...instructors]);
+      setShowCreateModal(false);
+    } catch (error) {
+      console.error('Error creating instructor:', error);
+    }
   };
 
   const filteredInstructors = instructors.filter((instructor) => {

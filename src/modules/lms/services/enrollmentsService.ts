@@ -1,90 +1,145 @@
-// Enrollments Service
-import { mockApiCall } from '../../../services/mockService';
+// Enrollments Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
 import type { Enrollment } from '../types';
-import { mockEnrollments, mockStudents, mockCourses } from './lms.mock';
 
-const USE_MOCK = true; // Cambiar a false cuando la API esté lista
+// Tipos de respuesta según la API
+interface EnrollmentsListResponse {
+  success: boolean;
+  data: ApiEnrollment[];
+}
+
+interface EnrollmentCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    enrollment_id: number;
+  };
+}
+
+// Tipos de la API
+interface ApiEnrollment {
+  enrollment_id: number;
+  student: {
+    id: number;
+    name: string;
+  };
+  academic_period: {
+    id: number;
+    name: string;
+  };
+  enrollment_date: string;
+  status: 'active' | 'inactive';
+  courses: Array<{
+    course_offering_id: number;
+    course_title: string;
+  }>;
+}
+
+// Parámetros de filtrado
+export interface EnrollmentsFilterParams {
+  student_id?: number;
+  academic_period_id?: number;
+  status?: 'active' | 'inactive';
+}
+
+// Datos para crear matrícula
+export interface CreateEnrollmentData {
+  student_id: number;
+  academic_period_id: number;
+  course_offering_ids: number[];
+  enrollment_type: 'new' | 'renewal';
+  enrollment_date: string;
+  status: 'active' | 'inactive';
+}
+
+// Conversión de ApiEnrollment a Enrollment
+const mapApiEnrollmentToEnrollment = (apiEnrollment: ApiEnrollment): Enrollment => {
+  return {
+    id: String(apiEnrollment.enrollment_id),
+    student_id: String(apiEnrollment.student.id),
+    course_id: apiEnrollment.courses.length > 0 ? String(apiEnrollment.courses[0].course_offering_id) : '',
+    enrolled_at: apiEnrollment.enrollment_date,
+    status: apiEnrollment.status === 'active' ? 'activo' : 'abandonado',
+    progress: 0, // La API no proporciona progreso, se inicializa en 0
+  };
+};
 
 export const enrollmentsService = {
-  // Obtener todas las inscripciones
-  async getAll(): Promise<Enrollment[]> {
-    if (USE_MOCK) {
-      return mockApiCall(mockEnrollments);
-    }
-    return apiRequest<Enrollment[]>('/lms/enrollments');
+  /**
+   * Listar todas las matrículas
+   * Endpoint: GET /lms/enrollments
+   */
+  async getAll(filters?: EnrollmentsFilterParams): Promise<Enrollment[]> {
+    // Construir query parameters
+    const params = new URLSearchParams();
+    if (filters?.student_id) params.append('student_id', String(filters.student_id));
+    if (filters?.academic_period_id) params.append('academic_period_id', String(filters.academic_period_id));
+    if (filters?.status) params.append('status', filters.status);
+
+    const queryString = params.toString();
+    const endpoint = `/lms/enrollments${queryString ? `?${queryString}` : ''}`;
+
+    const response = await apiRequest<EnrollmentsListResponse>(endpoint);
+    return response.data.map(mapApiEnrollmentToEnrollment);
   },
 
-  // Obtener inscripciones por estudiante
+  /**
+   * Obtener inscripciones por estudiante
+   */
   async getByStudent(studentId: string): Promise<Enrollment[]> {
-    if (USE_MOCK) {
-      const enrollments = mockEnrollments.filter(e => e.student_id === studentId);
-      return mockApiCall(enrollments);
-    }
-    return apiRequest<Enrollment[]>(`/lms/enrollments/student/${studentId}`);
+    return this.getAll({ student_id: Number(studentId) });
   },
 
-  // Obtener inscripciones por curso
+  /**
+   * Obtener inscripciones por curso (no soportado directamente por la API)
+   * Se filtra desde el frontend
+   */
   async getByCourse(courseId: string): Promise<Enrollment[]> {
-    if (USE_MOCK) {
-      const enrollments = mockEnrollments
-        .filter(e => e.course_id === courseId)
-        .map(enrollment => {
-          const student = mockStudents.find(s => s.id === enrollment.student_id);
-          const course = mockCourses.find(c => c.id === enrollment.course_id);
-          return {
-            ...enrollment,
-            student,
-            course,
-          };
-        });
-      return mockApiCall(enrollments);
-    }
-    return apiRequest<Enrollment[]>(`/lms/enrollments/course/${courseId}`);
+    const allEnrollments = await this.getAll();
+    return allEnrollments.filter(e => e.course_id === courseId);
   },
 
-  // Crear una inscripción
-  async create(enrollment: Omit<Enrollment, 'id' | 'enrolled_at'>): Promise<Enrollment> {
-    if (USE_MOCK) {
-      const newEnrollment: Enrollment = {
-        ...enrollment,
-        id: String(Date.now()),
-        enrolled_at: new Date().toISOString(),
-      };
-      return mockApiCall(newEnrollment);
-    }
-    return apiRequest<Enrollment>('/lms/enrollments', {
+  /**
+   * Crear una matrícula
+   * Endpoint: POST /lms/enrollments
+   */
+  async create(data: CreateEnrollmentData): Promise<Enrollment> {
+    const response = await apiRequest<EnrollmentCreateResponse>('/lms/enrollments', {
       method: 'POST',
-      body: JSON.stringify(enrollment),
+      body: JSON.stringify(data),
     });
+
+    // Obtener la matrícula completa
+    const enrollments = await this.getAll({ student_id: data.student_id });
+    const newEnrollment = enrollments.find(e => e.id === String(response.data.enrollment_id));
+
+    if (!newEnrollment) {
+      throw new Error('No se pudo obtener la matrícula creada');
+    }
+
+    return newEnrollment;
   },
 
-  // Actualizar progreso de inscripción
+  /**
+   * Actualizar progreso de inscripción (no soportado por la API)
+   * Se mantiene por compatibilidad pero no hace nada
+   */
   async updateProgress(id: string, progress: number): Promise<Enrollment> {
-    if (USE_MOCK) {
-      const existingEnrollment = mockEnrollments.find(e => e.id === id);
-      if (!existingEnrollment) {
-        throw new Error('Inscripción no encontrada');
-      }
-      const updatedEnrollment = {
-        ...existingEnrollment,
-        progress,
-      };
-      return mockApiCall(updatedEnrollment);
+    console.warn('La actualización de progreso no está soportada por la API');
+    const enrollments = await this.getAll();
+    const enrollment = enrollments.find(e => e.id === id);
+    if (!enrollment) {
+      throw new Error('Inscripción no encontrada');
     }
-    return apiRequest<Enrollment>(`/lms/enrollments/${id}/progress`, {
-      method: 'PATCH',
-      body: JSON.stringify({ progress }),
-    });
+    // Simular actualización de progreso localmente
+    return { ...enrollment, progress };
   },
 
-  // Eliminar una inscripción
-  async delete(id: string): Promise<void> {
-    if (USE_MOCK) {
-      return mockApiCall(undefined);
-    }
-    return apiRequest<void>(`/lms/enrollments/${id}`, {
-      method: 'DELETE',
-    });
+  /**
+   * Eliminar una matrícula (no documentado en la API)
+   * Se mantiene por compatibilidad pero lanzará error
+   */
+  async delete(_id: string): Promise<void> {
+    throw new Error('La eliminación de matrículas no está soportada por la API');
   },
 };

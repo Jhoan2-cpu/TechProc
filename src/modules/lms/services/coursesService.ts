@@ -193,7 +193,7 @@ export const coursesService = {
       body: JSON.stringify(data),
     });
 
-    // Obtener el curso completo
+    // Obtener el curso completo después de crearlo
     return this.getById(String(response.data.course_id));
   },
 
