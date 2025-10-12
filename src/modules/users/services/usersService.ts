@@ -187,7 +187,6 @@ export const usersService = {
       method: 'POST',
       body: JSON.stringify(apiData),
     });
-
     // Obtener el usuario completo
     return this.getById(String(response.data.id));
   },

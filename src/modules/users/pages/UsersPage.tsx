@@ -37,54 +37,48 @@ export const UsersPage = () => {
     return matchesSearch && matchesRole && matchesStatus;
   });
 
+  // Recargar usuarios desde API
+  const fetchUsers = async () => {
+    try {
+      const data = await usersService.getAll();
+      setUsers(data.users);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
   // Activar/Desactivar usuario
-  const toggleUserStatus = (userId: string) => {
+  const toggleUserStatus = async (userId: string) => {
     const user = users.find((u) => u.id === userId);
     if (user) {
       const action = user.is_active ? 'desactivar' : 'activar';
       if (window.confirm(`¿Está seguro de ${action} a ${user.name}?`)) {
-        setUsers((prev) =>
-          prev.map((u) => (u.id === userId ? { ...u, is_active: !u.is_active } : u))
-        );
+        try {
+          await usersService.update(userId, {
+            status: user.is_active ? 'inactive' : 'active',
+          });
+          // Actualizar localmente
+          setUsers((prev) =>
+            prev.map((u) => (u.id === userId ? { ...u, is_active: !u.is_active } : u))
+          );
+        } catch (error) {
+          console.error('Error updating user status:', error);
+          alert('Error al cambiar el estado del usuario');
+        }
       }
     }
   };
 
   // Crear usuario
-  const handleCreateUser = (userData: Partial<User>) => {
-    const newUser: User = {
-      id: String(users.length + 1),
-      username: userData.username || '',
-      email: userData.email || '',
-      first_name: userData.first_name || '',
-      last_name: userData.last_name || '',
-      name: `${userData.first_name} ${userData.last_name}`,
-      role: userData.role || 'analista_datos',
-      phone: userData.phone,
-      department: userData.department,
-      is_active: true,
-      created_at: new Date().toISOString(),
-    };
-    setUsers((prev) => [...prev, newUser]);
+  const handleCreateUser = (newUser: User) => {
+    setUsers((prev) => [newUser, ...prev]);
     setShowCreateModal(false);
   };
 
   // Editar usuario
-  const handleEditUser = (userData: Partial<User>) => {
-    if (editingUser) {
-      setUsers((prev) =>
-        prev.map((u) =>
-          u.id === editingUser.id
-            ? {
-                ...u,
-                ...userData,
-                name: `${userData.first_name || u.first_name} ${userData.last_name || u.last_name}`,
-              }
-            : u
-        )
-      );
-      setEditingUser(null);
-    }
+  const handleEditUser = (updatedUser: User) => {
+    setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+    setEditingUser(null);
   };
 
   // Estadísticas
@@ -93,17 +87,6 @@ export const UsersPage = () => {
   const inactiveUsers = users.filter((u) => !u.is_active).length;
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const data = await usersService.getAll();
-        setUsers(data.users);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-//        setLoading(false);
-      }
-    };
-
     fetchUsers();
   }, []);
 
