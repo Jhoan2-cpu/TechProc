@@ -25,8 +25,8 @@ export const ConfirmDeleteModal = ({
       <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-md w-full animate-scale-in">
         <div className="p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-danger/20 flex items-center justify-center">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-600 text-xl" />
+            <div className="w-12 h-12 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center">
+              <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-400 text-xl" />
             </div>
             <h3 className="text-xl font-heading font-bold text-white">
               {title}

@@ -203,8 +203,8 @@ export const CreateInstructorModal = ({
             </div>
           </div>
 
-          <div className="bg-success/20 border border-green-200 rounded-lg p-4 mt-4">
-            <p className="text-sm text-green-700">
+          <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mt-4">
+            <p className="text-sm text-green-400">
               <strong>Nota:</strong> Se enviará un correo al instructor con las credenciales de acceso y los pasos para configurar su perfil.
             </p>
           </div>

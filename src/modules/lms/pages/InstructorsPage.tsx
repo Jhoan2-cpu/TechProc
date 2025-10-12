@@ -105,7 +105,7 @@ export const InstructorsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-heading font-bold text-white mb-6">instructors</h1>
+      <h1 className="text-3xl font-heading font-bold text-white mb-6">Instructores</h1>
 
       {/* Resumen */}
       <InstructorStatsCards instructors={instructors} />
@@ -170,10 +170,10 @@ export const InstructorsPage = () => {
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${
                   instructor.status === 'activo'
-                    ? 'bg-success/20 text-green-700'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                     : instructor.status === 'inactivo'
-                    ? 'bg-gray-100 text-gray-700'
-                    : 'bg-danger/20 text-red-700'
+                    ? 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
                 }`}
               >
                 {instructor.status.charAt(0).toUpperCase() + instructor.status.slice(1)}
@@ -182,21 +182,21 @@ export const InstructorsPage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setSelectedInstructor(instructor)}
-                  className="text-blue-600 hover:bg-primary-900/20 p-2 rounded-lg transition-colors"
+                  className="text-blue-400 hover:bg-blue-500/20 p-2 rounded-lg transition-colors"
                   title="Ver detalles"
                 >
                   <FontAwesomeIcon icon={faEye} />
                 </button>
                 <button
                   onClick={() => setInstructorToEdit(instructor)}
-                  className="text-orange-600 hover:bg-orange-900/20 p-2 rounded-lg transition-colors"
+                  className="text-orange-400 hover:bg-orange-500/20 p-2 rounded-lg transition-colors"
                   title="Editar"
                 >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
                 <button
                   onClick={() => setInstructorToDelete(instructor)}
-                  className="text-red-600 hover:bg-danger/20 p-2 rounded-lg transition-colors"
+                  className="text-red-400 hover:bg-red-500/20 p-2 rounded-lg transition-colors"
                   title="Eliminar"
                 >
                   <FontAwesomeIcon icon={faTrash} />
@@ -217,15 +217,15 @@ export const InstructorsPage = () => {
       {/* Modal de detalles */}
       {selectedInstructor && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full animate-scale-in">
-            <div className="p-6 border-b border-secondary-200">
+          <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-2xl w-full animate-scale-in">
+            <div className="p-6 border-b border-secondary-200 bg-gradient-to-r from-blue-500 to-blue-600">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-heading font-bold text-white">
                   Detalles del Instructor
                 </h2>
                 <button
                   onClick={() => setSelectedInstructor(null)}
-                  className="text-gray-400 hover:text-gray-400"
+                  className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
                 >
                   <FontAwesomeIcon icon={faTimesCircle} className="text-2xl" />
                 </button>
@@ -242,14 +242,14 @@ export const InstructorsPage = () => {
                   <h3 className="text-xl font-bold text-white">
                     {selectedInstructor.first_name} {selectedInstructor.last_name}
                   </h3>
-                  <p className="text-gray-400">{selectedInstructor.email}</p>
+                  <p className="text-gray-300">{selectedInstructor.email}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-400">Estado</label>
-                  <p className="font-semibold text-white">{selectedInstructor.status}</p>
+                  <p className="font-semibold text-white capitalize">{selectedInstructor.status}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-400">País</label>
@@ -257,11 +257,11 @@ export const InstructorsPage = () => {
                 </div>
                 <div className="col-span-2">
                   <label className="text-sm font-medium text-gray-400">Biografía</label>
-                  <p className="text-white">{selectedInstructor.bio}</p>
+                  <p className="text-gray-300 mt-1">{selectedInstructor.bio}</p>
                 </div>
                 <div className="col-span-2">
                   <label className="text-sm font-medium text-gray-400">Áreas de Expertise</label>
-                  <p className="text-white">{selectedInstructor.expertise_area}</p>
+                  <p className="text-gray-300 mt-1">{selectedInstructor.expertise_area}</p>
                 </div>
               </div>
             </div>
