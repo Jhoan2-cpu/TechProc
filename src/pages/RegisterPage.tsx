@@ -155,7 +155,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
         setLoading(true);
 
         // Llamar al servicio de registro según especificación
-        const response = await authService.register({
+        await authService.register({
           email: formData.email,
           password: formData.password,
           first_name: formData.firstName,
@@ -163,16 +163,13 @@ export const RegisterPage = ({}: RegisterPageProps) => {
           role: formData.role as UserRole,
         });
 
-        // Guardar sesión automáticamente
-        authService.saveSession(response.token, response.refreshToken);
+        // NO guardar sesión - el registro requiere aprobación del administrador
+        // authService.saveSession(response.token, response.refreshToken);
 
         // Mostrar mensaje de éxito
         setSubmitted(true);
 
-        // Redirigir después de 2 segundos
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
+        // NO redirigir automáticamente - dejar que el usuario vea el mensaje
 
       } catch (error: any) {
         setApiError(error.message || 'Error al procesar el registro');
@@ -348,11 +345,14 @@ export const RegisterPage = ({}: RegisterPageProps) => {
               <FontAwesomeIcon icon={faCheckCircle} className="text-white text-4xl" />
             </div>
             <h2 className="text-2xl font-heading font-bold text-white mb-4">
-              ¡Solicitud Enviada!
+              ¡Solicitud Enviada Exitosamente!
             </h2>
-            <p className="text-gray-300 mb-6">
-              Tu solicitud de registro ha sido enviada exitosamente. El administrador la revisará y te
-              contactará pronto.
+            <p className="text-gray-300 mb-2">
+              Tu solicitud de registro ha sido enviada correctamente.
+            </p>
+            <p className="text-gray-400 text-sm mb-6">
+              Un administrador revisará tu solicitud y te notificará cuando tu cuenta sea aprobada.
+              Recibirás un correo electrónico con las instrucciones para acceder al sistema.
             </p>
             <button
               onClick={handleBackToLogin}
