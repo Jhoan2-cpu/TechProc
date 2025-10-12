@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUserCircle,
@@ -6,7 +6,6 @@ import {
   faToggleOff,
 } from '@fortawesome/free-solid-svg-icons';
 import type { User } from '../types';
-import { mockUsers } from '../data/users.mock';
 import { getRoleInfo } from '../utils/roleUtils';
 import {
   UserStatsCard,
@@ -14,9 +13,10 @@ import {
   UserTableRow,
   UserFormModal,
 } from '../components';
+import { usersService } from '../services';
 
 export const UsersPage = () => {
-  const [users, setUsers] = useState<User[]>(mockUsers);
+  const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -91,6 +91,22 @@ export const UsersPage = () => {
   const totalUsers = users.length;
   const activeUsers = users.filter((u) => u.is_active).length;
   const inactiveUsers = users.filter((u) => !u.is_active).length;
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await usersService.getAll();
+        setUsers(data.users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+//        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
 
   return (
     <div className="animate-fade-in">
