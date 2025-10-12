@@ -1,56 +1,13 @@
 // Enrollments Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { Enrollment } from '../types';
-
-// Tipos de respuesta según la API
-interface EnrollmentsListResponse {
-  success: boolean;
-  data: ApiEnrollment[];
-}
-
-interface EnrollmentCreateResponse {
-  success: boolean;
-  message: string;
-  data: {
-    enrollment_id: number;
-  };
-}
-
-// Tipos de la API
-interface ApiEnrollment {
-  enrollment_id: number;
-  student: {
-    id: number;
-    name: string;
-  };
-  academic_period: {
-    id: number;
-    name: string;
-  };
-  enrollment_date: string;
-  status: 'active' | 'inactive';
-  courses: Array<{
-    course_offering_id: number;
-    course_title: string;
-  }>;
-}
-
-// Parámetros de filtrado
-export interface EnrollmentsFilterParams {
-  student_id?: number;
-  academic_period_id?: number;
-  status?: 'active' | 'inactive';
-}
-
-// Datos para crear matrícula
-export interface CreateEnrollmentData {
-  student_id: number;
-  academic_period_id: number;
-  course_offering_ids: number[];
-  enrollment_type: 'new' | 'renewal';
-  enrollment_date: string;
-  status: 'active' | 'inactive';
-}
+import type {
+  Enrollment,
+  ApiEnrollment,
+  EnrollmentsListResponse,
+  EnrollmentCreateResponse,
+  EnrollmentsFilterParams,
+  CreateEnrollmentData,
+} from '../types';
 
 // Conversión de ApiEnrollment a Enrollment
 const mapApiEnrollmentToEnrollment = (apiEnrollment: ApiEnrollment): Enrollment => {

@@ -1,71 +1,15 @@
 // Instructors Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { Instructor } from '../types';
-
-// Tipos de respuesta según la API
-interface InstructorsListResponse {
-  success: boolean;
-  data: {
-    instructors: ApiInstructor[];
-    pagination: {
-      current_page: number;
-      total_pages: number;
-      total_records: number;
-      per_page: number;
-    };
-  };
-}
-
-interface InstructorCreateResponse {
-  success: boolean;
-  message: string;
-  data: {
-    id: number;
-    instructor_id: number;
-  };
-}
-
-interface InstructorUpdateResponse {
-  success: boolean;
-  message: string;
-}
-
-// Tipos de la API
-interface ApiInstructor {
-  id: number;
-  instructor_id: number;
-  user_id: number;
-  name: string;
-  email: string;
-  bio: string;
-  expertise_area: string;
-  status: 'active' | 'inactive';
-  courses_count?: number;
-  created_at: string;
-}
-
-// Parámetros de filtrado
-export interface InstructorsFilterParams {
-  page?: number;
-  limit?: number;
-  status?: 'active' | 'inactive';
-  expertise_area?: string;
-}
-
-// Datos para crear instructor
-export interface CreateInstructorData {
-  user_id: number;
-  bio: string;
-  expertise_area: string;
-  status: 'active' | 'inactive';
-}
-
-// Datos para actualizar instructor
-export interface UpdateInstructorData {
-  bio?: string;
-  expertise_area?: string;
-  status?: 'active' | 'inactive';
-}
+import type {
+  Instructor,
+  ApiInstructor,
+  InstructorsListResponse,
+  InstructorCreateResponse,
+  InstructorUpdateResponse,
+  InstructorsFilterParams,
+  CreateInstructorData,
+  UpdateInstructorData,
+} from '../types';
 
 // Conversión de ApiInstructor a Instructor
 const mapApiInstructorToInstructor = (apiInstructor: ApiInstructor): Instructor => {

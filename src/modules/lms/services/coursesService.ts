@@ -1,133 +1,18 @@
 // Courses Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { Course } from '../types';
-
-// Tipos de respuesta según la API
-interface CoursesListResponse {
-  success: boolean;
-  data: {
-    courses: ApiCourse[];
-    pagination: {
-      current_page: number;
-      total_pages: number;
-      total_records: number;
-      per_page: number;
-    };
-  };
-}
-
-interface CourseDetailResponse {
-  success: boolean;
-  data: ApiCourseDetail;
-}
-
-interface CourseCreateResponse {
-  success: boolean;
-  message: string;
-  data: {
-    id: number;
-    course_id: number;
-  };
-}
-
-interface CourseUpdateResponse {
-  success: boolean;
-  message: string;
-}
-
-interface CourseDeleteResponse {
-  success: boolean;
-  message: string;
-}
-
-// Tipos de la API
-interface ApiCourse {
-  id: number;
-  course_id: number;
-  title: string;
-  description: string;
-  level: 'basic' | 'intermediate' | 'advanced';
-  course_image?: string;
-  duration: number;
-  sessions: number;
-  selling_price: number;
-  discount_price?: number;
-  status: boolean;
-  bestseller?: boolean;
-  featured?: boolean;
-  created_at: string;
-}
-
-interface ApiCourseDetail extends ApiCourse {
-  video_url?: string;
-  prerequisites?: string;
-  certificate_name?: boolean;
-  certificate_issuer?: string;
-  highest_rated?: boolean;
-  categories?: Array<{
-    category_id: number;
-    name: string;
-    slug: string;
-  }>;
-  instructors?: Array<{
-    instructor_id: number;
-    user_id: number;
-    name: string;
-    expertise_area: string;
-  }>;
-  contents?: Array<{
-    id: number;
-    session: number;
-    type: string;
-    title: string;
-    order_number: number;
-  }>;
-  updated_at?: string;
-}
-
-// Parámetros de filtrado
-export interface CoursesFilterParams {
-  page?: number;
-  limit?: number;
-  level?: 'basic' | 'intermediate' | 'advanced';
-  status?: boolean;
-  search?: string;
-  category_id?: number;
-}
-
-// Datos para crear curso
-export interface CreateCourseData {
-  title: string;
-  description: string;
-  level: 'basic' | 'intermediate' | 'advanced';
-  course_image?: string;
-  video_url?: string;
-  duration: number;
-  sessions: number;
-  selling_price: number;
-  discount_price?: number;
-  prerequisites?: string;
-  certificate_name?: boolean;
-  certificate_issuer?: string;
-  status: boolean;
-  category_ids?: number[];
-  instructor_ids?: number[];
-}
-
-// Datos para actualizar curso
-export interface UpdateCourseData {
-  title?: string;
-  description?: string;
-  level?: 'basic' | 'intermediate' | 'advanced';
-  course_image?: string;
-  video_url?: string;
-  duration?: number;
-  sessions?: number;
-  selling_price?: number;
-  discount_price?: number;
-  prerequisites?: string;
-  status?: boolean;
-}
+import type {
+  Course,
+  ApiCourse,
+  ApiCourseDetail,
+  CoursesListResponse,
+  CourseDetailResponse,
+  CourseCreateResponse,
+  CourseUpdateResponse,
+  CourseDeleteResponse,
+  CoursesFilterParams,
+  CreateCourseData,
+  UpdateCourseData,
+} from '../types';
 
 // Conversión de ApiCourse a Course
 const mapApiCourseToCourse = (apiCourse: ApiCourse | ApiCourseDetail): Course => {

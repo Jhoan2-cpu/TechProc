@@ -1,33 +1,10 @@
 // Categories Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-
-// Tipos de respuesta según la API
-interface CategoriesListResponse {
-  success: boolean;
-  data: ApiCategory[];
-}
-
-// Tipos de la API
-interface ApiCategory {
-  id: number;
-  category_id: number;
-  name: string;
-  slug: string;
-  image?: string;
-  courses_count: number;
-  created_at: string;
-}
-
-// Tipo para el frontend
-export interface Category {
-  id: string;
-  category_id: number;
-  name: string;
-  slug: string;
-  image?: string;
-  courses_count: number;
-  created_at: string;
-}
+import type {
+  Category,
+  ApiCategory,
+  CategoriesListResponse,
+} from '../types';
 
 // Conversión de ApiCategory a Category
 const mapApiCategoryToCategory = (apiCategory: ApiCategory): Category => {

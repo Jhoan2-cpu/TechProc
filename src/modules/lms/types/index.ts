@@ -1,10 +1,34 @@
-// Tipos del módulo LMS
+// ===================================================================
+// TIPOS DEL MÓDULO LMS - CENTRALIZADOS
+// ===================================================================
+// Este archivo contiene TODOS los tipos e interfaces del módulo LMS
+// Todos los servicios, componentes y páginas deben importar desde aquí
+// ===================================================================
 
+// -------------------------------------------------------------------
+// TIPOS BÁSICOS
+// -------------------------------------------------------------------
 export type CourseStatus = 'publicado' | 'borrador' | 'archivado';
 export type UserRole = 'student' | 'instructor' | 'employees';
 export type Gender = 'M' | 'F' | 'Otro';
 export type InstructorStatus = 'activo' | 'inactivo' | 'suspendido';
 export type ContentType = 'pdf' | 'video' | 'link' | 'anuncio';
+export type CourseLevel = 'basic' | 'intermediate' | 'advanced';
+export type ApiStatus = 'active' | 'inactive';
+
+// -------------------------------------------------------------------
+// TIPOS DE PAGINACIÓN
+// -------------------------------------------------------------------
+export interface Pagination {
+  current_page: number;
+  total_pages: number;
+  total_records: number;
+  per_page: number;
+}
+
+// -------------------------------------------------------------------
+// MODELOS DEL FRONTEND
+// -------------------------------------------------------------------
 
 // Usuario base
 export interface BaseUser {
@@ -79,6 +103,21 @@ export interface Enrollment {
   progress: number; // 0-100
 }
 
+// Categoría
+export interface Category {
+  id: string;
+  category_id: number;
+  name: string;
+  slug: string;
+  image?: string;
+  courses_count: number;
+  created_at: string;
+}
+
+// -------------------------------------------------------------------
+// ESTADÍSTICAS Y DASHBOARD
+// -------------------------------------------------------------------
+
 // Estadísticas del Dashboard
 export interface LMSStats {
   total_courses: number;
@@ -108,26 +147,268 @@ export interface RecentEnrollment {
   enrolled_at: string;
 }
 
-// Tipos para sub-objetos (actualizados según API)
+// -------------------------------------------------------------------
+// TIPOS DE LA API - Responses
+// -------------------------------------------------------------------
+
+// Courses
+export interface CoursesListResponse {
+  success: boolean;
+  data: {
+    courses: ApiCourse[];
+    pagination: Pagination;
+  };
+}
+
+export interface CourseDetailResponse {
+  success: boolean;
+  data: ApiCourseDetail;
+}
+
+export interface CourseCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    course_id: number;
+  };
+}
+
+export interface CourseUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface CourseDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Students
+export interface StudentsListResponse {
+  success: boolean;
+  data: {
+    students: ApiStudent[];
+    pagination: Pagination;
+  };
+}
+
+export interface StudentDetailResponse {
+  success: boolean;
+  data: ApiStudentDetail;
+}
+
+export interface StudentCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    student_id: number;
+  };
+}
+
+export interface StudentUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface StudentDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Instructors
+export interface InstructorsListResponse {
+  success: boolean;
+  data: {
+    instructors: ApiInstructor[];
+    pagination: Pagination;
+  };
+}
+
+export interface InstructorCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    instructor_id: number;
+  };
+}
+
+export interface InstructorUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+// Enrollments
+export interface EnrollmentsListResponse {
+  success: boolean;
+  data: ApiEnrollment[];
+}
+
+export interface EnrollmentCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    enrollment_id: number;
+  };
+}
+
+// Categories
+export interface CategoriesListResponse {
+  success: boolean;
+  data: ApiCategory[];
+}
+
+// Analytics
+export interface StudentsStatsResponse {
+  success: boolean;
+  data: {
+    total_students: number;
+    active_students: number;
+    inactive_students: number;
+  };
+}
+
+export interface CoursesStatsResponse {
+  success: boolean;
+  data: {
+    total_courses: number;
+    active_courses: number;
+    inactive_courses: number;
+  };
+}
+
+// -------------------------------------------------------------------
+// TIPOS DE LA API - Modelos
+// -------------------------------------------------------------------
+
+// Curso de la API
+export interface ApiCourse {
+  id: number;
+  course_id: number;
+  title: string;
+  description: string;
+  level: CourseLevel;
+  course_image?: string;
+  duration: number;
+  sessions: number;
+  selling_price: number;
+  discount_price?: number;
+  status: boolean;
+  bestseller?: boolean;
+  featured?: boolean;
+  created_at: string;
+}
+
+export interface ApiCourseDetail extends ApiCourse {
+  video_url?: string;
+  prerequisites?: string;
+  certificate_name?: boolean;
+  certificate_issuer?: string;
+  highest_rated?: boolean;
+  categories?: Array<{
+    category_id: number;
+    name: string;
+    slug: string;
+  }>;
+  instructors?: Array<{
+    instructor_id: number;
+    user_id: number;
+    name: string;
+    expertise_area: string;
+  }>;
+  contents?: Array<{
+    id: number;
+    session: number;
+    type: string;
+    title: string;
+    order_number: number;
+  }>;
+  updated_at?: string;
+}
+
+// Estudiante de la API
+export interface ApiStudent {
+  id: number;
+  student_id: number;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+  status: ApiStatus;
+  company?: {
+    id: number;
+    name: string;
+  };
+  created_at: string;
+}
+
+export interface ApiStudentDetail extends ApiStudent {
+  document_number?: string;
+  company?: {
+    id: number;
+    name: string;
+    industry?: string;
+  };
+  enrollments?: Array<{
+    enrollment_id: number;
+    course_title: string;
+    enrollment_date: string;
+    status: string;
+  }>;
+}
+
+// Instructor de la API
+export interface ApiInstructor {
+  id: number;
+  instructor_id: number;
+  user_id: number;
+  name: string;
+  email: string;
+  bio: string;
+  expertise_area: string;
+  status: ApiStatus;
+  courses_count?: number;
+  created_at: string;
+}
+
+// Matrícula de la API
+export interface ApiEnrollment {
+  enrollment_id: number;
+  student: {
+    id: number;
+    name: string;
+  };
+  academic_period: {
+    id: number;
+    name: string;
+  };
+  enrollment_date: string;
+  status: ApiStatus;
+  courses: Array<{
+    course_offering_id: number;
+    course_title: string;
+  }>;
+}
+
+// Categoría de la API
 export interface ApiCategory {
+  id: number;
   category_id: number;
   name: string;
   slug: string;
   image?: string;
-  courses_count?: number;
+  courses_count: number;
+  created_at: string;
 }
 
-export interface ApiInstructor {
-  instructor_id: number;
-  user_id: number;
-  name: string;
-  expertise_area: string;
-}
-
+// Sub-objetos de la API
 export interface ApiContent {
   id: number;
   session: number;
-  type: string; // 'video', 'quiz', etc.
+  type: string;
   title: string;
   order_number: number;
 }
@@ -138,11 +419,11 @@ export interface CourseDetail {
   course_id?: number;
   title: string;
   description: string;
-  level: 'basic' | 'intermediate' | 'advanced';
+  level: CourseLevel;
   course_image?: string;
   video_url?: string;
-  duration: number; // duración en días
-  sessions: number; // número de sesiones
+  duration: number;
+  sessions: number;
   selling_price: number;
   discount_price?: number;
   prerequisites?: string;
@@ -155,15 +436,127 @@ export interface CourseDetail {
   categories?: ApiCategory[];
   instructors?: ApiInstructor[];
   contents?: ApiContent[];
-  created_at: string; // ISO date string
-  updated_at?: string; // ISO date string
+  created_at: string;
+  updated_at?: string;
 }
 
+// -------------------------------------------------------------------
+// PARÁMETROS DE FILTRADO Y CREACIÓN
+// -------------------------------------------------------------------
+
+// Courses
+export interface CoursesFilterParams {
+  page?: number;
+  limit?: number;
+  level?: CourseLevel;
+  status?: boolean;
+  search?: string;
+  category_id?: number;
+}
+
+export interface CreateCourseData {
+  title: string;
+  description: string;
+  level: CourseLevel;
+  course_image?: string;
+  video_url?: string;
+  duration: number;
+  sessions: number;
+  selling_price: number;
+  discount_price?: number;
+  prerequisites?: string;
+  certificate_name?: boolean;
+  certificate_issuer?: string;
+  status: boolean;
+  category_ids?: number[];
+  instructor_ids?: number[];
+}
+
+export interface UpdateCourseData {
+  title?: string;
+  description?: string;
+  level?: CourseLevel;
+  course_image?: string;
+  video_url?: string;
+  duration?: number;
+  sessions?: number;
+  selling_price?: number;
+  discount_price?: number;
+  prerequisites?: string;
+  status?: boolean;
+}
+
+// Students
+export interface StudentsFilterParams {
+  page?: number;
+  limit?: number;
+  status?: ApiStatus;
+  search?: string;
+  company_id?: number;
+}
+
+export interface CreateStudentData {
+  user_id: number;
+  company_id?: number;
+  document_number?: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+  status: ApiStatus;
+}
+
+export interface UpdateStudentData {
+  phone?: string;
+  company_id?: number;
+  status?: ApiStatus;
+}
+
+// Instructors
+export interface InstructorsFilterParams {
+  page?: number;
+  limit?: number;
+  status?: ApiStatus;
+  expertise_area?: string;
+}
+
+export interface CreateInstructorData {
+  user_id: number;
+  bio: string;
+  expertise_area: string;
+  status: ApiStatus;
+}
+
+export interface UpdateInstructorData {
+  bio?: string;
+  expertise_area?: string;
+  status?: ApiStatus;
+}
+
+// Enrollments
+export interface EnrollmentsFilterParams {
+  student_id?: number;
+  academic_period_id?: number;
+  status?: ApiStatus;
+}
+
+export interface CreateEnrollmentData {
+  student_id: number;
+  academic_period_id: number;
+  course_offering_ids: number[];
+  enrollment_type: 'new' | 'renewal';
+  enrollment_date: string;
+  status: ApiStatus;
+}
+
+// -------------------------------------------------------------------
+// TIPOS DE COMPATIBILIDAD
+// -------------------------------------------------------------------
+
 // Mantener compatibilidad con nombres antiguos
-export type Category = ApiCategory;
 export type Content = ApiContent;
 
-// Tipo Instructor duplicado, usar el extendido de BaseUser
+// Tipo Instructor extendido
 export interface InstructorExtended extends Instructor {
   instructor_id?: number;
   user_id?: number;

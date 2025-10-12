@@ -1,104 +1,18 @@
 // Students Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { Student } from '../types';
-
-// Tipos de respuesta según la API
-interface StudentsListResponse {
-  success: boolean;
-  data: {
-    students: ApiStudent[];
-    pagination: {
-      current_page: number;
-      total_pages: number;
-      total_records: number;
-      per_page: number;
-    };
-  };
-}
-
-interface StudentDetailResponse {
-  success: boolean;
-  data: ApiStudentDetail;
-}
-
-interface StudentCreateResponse {
-  success: boolean;
-  message: string;
-  data: {
-    id: number;
-    student_id: number;
-  };
-}
-
-interface StudentUpdateResponse {
-  success: boolean;
-  message: string;
-}
-
-interface StudentDeleteResponse {
-  success: boolean;
-  message: string;
-}
-
-// Tipos de la API
-interface ApiStudent {
-  id: number;
-  student_id: number;
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone?: string;
-  status: 'active' | 'inactive';
-  company?: {
-    id: number;
-    name: string;
-  };
-  created_at: string;
-}
-
-interface ApiStudentDetail extends ApiStudent {
-  document_number?: string;
-  company?: {
-    id: number;
-    name: string;
-    industry?: string;
-  };
-  enrollments?: Array<{
-    enrollment_id: number;
-    course_title: string;
-    enrollment_date: string;
-    status: string;
-  }>;
-}
-
-// Parámetros de filtrado
-export interface StudentsFilterParams {
-  page?: number;
-  limit?: number;
-  status?: 'active' | 'inactive';
-  search?: string;
-  company_id?: number;
-}
-
-// Datos para crear estudiante
-export interface CreateStudentData {
-  user_id: number;
-  company_id?: number;
-  document_number?: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone?: string;
-  status: 'active' | 'inactive';
-}
-
-// Datos para actualizar estudiante
-export interface UpdateStudentData {
-  phone?: string;
-  company_id?: number;
-  status?: 'active' | 'inactive';
-}
+import type {
+  Student,
+  ApiStudent,
+  ApiStudentDetail,
+  StudentsListResponse,
+  StudentDetailResponse,
+  StudentCreateResponse,
+  StudentUpdateResponse,
+  StudentDeleteResponse,
+  StudentsFilterParams,
+  CreateStudentData,
+  UpdateStudentData,
+} from '../types';
 
 // Conversión de ApiStudent a Student
 const mapApiStudentToStudent = (apiStudent: ApiStudent | ApiStudentDetail): Student => {

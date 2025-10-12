@@ -4,6 +4,12 @@
 
 Se ha actualizado el módulo LMS para integrar todos los servicios con la API backend documentada en `DOCUMENTACION_BACKEND_API.md`.
 
+**✅ Estado: INTEGRACIÓN COMPLETA**
+- Todos los servicios usan exclusivamente la API REST
+- Archivo de mocks eliminado (lms.mock.ts)
+- No hay redundancia de código
+- Estructura limpia y organizada
+
 ## Servicios Actualizados
 
 ### 1. Cursos (coursesService.ts) ✅
@@ -179,6 +185,39 @@ Para probar la integración:
    - Estudiantes: `/lms/students`
    - Instructores: `/lms/instructors`
 
+## Estructura de Servicios
+
+```
+src/modules/lms/services/
+├── index.ts                    # Barrel export de todos los servicios
+├── categoriesService.ts        # GET /lms/categories
+├── coursesService.ts           # CRUD completo /lms/courses
+├── enrollmentsService.ts       # GET, POST /lms/enrollments
+├── instructorsService.ts       # GET, POST, PUT /lms/instructors
+├── studentsService.ts          # CRUD completo /lms/students
+└── lmsService.ts              # Dashboard stats (combina analytics)
+```
+
+### Patrón Común en Todos los Servicios
+
+Todos los servicios siguen el mismo patrón:
+
+1. **Import de apiRequest**: `import { apiRequest } from '../../../services/api.config'`
+2. **Tipos de la API**: Interfaces para respuestas (ApiXXX)
+3. **Tipos del Frontend**: Interfaces para el frontend
+4. **Función de Mapeo**: `mapApiXXXToXXX()` para convertir datos
+5. **Métodos del Servicio**: `getAll()`, `getById()`, `create()`, `update()`, `delete()`
+
+### Consumo desde Componentes
+
+Todos los componentes y páginas importan servicios desde el barrel export:
+
+```typescript
+import { coursesService, studentsService, instructorsService } from '../services';
+```
+
+**No hay imports directos de archivos individuales.**
+
 ## Notas Importantes
 
 1. **Eliminación de Instructores:** La API no soporta la eliminación de instructores. El botón de eliminar muestra un mensaje de error.
@@ -190,3 +229,5 @@ Para probar la integración:
 4. **Status de Cursos:** La API usa `status: boolean`, el frontend usa `status: 'publicado' | 'borrador' | 'archivado'`. El mapeo se hace automáticamente.
 
 5. **Duración de Cursos:** La API maneja duración en días, el frontend en semanas. Se convierte automáticamente.
+
+6. **No hay Mocks:** El archivo `lms.mock.ts` fue eliminado. Todos los servicios usan la API real.

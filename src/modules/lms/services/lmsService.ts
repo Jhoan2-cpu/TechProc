@@ -1,29 +1,16 @@
 // LMS Dashboard Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { LMSStats, RecentCourse, RecentEnrollment } from '../types';
+import type {
+  LMSStats,
+  RecentCourse,
+  RecentEnrollment,
+  StudentsStatsResponse,
+  CoursesStatsResponse,
+} from '../types';
 import { coursesService } from './coursesService';
 import { studentsService } from './studentsService';
 import { instructorsService } from './instructorsService';
 import { enrollmentsService } from './enrollmentsService';
-
-// Tipos de respuesta de Analytics según la API
-interface StudentsStatsResponse {
-  success: boolean;
-  data: {
-    total_students: number;
-    active_students: number;
-    inactive_students: number;
-  };
-}
-
-interface CoursesStatsResponse {
-  success: boolean;
-  data: {
-    total_courses: number;
-    active_courses: number;
-    inactive_courses: number;
-  };
-}
 
 export const lmsService = {
   /**
