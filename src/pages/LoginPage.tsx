@@ -18,7 +18,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import type { User, UserRole } from '../shared/types/auth';
 import { authService } from '../services/authService';
-import { MODULE_ACCESS } from '../shared/types/auth';
 import { Preloader } from '../shared/components/Preloader';
 
 interface LoginPageProps {
