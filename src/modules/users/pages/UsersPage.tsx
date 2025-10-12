@@ -17,6 +17,7 @@ import { usersService } from '../services';
 
 export const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -40,10 +41,13 @@ export const UsersPage = () => {
   // Recargar usuarios desde API
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const data = await usersService.getAll();
       setUsers(data.users);
     } catch (error) {
       console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,6 +94,41 @@ export const UsersPage = () => {
     fetchUsers();
   }, []);
 
+  // Mostrar animación de carga
+  if (loading) {
+    return (
+      <div className="animate-fade-in">
+        <h1 className="text-3xl font-heading font-bold text-gradient mb-6">Gestión de Usuarios</h1>
+
+        <div className="flex flex-col items-center justify-center py-20">
+          {/* Spinner animado */}
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-secondary-600 border-t-primary-500 rounded-full animate-spin"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <FontAwesomeIcon icon={faUserCircle} className="text-3xl text-primary-500 animate-pulse" />
+            </div>
+          </div>
+
+          {/* Texto de carga */}
+          <div className="mt-6 text-center">
+            <p className="text-xl font-semibold text-white mb-2">Cargando usuarios...</p>
+            <p className="text-sm text-gray-400">Por favor espere un momento</p>
+          </div>
+
+          {/* Barras de skeleton animadas */}
+          <div className="mt-8 w-full max-w-2xl space-y-3">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-16 bg-gradient-to-r from-secondary-600 via-secondary-500 to-secondary-600 rounded-lg animate-pulse"
+                style={{ animationDelay: `${i * 100}ms` }}
+              ></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="animate-fade-in">
