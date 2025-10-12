@@ -85,6 +85,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
   const location = useLocation();
   const [expandedModules, setExpandedModules] = useState<string[]>(['lms', 'support', 'security', 'infrastructure', 'web', 'analytics']);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
 
   // Redirigir automáticamente al primer módulo disponible si estamos en la raíz
   React.useEffect(() => {
@@ -235,7 +236,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
             </div>
           </div>
         </div>
-
+        
         {/* Navigation */}
         <nav className="flex-1 p-4 overflow-y-auto min-h-0">
           <p className="text-xs font-semibold text-primary-400 uppercase tracking-wider mb-3 px-3">
@@ -325,7 +326,7 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
 
           {/* Logout Button */}
           <button
-            onClick={onLogout}
+            onClick={() => setShowLogoutModal(true)}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-danger hover:bg-gradient-to-r hover:from-danger/20 hover:to-danger/30 transition-all duration-300 hover:shadow-lg hover:shadow-danger/30 hover:scale-105 border border-gray-700/30 hover:border-danger/50"
           >
             <FontAwesomeIcon icon={faRightFromBracket} className="text-lg" />
@@ -334,6 +335,47 @@ function Layout({ currentUser, onLogout }: { currentUser: User; onLogout: () => 
         </div>
         </div>
       </aside>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl max-w-md w-full border border-gray-700/50 animate-scale-in">
+            <div className="p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-danger/20 to-danger/30 flex items-center justify-center border-2 border-danger/50">
+                  <FontAwesomeIcon icon={faRightFromBracket} className="text-danger text-2xl" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-heading font-bold text-white">Cerrar Sesión</h3>
+                  <p className="text-sm text-gray-400">Confirma tu decisión</p>
+                </div>
+              </div>
+
+              <p className="text-gray-300 mb-6">
+                ¿Estás seguro que deseas cerrar sesión? Deberás ingresar tus credenciales nuevamente para acceder al sistema.
+              </p>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowLogoutModal(false)}
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-secondary-700 to-secondary-800 text-gray-300 rounded-xl font-semibold hover:from-secondary-600 hover:to-secondary-700 hover:text-white transition-all duration-300 border border-gray-700/50 hover:border-primary-500/50"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => {
+                    setShowLogoutModal(false);
+                    onLogout();
+                  }}
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-danger to-danger/80 text-white rounded-xl font-semibold hover:from-danger/90 hover:to-danger/70 transition-all duration-300 shadow-lg shadow-danger/20 hover:shadow-xl hover:shadow-danger/30"
+                >
+                  Sí, cerrar sesión
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto h-screen bg-gradient-to-br from-dark-600/50 to-smoky-600/50 backdrop-blur-sm">
@@ -401,6 +443,8 @@ function App() {
   useEffect(() => {
     // Verificar si hay una sesión guardada
     const checkSession = async () => {
+      const startTime = Date.now();
+
       try {
         if (authService.isAuthenticated()) {
           const user = authService.getCurrentUser();
@@ -412,10 +456,13 @@ function App() {
         console.error('Error al verificar sesión:', error);
         authService.clearSession();
       } finally {
-        // Simular carga inicial
+        // Asegurar un tiempo mínimo de 500ms para el preloader
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(500 - elapsedTime, 0);
+
         setTimeout(() => {
           setIsLoading(false);
-        }, 1500);
+        }, remainingTime);
       }
     };
 

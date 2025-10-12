@@ -16,7 +16,11 @@ import {
   faGlobe,
   faArrowLeft,
   faCheckCircle,
+  faSpinner,
+  faTicket,
 } from '@fortawesome/free-solid-svg-icons';
+import { authService } from '../services/authService';
+import type { UserRole } from '../shared/types/auth';
 
 interface RegisterPageProps {
   onBackToLogin: () => void;
@@ -51,45 +55,53 @@ export const RegisterPage = ({}: RegisterPageProps) => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<string>('');
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
 
   const handleBackToLogin = () => {
     navigate('/login');
   };
 
-  const roles = [
+  const roles: Array<{ value: UserRole; label: string; icon: any; color: string }> = [
     {
-      value: 'admin',
+      value: 'administrador',
       label: 'Administrador',
       icon: faShieldHalved,
       color: 'text-red-600',
     },
     {
-      value: 'lms',
+      value: 'gestor_lms',
       label: 'Gestor LMS',
       icon: faGraduationCap,
       color: 'text-blue-600',
     },
     {
-      value: 'seg',
+      value: 'soporte_tecnico',
+      label: 'Soporte Técnico',
+      icon: faTicket,
+      color: 'text-yellow-600',
+    },
+    {
+      value: 'soporte_seguridad',
       label: 'Soporte - Seguridad',
       icon: faLock,
       color: 'text-purple-600',
     },
     {
-      value: 'infra',
+      value: 'soporte_infraestructura',
       label: 'Soporte - Infraestructura',
       icon: faServer,
       color: 'text-green-600',
     },
     {
-      value: 'web',
+      value: 'developer_web',
       label: 'Developer Web',
       icon: faGlobe,
       color: 'text-orange-600',
     },
     {
-      value: 'data',
+      value: 'analista_datos',
       label: 'Analista de Datos',
       icon: faChartLine,
       color: 'text-cyan-600',
@@ -134,27 +146,196 @@ export const RegisterPage = ({}: RegisterPageProps) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setApiError('');
 
     if (validateForm()) {
-      // Aquí se enviaría al backend
-      console.log('Registro enviado:', formData);
-      setSubmitted(true);
+      try {
+        setLoading(true);
 
-      // Simular guardado
-      setTimeout(() => {
-        alert('Solicitud de registro enviada. El administrador la revisará pronto.');
-      }, 500);
+        // Llamar al servicio de registro según especificación
+        const response = await authService.register({
+          email: formData.email,
+          password: formData.password,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          role: formData.role as UserRole,
+        });
+
+        // Guardar sesión automáticamente
+        authService.saveSession(response.token, response.refreshToken);
+
+        // Mostrar mensaje de éxito
+        setSubmitted(true);
+
+        // Redirigir después de 2 segundos
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+
+      } catch (error: any) {
+        setApiError(error.message || 'Error al procesar el registro');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   const handleChange = (field: keyof RegisterFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Limpiar error del campo cuando el usuario empieza a escribir
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+
+    // Validación en tiempo real
+    validateField(field, value);
+  };
+
+  const validateField = (field: keyof RegisterFormData, value: string) => {
+    const newErrors = { ...errors };
+
+    switch (field) {
+      case 'firstName':
+        if (!value.trim()) {
+          newErrors.firstName = 'El nombre es requerido';
+        } else if (value.trim().length < 2) {
+          newErrors.firstName = 'El nombre debe tener al menos 2 caracteres';
+        } else if (value.trim().length > 50) {
+          newErrors.firstName = 'El nombre no puede tener más de 50 caracteres';
+        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value)) {
+          newErrors.firstName = 'Solo se permiten letras y espacios';
+        } else {
+          delete newErrors.firstName;
+        }
+        break;
+
+      case 'lastName':
+        if (!value.trim()) {
+          newErrors.lastName = 'El apellido es requerido';
+        } else if (value.trim().length < 2) {
+          newErrors.lastName = 'El apellido debe tener al menos 2 caracteres';
+        } else if (value.trim().length > 50) {
+          newErrors.lastName = 'El apellido no puede tener más de 50 caracteres';
+        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value)) {
+          newErrors.lastName = 'Solo se permiten letras y espacios';
+        } else {
+          delete newErrors.lastName;
+        }
+        break;
+
+      case 'email':
+        if (!value.trim()) {
+          newErrors.email = 'El email es requerido';
+        } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+          newErrors.email = 'Email inválido. Solo letras, números, puntos, guiones y guiones bajos';
+        } else if (value.length > 100) {
+          newErrors.email = 'El email no puede tener más de 100 caracteres';
+        } else {
+          delete newErrors.email;
+        }
+        break;
+
+      case 'username':
+        if (!value.trim()) {
+          newErrors.username = 'El nombre de usuario es requerido';
+        } else if (value.length < 4) {
+          newErrors.username = 'El usuario debe tener al menos 4 caracteres';
+        } else if (value.length > 20) {
+          newErrors.username = 'El usuario no puede tener más de 20 caracteres';
+        } else if (!/^[a-zA-Z0-9._-]+$/.test(value)) {
+          newErrors.username = 'Solo se permiten letras, números, puntos, guiones y guiones bajos';
+        } else {
+          delete newErrors.username;
+        }
+        break;
+
+      case 'password':
+        if (!value) {
+          newErrors.password = 'La contraseña es requerida';
+        } else if (value.length < 6) {
+          newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+        } else if (value.length > 50) {
+          newErrors.password = 'La contraseña no puede tener más de 50 caracteres';
+        } else {
+          delete newErrors.password;
+        }
+        // Revalidar confirmPassword si existe
+        if (formData.confirmPassword) {
+          if (value !== formData.confirmPassword) {
+            newErrors.confirmPassword = 'Las contraseñas no coinciden';
+          } else {
+            delete newErrors.confirmPassword;
+          }
+        }
+        break;
+
+      case 'confirmPassword':
+        if (!value) {
+          newErrors.confirmPassword = 'Debe confirmar la contraseña';
+        } else if (value !== formData.password) {
+          newErrors.confirmPassword = 'Las contraseñas no coinciden';
+        } else {
+          delete newErrors.confirmPassword;
+        }
+        break;
+
+      case 'role':
+        if (!value) {
+          newErrors.role = 'Debe seleccionar un rol';
+        } else {
+          delete newErrors.role;
+        }
+        break;
+
+      case 'reason':
+        if (!value.trim()) {
+          newErrors.reason = 'Debe indicar el motivo de registro';
+        } else if (value.trim().length < 10) {
+          newErrors.reason = 'El motivo debe tener al menos 10 caracteres';
+        } else if (value.trim().length > 500) {
+          newErrors.reason = 'El motivo no puede exceder 500 caracteres';
+        } else if (!/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s.,;:()\-¿?¡!]+$/.test(value)) {
+          newErrors.reason = 'Solo se permiten letras, números, espacios y signos de puntuación básicos';
+        } else {
+          delete newErrors.reason;
+        }
+        break;
+
+      case 'phone':
+        // Validación estricta: solo formato +51980490696 (sin espacios, guiones ni paréntesis)
+        if (value.trim()) {
+          // Formato: +[código país][número] sin espacios
+          if (!/^\+\d{1,3}\d{7,12}$/.test(value)) {
+            newErrors.phone = 'Formato inválido. Use +[código país][número]. Ej: +51980490696';
+          } else if (value.length > 16) {
+            newErrors.phone = 'El teléfono no puede tener más de 16 caracteres';
+          } else {
+            delete newErrors.phone;
+          }
+        } else {
+          // Si está vacío, eliminar error (campo opcional)
+          delete newErrors.phone;
+        }
+        break;
+
+      case 'department':
+        // Validación para departamento (opcional pero sin caracteres especiales)
+        if (value.trim()) {
+          if (!/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value)) {
+            newErrors.department = 'Solo se permiten letras, números y espacios';
+          } else if (value.trim().length > 50) {
+            newErrors.department = 'El departamento no puede tener más de 50 caracteres';
+          } else {
+            delete newErrors.department;
+          }
+        } else {
+          delete newErrors.department;
+        }
+        break;
+
+      default:
+        break;
     }
+
+    setErrors(newErrors);
   };
 
   if (submitted) {
@@ -208,6 +389,13 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
         {/* Form */}
         <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl shadow-2xl border border-gray-700/50 p-8 animate-slide-up">
+          {/* Error API */}
+          {apiError && (
+            <div className="mb-6 p-4 bg-danger/10 border border-danger/50 rounded-lg animate-shake">
+              <p className="text-danger text-sm font-semibold">{apiError}</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Información Personal */}
             <div>
@@ -226,6 +414,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     value={formData.firstName}
                     onChange={(e) => handleChange('firstName', e.target.value)}
                     placeholder="Juan"
+                    disabled={loading}
                   />
                   {errors.firstName && (
                     <p className="text-danger text-xs mt-1">{errors.firstName}</p>
@@ -241,6 +430,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     value={formData.lastName}
                     onChange={(e) => handleChange('lastName', e.target.value)}
                     placeholder="Pérez"
+                    disabled={loading}
                   />
                   {errors.lastName && (
                     <p className="text-danger text-xs mt-1">{errors.lastName}</p>
@@ -261,6 +451,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                       value={formData.email}
                       onChange={(e) => handleChange('email', e.target.value)}
                       placeholder="juan.perez@email.com"
+                      disabled={loading}
                     />
                   </div>
                   {errors.email && <p className="text-danger text-xs mt-1">{errors.email}</p>}
@@ -276,12 +467,14 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     />
                     <input
                       type="tel"
-                      className="input pl-12"
+                      className={`input pl-12 ${errors.phone ? 'border-danger' : ''}`}
                       value={formData.phone}
                       onChange={(e) => handleChange('phone', e.target.value)}
-                      placeholder="+52 123 456 7890"
+                      placeholder="+51980490696"
+                      disabled={loading}
                     />
                   </div>
+                  {errors.phone && <p className="text-danger text-xs mt-1">{errors.phone}</p>}
                 </div>
               </div>
             </div>
@@ -303,6 +496,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     value={formData.username}
                     onChange={(e) => handleChange('username', e.target.value)}
                     placeholder="juan.perez"
+                    disabled={loading}
                   />
                   {errors.username && (
                     <p className="text-danger text-xs mt-1">{errors.username}</p>
@@ -319,12 +513,16 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     />
                     <input
                       type="text"
-                      className="input pl-12"
+                      className={`input pl-12 ${errors.department ? 'border-danger' : ''}`}
                       value={formData.department}
                       onChange={(e) => handleChange('department', e.target.value)}
                       placeholder="Tecnología"
+                      disabled={loading}
                     />
                   </div>
+                  {errors.department && (
+                    <p className="text-danger text-xs mt-1">{errors.department}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
@@ -341,6 +539,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                       value={formData.password}
                       onChange={(e) => handleChange('password', e.target.value)}
                       placeholder="••••••••"
+                      disabled={loading}
                     />
                   </div>
                   {errors.password && (
@@ -362,6 +561,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                       value={formData.confirmPassword}
                       onChange={(e) => handleChange('confirmPassword', e.target.value)}
                       placeholder="••••••••"
+                      disabled={loading}
                     />
                   </div>
                   {errors.confirmPassword && (
@@ -380,8 +580,10 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                 {roles.map((role) => (
                   <div
                     key={role.value}
-                    onClick={() => handleChange('role', role.value)}
-                    className={`bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border p-4 cursor-pointer transform hover:scale-105 ${
+                    onClick={() => !loading && handleChange('role', role.value)}
+                    className={`bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border p-4 ${
+                      loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer transform hover:scale-105'
+                    } ${
                       formData.role === role.value
                         ? 'ring-2 ring-primary-500 border-primary-500 shadow-primary-500/20'
                         : 'border-gray-700/50 hover:border-primary-500/50'
@@ -425,6 +627,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                 onChange={(e) => handleChange('reason', e.target.value)}
                 placeholder="Explique brevemente por qué necesita acceso al sistema y cómo lo utilizará..."
                 rows={4}
+                disabled={loading}
               />
               {errors.reason && <p className="text-danger text-xs mt-1">{errors.reason}</p>}
             </div>
@@ -434,14 +637,32 @@ export const RegisterPage = ({}: RegisterPageProps) => {
               <button
                 type="button"
                 onClick={handleBackToLogin}
-                className="btn bg-gradient-to-r from-gray-700 to-gray-800 text-gray-300 hover:from-gray-600 hover:to-gray-700 hover:text-white border border-gray-700/50 hover:border-primary-500/50 flex items-center gap-2 transition-all duration-300 hover:scale-105"
+                disabled={loading}
+                className={`btn bg-gradient-to-r from-gray-700 to-gray-800 text-gray-300 hover:from-gray-600 hover:to-gray-700 hover:text-white border border-gray-700/50 hover:border-primary-500/50 flex items-center gap-2 transition-all duration-300 ${
+                  loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                }`}
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
                 Volver al Login
               </button>
-              <button type="submit" className="btn btn-primary flex items-center gap-2">
-                <FontAwesomeIcon icon={faUserPlus} />
-                Enviar Solicitud
+              <button
+                type="submit"
+                disabled={loading}
+                className={`btn btn-primary flex items-center gap-2 ${
+                  loading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                    Registrando...
+                  </>
+                ) : (
+                  <>
+                    <FontAwesomeIcon icon={faUserPlus} />
+                    Enviar Solicitud
+                  </>
+                )}
               </button>
             </div>
           </form>

@@ -159,7 +159,7 @@ export const authService = {
     });
   },
 
-  // Register
+  // Register - Endpoint: POST /auth/register
   async register(data: RegisterData): Promise<LoginResponse> {
     if (USE_MOCK) {
       await new Promise((resolve) => setTimeout(resolve, 800));
@@ -190,7 +190,7 @@ export const authService = {
       });
     }
 
-    // API real
+    // API real según especificación
     return apiRequest<LoginResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),

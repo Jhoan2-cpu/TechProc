@@ -111,10 +111,10 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     setStep('loading');
     setError('');
 
-    // Simular carga de componentes (como en otras páginas)
+    // Tiempo mínimo de 500ms para el preloader
     setTimeout(() => {
       setStep('login');
-    }, 1500);
+    }, 500);
   };
 
   // Volver a selección de perfil
@@ -163,25 +163,19 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       // Notificar al componente padre
       onLogin(response.user);
 
-      // Redirigir al primer módulo disponible según los permisos del usuario
-      const userModules = MODULE_ACCESS[response.user.role];
-      if (userModules.includes('users')) {
-        navigate('/users');
-      } else if (userModules.includes('lms')) {
-        navigate('/lms');
-      } else if (userModules.includes('tickets')) {
-        navigate('/tickets');
-      } else if (userModules.includes('security')) {
-        navigate('/security');
-      } else if (userModules.includes('infrastructure')) {
-        navigate('/infrastructure');
-      } else if (userModules.includes('web')) {
-        navigate('/web');
-      } else if (userModules.includes('analytics')) {
-        navigate('/analytics');
-      } else {
-        navigate('/profile');
-      }
+      // Redirigir a la página principal según el rol del usuario
+      const defaultRoutes: Record<UserRole, string> = {
+        administrador: '/users',        // Admin va a gestión de usuarios
+        gestor_lms: '/lms',            // LMS va a su dashboard
+        soporte_tecnico: '/tickets',   // Soporte va a tickets
+        soporte_seguridad: '/security', // Security va a seguridad
+        soporte_infraestructura: '/infrastructure', // Infra va a infraestructura
+        developer_web: '/web',         // Web dev va a gestión web
+        analista_datos: '/analytics',  // Analista va a analytics
+      };
+
+      const defaultRoute = defaultRoutes[response.user.role] || '/profile';
+      navigate(defaultRoute);
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
     } finally {
