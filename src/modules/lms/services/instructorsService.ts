@@ -1,76 +1,173 @@
-// Instructors Service
-import { mockApiCall } from '../../../services/mockService';
+// Instructors Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
 import type { Instructor } from '../types';
-import { mockInstructors } from './lms.mock';
 
-const USE_MOCK = true; // Cambiar a false cuando la API esté lista
+// Tipos de respuesta según la API
+interface InstructorsListResponse {
+  success: boolean;
+  data: {
+    instructors: ApiInstructor[];
+    pagination: {
+      current_page: number;
+      total_pages: number;
+      total_records: number;
+      per_page: number;
+    };
+  };
+}
+
+interface InstructorCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    instructor_id: number;
+  };
+}
+
+interface InstructorUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+// Tipos de la API
+interface ApiInstructor {
+  id: number;
+  instructor_id: number;
+  user_id: number;
+  name: string;
+  email: string;
+  bio: string;
+  expertise_area: string;
+  status: 'active' | 'inactive';
+  courses_count?: number;
+  created_at: string;
+}
+
+// Parámetros de filtrado
+export interface InstructorsFilterParams {
+  page?: number;
+  limit?: number;
+  status?: 'active' | 'inactive';
+  expertise_area?: string;
+}
+
+// Datos para crear instructor
+export interface CreateInstructorData {
+  user_id: number;
+  bio: string;
+  expertise_area: string;
+  status: 'active' | 'inactive';
+}
+
+// Datos para actualizar instructor
+export interface UpdateInstructorData {
+  bio?: string;
+  expertise_area?: string;
+  status?: 'active' | 'inactive';
+}
+
+// Conversión de ApiInstructor a Instructor
+const mapApiInstructorToInstructor = (apiInstructor: ApiInstructor): Instructor => {
+  // Mapear status de la API al frontend
+  let status: Instructor['status'] = 'activo';
+  if (apiInstructor.status === 'inactive') {
+    status = 'inactivo';
+  }
+
+  return {
+    id: String(apiInstructor.instructor_id || apiInstructor.id),
+    first_name: apiInstructor.name.split(' ')[0] || '',
+    last_name: apiInstructor.name.split(' ').slice(1).join(' ') || '',
+    email: apiInstructor.email,
+    email_verified_at: null,
+    address: '',
+    birth_date: '',
+    gender: 'Otro',
+    country_location: '',
+    profile_photo: null,
+    role: 'instructor',
+    state: apiInstructor.status,
+    last_access_ip: null,
+    last_access: null,
+    created_at: apiInstructor.created_at,
+    updated_at: apiInstructor.created_at,
+    bio: apiInstructor.bio,
+    expertise_area: apiInstructor.expertise_area,
+    status,
+  };
+};
 
 export const instructorsService = {
-  // Obtener todos los instructores
-  async getAll(): Promise<Instructor[]> {
-    if (USE_MOCK) {
-      return mockApiCall(mockInstructors);
-    }
-    return apiRequest<Instructor[]>('/lms/instructors');
+  /**
+   * Listar todos los instructores
+   * Endpoint: GET /lms/instructors
+   */
+  async getAll(filters?: InstructorsFilterParams): Promise<{ instructors: Instructor[]; pagination: any }> {
+    // Construir query parameters
+    const params = new URLSearchParams();
+    if (filters?.page) params.append('page', String(filters.page));
+    if (filters?.limit) params.append('limit', String(filters.limit));
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.expertise_area) params.append('expertise_area', filters.expertise_area);
+
+    const queryString = params.toString();
+    const endpoint = `/lms/instructors${queryString ? `?${queryString}` : ''}`;
+
+    const response = await apiRequest<InstructorsListResponse>(endpoint);
+
+    return {
+      instructors: response.data.instructors.map(mapApiInstructorToInstructor),
+      pagination: response.data.pagination,
+    };
   },
 
-  // Obtener un instructor por ID
+  /**
+   * Obtener detalles de un instructor (simulado, ya que la API no tiene un endpoint específico)
+   * Usamos la lista para obtener uno específico
+   */
   async getById(id: string): Promise<Instructor> {
-    if (USE_MOCK) {
-      const instructor = mockInstructors.find(i => i.id === id);
-      if (!instructor) {
-        throw new Error('Instructor no encontrado');
-      }
-      return mockApiCall(instructor);
+    const response = await this.getAll();
+    const instructor = response.instructors.find(i => i.id === id);
+    if (!instructor) {
+      throw new Error('Instructor no encontrado');
     }
-    return apiRequest<Instructor>(`/lms/instructors/${id}`);
+    return instructor;
   },
 
-  // Crear un nuevo instructor
-  async create(instructor: Omit<Instructor, 'id' | 'created_at' | 'updated_at'>): Promise<Instructor> {
-    if (USE_MOCK) {
-      const newInstructor: Instructor = {
-        ...instructor,
-        id: String(Date.now()),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      return mockApiCall(newInstructor);
-    }
-    return apiRequest<Instructor>('/lms/instructors', {
+  /**
+   * Crear un nuevo instructor
+   * Endpoint: POST /lms/instructors
+   */
+  async create(data: CreateInstructorData): Promise<Instructor> {
+    const response = await apiRequest<InstructorCreateResponse>('/lms/instructors', {
       method: 'POST',
-      body: JSON.stringify(instructor),
+      body: JSON.stringify(data),
     });
+
+    // Obtener el instructor completo
+    return this.getById(String(response.data.instructor_id));
   },
 
-  // Actualizar un instructor
-  async update(id: string, instructor: Partial<Instructor>): Promise<Instructor> {
-    if (USE_MOCK) {
-      const existingInstructor = mockInstructors.find(i => i.id === id);
-      if (!existingInstructor) {
-        throw new Error('Instructor no encontrado');
-      }
-      const updatedInstructor = {
-        ...existingInstructor,
-        ...instructor,
-        updated_at: new Date().toISOString(),
-      };
-      return mockApiCall(updatedInstructor);
-    }
-    return apiRequest<Instructor>(`/lms/instructors/${id}`, {
+  /**
+   * Actualizar un instructor
+   * Endpoint: PUT /lms/instructors/{instructor_id}
+   */
+  async update(id: string, data: UpdateInstructorData): Promise<Instructor> {
+    await apiRequest<InstructorUpdateResponse>(`/lms/instructors/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(instructor),
+      body: JSON.stringify(data),
     });
+
+    // Obtener el instructor actualizado
+    return this.getById(id);
   },
 
-  // Eliminar un instructor
-  async delete(id: string): Promise<void> {
-    if (USE_MOCK) {
-      return mockApiCall(undefined);
-    }
-    return apiRequest<void>(`/lms/instructors/${id}`, {
-      method: 'DELETE',
-    });
+  /**
+   * Eliminar un instructor (no existe en la API según documentación)
+   * Se mantiene por compatibilidad pero lanzará error
+   */
+  async delete(_id: string): Promise<void> {
+    throw new Error('La eliminación de instructores no está soportada por la API');
   },
 };

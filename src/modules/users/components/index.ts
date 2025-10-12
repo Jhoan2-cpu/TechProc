@@ -3,3 +3,8 @@ export { UserStatsCard } from './UserStatsCard';
 export { UserFilters } from './UserFilters';
 export { UserTableRow } from './UserTableRow';
 export { UserFormModal } from './UserFormModal';
+export { PendingRegistrationCard } from './PendingRegistrationCard';
+export { PendingRegistrationStats } from './PendingRegistrationStats';
+export { PendingRegistrationFilters } from './PendingRegistrationFilters';
+export { ApproveRegistrationModal } from './ApproveRegistrationModal';
+export { RejectRegistrationModal } from './RejectRegistrationModal';

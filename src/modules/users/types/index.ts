@@ -3,6 +3,7 @@
 export type UserRole =
   | 'administrador'
   | 'gestor_lms'
+  | 'soporte_tecnico'
   | 'soporte_seguridad'
   | 'soporte_infraestructura'
   | 'developer_web'

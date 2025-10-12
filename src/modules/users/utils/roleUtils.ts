@@ -6,6 +6,7 @@ import {
   faGlobe,
   faChartLine,
   faUserCircle,
+  faHeadset,
 } from '@fortawesome/free-solid-svg-icons';
 import type { UserRole, RoleInfo } from '../types';
 
@@ -20,6 +21,11 @@ export const getRoleInfo = (role: UserRole): RoleInfo => {
       label: 'Gestor LMS',
       icon: faGraduationCap,
       color: 'text-blue-600',
+    },
+    soporte_tecnico: {
+      label: 'Soporte Técnico',
+      icon: faHeadset,
+      color: 'text-yellow-600',
     },
     soporte_seguridad: {
       label: 'Soporte - Seguridad',

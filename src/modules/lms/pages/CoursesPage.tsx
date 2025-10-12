@@ -19,7 +19,7 @@ export const CoursesPage = () => {
       try {
         setLoading(true);
         const data = await coursesService.getAll();
-        setCourses(data);
+        setCourses(data.courses);
       } catch (error) {
         console.error('Error fetching courses:', error);
       } finally {

@@ -37,8 +37,8 @@ export const StudentsPage = () => {
           coursesService.getAll(),
           enrollmentsService.getAll(),
         ]);
-        setStudents(studentsData);
-        setCourses(coursesData);
+        setStudents(studentsData.students);
+        setCourses(coursesData.courses);
         setEnrollments(enrollmentsData);
       } catch (error) {
         console.error('Error fetching data:', error);

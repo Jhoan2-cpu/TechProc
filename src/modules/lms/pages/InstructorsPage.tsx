@@ -30,7 +30,7 @@ export const InstructorsPage = () => {
       try {
         setLoading(true);
         const data = await instructorsService.getAll();
-        setInstructors(data);
+        setInstructors(data.instructors);
       } catch (error) {
         console.error('Error fetching instructors:', error);
       } finally {
