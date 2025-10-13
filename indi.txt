@@ -1,296 +1,109 @@
-
-> Dime donde está la sección donde se pone la ubicación de la pagina, ejemplo "Users/management" donde se renderizaría eso? 
-
-● Voy a buscar dónde se renderiza la ubicación de la página (breadcrumb) en tu aplicación.
-
-● Search(pattern: "Users/management|breadcrumb")
-  ⎿  Found 3 files (ctrl+o to expand)
-
-● Search(pattern: "**/Layout*.{tsx,ts,jsx,js}")
-  ⎿  Found 0 files
-
-● Search(pattern: "**/Breadcrumb*.{tsx,ts,jsx,js}")
-  ⎿  Found 1 file (ctrl+o to expand)
-
-● Read(src/shared/components/Breadcrumb.tsx)
-  ⎿  Read 205 lines
-
-● Read(src/modules/users/pages/UsersPage.tsx)
-  ⎿  Read 214 lines
-
-● La ubicación de la página (breadcrumb tipo "Users/management") se renderiza en dos lugares:
-
-  1. Componente Breadcrumb
-
-  src/shared/components/Breadcrumb.tsx:56-111
-
-  Aquí está el mapeo de rutas con el sistema de breadcrumbs automático. Actualmente, la ruta /users está mapeada como:
-
-  '/users': { label: 'Gestión de Usuarios', icon: faUsers },
-
-  2. Hardcodeado en UsersPage
-
-  src/modules/users/pages/UsersPage.tsx:97
-
-  <h1 className="text-3xl font-heading font-bold text-gradient mb-6">users/management</h1>
-
-  ---
-  ¿Dónde se renderiza realmente?
-
-  El componente Breadcrumb debe estar siendo usado en algún layout principal. Déjame buscar dónde se usa:
-
-● Search(pattern: "Breadcrumb|breadcrumb", type: "tsx", output_mode: "content")
-  ⎿  Found 0 lines
-
-● Read(src/App.tsx)
-  ⎿  Read 462 lines
-
-● ¡Perfecto! Ahora lo tengo claro. La ubicación de la página tipo "Users/management" se renderiza en:
-
-  src/App.tsx:344-346
-
-  {/* Breadcrumb Navigation */}
-  <div className="mb-6 animate-fade-in">
-    <Breadcrumb />
-  </div>
-
-  ---
-  Resumen:
-
-  1. El componente <Breadcrumb /> se renderiza en el Layout principal en src/App.tsx:346
-  2. Este componente lee automáticamente la ruta actual usando useLocation() de React Router
-  3. Busca la ruta en el routeMap del archivo src/shared/components/Breadcrumb.tsx:56-111
-  4. Genera el breadcrumb automáticamente basándose en la estructura:
-    - Inicio → Módulo padre (si existe) → Página actual
-
-  Por ejemplo, para /users:
-  - Muestra: Inicio > Gestión de Usuarios
-
-  Para /security-sessions:
-  - Muestra: Inicio > Seguridad > Sesiones Activas
-
-  El texto "users/management" que aparece en UsersPage.tsx:97 es un título hardcodeado en esa página específica, no es el breadcrumb
-  automático.
-
-> en lms/coursepage.txt haz modular el header con buscador y botón crear. 
-
-● Voy a revisar el archivo lms/coursepage.txt para hacer modular el header con buscador y botón crear.
-
-● Search(pattern: "**/lms/*course*.{tsx,ts,txt}")
-  ⎿  Found 0 files
-
-● Bash(find /mnt/c/Users/anton/Desktop/PRODUCTO\ MIRKO/TechProc -name "*coursepage*" -o -name "*CoursePage*" 2>/dev/null | head -20)
-  ⎿  (No content)
-
-● Search(pattern: "**/lms/**/*.txt")
-  ⎿  Found 0 files
-
-● Search(pattern: "**/*.txt")
-  ⎿  Found 16 files (ctrl+o to expand)
-
-● Search(pattern: "**/lms/**/*")
-  ⎿  Found 28 files (ctrl+o to expand)
-
-● Read(src/modules/lms/pages/CoursesPage.tsx)
-  ⎿  Read 176 lines
-
-● Perfecto, encontré el archivo CoursesPage. Ahora voy a hacer modular el header con buscador y botón crear, siguiendo el patrón que usaste    
-   en el módulo de users.
-
-● Read(src/modules/users/components/UserFilters.tsx)
-  ⎿  Read 102 lines
-
-● Ahora voy a crear el componente CourseFilters siguiendo el mismo patrón:
-
-● Write(src/modules/lms/components/CourseFilters.tsx)
-  ⎿  Wrote 73 lines to src/modules/lms/components/CourseFilters.tsx
-     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-     import { faSearch, faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
-     interface CourseFiltersProps {
-       searchTerm: string;
-       filterStatus: string;
-       onSearchChange: (value: string) => void;
-       onStatusChange: (value: string) => void;
-       onCreateClick: () => void;
-     }
-     … +63 lines (ctrl+o to expand)
-
-● Ahora actualizo el archivo index.ts de componentes para exportar el nuevo componente:
-
-● Read(src/modules/lms/components/index.ts)
-  ⎿  Read 14 lines
-
-● Update(src/modules/lms/components/index.ts)
-  ⎿  Updated src/modules/lms/components/index.ts with 1 addition
-       11    export { CreateStudentModal } from './CreateStudentModal';
-       12    export { EditInstructorModal } from './EditInstructorModal';
-       13    export { CreateInstructorModal } from './CreateInstructorModal';
-       14 +  export { CourseFilters } from './CourseFilters';
-
-● Ahora actualizo CoursesPage para usar el nuevo componente modular:
-
-● Update(src/modules/lms/pages/CoursesPage.tsx)
-  ⎿  Updated src/modules/lms/pages/CoursesPage.tsx with 1 addition and 6 removals
-       1    import { useState, useEffect } from 'react';
-       2 -  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-       3 -  import {
-       4 -    faPlus,
-       5 -    faSearch,
-       6 -  } from '@fortawesome/free-solid-svg-icons';
-       2    import type { Course } from '../types';
-       3 -  import { CreateCourseModal, CourseCard, ViewCourseModal } from '../components';
-       3 +  import { CreateCourseModal, CourseCard, ViewCourseModal, CourseFilters } from '../components';
-       4    import { coursesService } from '../services';
-       5    import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
-       6 
-
-● Update(src/modules/lms/pages/CoursesPage.tsx)
-  ⎿  Updated src/modules/lms/pages/CoursesPage.tsx with 8 additions and 39 removals
-       66      return (
-       67        <div>
-       68          <h1 className="text-3xl font-heading font-bold text-white mb-6">Cursos</h1>
-       69 -        {/* Header con buscador y botón crear */}
-       70 -        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
-       71 -          <div className="flex-1 max-w-md">
-       72 -            <div className="relative">
-       73 -              <FontAwesomeIcon
-       74 -                icon={faSearch}
-       75 -                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-       76 -              />
-       77 -              <input
-       78 -                type="text"
-       79 -                placeholder="Buscar cursos..."
-       80 -                value={searchTerm}
-       81 -                onChange={(e) => setSearchTerm(e.target.value)}
-       82 -                className="input pl-10"
-       83 -              />
-       84 -            </div>
-       85 -          </div>
-       69 
-       70 -          <div className="flex gap-2 flex-wrap">
-       71 -            {/* Filtros */}
-       72 -            <select
-       73 -              value={filterStatus}
-       74 -              onChange={(e) => setFilterStatus(e.target.value)}
-       75 -              className="select"
-       76 -            >
-       77 -              <option value="all">Todos los estados</option>
-       78 -              <option value="publicado">Publicado</option>
-       79 -              <option value="borrador">Borrador</option>
-       80 -              <option value="archivado">Archivado</option>
-       81 -            </select>
-       70 +        {/* Header con filtros */}
-       71 +        <CourseFilters
-       72 +          searchTerm={searchTerm}
-       73 +          filterStatus={filterStatus}
-       74 +          onSearchChange={setSearchTerm}
-       75 +          onStatusChange={setFilterStatus}
-       76 +          onCreateClick={() => setShowCreateModal(true)}
-       77 +        />
-       78 
-       79 -            <button
-       80 -              onClick={() => setShowCreateModal(true)}
-       81 -              className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
-       82 -            >
-       83 -              <FontAwesomeIcon icon={faPlus} />
-       84 -              Crear Curso
-       85 -            </button>
-       86 -          </div>
-       87 -        </div>
-       88 -  
-       79          {/* Grid de cursos */}
-       80          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-       81            {filteredCourses.map((course, index) => (
-
-● Perfecto! He modularizado el header con buscador y botón crear en la página de cursos. Aquí está el resumen de los cambios:
-
-  Cambios realizados:
-
-  1. Creado componente CourseFilters.tsx
-
-  src/modules/lms/components/CourseFilters.tsx
-
-  - Header con diseño consistente usando gradientes y estilos del proyecto
-  - Buscador con ícono
-  - Filtro de estado (Todos, Publicado, Borrador, Archivado)
-  - Botón "Crear Curso" con efectos hover
-
-  2. Actualizado index.ts
-
-  src/modules/lms/components/index.ts:14
-
-  - Exportado el nuevo componente CourseFilters
-
-  3. Refactorizado CoursesPage.tsx
-
-  src/modules/lms/pages/CoursesPage.tsx
-
-  - Eliminados imports innecesarios (FontAwesomeIcon, faPlus, faSearch)
-  - Importado el componente CourseFilters
-  - Reemplazado el header completo (líneas 74-113) con el componente modular
-
-  El componente ahora sigue el mismo patrón que UserFilters, con un diseño consistente y reutilizable.
-
-> StudentsPage.tsx también haz que sea modular. 
-
-● Voy a hacer modular el header de StudentsPage.tsx también.
-
-● Read(src/modules/lms/pages/StudentsPage.tsx)
-  ⎿  Read 294 lines
-
-● Write(src/modules/lms/components/StudentFilters.tsx)
-  ⎿  Wrote 70 lines to src/modules/lms/components/StudentFilters.tsx
-     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-     import { faSearch, faFilter, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-     interface StudentFiltersProps {
-       searchTerm: string;
-       filterState: string;
-       onSearchChange: (value: string) => void;
-       onStateChange: (value: string) => void;
-       onCreateClick: () => void;
-     }
-     … +60 lines (ctrl+o to expand)
-
-● Update(src/modules/lms/components/index.ts)
-  ⎿  Updated src/modules/lms/components/index.ts with 1 addition
-       12    export { EditInstructorModal } from './EditInstructorModal';
-       13    export { CreateInstructorModal } from './CreateInstructorModal';
-       14    export { CourseFilters } from './CourseFilters';
-       15 +  export { StudentFilters } from './StudentFilters';
-
-● Update(src/modules/lms/pages/StudentsPage.tsx)
-  ⎿  Updated src/modules/lms/pages/StudentsPage.tsx with 1 addition and 3 removals
-       1    import { useState, useEffect } from 'react';
-       2    import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-       3    import {
-       4 -    faSearch,
-       5 -    faUserPlus,
-       4      faEye,
-       5      faEdit,
-       6      faTrash,
-     ...
-       14    } from '@fortawesome/free-solid-svg-icons';
-       15    import type { Student } from '../types';
-       16    import { studentsService } from '../services';
-       17 -  import { EditStudentModal, ViewStudentModal, CreateStudentModal } from '../components';
-       17 +  import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters } from '../components';
-       18    import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
-       19 
-       20    export const StudentsPage = () => {
-
-● Update(src/modules/lms/pages/StudentsPage.tsx)
-  ⎿  Updated src/modules/lms/pages/StudentsPage.tsx with 8 additions and 37 removals
-        85      return (
-        86        <div>
-        87          <h1 className="text-3xl font-heading font-bold text-white mb-6">lms/students</h1>
-        88 -        {/* Header */}
-        89 -        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center mb-6">
-        90 -          <div className="flex-1 max-w-md">
-        91 -            <div className="relative">
-        92 -              <FontAwesomeIcon
-        93 -                icon={faSearch}
-        94 -                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        95 -              />
-        96 -              <input
-        97 -                type="text"
-        98 -                placeholder="Buscar estudiantes..."
+react-dom_client.js?v=2c461c13:20103 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+ProfilePage.tsx:41 Uncaught TypeError: Cannot read properties of undefined (reading 'label')
+    at ProfilePage (ProfilePage.tsx:41:39)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=2c461c13:18509:20)
+    at renderWithHooks (react-dom_client.js?v=2c461c13:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=2c461c13:7475:21)
+    at beginWork (react-dom_client.js?v=2c461c13:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=2c461c13:997:72)
+    at performUnitOfWork (react-dom_client.js?v=2c461c13:12561:98)
+    at workLoopSync (react-dom_client.js?v=2c461c13:12424:43)
+    at renderRootSync (react-dom_client.js?v=2c461c13:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=2c461c13:11827:37)
+ProfilePage @ ProfilePage.tsx:41
+react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
+renderWithHooks @ react-dom_client.js?v=2c461c13:5654
+updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
+beginWork @ react-dom_client.js?v=2c461c13:8525
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
+performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
+workLoopSync @ react-dom_client.js?v=2c461c13:12424
+renderRootSync @ react-dom_client.js?v=2c461c13:12408
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11827
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
+performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
+<ProfilePage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
+Layout @ MainLayout.tsx:200
+react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
+renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
+renderWithHooks @ react-dom_client.js?v=2c461c13:5665
+updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
+beginWork @ react-dom_client.js?v=2c461c13:8525
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
+performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
+workLoopSync @ react-dom_client.js?v=2c461c13:12424
+renderRootSync @ react-dom_client.js?v=2c461c13:12408
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11827
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
+performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
+<Layout>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
+App @ App.tsx:89
+react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
+renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
+renderWithHooks @ react-dom_client.js?v=2c461c13:5665
+updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
+beginWork @ react-dom_client.js?v=2c461c13:8525
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
+performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
+workLoopSync @ react-dom_client.js?v=2c461c13:12424
+renderRootSync @ react-dom_client.js?v=2c461c13:12408
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
+performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
+(anonymous) @ main.tsx:8
+MainLayout.tsx:200 An error occurred in the <ProfilePage> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=2c461c13:6966
+logUncaughtError @ react-dom_client.js?v=2c461c13:7020
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
+lane.callback @ react-dom_client.js?v=2c461c13:7048
+callCallback @ react-dom_client.js?v=2c461c13:5491
+commitCallbacks @ react-dom_client.js?v=2c461c13:5503
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:999
+commitLayoutEffectOnFiber @ react-dom_client.js?v=2c461c13:9976
+flushLayoutEffects @ react-dom_client.js?v=2c461c13:12924
+commitRoot @ react-dom_client.js?v=2c461c13:12803
+commitRootWhenReady @ react-dom_client.js?v=2c461c13:12016
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11950
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
+performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
+<ProfilePage>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
+Layout @ MainLayout.tsx:200
+react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
+renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
+renderWithHooks @ react-dom_client.js?v=2c461c13:5665
+updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
+beginWork @ react-dom_client.js?v=2c461c13:8525
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
+performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
+workLoopSync @ react-dom_client.js?v=2c461c13:12424
+renderRootSync @ react-dom_client.js?v=2c461c13:12408
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11827
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
+performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
+<Layout>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
+App @ App.tsx:89
+react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
+renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
+renderWithHooks @ react-dom_client.js?v=2c461c13:5665
+updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
+beginWork @ react-dom_client.js?v=2c461c13:8525
+runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
+performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
+workLoopSync @ react-dom_client.js?v=2c461c13:12424
+renderRootSync @ react-dom_client.js?v=2c461c13:12408
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
+performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
+<App>
+exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
+(anonymous) @ main.tsx:8

@@ -12,11 +12,11 @@ import Layout from './layouts/MainLayout';
 // Protected Route Component
 function ProtectedRoute({ children, currentUser, requiredModule }: { children: React.ReactNode; currentUser: User | null; requiredModule?: string }) {
   if (!currentUser) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/website" replace />;
   }
 
   if (requiredModule && !hasAccess(currentUser, requiredModule)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/profile" replace />;
   }
 
   return <>{children}</>;

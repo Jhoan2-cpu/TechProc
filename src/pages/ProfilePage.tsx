@@ -34,11 +34,17 @@ const roleConfig: Record<UserRole, { color: string; icon: any; label: string }> 
 
 export const ProfilePage = ({ user }: ProfilePageProps) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  // Validación defensiva para el rol
+  const config = user?.role && roleConfig[user.role]
+    ? roleConfig[user.role]
+    : { color: 'from-gray-500 to-gray-700', icon: faUser, label: 'Sin Rol' };
+
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.username + '@techproc.com',
+    name: user?.name || 'Usuario',
+    email: (user?.username || 'usuario') + '@techproc.com',
     phone: '+51 999 999 999',
-    department: roleConfig[user.role].label,
+    department: config.label,
     joinDate: '2024-01-15',
   });
 
@@ -49,16 +55,14 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
   const handleCancel = () => {
     setFormData({
-      name: user.name,
-      email: user.username + '@techproc.com',
+      name: user?.name || 'Usuario',
+      email: (user?.username || 'usuario') + '@techproc.com',
       phone: '+51 999 999 999',
-      department: roleConfig[user.role].label,
+      department: config.label,
       joinDate: '2024-01-15',
     });
     setIsEditing(false);
   };
-
-  const config = roleConfig[user.role];
 
   return (
     <div className="animate-fade-in">
