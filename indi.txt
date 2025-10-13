@@ -1,30 +1,25 @@
-react-dom_client.js?v=2c461c13:20103 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
-ProfilePage.tsx:41 Uncaught TypeError: Cannot read properties of undefined (reading 'label')
-    at ProfilePage (ProfilePage.tsx:41:39)
-    at Object.react_stack_bottom_frame (react-dom_client.js?v=2c461c13:18509:20)
-    at renderWithHooks (react-dom_client.js?v=2c461c13:5654:24)
-    at updateFunctionComponent (react-dom_client.js?v=2c461c13:7475:21)
-    at beginWork (react-dom_client.js?v=2c461c13:8525:20)
-    at runWithFiberInDEV (react-dom_client.js?v=2c461c13:997:72)
-    at performUnitOfWork (react-dom_client.js?v=2c461c13:12561:98)
-    at workLoopSync (react-dom_client.js?v=2c461c13:12424:43)
-    at renderRootSync (react-dom_client.js?v=2c461c13:12408:13)
-    at performWorkOnRoot (react-dom_client.js?v=2c461c13:11827:37)
-ProfilePage @ ProfilePage.tsx:41
+MainLayout.tsx:197 You rendered descendant <Routes> (or called `useRoutes()`) at "/" (under <Route path="/">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
+
+Please change the parent <Route path="/"> to <Route path="*">.
+warning @ react-router-dom.js?v=2c461c13:532
+warningOnce @ react-router-dom.js?v=2c461c13:5928
+useRoutesImpl @ react-router-dom.js?v=2c461c13:5450
+useRoutes @ react-router-dom.js?v=2c461c13:5432
+Routes @ react-router-dom.js?v=2c461c13:6482
 react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
 renderWithHooks @ react-dom_client.js?v=2c461c13:5654
 updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
 beginWork @ react-dom_client.js?v=2c461c13:8525
 runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
 performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopSync @ react-dom_client.js?v=2c461c13:12424
-renderRootSync @ react-dom_client.js?v=2c461c13:12408
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11827
+workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
+renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
 performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
 performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<ProfilePage>
+<Routes>
 exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-Layout @ MainLayout.tsx:200
+Layout @ MainLayout.tsx:197
 react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
 renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
 renderWithHooks @ react-dom_client.js?v=2c461c13:5665
@@ -32,14 +27,14 @@ updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
 beginWork @ react-dom_client.js?v=2c461c13:8525
 runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
 performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopSync @ react-dom_client.js?v=2c461c13:12424
-renderRootSync @ react-dom_client.js?v=2c461c13:12408
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11827
+workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
+renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
 performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
 performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
 <Layout>
 exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-App @ App.tsx:89
+App @ App.tsx:262
 react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
 renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
 renderWithHooks @ react-dom_client.js?v=2c461c13:5665
@@ -55,28 +50,28 @@ performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
 <App>
 exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
 (anonymous) @ main.tsx:8
-MainLayout.tsx:200 An error occurred in the <ProfilePage> component.
+MainLayout.tsx:197 You rendered descendant <Routes> (or called `useRoutes()`) at "/users" (under <Route path="/users">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
 
-Consider adding an error boundary to your tree to customize error handling behavior.
-Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
-
-defaultOnUncaughtError @ react-dom_client.js?v=2c461c13:6966
-logUncaughtError @ react-dom_client.js?v=2c461c13:7020
+Please change the parent <Route path="/users"> to <Route path="/users/*">.
+warning @ react-router-dom.js?v=2c461c13:532
+warningOnce @ react-router-dom.js?v=2c461c13:5928
+useRoutesImpl @ react-router-dom.js?v=2c461c13:5450
+useRoutes @ react-router-dom.js?v=2c461c13:5432
+Routes @ react-router-dom.js?v=2c461c13:6482
+react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
+renderWithHooks @ react-dom_client.js?v=2c461c13:5654
+updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
+beginWork @ react-dom_client.js?v=2c461c13:8525
 runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-lane.callback @ react-dom_client.js?v=2c461c13:7048
-callCallback @ react-dom_client.js?v=2c461c13:5491
-commitCallbacks @ react-dom_client.js?v=2c461c13:5503
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:999
-commitLayoutEffectOnFiber @ react-dom_client.js?v=2c461c13:9976
-flushLayoutEffects @ react-dom_client.js?v=2c461c13:12924
-commitRoot @ react-dom_client.js?v=2c461c13:12803
-commitRootWhenReady @ react-dom_client.js?v=2c461c13:12016
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11950
+performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
+workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
+renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
 performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
 performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<ProfilePage>
+<Routes>
 exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-Layout @ MainLayout.tsx:200
+Layout @ MainLayout.tsx:197
 react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
 renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
 renderWithHooks @ react-dom_client.js?v=2c461c13:5665
@@ -84,14 +79,14 @@ updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
 beginWork @ react-dom_client.js?v=2c461c13:8525
 runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
 performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopSync @ react-dom_client.js?v=2c461c13:12424
-renderRootSync @ react-dom_client.js?v=2c461c13:12408
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11827
+workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
+renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
+performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
 performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
 performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
 <Layout>
 exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-App @ App.tsx:89
+App @ App.tsx:262
 react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
 renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
 renderWithHooks @ react-dom_client.js?v=2c461c13:5665
@@ -107,3 +102,6 @@ performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
 <App>
 exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
 (anonymous) @ main.tsx:8
+MainLayout.tsx:197 You rendered descendant <Routes> (or called `useRoutes()`) at "/pending-registrations" (under <Route path="/pending-registrations">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
+
+Please change the parent <Route path="/pending-registrations"> to <Route path="/pending-registrations/*">.

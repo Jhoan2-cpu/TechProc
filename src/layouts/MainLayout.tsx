@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { ProfilePage } from "../pages/ProfilePage";
+import { NotFoundPage } from "../pages/NotFoundPage";
 import { LMSMainPage } from "../modules/lms/pages/LMSMainPage";
 import { TicketsMainPage } from "../modules/tickets/pages/TicketsMainPage";
 import {
@@ -50,29 +51,6 @@ export default function Layout({
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
-
-  // Redirigir automáticamente al primer módulo disponible si estamos en la raíz
-  React.useEffect(() => {
-    if (location.pathname === "/") {
-      if (hasAccess(currentUser, "users")) {
-        navigate("/users", { replace: true });
-      } else if (hasAccess(currentUser, "lms")) {
-        navigate("/lms-dashboard", { replace: true });
-      } else if (hasAccess(currentUser, "support")) {
-        navigate("/tickets-dashboard", { replace: true });
-      } else if (hasAccess(currentUser, "security")) {
-        navigate("/security-dashboard", { replace: true });
-      } else if (hasAccess(currentUser, "infrastructure")) {
-        navigate("/infrastructure-dashboard", { replace: true });
-      } else if (hasAccess(currentUser, "web")) {
-        navigate("/web-dashboard", { replace: true });
-      } else if (hasAccess(currentUser, "analytics")) {
-        navigate("/analytics-dashboard", { replace: true });
-      } else {
-        navigate("/profile", { replace: true });
-      }
-    }
-  }, [location.pathname, currentUser, navigate]);
 
   const handleModuleChange = (module: string) => {
     navigate(`/${module}`);
@@ -195,15 +173,21 @@ export default function Layout({
             <Breadcrumb />
           </div>
           <Routes>
-            <Route
-              path="/profile"
-              element={<ProfilePage user={currentUser} />}
-            />
+            {/* Root redirect */}
+            <Route path="/" element={<Navigate to={
+              hasAccess(currentUser, "users") ? "/users" :
+              hasAccess(currentUser, "lms") ? "/lms-dashboard" :
+              hasAccess(currentUser, "support") ? "/tickets-dashboard" :
+              hasAccess(currentUser, "security") ? "/security-dashboard" :
+              hasAccess(currentUser, "infrastructure") ? "/infrastructure-dashboard" :
+              hasAccess(currentUser, "web") ? "/web-dashboard" :
+              hasAccess(currentUser, "analytics") ? "/analytics-dashboard" :
+              "/profile"
+            } replace />} />
+
+            <Route path="/profile" element={<ProfilePage user={currentUser} />} />
             <Route path="/users" element={<UsersPage />} />
-            <Route
-              path="/pending-registrations"
-              element={<PendingRegistrationsPage />}
-            />
+            <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />
             <Route path="/lms-dashboard" element={<LMSMainPage />} />
             <Route path="/lms-courses" element={<LMSMainPage />} />
             <Route path="/lms-students" element={<LMSMainPage />} />
@@ -212,59 +196,32 @@ export default function Layout({
             <Route path="/tickets-my-tickets" element={<TicketsMainPage />} />
             <Route path="/tickets-available" element={<TicketsMainPage />} />
             <Route path="/tickets-escalations" element={<TicketsMainPage />} />
-            <Route
-              path="/security-dashboard"
-              element={<SecurityDashboardPage />}
-            />
+            <Route path="/security-dashboard" element={<SecurityDashboardPage />} />
             <Route path="/security-sessions" element={<SessionsPage />} />
             <Route path="/security-blocked-ips" element={<BlockedIPsPage />} />
-            <Route
-              path="/security-blocked-users"
-              element={<BlockedUsersPage />}
-            />
+            <Route path="/security-blocked-users" element={<BlockedUsersPage />} />
             <Route path="/security-incidents" element={<IncidentsPage />} />
             <Route path="/security-backups" element={<BackupsPage />} />
-            <Route
-              path="/infrastructure-dashboard"
-              element={<InfrastructureMainPage />}
-            />
-            <Route
-              path="/infrastructure-servers"
-              element={<InfrastructureMainPage />}
-            />
-            <Route
-              path="/infrastructure-licenses"
-              element={<InfrastructureMainPage />}
-            />
-            <Route
-              path="/infrastructure-storage"
-              element={<InfrastructureMainPage />}
-            />
-            <Route
-              path="/infrastructure-software"
-              element={<InfrastructureMainPage />}
-            />
+            <Route path="/infrastructure-dashboard" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-servers" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-licenses" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-storage" element={<InfrastructureMainPage />} />
+            <Route path="/infrastructure-software" element={<InfrastructureMainPage />} />
             <Route path="/web-dashboard" element={<WebPage />} />
             <Route path="/web-news" element={<WebPage />} />
             <Route path="/web-alerts" element={<WebPage />} />
             <Route path="/web-announcements" element={<WebPage />} />
             <Route path="/web-contacts" element={<WebPage />} />
             <Route path="/web-chatbot" element={<WebPage />} />
-            <Route
-              path="/analytics-dashboard"
-              element={<AnalyticsMainPage />}
-            />
-            <Route
-              path="/analytics-attendance"
-              element={<AnalyticsMainPage />}
-            />
+            <Route path="/analytics-dashboard" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-attendance" element={<AnalyticsMainPage />} />
             <Route path="/analytics-progress" element={<AnalyticsMainPage />} />
-            <Route
-              path="/analytics-performance"
-              element={<AnalyticsMainPage />}
-            />
+            <Route path="/analytics-performance" element={<AnalyticsMainPage />} />
             <Route path="/analytics-dropout" element={<AnalyticsMainPage />} />
             <Route path="/analytics-reports" element={<AnalyticsMainPage />} />
+
+            {/* 404 - Not Found */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </main>
