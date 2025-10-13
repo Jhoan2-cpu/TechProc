@@ -4,12 +4,7 @@ import {
   faCheckCircle,
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
-
-interface PendingRegistrationStatsProps {
-  pendingCount: number;
-  approvedCount: number;
-  rejectedCount: number;
-}
+import type { PendingRegistrationStatsProps } from '../types';
 
 export const PendingRegistrationStats = ({
   pendingCount,

@@ -1,16 +1,8 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { User, UserRole } from '../types';
+import type { User, UserRole, UserFormModalProps, CreateUserData, UpdateUserData } from '../types';
 import { usersService } from '../services';
-import type { CreateUserData, UpdateUserData } from '../services';
-
-interface UserFormModalProps {
-  title: string;
-  user?: User;
-  onClose: () => void;
-  onSave: (user: User) => void;
-}
 
 export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => {
   const isEditing = !!user;

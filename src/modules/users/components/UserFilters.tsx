@@ -1,15 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
-
-interface UserFiltersProps {
-  searchTerm: string;
-  filterRole: string;
-  filterStatus: string;
-  onSearchChange: (value: string) => void;
-  onRoleChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-  onCreateClick: () => void;
-}
+import type { UserFiltersProps } from '../types';
 
 export const UserFilters = ({
   searchTerm,

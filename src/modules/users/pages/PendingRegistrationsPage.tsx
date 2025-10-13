@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserClock } from '@fortawesome/free-solid-svg-icons';
 import { registrationRequestsService } from '../services';
-import type { RegistrationRequest } from '../services';
+import type { RegistrationRequest } from '../types';
 import {
   PendingRegistrationCard,
   PendingRegistrationStats,

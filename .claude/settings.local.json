@@ -1,27 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(tree:*)",
-      "Bash(mkdir:*)",
-      "Bash(cat:*)",
-      "Bash(pkill:*)",
-      "Bash(npm install:*)",
-      "Bash(npx tailwindcss init:*)",
-      "Bash(npm uninstall:*)",
-      "Bash(npm run build:*)",
-      "Bash(grep:*)",
-      "Read(//mnt/c/Users/anton/Desktop/**)",
-      "Bash(for module in analytics lms tickets security infrastructure web users)",
-      "Bash(do echo \"=== $module ===\")",
-      "Bash(find:*)",
-      "Bash(done)",
-      "Bash(do echo \"=== Módulo: $module ===\")",
-      "Bash(ls:*)",
-      "Bash(for module in analytics lms tickets security infrastructure users)",
-      "Bash(cd:*)",
-      "Bash(for file in *.ts)",
-      "Bash(do echo \"=== $file ===\")",
-      "Bash(head:*)"
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

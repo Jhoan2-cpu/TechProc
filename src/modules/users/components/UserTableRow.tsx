@@ -1,13 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
-import type { User, RoleInfo } from '../types';
-
-interface UserTableRowProps {
-  user: User;
-  roleInfo: RoleInfo;
-  onEdit: (user: User) => void;
-  onToggleStatus: (userId: string) => void;
-}
+import type { User, RoleInfo, UserTableRowProps } from '../types';
 
 export const UserTableRow = ({
   user,

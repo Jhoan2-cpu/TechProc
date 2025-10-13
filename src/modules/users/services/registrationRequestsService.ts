@@ -1,63 +1,15 @@
 // Registration Requests Service - Módulo Administrador según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-
-// Tipos de respuesta según la API
-interface RegistrationRequestsListResponse {
-  success: boolean;
-  data: ApiRegistrationRequest[];
-}
-
-interface ApproveRequestResponse {
-  success: boolean;
-  message: string;
-}
-
-interface RejectRequestResponse {
-  success: boolean;
-  message: string;
-}
-
-// Tipo de solicitud de registro desde la API
-interface ApiRegistrationRequest {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number?: string;
-  role: string;
-  reason?: string;
-  created_at: string;
-  status: 'pending' | 'approved' | 'rejected';
-}
-
-// Tipo de solicitud de registro para el frontend
-export interface RegistrationRequest {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number?: string;
-  role: string;
-  reason?: string;
-  created_at: string;
-  status: 'pending' | 'approved' | 'rejected';
-}
-
-// Parámetros de filtrado
-export interface RegistrationRequestsFilterParams {
-  status?: 'pending' | 'approved' | 'rejected';
-}
-
-// Datos para aprobar solicitud
-export interface ApproveRequestData {
-  role: string;
-  status: string;
-}
-
-// Datos para rechazar solicitud
-export interface RejectRequestData {
-  rejection_reason: string;
-}
+import type {
+  RegistrationRequestsListResponse,
+  ApproveRequestResponse,
+  RejectRequestResponse,
+  ApiRegistrationRequest,
+  RegistrationRequest,
+  RegistrationRequestsFilterParams,
+  ApproveRequestData,
+  RejectRequestData,
+} from '../types';
 
 // Conversión de ApiRegistrationRequest a RegistrationRequest
 const mapApiRequestToRequest = (apiRequest: ApiRegistrationRequest): RegistrationRequest => {

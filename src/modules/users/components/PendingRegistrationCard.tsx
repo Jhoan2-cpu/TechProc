@@ -8,16 +8,8 @@ import {
   faBuilding,
   faCalendar,
 } from '@fortawesome/free-solid-svg-icons';
-import type { RegistrationRequest } from '../services';
+import type { RegistrationRequest, PendingRegistrationCardProps } from '../types';
 import { getRoleInfo } from '../utils/roleUtils';
-
-interface PendingRegistrationCardProps {
-  registration: RegistrationRequest;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
-  onApprove: () => void;
-  onReject: () => void;
-}
 
 export const PendingRegistrationCard = ({
   registration,

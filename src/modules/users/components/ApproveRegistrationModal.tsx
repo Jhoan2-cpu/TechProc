@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import type { RegistrationRequest } from '../services';
-
-interface ApproveRegistrationModalProps {
-  isOpen: boolean;
-  registration: RegistrationRequest | null;
-  onClose: () => void;
-  onConfirm: (role: string) => void;
-}
+import type { RegistrationRequest, ApproveRegistrationModalProps } from '../types';
 
 export const ApproveRegistrationModal = ({
   isOpen,

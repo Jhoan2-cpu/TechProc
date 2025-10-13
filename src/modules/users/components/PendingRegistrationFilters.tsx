@@ -1,10 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-
-interface PendingRegistrationFiltersProps {
-  filterStatus: 'all' | 'pending' | 'approved' | 'rejected';
-  onStatusChange: (status: 'all' | 'pending' | 'approved' | 'rejected') => void;
-}
+import type { PendingRegistrationFiltersProps } from '../types';
 
 export const PendingRegistrationFilters = ({
   filterStatus,

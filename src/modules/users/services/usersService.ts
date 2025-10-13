@@ -1,98 +1,17 @@
 // Users Service - Módulo Administrador según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { User } from '../types';
-
-// Tipos de respuesta según la API
-interface UsersListResponse {
-  success: boolean;
-  data: {
-    users: ApiUser[];
-    pagination: {
-      current_page: number;
-      total_pages: number;
-      total_records: number;
-      per_page: number;
-    };
-  };
-}
-
-interface UserDetailResponse {
-  success: boolean;
-  data: ApiUser;
-}
-
-interface UserCreateResponse {
-  success: boolean;
-  message: string;
-  data: {
-    id: number;
-    email: string;
-  };
-}
-
-interface UserUpdateResponse {
-  success: boolean;
-  message: string;
-}
-
-interface UserDeleteResponse {
-  success: boolean;
-  message: string;
-}
-
-// Tipos de la API (diferentes a los tipos del frontend)
-interface ApiUser {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number?: string;
-  address?: string;
-  birth_date?: string;
-  gender?: string;
-  country?: string;
-  role: string;
-  status: string;
-  profile_photo?: string;
-  last_access?: string;
-  last_access_ip?: string;
-  created_at: string;
-  updated_at?: string;
-}
-
-// Parámetros de filtrado para listar usuarios
-export interface UsersFilterParams {
-  page?: number;
-  limit?: number;
-  role?: string;
-  status?: string;
-  search?: string;
-}
-
-// Datos para crear usuario
-export interface CreateUserData {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  phone_number?: string;
-  address?: string;
-  birth_date?: string;
-  gender?: string;
-  country?: string;
-  role: string;
-  status: string;
-}
-
-// Datos para actualizar usuario
-export interface UpdateUserData {
-  first_name?: string;
-  last_name?: string;
-  phone_number?: string;
-  address?: string;
-  status?: string;
-  role?: string;
-}
+import type {
+  User,
+  UsersListResponse,
+  UserDetailResponse,
+  UserCreateResponse,
+  UserUpdateResponse,
+  UserDeleteResponse,
+  ApiUser,
+  UsersFilterParams,
+  CreateUserData,
+  UpdateUserData,
+} from '../types';
 
 // Conversión de ApiUser a User (frontend)
 const mapApiUserToUser = (apiUser: ApiUser): User => {
