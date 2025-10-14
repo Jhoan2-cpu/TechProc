@@ -15,6 +15,7 @@ import {
   faChartLine,
   faArrowLeft,
   faTicket,
+  type IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import type { User, UserRole } from '../shared/types/auth';
 import { authService } from '../services/authService';
@@ -29,7 +30,7 @@ type UserCardType = {
   label: string;
   description: string;
   color: string;
-  icon: any;
+  icon: IconDefinition;
   suggestedEmail: string;
 };
 
@@ -162,8 +163,12 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       onLogin(response.user);
       // Recargar la página para asegurar que todos los módulos se inicialicen correctamente
       window.location.href = '/profile';
-    } catch (err: any) {
-      setError(err.message || 'Error al iniciar sesión');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Error al iniciar sesión');
+      } else {
+        setError('Error al iniciar sesión');
+      }
     } finally {
       setLoading(false);
     }

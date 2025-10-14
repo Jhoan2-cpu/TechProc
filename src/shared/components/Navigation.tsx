@@ -84,7 +84,7 @@ export const SidebarNavigation = ({
               </button>
 
               {/* Submódulos */}
-              {hasSubmodules && isExpanded && (
+              {hasSubmodules && isExpanded && module.submodules && (
                 <div className="ml-4 mt-1 space-y-1">
                   {module.submodules.map((submodule) => {
                     const isSubActive = currentPath === submodule.id;
