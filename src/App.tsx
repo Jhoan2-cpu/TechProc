@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, } from 'react-router-dom';
-import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
-import { WebsitePage } from './pages/website';
-import { Preloader } from './shared/components/Preloader';
-import type { User } from './shared/types/auth';
-import { hasAccess } from './shared/utils/auth';
-import { authService } from './services/authService';
-import Layout from './layouts/MainLayout';
-import { NotFoundPage } from './pages/NotFoundPage';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { WebsitePage } from "./pages/website";
+import { Preloader } from "./shared/components/Preloader";
+import type { User } from "./shared/types/auth";
+import { hasAccess } from "./shared/utils/auth";
+import { authService } from "./services/authService";
+import Layout from "./layouts/MainLayout";
 
 // Protected Route Component
-function ProtectedRoute({ children, currentUser, requiredModule }: { children: React.ReactNode; currentUser: User | null; requiredModule?: string }) {
+function ProtectedRoute({
+  children,
+  currentUser,
+  requiredModule,
+}: {
+  children: React.ReactNode;
+  currentUser: User | null;
+  requiredModule?: string;
+}) {
   if (!currentUser) {
     return <Navigate to="/website" replace />;
   }
@@ -30,28 +37,22 @@ function App() {
 
   useEffect(() => {
     // Verificar si hay una sesión guardada
-    const checkSession = async () => {
-      const startTime = Date.now();
-
-      try {
-        if (authService.isAuthenticated()) {
-          const user = authService.getCurrentUser();
-          if (user) {
-            setCurrentUser(user);
-          }
+    const checkSession = () => {
+      const token = sessionStorage.getItem("auth_token");
+      const userStr = sessionStorage.getItem("user");
+      console.log("HAY ALGO EN USERSTR",userStr);
+      console.log("HAY ALGO EN TOKEN",token);
+      if (token && userStr) {
+        console.log("HELLOOOO");
+        try {
+          const user: User = JSON.parse(userStr);
+          setCurrentUser(user);
+          console.log("Sesión restaurada para el usuario:", user);
+        } catch {
+          authService.clearSession();
         }
-      } catch (error) {
-        console.error('Error al verificar sesión:', error);
-        authService.clearSession();
-      } finally {
-        // Asegurar un tiempo mínimo de 500ms para el preloader
-        const elapsedTime = Date.now() - startTime;
-        const remainingTime = Math.max(500 - elapsedTime, 0);
-
-        setTimeout(() => {
-          setIsLoading(false);
-        }, remainingTime);
       }
+      setIsLoading(false);
     };
 
     checkSession();
@@ -78,19 +79,36 @@ function App() {
         <Route path="/website" element={<WebsitePage />} />
 
         {/* Auth Routes */}
-        <Route path="/login" element={
-          currentUser ? <Navigate to="/" replace /> : <LoginPage onLogin={handleLogin} />
-        } />
-        <Route path="/register" element={
-          currentUser ? <Navigate to="/" replace /> : <RegisterPage onBackToLogin={() => {}} />
-        } />
+        <Route
+          path="/login"
+          element={
+            currentUser ? (
+              <Navigate to="/" replace />
+            ) : (
+              <LoginPage onLogin={handleLogin} />
+            )
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            currentUser ? (
+              <Navigate to="/" replace />
+            ) : (
+              <RegisterPage onBackToLogin={() => {}} />
+            )
+          }
+        />
 
         {/* Protected Routes - All app routes go through Layout */}
-        <Route path="*" element={
-          <ProtectedRoute currentUser={currentUser}>
-            <Layout currentUser={currentUser!} onLogout={handleLogout} />
-          </ProtectedRoute>
-        } />
+        <Route
+          path="*"
+          element={
+            <ProtectedRoute currentUser={currentUser}>
+              <Layout currentUser={currentUser!} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

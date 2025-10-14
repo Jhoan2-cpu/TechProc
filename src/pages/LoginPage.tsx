@@ -156,7 +156,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       setLoading(true);
       const response = await authService.login({ email, password });
       // Guardar sesión
-      authService.saveSession(response.token, response.refreshToken);
+      authService.saveSession(response.user, response.token, response.refreshToken);
 
       // Notificar al componente padre
       onLogin(response.user);

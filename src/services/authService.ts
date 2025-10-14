@@ -111,10 +111,11 @@ export const authService = {
   // Login
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
     // API real
-    return apiRequest<LoginResponse>('/auth/login', {
+    const response = await apiRequest<LoginResponse>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     });
+    return response;
   },
 
   // Register - Endpoint: POST /auth/register
@@ -153,35 +154,46 @@ export const authService = {
 
   // Obtener usuario actual
   getCurrentUser(): User | null {
-    const token = localStorage.getItem('auth_token');
+    const token = sessionStorage.getItem('auth_token');
     if (!token) return null;
-    console.log('Token encontrado:', token);
+
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const user = MOCK_CREDENTIALS.find((u) => u.user.id === payload.userId);
-      return user ? user.user : null;
+      const payload = JSON.parse(atob(token.split('.')[1]));// Decodificar payload del JWT
+      console.log('Payload del token:', payload);
+      const user: User = {
+        id: payload.userId,
+        username: payload.username,
+        email: payload.email,
+        role: payload.role as User['role'],
+        name: `${payload.first_name} ${payload.last_name}`,
+        first_name: payload.first_name as string,
+        last_name: payload.last_name as string,
+      }
+      console.log('Usuario obtenido del token:', user);
+      return user ? user : null;
     } catch {
       return null;
     }
   },
 
   // Guardar sesión
-  saveSession(token: string, refreshToken?: string): void {
-    localStorage.setItem('auth_token', token);
+  saveSession(user: User, token: string, refreshToken?: string): void {
+    sessionStorage.setItem('auth_token', token);
+    sessionStorage.setItem('user', JSON.stringify(user));
     if (refreshToken) {
-      localStorage.setItem('refresh_token', refreshToken);
+      sessionStorage.setItem('refresh_token', refreshToken);
     }
   },
 
   // Limpiar sesión
   clearSession(): void {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('refresh_token');
   },
 
   // Verificar si está autenticado
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('auth_token');
+    const token = sessionStorage.getItem('auth_token');
     if (!token) return false;
 
     try {
@@ -195,6 +207,6 @@ export const authService = {
 
   // Obtener token
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return sessionStorage.getItem('auth_token');
   },
 };
