@@ -3,12 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate, } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { WebsitePage } from './pages/website';
-import { NotFoundPage } from './pages/NotFoundPage';
 import { Preloader } from './shared/components/Preloader';
 import type { User } from './shared/types/auth';
 import { hasAccess } from './shared/utils/auth';
 import { authService } from './services/authService';
 import Layout from './layouts/MainLayout';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 // Protected Route Component
 function ProtectedRoute({ children, currentUser, requiredModule }: { children: React.ReactNode; currentUser: User | null; requiredModule?: string }) {
@@ -74,6 +74,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public Website Route */}
+
         <Route path="/website" element={<WebsitePage />} />
 
         {/* Auth Routes */}

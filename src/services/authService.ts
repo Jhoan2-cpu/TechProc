@@ -114,44 +114,9 @@ const MOCK_CREDENTIALS = [
   },
 ];
 
-// Generar un token JWT mock
-const generateMockToken = (userId: string): string => {
-  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-  const payload = btoa(
-    JSON.stringify({
-      userId,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 24 horas
-    })
-  );
-  const signature = btoa('mock-signature');
-  return `${header}.${payload}.${signature}`;
-};
-
 export const authService = {
   // Login
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    if (USE_MOCK) {
-      // Simular delay de red
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      // Buscar usuario
-      const mockUser = MOCK_CREDENTIALS.find(
-        (u) => u.email === credentials.email && u.password === credentials.password
-      );
-
-      if (!mockUser) {
-        throw new Error('Credenciales inválidas');
-      }
-
-      const token = generateMockToken(mockUser.user.id);
-
-      return mockApiCall({
-        user: mockUser.user,
-        token,
-        refreshToken: generateMockToken(mockUser.user.id + '-refresh'),
-      });
-    }
-
     // API real
     return apiRequest<LoginResponse>('/auth/login', {
       method: 'POST',
@@ -161,35 +126,6 @@ export const authService = {
 
   // Register - Endpoint: POST /auth/register
   async register(data: RegisterData): Promise<LoginResponse> {
-    if (USE_MOCK) {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      // Verificar si el email ya existe
-      const existingUser = MOCK_CREDENTIALS.find((u) => u.email === data.email);
-      if (existingUser) {
-        throw new Error('El email ya está registrado');
-      }
-
-      // Crear nuevo usuario mock
-      const newUser: User = {
-        id: String(Date.now()),
-        username: data.email.split('@')[0],
-        email: data.email,
-        role: (data.role as any) || 'analista_datos',
-        name: `${data.first_name} ${data.last_name}`,
-        first_name: data.first_name,
-        last_name: data.last_name,
-      };
-
-      const token = generateMockToken(newUser.id);
-
-      return mockApiCall({
-        user: newUser,
-        token,
-        refreshToken: generateMockToken(newUser.id + '-refresh'),
-      });
-    }
-
     // API real según especificación
     return apiRequest<LoginResponse>('/auth/register', {
       method: 'POST',
@@ -199,11 +135,6 @@ export const authService = {
 
   // Logout
   async logout(): Promise<void> {
-    if (USE_MOCK) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      return mockApiCall(undefined);
-    }
-
     return apiRequest<void>('/auth/logout', {
       method: 'POST',
     });
@@ -211,13 +142,6 @@ export const authService = {
 
   // Refresh token - Endpoint: POST /auth/refresh
   async refreshToken(refreshToken: string): Promise<RefreshTokenResponse> {
-    if (USE_MOCK) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      return mockApiCall({
-        token: generateMockToken('refreshed'),
-      });
-    }
-
     // API real según especificación
     return apiRequest<RefreshTokenResponse>('/auth/refresh', {
       method: 'POST',
@@ -227,17 +151,6 @@ export const authService = {
 
   // Verificar token - Endpoint: POST /auth/verify
   async verifyToken(token: string): Promise<User> {
-    if (USE_MOCK) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const user = MOCK_CREDENTIALS.find((u) => u.user.id === payload.userId);
-        if (!user) throw new Error('Usuario no encontrado');
-        return mockApiCall(user.user);
-      } catch {
-        throw new Error('Token inválido');
-      }
-    }
-
     // API real según especificación
     return apiRequest<User>('/auth/verify', {
       method: 'POST',

@@ -41,17 +41,8 @@ export default function Layout({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [expandedModules, setExpandedModules] = useState<string[]>([
-    "lms",
-    "support",
-    "security",
-    "infrastructure",
-    "web",
-    "analytics",
-  ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
-
   const handleModuleChange = (module: string) => {
     navigate(`/${module}`);
   };
@@ -174,17 +165,7 @@ export default function Layout({
           </div>
           <Routes>
             {/* Root redirect */}
-            <Route path="/" element={<Navigate to={
-              hasAccess(currentUser, "users") ? "/users" :
-              hasAccess(currentUser, "lms") ? "/lms-dashboard" :
-              hasAccess(currentUser, "support") ? "/tickets-dashboard" :
-              hasAccess(currentUser, "security") ? "/security-dashboard" :
-              hasAccess(currentUser, "infrastructure") ? "/infrastructure-dashboard" :
-              hasAccess(currentUser, "web") ? "/web-dashboard" :
-              hasAccess(currentUser, "analytics") ? "/analytics-dashboard" :
-              "/profile"
-            } replace />} />
-
+            <Route path="/" element={<Navigate to="/profile" replace />} />
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />

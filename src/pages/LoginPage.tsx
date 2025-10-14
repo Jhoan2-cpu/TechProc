@@ -162,18 +162,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       // Notificar al componente padre
       onLogin(response.user);
 
-      // Determinar la ruta de redirección según el rol del usuario
-      const defaultRoutes: Record<UserRole, string> = {
-        administrador: '/users',        // Admin va a gestión de usuarios
-        gestor_lms: '/lms-dashboard',   // LMS va a su dashboard
-        soporte_tecnico: '/tickets-dashboard',   // Soporte va a tickets
-        soporte_seguridad: '/security-dashboard', // Security va a seguridad
-        soporte_infraestructura: '/infrastructure-dashboard', // Infra va a infraestructura
-        developer_web: '/web-dashboard',         // Web dev va a gestión web
-        analista_datos: '/analytics-dashboard',  // Analista va a analytics
-      };
-
-      const defaultRoute = defaultRoutes[response.user.role] || '/profile';
+      const defaultRoute = '/profile';
 
       // Recargar la página para asegurar que todos los módulos se inicialicen correctamente
       window.location.href = defaultRoute;
