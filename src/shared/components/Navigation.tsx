@@ -45,7 +45,7 @@ export const SidebarNavigation = ({
 
           const isActive = currentPath === module.id;
           const isExpanded = expandedModules.includes(module.id);
-          const hasSubmodules = module.submodules && module.submodules.length > 0;
+          const hasSubmodules = module.submodules && module.submodules.length > 0; // Verificar si hay submódulos
 
           return (
             <div key={module.id}>
@@ -56,7 +56,7 @@ export const SidebarNavigation = ({
                     // Expandir o contraer submódulos
                     setExpandedModules((prev) =>
                       prev.includes(module.id)
-                        ? prev.filter((id) => id !== module.id)
+                        ? prev.filter((item) => item !== module.id)
                         : [...prev, module.id]
                     );
                   } else {

@@ -155,17 +155,13 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     try {
       setLoading(true);
       const response = await authService.login({ email, password });
-
       // Guardar sesión
       authService.saveSession(response.token, response.refreshToken);
 
       // Notificar al componente padre
       onLogin(response.user);
-
-      const defaultRoute = '/profile';
-
       // Recargar la página para asegurar que todos los módulos se inicialicen correctamente
-      window.location.href = defaultRoute;
+      window.location.href = '/profile';
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
     } finally {

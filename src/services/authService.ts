@@ -1,5 +1,4 @@
 // Authentication Service - Implementado según BACKEND_API_SPECIFICATION.md
-import { mockApiCall } from './mockService';
 import { apiRequest } from './api.config';
 import type {
   User,
@@ -8,12 +7,6 @@ import type {
   RegisterData,
   RefreshTokenResponse,
 } from '../shared/types/auth';
-
-/**
- * Cambiar a FALSE cuando la API real esté lista
- * URL de la API se configura en .env: VITE_API_BASE_URL
- */
-const USE_MOCK = false;
 
 /**
  * Mock de usuarios con credenciales
@@ -162,7 +155,7 @@ export const authService = {
   getCurrentUser(): User | null {
     const token = localStorage.getItem('auth_token');
     if (!token) return null;
-
+    console.log('Token encontrado:', token);
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const user = MOCK_CREDENTIALS.find((u) => u.user.id === payload.userId);
