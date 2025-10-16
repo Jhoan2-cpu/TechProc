@@ -165,7 +165,7 @@ export default function Layout({
           </div>
           <Routes>
             {/* Root redirect */}
-            <Route path="/" element={<Navigate to="/profile" replace />} />
+            <Route path="/" element={<Navigate to="/website" replace />} />
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />

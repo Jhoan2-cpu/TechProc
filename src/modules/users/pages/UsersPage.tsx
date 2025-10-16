@@ -62,9 +62,13 @@ export const UsersPage = () => {
       setError(null);
       const data = await usersService.getAll();
       setUsers(data.users);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching users:', err);
-      setError(err.message || 'Error al cargar los usuarios. Por favor, intenta nuevamente.');
+      if (err instanceof Error) {
+        setError(err.message || 'Error al cargar los usuarios. Por favor, intenta nuevamente.');
+      } else {
+        setError('Error al cargar los usuarios. Por favor, intenta nuevamente.');
+      }
     } finally {
       setLoading(false);
     }
@@ -82,13 +86,13 @@ export const UsersPage = () => {
             status: user.is_active ? 'inactive' : 'active',
           });
           // Actualizar localmente
-          setUsers((prev) =>
-            prev.map((u) => (u.id === userId ? { ...u, is_active: !u.is_active } : u))
-          );
-          setSuccessMessage(`Usuario ${user.name} ${action === 'activar' ? 'activado' : 'desactivado'} exitosamente`);
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error('Error updating user status:', err);
-          setError(err.message || 'Error al cambiar el estado del usuario. Por favor, intenta nuevamente.');
+          if (err instanceof Error) {
+            setError(err.message || 'Error al cambiar el estado del usuario. Por favor, intenta nuevamente.');
+          } else {
+            setError('Error al cambiar el estado del usuario. Por favor, intenta nuevamente.');
+          }
         }
       }
     }

@@ -63,12 +63,12 @@ export const usersService = {
    * Listar todos los usuarios
    * Endpoint: GET /admin/users
    */
-  async getAll(filters?: UsersFilterParams): Promise<{ users: User[]; pagination: any }> {
+  async getAll(filters?: UsersFilterParams): Promise<{ users: User[]; pagination: { page: number; limit: number; total: number } }> {
     // Construir query parameters
     const params = new URLSearchParams();
     if (filters?.page) params.append('page', String(filters.page));
     if (filters?.limit) params.append('limit', String(filters.limit));
-    if (filters?.role) params.append('role', mapFrontendRoleToApiRole(filters.role as any));
+    if (filters?.role) params.append('role', mapFrontendRoleToApiRole(filters.role as User['role']));
     if (filters?.status) params.append('status', filters.status);
     if (filters?.search) params.append('search', filters.search);
 
@@ -79,7 +79,11 @@ export const usersService = {
 
     return {
       users: response.data.users.map(mapApiUserToUser),
-      pagination: response.data.pagination,
+      pagination: {
+        page: response.data.pagination.current_page,
+        limit: response.data.pagination.per_page,
+        total: response.data.pagination.total_records,
+      },
     };
   },
 

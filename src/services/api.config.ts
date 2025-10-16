@@ -84,7 +84,7 @@ export const apiRequest = async <T>(
   };
 
   // Agregar token de autenticación si existe
-  const token = localStorage.getItem('auth_token');
+  const token = sessionStorage.getItem('auth_token');
   if (token) {
     config.headers = {
       ...config.headers,
@@ -98,7 +98,7 @@ export const apiRequest = async <T>(
   } catch (error: any) {
     // Si el token expiró, intentar refrescar
     if (error.code === 'TOKEN_EXPIRED' && !endpoint.includes('/auth/')) {
-      const refreshToken = localStorage.getItem('refresh_token');
+      const refreshToken = sessionStorage.getItem('refresh_token');
       if (refreshToken) {
         try {
           // Intentar refrescar el token
@@ -110,7 +110,7 @@ export const apiRequest = async <T>(
 
           if (refreshResponse.ok) {
             const { token: newToken } = await refreshResponse.json();
-            localStorage.setItem('auth_token', newToken);
+            sessionStorage.setItem('auth_token', newToken);
 
             // Reintentar la petición original con el nuevo token
             config.headers = {
@@ -122,8 +122,8 @@ export const apiRequest = async <T>(
           }
         } catch (refreshError) {
           // Si falla el refresh, limpiar sesión
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('refresh_token');
+          sessionStorage.removeItem('auth_token');
+          sessionStorage.removeItem('refresh_token');
           window.location.href = '/login';
         }
       }

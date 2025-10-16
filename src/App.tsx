@@ -61,7 +61,7 @@ function App() {
   const handleLogin = (user: User) => {
     setCurrentUser(user);
   };
-
+  
   const handleLogout = () => {
     authService.clearSession();
     setCurrentUser(null);
@@ -83,7 +83,7 @@ function App() {
           path="/login"
           element={
             currentUser ? (
-              <Navigate to="/" replace />
+              <Navigate to="/profile" replace />
             ) : (
               <LoginPage onLogin={handleLogin} />
             )

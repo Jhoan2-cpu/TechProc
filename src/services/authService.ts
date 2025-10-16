@@ -189,6 +189,7 @@ export const authService = {
   clearSession(): void {
     sessionStorage.removeItem('auth_token');
     sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('user');
   },
 
   // Verificar si está autenticado
