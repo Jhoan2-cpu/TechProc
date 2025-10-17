@@ -1,1 +1,0 @@
-WebsiteFooter.tsx:7 Uncaught SyntaxError: The requested module '/node_modules/.vite/deps/@fortawesome_free-solid-svg-icons.js?v=ffa4e164' does not provide an export named 'faFacebook' (at WebsiteFooter.tsx:7:3)

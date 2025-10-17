@@ -1,107 +1,149 @@
-MainLayout.tsx:197 You rendered descendant <Routes> (or called `useRoutes()`) at "/" (under <Route path="/">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
+BIEN la BASE URL ya está definido en el .env.example que sería: http://127.0.1:8000
+Quiero que en src/pages/website/WebsiteAnnouncements.tsx utilice servicio a API real, para ello crea un nuevo archivo en 
+src/services que atenderá todas las consultas de parte del WebsitePage.
+empecemos con algo simple:
+acer una consulta GET a: BaseURL/api/developer-web/announcements/public
+esa petición te entregará un resultado similar al siguiente:
+{
+    "success": true,
+    "data": [
+        {
+            "id": 9,
+            "id_announcement": 1009,
+            "title": "Descubre el Nuevo Dashboard",
+            "content": "Hemos rediseñado completamente el dashboard para ofrecerte una mejor experiencia de usuario con métricas en tiempo real.",
+            "image_url": "https://example.com/images/dashboard.jpg",
+            "display_type": "banner",
+            "target_page": "dashboard",
+            "link_url": "/dashboard",
+            "button_text": "Ver Ahora",
+            "status": "published",
+            "start_date": "2025-10-12T05:00:00.000000Z",
+            "end_date": "2025-11-16T05:00:00.000000Z",
+            "views": 245,
+            "created_by": 1,
+            "created_date": "2025-10-17T22:12:18.840400Z",
+            "creator": {
+                "id": 1,
+                "first_name": "Carlos",
+                "last_name": "Gómez",
+                "full_name": "Carlos Gómez",
+                "dni": "71345218",
+                "document": "DOC-001",
+                "email": "carlos.gomez@example.com",
+                "email_verified_at": "2025-10-16T13:46:19.028622Z",
+                "phone_number": "+51 987654321",
+                "address": "Av. Los Olivos 235, Lima",
+                "birth_date": "1990-05-21T00:00:00.000000Z",
+                "role": [
+                    "admin"
+                ],
+                "gender": "male",
+                "country": "Perú",
+                "country_location": "Lima",
+                "timezone": "America/Lima",
+                "profile_photo": "https://example.com/photos/carlos.jpg",
+                "status": "active",
+                "synchronized": true,
+                "last_access_ip": "192.168.1.10",
+                "last_access": "2025-10-16T13:46:19.028622Z",
+                "last_connection": "2025-10-16T13:46:19.028622Z",
+                "created_at": "2025-10-16T13:46:19.028622Z",
+                "updated_at": "2025-10-16T13:46:19.028622Z"
+            }
+        }
+        {
+            "id": 11,
+            "id_announcement": 1011,
+            "title": "Soporte Premium Disponible",
+            "content": "Accede a soporte prioritario 24/7 con nuestro equipo de expertos. Resuelve tus dudas en tiempo récord.",
+            "image_url": "https://example.com/images/support.jpg",
+            "display_type": "popup",
+            "target_page": "support",
+            "link_url": "/soporte/premium",
+            "button_text": "Más Información",
+            "status": "published",
+            "start_date": "2025-10-15T05:00:00.000000Z",
+            "end_date": "2025-12-01T05:00:00.000000Z",
+            "views": 92,
+            "created_by": 1,
+            "created_date": "2025-10-17T22:12:18.840400Z",
+            "creator": {
+                "id": 1,
+                "first_name": "Carlos",
+                "last_name": "Gómez",
+                "full_name": "Carlos Gómez",
+                "dni": "71345218",
+                "document": "DOC-001",
+                "email": "carlos.gomez@example.com",
+                "email_verified_at": "2025-10-16T13:46:19.028622Z",
+                "phone_number": "+51 987654321",
+                "address": "Av. Los Olivos 235, Lima",
+                "birth_date": "1990-05-21T00:00:00.000000Z",
+                "role": [
+                    "admin"
+                ],
+                "gender": "male",
+                "country": "Perú",
+                "country_location": "Lima",
+                "timezone": "America/Lima",
+                "profile_photo": "https://example.com/photos/carlos.jpg",
+                "status": "active",
+                "synchronized": true,
+                "last_access_ip": "192.168.1.10",
+                "last_access": "2025-10-16T13:46:19.028622Z",
+                "last_connection": "2025-10-16T13:46:19.028622Z",
+                "created_at": "2025-10-16T13:46:19.028622Z",
+                "updated_at": "2025-10-16T13:46:19.028622Z"
+            }
+        },
+        {
+            "id": 12,
+            "id_announcement": 1012,
+            "title": "Capacitación en Vivo Este Mes",
+            "content": "Participa en nuestras sesiones de capacitación en vivo. Aprende directamente de los expertos y haz preguntas en tiempo real.",
+            "image_url": "https://example.com/images/training.jpg",
+            "display_type": "notification",
+            "target_page": "training",
+            "link_url": "/capacitaciones",
+            "button_text": "Ver Calendario",
+            "status": "published",
+            "start_date": "2025-10-17T05:00:00.000000Z",
+            "end_date": "2025-11-11T05:00:00.000000Z",
+            "views": 56,
+            "created_by": 3,
+            "created_date": "2025-10-17T22:12:18.840400Z",
+            "creator": {
+                "id": 3,
+                "first_name": "Luis",
+                "last_name": "Fernández",
+                "full_name": "Luis Fernández",
+                "dni": "71345220",
+                "document": "DOC-003",
+                "email": "luis.fernandez@example.com",
+                "email_verified_at": "2025-10-16T13:46:19.028622Z",
+                "phone_number": "+51 999222333",
+                "address": "Calle Los Álamos 530, Arequipa",
+                "birth_date": "1988-11-02T00:00:00.000000Z",
+                "role": [
+                    "writer"
+                ],
+                "gender": "male",
+                "country": "Perú",
+                "country_location": "Arequipa",
+                "timezone": "America/Lima",
+                "profile_photo": "https://example.com/photos/luis.jpg",
+                "status": "active",
+                "synchronized": true,
+                "last_access_ip": "192.168.1.12",
+                "last_access": "2025-10-16T13:46:19.028622Z",
+                "last_connection": "2025-10-16T13:46:19.028622Z",
+                "created_at": "2025-10-16T13:46:19.028622Z",
+                "updated_at": "2025-10-16T13:46:19.028622Z"
+            }
+        }
+    ]
+}
 
-Please change the parent <Route path="/"> to <Route path="*">.
-warning @ react-router-dom.js?v=2c461c13:532
-warningOnce @ react-router-dom.js?v=2c461c13:5928
-useRoutesImpl @ react-router-dom.js?v=2c461c13:5450
-useRoutes @ react-router-dom.js?v=2c461c13:5432
-Routes @ react-router-dom.js?v=2c461c13:6482
-react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
-renderWithHooks @ react-dom_client.js?v=2c461c13:5654
-updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
-beginWork @ react-dom_client.js?v=2c461c13:8525
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
-renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
-performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
-performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<Routes>
-exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-Layout @ MainLayout.tsx:197
-react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
-renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
-renderWithHooks @ react-dom_client.js?v=2c461c13:5665
-updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
-beginWork @ react-dom_client.js?v=2c461c13:8525
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
-renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
-performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
-performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<Layout>
-exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-App @ App.tsx:262
-react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
-renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
-renderWithHooks @ react-dom_client.js?v=2c461c13:5665
-updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
-beginWork @ react-dom_client.js?v=2c461c13:8525
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopSync @ react-dom_client.js?v=2c461c13:12424
-renderRootSync @ react-dom_client.js?v=2c461c13:12408
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
-performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
-performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<App>
-exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-(anonymous) @ main.tsx:8
-MainLayout.tsx:197 You rendered descendant <Routes> (or called `useRoutes()`) at "/users" (under <Route path="/users">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
-
-Please change the parent <Route path="/users"> to <Route path="/users/*">.
-warning @ react-router-dom.js?v=2c461c13:532
-warningOnce @ react-router-dom.js?v=2c461c13:5928
-useRoutesImpl @ react-router-dom.js?v=2c461c13:5450
-useRoutes @ react-router-dom.js?v=2c461c13:5432
-Routes @ react-router-dom.js?v=2c461c13:6482
-react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
-renderWithHooks @ react-dom_client.js?v=2c461c13:5654
-updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
-beginWork @ react-dom_client.js?v=2c461c13:8525
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
-renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
-performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
-performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<Routes>
-exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-Layout @ MainLayout.tsx:197
-react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
-renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
-renderWithHooks @ react-dom_client.js?v=2c461c13:5665
-updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
-beginWork @ react-dom_client.js?v=2c461c13:8525
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopConcurrentByScheduler @ react-dom_client.js?v=2c461c13:12557
-renderRootConcurrent @ react-dom_client.js?v=2c461c13:12539
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
-performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
-performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<Layout>
-exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-App @ App.tsx:262
-react_stack_bottom_frame @ react-dom_client.js?v=2c461c13:18509
-renderWithHooksAgain @ react-dom_client.js?v=2c461c13:5729
-renderWithHooks @ react-dom_client.js?v=2c461c13:5665
-updateFunctionComponent @ react-dom_client.js?v=2c461c13:7475
-beginWork @ react-dom_client.js?v=2c461c13:8525
-runWithFiberInDEV @ react-dom_client.js?v=2c461c13:997
-performUnitOfWork @ react-dom_client.js?v=2c461c13:12561
-workLoopSync @ react-dom_client.js?v=2c461c13:12424
-renderRootSync @ react-dom_client.js?v=2c461c13:12408
-performWorkOnRoot @ react-dom_client.js?v=2c461c13:11766
-performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=2c461c13:13505
-performWorkUntilDeadline @ react-dom_client.js?v=2c461c13:36
-<App>
-exports.jsxDEV @ react_jsx-dev-runtime.js?v=2c461c13:247
-(anonymous) @ main.tsx:8
-MainLayout.tsx:197 You rendered descendant <Routes> (or called `useRoutes()`) at "/pending-registrations" (under <Route path="/pending-registrations">) but the parent route path has no trailing "*". This means if you navigate deeper, the parent won't match anymore and therefore the child routes will never render.
-
-Please change the parent <Route path="/pending-registrations"> to <Route path="/pending-registrations/*">.
+no se necesita enviar un token de autenticación ya es información accesible desde el website.
+implementalo, y adapta la interfaz de WebsiteAnnouncements para que muestre los anuncios correctamente.
