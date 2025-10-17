@@ -22,7 +22,9 @@ interface ProfilePageProps {
   user: User;
 }
 
-const roleConfig: Record<UserRole, { color: string; icon: any; label: string }> = {
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+ 
+const roleConfig: Record<UserRole, { color: string; icon: IconDefinition; label: string }> = {
   administrador: { color: 'from-red-500 to-red-700', icon: faShieldHalved, label: 'Administrador' },
   gestor_lms: { color: 'from-blue-500 to-blue-700', icon: faGraduationCap, label: 'Gestor LMS' },
   soporte_tecnico: { color: 'from-yellow-500 to-yellow-700', icon: faBriefcase, label: 'Soporte Técnico' },
@@ -33,21 +35,21 @@ const roleConfig: Record<UserRole, { color: string; icon: any; label: string }> 
 };
 
 export const ProfilePage = ({ user }: ProfilePageProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);//Indica si el usuario está editando su perfil
 
   // Validación defensiva para el rol
   const config = user?.role && roleConfig[user.role]
     ? roleConfig[user.role]
     : { color: 'from-gray-500 to-gray-700', icon: faUser, label: 'Sin Rol' };
-
+  
   const [formData, setFormData] = useState({
-    name: user?.name || 'Usuario',
+    name: user?.name || 'Usuario ffffffffffffffff',
     email: (user?.username || 'usuario') + '@techproc.com',
-    phone: '+51 999 999 999',
+    phone: '+51 999 999 999fff',
     department: config.label,
     joinDate: '2024-01-15',
   });
-
+  
   const handleSave = () => {
     // Aquí implementarías la lógica para guardar
     setIsEditing(false);

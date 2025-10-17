@@ -55,7 +55,7 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
         errorMessage += ` (${fieldErrors})`;
       }
 
-      const error: any = new Error(errorMessage);
+      const error = new Error(errorMessage) as Error & { code?: string; status?: number; details?: Array<{ field: string; message: string }> | undefined };
       error.code = errorData.error.code;
       error.status = response.status;
       error.details = errorData.error.details;
@@ -65,7 +65,7 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
     }
   }
 
-  return isJson ? response.json() : (response.text() as any);
+  return isJson ? response.json() : (await response.text() as unknown as T);
 };
 
 // Helper para hacer peticiones con auto-refresh de token
@@ -95,9 +95,15 @@ export const apiRequest = async <T>(
   try {
     const response = await fetch(url, config);
     return handleResponse<T>(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Si el token expiró, intentar refrescar
-    if (error.code === 'TOKEN_EXPIRED' && !endpoint.includes('/auth/')) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      (error as { code: string }).code === 'TOKEN_EXPIRED' &&
+      !endpoint.includes('/auth/')
+    ) {
       const refreshToken = sessionStorage.getItem('refresh_token');
       if (refreshToken) {
         try {
@@ -120,7 +126,7 @@ export const apiRequest = async <T>(
             const retryResponse = await fetch(url, config);
             return handleResponse<T>(retryResponse);
           }
-        } catch (refreshError) {
+        } catch {
           // Si falla el refresh, limpiar sesión
           sessionStorage.removeItem('auth_token');
           sessionStorage.removeItem('refresh_token');
