@@ -1,4 +1,4 @@
-// Enums
+// Enums (según API real)
 export type TicketPriority = 'baja' | 'media' | 'alta' | 'crítica';
 export type TicketStatus = 'abierto' | 'en_progreso' | 'resuelto' | 'cerrado' | 'escalado';
 export type TicketActionType = 'comment' | 'status_change' | 'assignment' | 'escalation';

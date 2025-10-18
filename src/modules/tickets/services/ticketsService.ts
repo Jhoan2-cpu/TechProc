@@ -40,14 +40,14 @@ interface TicketActionResponse {
   message: string;
 }
 
-// Tipos de la API
+// Tipos de la API (según respuesta real)
 interface ApiTicket {
   id: number;
   ticket_id: number;
   title: string;
   description: string;
-  priority: 'baja' | 'media' | 'alta' | 'critica';
-  status: 'abierto' | 'en_proceso' | 'resuelto' | 'cerrado';
+  priority: 'baja' | 'media' | 'alta' | 'crítica';
+  status: 'abierto' | 'en_progreso' | 'resuelto' | 'cerrado' | 'escalado';
   category: string;
   user: {
     id: number;
@@ -138,25 +138,15 @@ export interface EscalateTicketData {
 
 // Conversión de ApiTicket a Ticket
 const mapApiTicketToTicket = (apiTicket: ApiTicket | ApiTicketDetail): Ticket => {
-  // Mapear prioridad
-  let priority: Ticket['priority'] = apiTicket.priority === 'critica' ? 'crítica' : apiTicket.priority;
-
-  // Mapear status
-  let status: Ticket['status'] = 'abierto';
-  if (apiTicket.status === 'en_proceso') {
-    status = 'en_progreso';
-  } else if (apiTicket.status === 'resuelto' || apiTicket.status === 'cerrado') {
-    status = apiTicket.status;
-  }
-
+  // La API ya devuelve los valores correctos, solo necesitamos mapear el ticket
   return {
     ticket_id: apiTicket.ticket_id || apiTicket.id,
     assigned_technician: apiTicket.assigned_technician?.id || null,
     user_id: apiTicket.user.id,
     title: apiTicket.title,
     description: apiTicket.description,
-    priority,
-    status,
+    priority: apiTicket.priority,
+    status: apiTicket.status,
     creation_date: apiTicket.creation_date,
     assignment_date: apiTicket.assignment_date || null,
     resolution_date: (apiTicket as ApiTicketDetail).resolution_date || null,

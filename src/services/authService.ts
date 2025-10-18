@@ -37,6 +37,7 @@ export const authService = {
       profile_photo: null,
       status: "active",
     }
+    
     const session: SessionData = {
       session_id: 1,
       token: "fasdfasdfasdfij9a8sdfu9aos8dfhj98aoshdf9sadf",

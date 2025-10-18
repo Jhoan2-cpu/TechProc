@@ -224,7 +224,6 @@ export const TicketsMainPage = () => {
       case 'available':
         return (
           <AvailableTicketsPage
-            tickets={tickets}
             onTakeTicket={handleTakeTicket}
             onViewDetails={handleViewDetails}
           />
