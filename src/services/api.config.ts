@@ -1,7 +1,7 @@
 // Configuración global de la API según especificación BACKEND_API_SPECIFICATION.md
 export const API_CONFIG = {
   // Base URL según especificación
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
   TIMEOUT: 30000,
   HEADERS: {
     'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
     }
   }
 
-  return isJson ? response.json() : (await response.text() as unknown as T);
+  return isJson ? response.json() : (response.text() as any);
 };
 
 // Helper para hacer peticiones con auto-refresh de token

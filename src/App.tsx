@@ -40,10 +40,7 @@ function App() {
     const checkSession = () => {
       const token = sessionStorage.getItem("auth_token");
       const userStr = sessionStorage.getItem("user");
-      console.log("HAY ALGO EN USERSTR",userStr);
-      console.log("HAY ALGO EN TOKEN",token);
       if (token && userStr) {
-        console.log("HELLOOOO");
         try {
           const user: User = JSON.parse(userStr);
           setCurrentUser(user);

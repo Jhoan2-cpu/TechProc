@@ -156,13 +156,22 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     try {
       setLoading(true);
       const response = await authService.login({ email, password });
-      // Guardar sesión
-      authService.saveSession(response.user, response.token, response.refreshToken);
 
-      // Notificar al componente padre
-      onLogin(response.user);
-      // Recargar la página para asegurar que todos los módulos se inicialicen correctamente
-      window.location.href = '/profile';
+      // La respuesta ahora tiene la estructura: { success: true, data: { user, session } }
+      if (response.success && response.data) {
+        const { user, session } = response.data;
+
+        // Guardar sesión con el nuevo formato
+        authService.saveSession(user, session.token, session.session_id);
+
+        // Notificar al componente padre
+        onLogin(user);
+
+        // Recargar la página para asegurar que todos los módulos se inicialicen correctamente
+        window.location.href = '/profile';
+      } else {
+        setError('Error al iniciar sesión: Respuesta inválida del servidor');
+      }
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || 'Error al iniciar sesión');

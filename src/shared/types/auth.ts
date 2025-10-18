@@ -1,7 +1,7 @@
 // Tipos de usuario del sistema según especificación BACKEND_API_SPECIFICATION.md
 
 export type UserRole =
-  | 'administrador'           // Acceso total
+  | 'admin'           // Acceso total
   | 'gestor_lms'             // Solo LMS
   | 'soporte_tecnico'        // Tickets solamente
   | 'soporte_seguridad'      // Tickets + Security
@@ -11,20 +11,31 @@ export type UserRole =
 
 // Interfaz User según schema de la especificación
 export interface User {
-  id: string;
-  username: string;
+  id: number;
+  username?: string;
   email: string;
-  role: UserRole;
-  name: string;
+  role: UserRole[];
+  name?: string;
   first_name: string;
   last_name: string;
+  profile_photo: string | null;
+  status: string;
 }
 
-// Interfaz completa para respuesta de login según especificación
-export interface LoginResponse {
-  user: User;
+// Interfaz para la sesión de la respuesta de login
+export interface SessionData {
+  session_id: number;
   token: string;
-  refreshToken: string;
+  expires_at: string;
+}
+
+// Interfaz completa para respuesta de login según especificación real de la API
+export interface LoginResponse {
+  success: boolean;
+  data: {
+    user: User;
+    session: SessionData;
+  };
 }
 
 // Interfaz para credenciales de login
@@ -49,7 +60,7 @@ export interface RefreshTokenResponse {
 
 // Permisos de acceso a módulos por rol según tabla de la especificación
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
-  administrador: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
+  admin: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
   gestor_lms: ['lms'],
   soporte_tecnico: ['tickets'],
   soporte_seguridad: ['tickets', 'security'],

@@ -5,7 +5,7 @@ import { WebsiteAnnouncements } from './WebsiteAnnouncements';
 import { WebsiteContact } from './WebsiteContact';
 import { WebsiteChatbot } from './WebsiteChatbot';
 import { WebsiteFooter } from './WebsiteFooter';
-import type { News, Alert, Announcement, ChatbotFAQ } from '../../modules/web/types';
+import type { News, Alert, ChatbotFAQ } from '../../modules/web/types';
 
 // Mock Data
 const mockAlerts: Alert[] = [
@@ -142,76 +142,7 @@ const mockNews: News[] = [
   }
 ];
 
-const mockAnnouncements: Announcement[] = [
-  {
-    id_announcement: 1,
-    title: 'Proceso de Admisión 2024 - Ciclo 1',
-    content: 'Inician las inscripciones para el primer ciclo del 2024. Aprovecha nuestros descuentos por pronto pago y asegura tu vacante en los programas más demandados.',
-    image_url: null,
-    display_type: 'banner',
-    target_page: 'home',
-    link_url: '#contact',
-    button_text: 'Más Información',
-    status: 'active',
-    start_date: '2024-01-01',
-    end_date: '2024-03-31',
-    views: 2350,
-    clicks: 456,
-    created_by: 1,
-    created_date: '2024-01-01'
-  },
-  {
-    id_announcement: 2,
-    title: 'Certificación Microsoft Azure - Próximo inicio',
-    content: 'Prepárate para obtener tu certificación oficial de Microsoft Azure con nuestro programa especializado. Incluye laboratorios prácticos y simuladores de examen.',
-    image_url: null,
-    display_type: 'popup',
-    target_page: 'all',
-    link_url: '#contact',
-    button_text: 'Inscribirme',
-    status: 'active',
-    start_date: '2024-03-01',
-    end_date: '2024-04-30',
-    views: 1890,
-    clicks: 234,
-    created_by: 1,
-    created_date: '2024-03-01'
-  },
-  {
-    id_announcement: 3,
-    title: 'Bootcamp de Desarrollo Full Stack - Intensivo',
-    content: 'Aprende desarrollo web moderno en 12 semanas. Conviértete en Full Stack Developer con React, Node.js, y bases de datos. Proyecto final real incluido.',
-    image_url: null,
-    display_type: 'banner',
-    target_page: 'home',
-    link_url: '#contact',
-    button_text: 'Ver Programa',
-    status: 'active',
-    start_date: '2024-02-15',
-    end_date: '2024-05-15',
-    views: 1567,
-    clicks: 289,
-    created_by: 1,
-    created_date: '2024-02-15'
-  },
-  {
-    id_announcement: 4,
-    title: 'Charla Gratuita: Ciberseguridad en la Era Digital',
-    content: 'Expertos en ciberseguridad compartirán las últimas tendencias y mejores prácticas. Evento virtual gratuito con certificado de asistencia.',
-    image_url: null,
-    display_type: 'sidebar',
-    target_page: 'all',
-    link_url: '#contact',
-    button_text: 'Registrarse',
-    status: 'active',
-    start_date: '2024-03-10',
-    end_date: '2024-03-25',
-    views: 890,
-    clicks: 156,
-    created_by: 1,
-    created_date: '2024-03-10'
-  }
-];
+// Los announcements ahora se obtienen directamente desde la API en el componente WebsiteAnnouncements
 
 const mockFAQs: ChatbotFAQ[] = [
   {
@@ -288,7 +219,7 @@ export const WebsitePage = () => {
       <WebsiteNavbar />
       <WebsiteHero activeAlerts={mockAlerts} />
       <WebsiteNews news={mockNews} />
-      <WebsiteAnnouncements announcements={mockAnnouncements} />
+      <WebsiteAnnouncements />
       <WebsiteContact />
       <WebsiteFooter />
       <WebsiteChatbot faqs={mockFAQs} />

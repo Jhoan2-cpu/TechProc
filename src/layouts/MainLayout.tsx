@@ -96,13 +96,13 @@ export default function Layout({
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center shadow-lg shadow-primary-500/20">
                 <span className="text-white font-bold text-lg">
-                  {currentUser.name.charAt(0)}
+                  {currentUser.first_name.charAt(0)}{currentUser.last_name.charAt(0)}
                 </span>
               </div>
               <div className="flex-1">
-                <p className="font-semibold text-white">{currentUser.name}</p>
+                <p className="font-semibold text-white">{currentUser.first_name} {currentUser.last_name}</p>
                 <p className="text-xs text-gray-300">
-                  {currentUser.role.replace(/_/g, " ")}
+                  {currentUser.role[0].replace(/_/g, " ")}
                 </p>
               </div>
             </div>

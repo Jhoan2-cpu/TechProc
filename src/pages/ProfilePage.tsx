@@ -37,19 +37,20 @@ const roleConfig: Record<UserRole, { color: string; icon: IconDefinition; label:
 export const ProfilePage = ({ user }: ProfilePageProps) => {
   const [isEditing, setIsEditing] = useState(false);//Indica si el usuario está editando su perfil
 
-  // Validación defensiva para el rol
-  const config = user?.role && roleConfig[user.role]
-    ? roleConfig[user.role]
-    : { color: 'from-gray-500 to-gray-700', icon: faUser, label: 'Sin Rol' };
-  
+  // Validación defensiva para el rol (ahora es un array)
+  const userRole = user?.role && user.role.length > 0 ? user.role[0] : 'administrador';
+  const config = roleConfig[userRole] || { color: 'from-gray-500 to-gray-700', icon: faUser, label: 'Sin Rol' };
+
+  const fullName = `${user?.first_name || ''} ${user?.last_name || ''}`.trim();
+
   const [formData, setFormData] = useState({
-    name: user?.name || 'Usuario ffffffffffffffff',
-    email: (user?.username || 'usuario') + '@techproc.com',
-    phone: '+51 999 999 999fff',
+    name: fullName || 'Usuario',
+    email: user?.email || 'usuario@techproc.com',
+    phone: '+51 999 999 999',
     department: config.label,
     joinDate: '2024-01-15',
   });
-  
+
   const handleSave = () => {
     // Aquí implementarías la lógica para guardar
     setIsEditing(false);
@@ -57,8 +58,8 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
 
   const handleCancel = () => {
     setFormData({
-      name: user?.name || 'Usuario',
-      email: (user?.username || 'usuario') + '@techproc.com',
+      name: fullName || 'Usuario',
+      email: user?.email || 'usuario@techproc.com',
       phone: '+51 999 999 999',
       department: config.label,
       joinDate: '2024-01-15',
@@ -86,14 +87,14 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
             <div className="mb-6">
               <div className={`w-32 h-32 mx-auto rounded-full bg-gradient-to-br ${config.color} flex items-center justify-center shadow-xl shadow-${config.color.split('-')[1]}-500/30`}>
                 <span className="text-white font-bold text-5xl">
-                  {user.name.charAt(0)}
+                  {user.first_name.charAt(0)}{user.last_name.charAt(0)}
                 </span>
               </div>
             </div>
 
             {/* Nombre y Rol */}
             <h2 className="text-2xl font-heading font-bold text-white mb-3">
-              {user.name}
+              {fullName}
             </h2>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-primary-600/30 to-primary-700/30 rounded-full mb-6 border border-primary-500/30">
               <FontAwesomeIcon icon={config.icon} className="text-primary-400" />

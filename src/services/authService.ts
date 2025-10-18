@@ -55,34 +55,22 @@ export const authService = {
 
   // Obtener usuario actual
   getCurrentUser(): User | null {
-    const token = sessionStorage.getItem('auth_token');
-    if (!token) return null;
+    const userStr = sessionStorage.getItem('user');
+    if (!userStr) return null;
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));// Decodificar payload del JWT
-      console.log('Payload del token:', payload);
-      const user: User = {
-        id: payload.userId,
-        username: payload.username,
-        email: payload.email,
-        role: payload.role as User['role'],
-        name: `${payload.first_name} ${payload.last_name}`,
-        first_name: payload.first_name as string,
-        last_name: payload.last_name as string,
-      }
-      console.log('Usuario obtenido del token:', user);
-      return user ? user : null;
+      return JSON.parse(userStr);
     } catch {
       return null;
     }
   },
 
-  // Guardar sesión
-  saveSession(user: User, token: string, refreshToken?: string): void {
+  // Guardar sesión (adaptado a la nueva estructura de la API)
+  saveSession(user: User, token: string, sessionId?: number): void {
     sessionStorage.setItem('auth_token', token);
     sessionStorage.setItem('user', JSON.stringify(user));
-    if (refreshToken) {
-      sessionStorage.setItem('refresh_token', refreshToken);
+    if (sessionId) {
+      sessionStorage.setItem('session_id', sessionId.toString());
     }
   },
 
@@ -91,6 +79,7 @@ export const authService = {
     sessionStorage.removeItem('auth_token');
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('session_id');
   },
 
   // Verificar si está autenticado
