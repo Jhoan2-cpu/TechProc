@@ -27,10 +27,10 @@ export const authService = {
 
     //RESPUESTA FALSA, PARA IMPLEMENTAR OTROS MÓDULOS [ELIMINAR CUANDO SE INCORPORE LA API REAL]
     const user: User = {
-      id: 9,
+      id: 18,
       username: "JhoanAdmin",
       email: credentials.email,
-      role: ["soporte_tecnico"],
+      role: ["admin"],
       name: "Jhoan",
       first_name: "Cruz",
       last_name: "Castillo",

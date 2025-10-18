@@ -40,6 +40,15 @@ interface TicketActionResponse {
   message: string;
 }
 
+interface TakeTicketResponse {
+  success: boolean;
+  message: string;
+  data: {
+    ticket_id: number;
+    status: string;
+  };
+}
+
 // Tipos de la API (según respuesta real)
 interface ApiTicket {
   id: number;
@@ -176,7 +185,6 @@ export const ticketsService = {
     const endpoint = `/tickets${queryString ? `?${queryString}` : ''}`;
 
     const response = await apiRequest<TicketsListResponse>(endpoint);
-
     return {
       tickets: response.data.tickets.map(mapApiTicketToTicket),
       pagination: response.data.pagination,
@@ -210,11 +218,13 @@ export const ticketsService = {
    * Tomar ticket (asignar a técnico)
    * Endpoint: POST /tickets/{ticket_id}/take
    */
-  async take(id: number, data: TakeTicketData): Promise<void> {
-    await apiRequest<TicketActionResponse>(`/tickets/${id}/take`, {
+  async take(id: number, data: TakeTicketData): Promise<TakeTicketResponse> {
+    const response = await apiRequest<TakeTicketResponse>(`/tickets/${id}/take`, {
       method: 'POST',
       body: JSON.stringify(data),
     });
+    console.log(response);
+    return response;
   },
 
   /**

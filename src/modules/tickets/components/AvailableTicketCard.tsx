@@ -3,6 +3,7 @@ import {
   faArrowUp,
   faUser,
   faCalendar,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Ticket } from '../types';
 
@@ -12,9 +13,10 @@ interface AvailableTicketCardProps {
   index: number;
   onTakeTicket?: (ticket: Ticket) => void;
   onViewDetails?: (ticket: Ticket) => void;
+  isTaking?: boolean;
 }
 
-export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, onViewDetails }: AvailableTicketCardProps) => {
+export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, onViewDetails, isTaking = false }: AvailableTicketCardProps) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'baja': return 'text-blue-600 bg-primary-900/20';
@@ -62,17 +64,28 @@ export const AvailableTicketCard = ({ ticket, formatDate, index, onTakeTicket, o
         <div className="flex flex-col gap-2 lg:w-40">
           <button
             onClick={() => onTakeTicket?.(ticket)}
+            disabled={isTaking}
             className={`btn text-white ${
               ticket.priority === 'crítica'
                 ? 'bg-red-600 hover:bg-red-700'
                 : 'bg-primary-600 hover:bg-primary-700'
-            }`}
+            } ${isTaking ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Tomar Ticket
+            {isTaking ? (
+              <>
+                <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />
+                Tomando...
+              </>
+            ) : (
+              'Tomar Ticket'
+            )}
           </button>
           <button
             onClick={() => onViewDetails?.(ticket)}
-            className="btn bg-secondary-500 hover:bg-secondary-400 text-white-500 border-primary-300"
+            disabled={isTaking}
+            className={`btn bg-secondary-500 hover:bg-secondary-400 text-white-500 border-primary-300 ${
+              isTaking ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             Ver Detalles
           </button>

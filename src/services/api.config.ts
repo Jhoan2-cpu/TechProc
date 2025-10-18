@@ -1,7 +1,7 @@
 // Configuración global de la API según especificación BACKEND_API_SPECIFICATION.md
 export const API_CONFIG = {
   // Base URL según especificación
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api',
+  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api',
   TIMEOUT: 30000,
   HEADERS: {
     'Content-Type': 'application/json',
@@ -42,23 +42,35 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
 
   if (!response.ok) {
     if (isJson) {
-      const errorData: ApiError = await response.json();
+      const errorData = await response.json();
 
-      // Crear mensaje de error detallado
-      let errorMessage = errorData.error.message || 'Error en la solicitud';
+      // Crear mensaje de error detallado con manejo seguro
+      let errorMessage = 'Error en la solicitud';
+      let errorCode = 'UNKNOWN_ERROR';
+      let errorDetails: Array<{ field: string; message: string }> | undefined;
 
-      // Agregar detalles de validación si existen
-      if (errorData.error.details && errorData.error.details.length > 0) {
-        const fieldErrors = errorData.error.details
-          .map(d => `${d.field}: ${d.message}`)
-          .join(', ');
-        errorMessage += ` (${fieldErrors})`;
+      // Verificar si tiene la estructura estándar de error
+      if (errorData && errorData.error) {
+        errorMessage = errorData.error.message || errorMessage;
+        errorCode = errorData.error.code || errorCode;
+        errorDetails = errorData.error.details;
+
+        // Agregar detalles de validación si existen
+        if (errorDetails && errorDetails.length > 0) {
+          const fieldErrors = errorDetails
+            .map(d => `${d.field}: ${d.message}`)
+            .join(', ');
+          errorMessage += ` (${fieldErrors})`;
+        }
+      } else if (errorData && errorData.message) {
+        // Si tiene un mensaje directo
+        errorMessage = errorData.message;
       }
 
       const error = new Error(errorMessage) as Error & { code?: string; status?: number; details?: Array<{ field: string; message: string }> | undefined };
-      error.code = errorData.error.code;
+      error.code = errorCode;
       error.status = response.status;
-      error.details = errorData.error.details;
+      error.details = errorDetails;
       throw error;
     } else {
       throw new Error(`HTTP error! status: ${response.status}`);

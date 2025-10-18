@@ -21,7 +21,7 @@ export const TakeTicketModal = ({
     onConfirm(ticket.ticket_id);
     onClose();
   };
-
+  
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'baja': return 'text-blue-600 bg-primary-900/20';

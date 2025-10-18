@@ -4,6 +4,7 @@ import { faInbox, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import type { Ticket } from '../types';
 import { AvailableTicketCard } from '../components';
 import { ticketsService } from '../services/ticketsService';
+import { authService } from '../../../services/authService';
 
 interface AvailableTicketsPageProps {
   onTakeTicket: (ticket: Ticket) => void;
@@ -17,6 +18,8 @@ export const AvailableTicketsPage = ({
   const [availableTickets, setAvailableTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [takingTicketId, setTakingTicketId] = useState<number | null>(null);
 
   useEffect(() => {
     loadTickets();
@@ -44,6 +47,45 @@ export const AvailableTicketsPage = ({
     }
   };
 
+  const handleTakeTicket = async (ticket: Ticket) => {
+    try {
+      setTakingTicketId(ticket.ticket_id);
+      setError('');
+      setSuccessMessage('');
+
+      // Obtener el ID del usuario actual
+      const currentUser = authService.getCurrentUser();
+      if (!currentUser) {
+        setError('No se pudo obtener el usuario actual');
+        return;
+      }
+
+      // Llamar al servicio para tomar el ticket
+      const response = await ticketsService.take(ticket.ticket_id, {
+        technician_id: currentUser.id,
+      });
+
+      // Mostrar mensaje de éxito
+      if (response.success) {
+        setSuccessMessage(response.message);
+
+        // Ocultar mensaje después de 5 segundos
+        setTimeout(() => setSuccessMessage(''), 5000);
+      }
+
+      // Llamar al callback del padre
+      onTakeTicket(ticket);
+
+      // Recargar la lista de tickets
+      await loadTickets();
+    } catch (err: any) {
+      setError(err.message || 'Error al tomar el ticket');
+      console.error('Error al tomar ticket:', err);
+    } finally {
+      setTakingTicketId(null);
+    }
+  };
+
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '-';
     const date = new Date(dateString);
@@ -68,6 +110,15 @@ export const AvailableTicketsPage = ({
           </span>
         )}
       </div>
+
+      {/* Success Message */}
+      {successMessage && (
+        <div className="mb-4 animate-fade-in">
+          <div className="bg-green-500/10 border border-green-500/50 rounded-lg p-4">
+            <p className="text-green-400 text-center">{successMessage}</p>
+          </div>
+        </div>
+      )}
 
       {/* Loading State */}
       {loading && (
@@ -102,8 +153,9 @@ export const AvailableTicketsPage = ({
                 ticket={ticket}
                 formatDate={formatDate}
                 index={index}
-                onTakeTicket={onTakeTicket}
+                onTakeTicket={handleTakeTicket}
                 onViewDetails={onViewDetails}
+                isTaking={takingTicketId === ticket.ticket_id}
               />
             ))
           ) : (

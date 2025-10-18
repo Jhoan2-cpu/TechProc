@@ -159,7 +159,8 @@ export const TicketsMainPage = () => {
   };
 
   const handleTakeTicket = (ticket: Ticket) => {
-    setTicketToTake(ticket);
+    // Ya no se necesita el modal, el ticket ya fue tomado en AvailableTicketsPage
+    console.log('Ticket tomado:', ticket);
   };
 
   const handleTakeTicketConfirm = (ticketId: number) => {
