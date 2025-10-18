@@ -1,9 +1,0 @@
-bien, al hacer una consulta POST a http://127.0.1:8000/api/developer-web/contact-forms/6/spam
-el número 6 sería el id de la consulta.
-me regresa como respuesta:
-{
-    "success": true,
-    "message": "Consulta marcada como spam correctamente."
-}
-
-ahora quiero que los botónes "Marcar Spam" sean funcionales. que se envíe la consulta.
