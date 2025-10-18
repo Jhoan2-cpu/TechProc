@@ -73,7 +73,7 @@ export interface RefreshTokenResponse {
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
   admin: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
   gestor_lms: ['lms'],
-  soporte_tecnico: ['tickets'],
+  soporte_tecnico: ['support'],
   soporte_seguridad: ['tickets', 'security'],
   soporte_infraestructura: ['tickets', 'infrastructure'],
   developer_web: ['tickets', 'web'],

@@ -55,6 +55,40 @@ export interface AnnouncementsResponse {
   data: AnnouncementFromAPI[];
 }
 
+// Tipos para formulario de contacto
+export interface ContactFormData {
+  full_name: string;
+  email: string;
+  phone: string;
+  company?: string;
+  subject: string;
+  message: string;
+  form_type: string;
+}
+
+export interface ContactFormResponse {
+  id: number;
+  id_contact: number;
+  full_name: string;
+  email: string;
+  phone: string;
+  company: string | null;
+  subject: string;
+  message: string;
+  form_type: string;
+  status: string;
+  assigned_to: number | null;
+  response: string | null;
+  response_date: string | null;
+  submission_date: string;
+}
+
+export interface ContactFormAPIResponse {
+  success: boolean;
+  data: ContactFormResponse;
+  message: string;
+}
+
 // ==========================================
 // SERVICIO PÚBLICO DE WEBSITE
 // ==========================================
@@ -65,7 +99,7 @@ class WebsiteService {
   constructor() {
     this.baseUrl = API_CONFIG.BASE_URL;
   }
-
+  
   /**
    * Obtiene los anuncios públicos del sitio web
    * Endpoint: GET /api/developer-web/announcements/public
@@ -73,7 +107,7 @@ class WebsiteService {
    */
   async getPublicAnnouncements(): Promise<AnnouncementFromAPI[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/developer-web/announcements/public`, {
+      const response = await fetch(`${this.baseUrl}/developer-web/announcements/public`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -94,6 +128,39 @@ class WebsiteService {
       return data.data;
     } catch (error) {
       console.error('Error en getPublicAnnouncements:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Envía un formulario de contacto
+   * Endpoint: POST /api/developer-web/contact-forms
+   * No requiere autenticación
+   */
+  async submitContactForm(formData: ContactFormData): Promise<ContactFormAPIResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/developer-web/contact-forms`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al enviar formulario: ${response.status}`);
+      }
+
+      const data: ContactFormAPIResponse = await response.json();
+
+      if (!data.success) {
+        throw new Error('La respuesta de la API no fue exitosa');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error en submitContactForm:', error);
       throw error;
     }
   }

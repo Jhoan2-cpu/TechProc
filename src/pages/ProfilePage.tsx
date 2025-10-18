@@ -25,7 +25,7 @@ interface ProfilePageProps {
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
  
 const roleConfig: Record<UserRole, { color: string; icon: IconDefinition; label: string }> = {
-  administrador: { color: 'from-red-500 to-red-700', icon: faShieldHalved, label: 'Administrador' },
+  admin: { color: 'from-red-500 to-red-700', icon: faShieldHalved, label: 'Administrador' },
   gestor_lms: { color: 'from-blue-500 to-blue-700', icon: faGraduationCap, label: 'Gestor LMS' },
   soporte_tecnico: { color: 'from-yellow-500 to-yellow-700', icon: faBriefcase, label: 'Soporte Técnico' },
   soporte_seguridad: { color: 'from-purple-500 to-purple-700', icon: faLock, label: 'Soporte - Seguridad' },
@@ -38,7 +38,7 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
   const [isEditing, setIsEditing] = useState(false);//Indica si el usuario está editando su perfil
 
   // Validación defensiva para el rol (ahora es un array)
-  const userRole = user?.role && user.role.length > 0 ? user.role[0] : 'administrador';
+  const userRole = user?.role && user.role.length > 0 ? user.role[0] : 'admin';
   const config = roleConfig[userRole] || { color: 'from-gray-500 to-gray-700', icon: faUser, label: 'Sin Rol' };
 
   const fullName = `${user?.first_name || ''} ${user?.last_name || ''}`.trim();
@@ -46,7 +46,6 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
   const [formData, setFormData] = useState({
     name: fullName || 'Usuario',
     email: user?.email || 'usuario@techproc.com',
-    phone: '+51 999 999 999',
     department: config.label,
     joinDate: '2024-01-15',
   });
@@ -60,7 +59,6 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
     setFormData({
       name: fullName || 'Usuario',
       email: user?.email || 'usuario@techproc.com',
-      phone: '+51 999 999 999',
       department: config.label,
       joinDate: '2024-01-15',
     });
@@ -195,26 +193,6 @@ export const ProfilePage = ({ user }: ProfilePageProps) => {
                 ) : (
                   <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
                     {formData.email}
-                  </p>
-                )}
-              </div>
-
-              {/* Teléfono */}
-              <div>
-                <label className="flex items-center gap-2 text-sm font-medium text-gray-400 mb-2">
-                  <FontAwesomeIcon icon={faPhone} className="text-primary-400" />
-                  Teléfono
-                </label>
-                {isEditing ? (
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="input"
-                  />
-                ) : (
-                  <p className="text-white font-medium bg-gradient-to-br from-secondary-600/60 to-secondary-700/60 p-4 rounded-xl border border-gray-700/30">
-                    {formData.phone}
                   </p>
                 )}
               </div>

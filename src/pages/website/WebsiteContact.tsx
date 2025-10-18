@@ -7,42 +7,63 @@ import {
   faPaperPlane,
   faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
+import { websiteService } from '../../services/websiteService';
 
 export const WebsiteContact = () => {
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
     phone: '',
+    company: '',
     subject: '',
     message: '',
-    form_type: 'contact' as const
+    form_type: 'general'
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage('');
 
-    // Simulación de envío
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-
-      // Resetear formulario
-      setFormData({
-        full_name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-        form_type: 'contact'
+    try {
+      const response = await websiteService.submitContactForm({
+        full_name: formData.full_name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company || undefined,
+        subject: formData.subject,
+        message: formData.message,
+        form_type: formData.form_type,
       });
 
-      // Ocultar mensaje de éxito después de 5 segundos
-      setTimeout(() => setIsSuccess(false), 5000);
-    }, 2000);
+      if (response.success) {
+        setSuccessMessage(response.message);
+        setIsSuccess(true);
+
+        // Resetear formulario
+        setFormData({
+          full_name: '',
+          email: '',
+          phone: '',
+          company: '',
+          subject: '',
+          message: '',
+          form_type: 'general'
+        });
+
+        // Ocultar mensaje de éxito después de 5 segundos
+        setTimeout(() => setIsSuccess(false), 5000);
+      }
+    } catch (error: any) {
+      setErrorMessage(error.message || 'Error al enviar el formulario. Intente nuevamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -125,11 +146,17 @@ export const WebsiteContact = () => {
                   ¡Mensaje Enviado!
                 </h3>
                 <p className="text-gray-400">
-                  Gracias por contactarnos. Te responderemos pronto.
+                  {successMessage || 'Gracias por contactarnos. Te responderemos pronto.'}
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Error Message */}
+                {errorMessage && (
+                  <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg animate-fade-in">
+                    <p className="text-red-400 text-sm">{errorMessage}</p>
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Nombre Completo <span className="text-red-400">*</span>
@@ -171,6 +198,19 @@ export const WebsiteContact = () => {
                       placeholder="+51 999 999 999"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Empresa / Institución
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    className="input w-full"
+                    placeholder="Tech Solutions SAC"
+                  />
                 </div>
 
                 <div>
