@@ -151,16 +151,14 @@ export const respondContactForm = async (
 };
 
 // Servicio para marcar un formulario como spam
-export const markContactFormAsSpam = async (id: number): Promise<ContactForm> => {
+export const markContactFormAsSpam = async (id: number): Promise<void> => {
   try {
-    const apiResponse = await apiRequest<{
+    await apiRequest<{
       success: boolean;
-      data: ContactFormApiResponse;
+      message: string;
     }>(`/developer-web/contact-forms/${id}/spam`, {
       method: 'POST',
     });
-
-    return transformContactForm(apiResponse.data);
   } catch (error) {
     console.error('Error al marcar formulario como spam:', error);
     throw error;

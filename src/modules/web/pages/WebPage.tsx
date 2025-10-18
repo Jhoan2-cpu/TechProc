@@ -376,13 +376,9 @@ export const WebPage = () => {
     try {
       await markContactFormAsSpam(contact.id_contact);
 
-      // Actualizar la lista local
-      const updatedContacts = contacts.map(c =>
-        c.id_contact === contact.id_contact
-          ? { ...c, status: 'spam' as ContactFormStatus }
-          : c
-      );
-      setContacts(updatedContacts);
+      // Recargar la lista desde la API
+      const { forms } = await getContactForms(contactsFilter);
+      setContacts(forms);
     } catch (error) {
       console.error('Error al marcar como spam:', error);
       alert('Error al marcar el formulario como spam. Por favor, intenta nuevamente.');
