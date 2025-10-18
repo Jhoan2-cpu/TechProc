@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -38,270 +38,17 @@ import {
   DeleteFAQModal,
   ChatbotConfigModal,
 } from '../components';
-
-// Datos mock - Noticias
-const mockNews: News[] = [
-  {
-    id_news: 1,
-    title: 'Nueva Certificación en Desarrollo Web Disponible',
-    slug: 'nueva-certificacion-desarrollo-web',
-    summary: 'Ahora ofrecemos una certificación completa en desarrollo web frontend y backend',
-    content: 'Contenido completo de la noticia...',
-    featured_image: '/images/news/web-cert.jpg',
-    author_id: 1,
-    author_name: 'Juan Pérez',
-    category: 'Educación',
-    tags: ['certificación', 'desarrollo web', 'cursos'],
-    status: 'published',
-    views: 1250,
-    published_date: '2024-03-10',
-    created_date: '2024-03-08',
-    updated_date: '2024-03-09',
-  },
-  {
-    id_news: 2,
-    title: 'Convenio con Microsoft para Capacitaciones',
-    slug: 'convenio-microsoft-capacitaciones',
-    summary: 'Firmamos alianza estratégica con Microsoft para ofrecer cursos certificados',
-    content: 'Contenido completo de la noticia...',
-    featured_image: '/images/news/microsoft.jpg',
-    author_id: 1,
-    author_name: 'Juan Pérez',
-    category: 'Alianzas',
-    tags: ['microsoft', 'convenio', 'certificaciones'],
-    status: 'published',
-    views: 3420,
-    published_date: '2024-03-05',
-    created_date: '2024-03-03',
-    updated_date: null,
-  },
-  {
-    id_news: 3,
-    title: 'Próximo Webinar: Inteligencia Artificial en 2024',
-    slug: 'webinar-ia-2024',
-    summary: 'Únete a nuestro webinar gratuito sobre las últimas tendencias en IA',
-    content: 'Contenido completo de la noticia...',
-    featured_image: null,
-    author_id: 1,
-    author_name: 'Juan Pérez',
-    category: 'Eventos',
-    tags: ['webinar', 'ia', 'gratis'],
-    status: 'draft',
-    views: 0,
-    published_date: null,
-    created_date: '2024-03-14',
-    updated_date: '2024-03-15',
-  },
-];
-
-// Datos mock - Alertas
-const mockAlerts: Alert[] = [
-  {
-    id_alert: 1,
-    message: '¡Inscripciones abiertas para el curso de Python! 50% de descuento hasta el 31 de marzo',
-    type: 'success',
-    status: 'active',
-    link_url: '/cursos/python-basico',
-    link_text: 'Inscríbete ahora',
-    start_date: '2024-03-01',
-    end_date: '2024-03-31',
-    priority: 1,
-    created_by: 1,
-    created_date: '2024-03-01',
-  },
-  {
-    id_alert: 2,
-    message: 'Mantenimiento programado del 16 al 17 de marzo. El sitio estará temporalmente fuera de línea.',
-    type: 'warning',
-    status: 'active',
-    link_url: null,
-    link_text: null,
-    start_date: '2024-03-14',
-    end_date: '2024-03-18',
-    priority: 2,
-    created_by: 1,
-    created_date: '2024-03-14',
-  },
-  {
-    id_alert: 3,
-    message: 'Nueva plataforma de certificaciones disponible. Verifica tus logros.',
-    type: 'info',
-    status: 'inactive',
-    link_url: '/certificaciones',
-    link_text: 'Ver más',
-    start_date: '2024-02-20',
-    end_date: '2024-03-10',
-    priority: 3,
-    created_by: 1,
-    created_date: '2024-02-20',
-  },
-];
-
-// Datos mock - Anuncios
-const mockAnnouncements: Announcement[] = [
-  {
-    id_announcement: 1,
-    title: '¡Semana de Descuentos!',
-    content: 'Todos los cursos con 40% de descuento esta semana. No te lo pierdas.',
-    image_url: '/images/banners/descuentos.png',
-    display_type: 'popup',
-    target_page: 'all',
-    link_url: '/cursos',
-    button_text: 'Ver Cursos',
-    status: 'active',
-    start_date: '2024-03-15',
-    end_date: '2024-03-22',
-    views: 5420,
-    clicks: 892,
-    created_by: 1,
-    created_date: '2024-03-14',
-  },
-  {
-    id_announcement: 2,
-    title: 'Nuevo Campus Virtual',
-    content: 'Descubre nuestro renovado campus virtual con mejor experiencia de usuario',
-    image_url: null,
-    display_type: 'banner',
-    target_page: 'home',
-    link_url: '/campus',
-    button_text: 'Explorar',
-    status: 'active',
-    start_date: '2024-03-10',
-    end_date: null,
-    views: 12350,
-    clicks: 1240,
-    created_by: 1,
-    created_date: '2024-03-09',
-  },
-];
-
-// Datos mock - Consultas
-const mockContactForms: ContactForm[] = [
-  {
-    id_contact: 1,
-    full_name: 'María González',
-    email: 'maria.gonzalez@empresa.com',
-    phone: '+51 987654321',
-    company: 'Tech Solutions SAC',
-    subject: 'Cotización para Capacitación Empresarial',
-    message: 'Buenos días, estamos interesados en capacitar a nuestro equipo de desarrollo en tecnologías cloud. Somos 15 personas.',
-    form_type: 'quote',
-    status: 'pending',
-    priority: 'high',
-    assigned_to: null,
-    response: null,
-    response_date: null,
-    submission_date: '2024-03-15 09:30:00',
-    ip_address: '192.168.1.100',
-    user_agent: 'Mozilla/5.0...',
-    utm_source: 'google',
-    utm_medium: 'cpc',
-    utm_campaign: 'empresas-2024',
-  },
-  {
-    id_contact: 2,
-    full_name: 'Carlos Ramírez',
-    email: 'carlos.ram@gmail.com',
-    phone: null,
-    company: null,
-    subject: 'Consulta sobre Certificaciones',
-    message: '¿Las certificaciones que ofrecen tienen validez internacional?',
-    form_type: 'contact',
-    status: 'in_progress',
-    priority: 'medium',
-    assigned_to: 1,
-    assigned_to_name: 'Juan Pérez',
-    response: 'Estimado Carlos, sí todas nuestras certificaciones tienen validez internacional...',
-    response_date: '2024-03-14 15:20:00',
-    submission_date: '2024-03-14 10:15:00',
-    ip_address: '192.168.1.101',
-    user_agent: 'Mozilla/5.0...',
-  },
-  {
-    id_contact: 3,
-    full_name: 'Ana Torres',
-    email: 'ana.torres@startup.pe',
-    phone: '+51 912345678',
-    company: 'Startup Innovadora',
-    subject: 'Propuesta de Alianza Estratégica',
-    message: 'Somos una startup de EdTech y nos gustaría explorar una posible alianza.',
-    form_type: 'partnership',
-    status: 'pending',
-    priority: 'urgent',
-    assigned_to: null,
-    response: null,
-    response_date: null,
-    submission_date: '2024-03-15 14:00:00',
-    ip_address: '192.168.1.102',
-    user_agent: 'Mozilla/5.0...',
-  },
-  {
-    id_contact: 4,
-    full_name: 'Spam Bot',
-    email: 'spam@test.com',
-    phone: null,
-    company: null,
-    subject: 'Buy cheap products now!!!',
-    message: 'Click here for amazing deals...',
-    form_type: 'contact',
-    status: 'spam',
-    priority: 'low',
-    assigned_to: null,
-    response: null,
-    response_date: null,
-    submission_date: '2024-03-15 08:00:00',
-    ip_address: '192.168.1.103',
-    user_agent: 'Bot...',
-  },
-];
-
-// Datos mock - FAQs del Chatbot
-const mockChatbotFAQs: ChatbotFAQ[] = [
-  {
-    id_faq: 1,
-    question: '¿Cuáles son los horarios de atención?',
-    answer: 'Nuestro horario de atención es de lunes a viernes de 9:00 AM a 6:00 PM, y sábados de 9:00 AM a 1:00 PM.',
-    category: 'General',
-    keywords: ['horarios', 'atención', 'horario', 'cuando'],
-    active: true,
-    usage_count: 245,
-    created_date: '2024-01-10',
-    updated_date: '2024-02-15',
-  },
-  {
-    id_faq: 2,
-    question: '¿Cómo me inscribo a un curso?',
-    answer: 'Para inscribirte, ve a nuestra sección de Cursos, selecciona el curso de tu interés y haz clic en "Inscribirse". Luego completa el formulario y realiza el pago.',
-    category: 'Cursos',
-    keywords: ['inscribir', 'inscripción', 'registrar', 'curso', 'matrícula'],
-    active: true,
-    usage_count: 892,
-    created_date: '2024-01-10',
-    updated_date: null,
-  },
-  {
-    id_faq: 3,
-    question: '¿Ofrecen certificados?',
-    answer: 'Sí, al completar exitosamente un curso recibirás un certificado digital con validez internacional que puedes compartir en LinkedIn.',
-    category: 'Certificaciones',
-    keywords: ['certificado', 'certificación', 'diploma', 'título'],
-    active: true,
-    usage_count: 567,
-    created_date: '2024-01-10',
-    updated_date: '2024-03-01',
-  },
-  {
-    id_faq: 4,
-    question: '¿Cuáles son las formas de pago?',
-    answer: 'Aceptamos tarjetas de crédito/débito, transferencias bancarias, y pagos por Yape o Plin.',
-    category: 'Pagos',
-    keywords: ['pago', 'pagar', 'precio', 'costo', 'tarjeta', 'transferencia'],
-    active: true,
-    usage_count: 423,
-    created_date: '2024-01-10',
-    updated_date: null,
-  },
-];
+import {
+  mockNews,
+  mockAlerts,
+  mockAnnouncements,
+  mockChatbotFAQs,
+} from '../../../services/mockData';
+import {
+  getContactForms,
+  respondContactForm,
+  markContactFormAsSpam,
+} from '../../../services/webService';
 
 type WebTab = 'dashboard' | 'news' | 'alerts' | 'announcements' | 'contacts' | 'chatbot';
 
@@ -310,8 +57,11 @@ export const WebPage = () => {
   const [news, setNews] = useState(mockNews);
   const [alerts, setAlerts] = useState(mockAlerts);
   const [announcements, setAnnouncements] = useState(mockAnnouncements);
-  const [contacts, setContacts] = useState(mockContactForms);
+  const [contacts, setContacts] = useState<ContactForm[]>([]);
   const [faqs, setFaqs] = useState(mockChatbotFAQs);
+  const [isLoadingContacts, setIsLoadingContacts] = useState(false);
+  const [contactsError, setContactsError] = useState<string | null>(null);
+  const [contactsFilter, setContactsFilter] = useState<'all' | 'pending' | 'in_progress' | 'resolved' | 'spam'>('all');
 
   // Estados para modales - News
   const [showNewsFormModal, setShowNewsFormModal] = useState(false);
@@ -351,6 +101,26 @@ export const WebPage = () => {
     max_conversations_per_day: 1000,
     contact_threshold: 3,
   });
+
+  // Efecto para cargar los formularios de contacto desde la API
+  useEffect(() => {
+    const loadContactForms = async () => {
+      setIsLoadingContacts(true);
+      setContactsError(null);
+
+      try {
+        const { forms } = await getContactForms(contactsFilter);
+        setContacts(forms);
+      } catch (error) {
+        console.error('Error al cargar formularios de contacto:', error);
+        setContactsError('Error al cargar los formularios de contacto. Por favor, intenta nuevamente.');
+      } finally {
+        setIsLoadingContacts(false);
+      }
+    };
+
+    loadContactForms();
+  }, [contactsFilter]);
 
   // Determinar la sección actual basándose en la ruta
   const getCurrentTab = (): WebTab => {
@@ -602,22 +372,40 @@ export const WebPage = () => {
     setShowRespondContactModal(true);
   };
 
-  const handleMarkAsSpam = (contact: ContactForm) => {
-    const updatedContacts = contacts.map(c =>
-      c.id_contact === contact.id_contact
-        ? { ...c, status: 'spam' as ContactFormStatus }
-        : c
-    );
-    setContacts(updatedContacts);
+  const handleMarkAsSpam = async (contact: ContactForm) => {
+    try {
+      await markContactFormAsSpam(contact.id_contact);
+
+      // Actualizar la lista local
+      const updatedContacts = contacts.map(c =>
+        c.id_contact === contact.id_contact
+          ? { ...c, status: 'spam' as ContactFormStatus }
+          : c
+      );
+      setContacts(updatedContacts);
+    } catch (error) {
+      console.error('Error al marcar como spam:', error);
+      alert('Error al marcar el formulario como spam. Por favor, intenta nuevamente.');
+    }
   };
 
-  const handleResolve = (contact: ContactForm) => {
-    const updatedContacts = contacts.map(c =>
-      c.id_contact === contact.id_contact
-        ? { ...c, status: 'resolved' as ContactFormStatus }
-        : c
-    );
-    setContacts(updatedContacts);
+  const handleResolve = async (contact: ContactForm) => {
+    try {
+      const updatedContact = await respondContactForm(
+        contact.id_contact,
+        contact.response || 'Resuelto',
+        'resolved'
+      );
+
+      // Actualizar la lista local
+      const updatedContacts = contacts.map(c =>
+        c.id_contact === contact.id_contact ? updatedContact : c
+      );
+      setContacts(updatedContacts);
+    } catch (error) {
+      console.error('Error al resolver:', error);
+      alert('Error al resolver el formulario. Por favor, intenta nuevamente.');
+    }
   };
 
   const handleViewContactDetails = (contact: ContactForm) => {
@@ -626,21 +414,26 @@ export const WebPage = () => {
     setShowRespondContactModal(true);
   };
 
-  const handleSaveContactResponse = (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
-    const updatedContacts = contacts.map(c =>
-      c.id_contact === contactId
-        ? {
-            ...c,
-            response,
-            status,
-            assigned_to: assignedTo,
-            response_date: new Date().toISOString(),
-          }
-        : c
-    );
-    setContacts(updatedContacts);
-    setShowRespondContactModal(false);
-    setContactToRespond(null);
+  const handleSaveContactResponse = async (
+    contactId: number,
+    response: string,
+    status: ContactFormStatus,
+    assignedTo: number | null
+  ) => {
+    try {
+      const updatedContact = await respondContactForm(contactId, response, status);
+
+      // Actualizar la lista local
+      const updatedContacts = contacts.map(c =>
+        c.id_contact === contactId ? updatedContact : c
+      );
+      setContacts(updatedContacts);
+      setShowRespondContactModal(false);
+      setContactToRespond(null);
+    } catch (error) {
+      console.error('Error al guardar respuesta:', error);
+      alert('Error al guardar la respuesta. Por favor, intenta nuevamente.');
+    }
   };
 
   // ==================== HANDLERS - FAQS ====================
@@ -893,31 +686,56 @@ export const WebPage = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-heading font-bold text-white">Consultas y Formularios de Contacto</h2>
         <div className="flex gap-2">
-          <select className="select">
-            <option>Todos</option>
-            <option>Pendientes</option>
-            <option>En Progreso</option>
-            <option>Resueltos</option>
+          <select
+            className="select"
+            value={contactsFilter}
+            onChange={(e) => setContactsFilter(e.target.value as typeof contactsFilter)}
+          >
+            <option value="all">Todos</option>
+            <option value="pending">Pendientes</option>
+            <option value="in_progress">En Progreso</option>
+            <option value="resolved">Resueltos</option>
+            <option value="spam">Spam</option>
           </select>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {contacts.map((contact, index) => (
-          <ContactFormCard
-            key={contact.id_contact}
-            contact={contact}
-            index={index}
-            formatDateTime={formatDateTime}
-            getPriorityColor={getPriorityColor}
-            getStatusColor={getStatusColor}
-            onRespond={handleRespondContact}
-            onMarkAsSpam={handleMarkAsSpam}
-            onResolve={handleResolve}
-            onViewDetails={handleViewContactDetails}
-          />
-        ))}
-      </div>
+      {isLoadingContacts && (
+        <div className="text-center py-8">
+          <p className="text-gray-400">Cargando formularios de contacto...</p>
+        </div>
+      )}
+
+      {contactsError && (
+        <div className="bg-danger/20 border border-red-300 text-red-700 px-4 py-3 rounded">
+          {contactsError}
+        </div>
+      )}
+
+      {!isLoadingContacts && !contactsError && contacts.length === 0 && (
+        <div className="text-center py-8">
+          <p className="text-gray-400">No hay formularios de contacto para mostrar.</p>
+        </div>
+      )}
+
+      {!isLoadingContacts && !contactsError && contacts.length > 0 && (
+        <div className="grid grid-cols-1 gap-4">
+          {contacts.map((contact, index) => (
+            <ContactFormCard
+              key={contact.id_contact}
+              contact={contact}
+              index={index}
+              formatDateTime={formatDateTime}
+              getPriorityColor={getPriorityColor}
+              getStatusColor={getStatusColor}
+              onRespond={handleRespondContact}
+              onMarkAsSpam={handleMarkAsSpam}
+              onResolve={handleResolve}
+              onViewDetails={handleViewContactDetails}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 
