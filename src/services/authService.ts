@@ -5,6 +5,7 @@ import type {
   LoginCredentials,
   LoginResponse,
   RegisterData,
+  RegisterResponse,
   RefreshTokenResponse,
 } from '../shared/types/auth';
 
@@ -20,9 +21,9 @@ export const authService = {
   },
 
   // Register - Endpoint: POST /auth/register
-  async register(data: RegisterData): Promise<LoginResponse> {
+  async register(data: RegisterData): Promise<RegisterResponse> {
     // API real según especificación
-    return apiRequest<LoginResponse>('/auth/register', {
+    return apiRequest<RegisterResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     });

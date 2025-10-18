@@ -55,6 +55,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [requestId, setRequestId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string>('');
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
@@ -65,7 +66,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
   const roles: Array<{ value: UserRole; label: string; icon: any; color: string }> = [
     {
-      value: 'administrador',
+      value: 'admin',
       label: 'Administrador',
       icon: faShieldHalved,
       color: 'text-red-600',
@@ -141,6 +142,9 @@ export const RegisterPage = ({}: RegisterPageProps) => {
     if (!formData.reason.trim()) {
       newErrors.reason = 'Debe indicar el motivo de registro';
     }
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'El teléfono es requerido';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -155,21 +159,24 @@ export const RegisterPage = ({}: RegisterPageProps) => {
         setLoading(true);
 
         // Llamar al servicio de registro según especificación
-        await authService.register({
+        const response = await authService.register({
           email: formData.email,
           password: formData.password,
           first_name: formData.firstName,
           last_name: formData.lastName,
+          phone_number: formData.phone,
           role: formData.role as UserRole,
+          reason: formData.reason,
         });
 
         // NO guardar sesión - el registro requiere aprobación del administrador
-        // authService.saveSession(response.token, response.refreshToken);
-
-        // Mostrar mensaje de éxito
-        setSubmitted(true);
-
-        // NO redirigir automáticamente - dejar que el usuario vea el mensaje
+        // Mostrar mensaje de éxito con el request_id
+        if (response.success && response.data) {
+          setRequestId(response.data.request_id);
+          setSubmitted(true);
+        } else {
+          setApiError(response.message || 'Error al procesar el registro');
+        }
 
       } catch (error: any) {
         setApiError(error.message || 'Error al procesar el registro');
@@ -298,17 +305,13 @@ export const RegisterPage = ({}: RegisterPageProps) => {
 
       case 'phone':
         // Validación estricta: solo formato +51980490696 (sin espacios, guiones ni paréntesis)
-        if (value.trim()) {
-          // Formato: +[código país][número] sin espacios
-          if (!/^\+\d{1,3}\d{7,12}$/.test(value)) {
-            newErrors.phone = 'Formato inválido. Use +[código país][número]. Ej: +51980490696';
-          } else if (value.length > 16) {
-            newErrors.phone = 'El teléfono no puede tener más de 16 caracteres';
-          } else {
-            delete newErrors.phone;
-          }
+        if (!value.trim()) {
+          newErrors.phone = 'El teléfono es requerido';
+        } else if (!/^\+\d{1,3}\d{7,12}$/.test(value)) {
+          newErrors.phone = 'Formato inválido. Use +[código país][número]. Ej: +51980490696';
+        } else if (value.length > 16) {
+          newErrors.phone = 'El teléfono no puede tener más de 16 caracteres';
         } else {
-          // Si está vacío, eliminar error (campo opcional)
           delete newErrors.phone;
         }
         break;
@@ -348,8 +351,15 @@ export const RegisterPage = ({}: RegisterPageProps) => {
               ¡Solicitud Enviada Exitosamente!
             </h2>
             <p className="text-gray-300 mb-2">
-              Tu solicitud de registro ha sido enviada correctamente.
+              Solicitud de registro enviada. Será revisada por un administrador.
             </p>
+            {requestId && (
+              <div className="bg-gradient-to-br from-primary-600/20 to-primary-700/20 rounded-lg p-4 mb-4 border border-primary-500/30">
+                <p className="text-sm text-gray-300">
+                  <span className="font-semibold text-primary-400">ID de Solicitud:</span> #{requestId}
+                </p>
+              </div>
+            )}
             <p className="text-gray-400 text-sm mb-6">
               Un administrador revisará tu solicitud y te notificará cuando tu cuenta sea aprobada.
               Recibirás un correo electrónico con las instrucciones para acceder al sistema.
@@ -458,7 +468,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Teléfono
+                    Teléfono *
                   </label>
                   <div className="relative">
                     <FontAwesomeIcon

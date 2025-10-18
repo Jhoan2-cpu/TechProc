@@ -44,13 +44,24 @@ export interface LoginCredentials {
   password: string;
 }
 
-// Interfaz para datos de registro según especificación
+// Interfaz para datos de registro según especificación real de la API
 export interface RegisterData {
-  email: string;
-  password: string;
   first_name: string;
   last_name: string;
-  role?: UserRole;
+  email: string;
+  password: string;
+  phone_number: string;
+  role: UserRole;
+  reason: string;
+}
+
+// Interfaz para respuesta de registro
+export interface RegisterResponse {
+  success: boolean;
+  message: string;
+  data: {
+    request_id: number;
+  };
 }
 
 // Interfaz para respuesta de refresh token
