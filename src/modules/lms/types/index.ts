@@ -311,7 +311,7 @@ export interface ApiCourse {
 }
 
 export interface ApiCourseDetail extends ApiCourse {
-  video_url?: string;
+  video_url?: string | null;
   prerequisites?: string;
   certificate_name?: boolean;
   certificate_issuer?: string;
@@ -326,6 +326,7 @@ export interface ApiCourseDetail extends ApiCourse {
     user_id: number;
     name: string;
     expertise_area: string;
+    email?: string;
   }>;
   contents?: Array<{
     id: number;
@@ -429,8 +430,8 @@ export interface CourseDetail {
   title: string;
   description: string;
   level: CourseLevel;
-  course_image?: string;
-  video_url?: string;
+  course_image?: string | null;
+  video_url?: string | null;
   duration: number;
   sessions: number;
   selling_price: number;
@@ -442,9 +443,25 @@ export interface CourseDetail {
   featured?: boolean;
   highest_rated?: boolean;
   status: boolean;
-  categories?: ApiCategory[];
-  instructors?: ApiInstructor[];
-  contents?: ApiContent[];
+  categories?: Array<{
+    category_id: number;
+    name: string;
+    slug: string;
+  }>;
+  instructors?: Array<{
+    instructor_id: number;
+    user_id: number;
+    name: string;
+    expertise_area: string;
+    email?: string;
+  }>;
+  contents?: Array<{
+    id: number;
+    session: number;
+    type: string;
+    title: string;
+    order_number: number;
+  }>;
   created_at: string;
   updated_at?: string;
 }

@@ -2,6 +2,7 @@
 import { apiRequest } from '../../../services/api.config';
 import type {
   Course,
+  CourseDetail,
   ApiCourse,
   ApiCourseDetail,
   CoursesListResponse,
@@ -75,6 +76,41 @@ export const coursesService = {
   async getById(id: string): Promise<Course> {
     const response = await apiRequest<CourseDetailResponse>(`/lms/courses/${id}`);
     return mapApiCourseToCourse(response.data);
+  },
+
+  /**
+   * Obtener detalles completos de un curso
+   * Endpoint: GET /lms/courses/{course_id}
+   */
+  async getDetailById(id: string | number): Promise<CourseDetail> {
+    const response = await apiRequest<CourseDetailResponse>(`/lms/courses/${id}`);
+    const data = response.data;
+
+    return {
+      id: String(data.course_id || data.id),
+      course_id: data.course_id || data.id,
+      title: data.title,
+      description: data.description,
+      level: data.level,
+      course_image: data.course_image || undefined,
+      video_url: data.video_url || undefined,
+      duration: data.duration,
+      sessions: data.sessions,
+      selling_price: data.selling_price,
+      discount_price: data.discount_price,
+      prerequisites: data.prerequisites,
+      certificate_name: data.certificate_name,
+      certificate_issuer: data.certificate_issuer,
+      bestseller: data.bestseller || false,
+      featured: data.featured || false,
+      highest_rated: data.highest_rated || false,
+      status: data.status,
+      categories: data.categories || [],
+      instructors: data.instructors || [],
+      contents: data.contents || [],
+      created_at: data.created_at,
+      updated_at: data.updated_at || data.created_at,
+    };
   },
 
   /**
