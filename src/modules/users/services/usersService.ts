@@ -15,6 +15,9 @@ import type {
 
 // Conversión de ApiUser a User (frontend)
 const mapApiUserToUser = (apiUser: ApiUser): User => {
+  // Tomar el primer rol del array (la API devuelve roles como array)
+  const primaryRole = apiUser.role && apiUser.role.length > 0 ? apiUser.role[0] : 'data';
+
   return {
     id: String(apiUser.id),
     username: apiUser.email.split('@')[0],
@@ -22,12 +25,12 @@ const mapApiUserToUser = (apiUser: ApiUser): User => {
     first_name: apiUser.first_name,
     last_name: apiUser.last_name,
     name: `${apiUser.first_name} ${apiUser.last_name}`,
-    role: mapApiRoleToFrontendRole(apiUser.role),
+    role: mapApiRoleToFrontendRole(primaryRole),
     phone: apiUser.phone_number,
     department: undefined,
-    is_active: apiUser.status === 'active',
+    is_active: apiUser.status === 'active', // active=true, inactive/banned=false
     created_at: apiUser.created_at,
-    last_login: apiUser.last_access,
+    last_login: apiUser.last_access || undefined,
   };
 };
 
@@ -36,10 +39,19 @@ const mapApiRoleToFrontendRole = (apiRole: string): User['role'] => {
   const roleMap: Record<string, User['role']> = {
     'admin': 'administrador',
     'lms': 'gestor_lms',
+    'gestor_lms': 'gestor_lms',
+    'soporte_tecnico': 'soporte_tecnico',
     'seg': 'soporte_seguridad',
+    'soporte_seguridad': 'soporte_seguridad',
     'infra': 'soporte_infraestructura',
+    'soporte_infraestructura': 'soporte_infraestructura',
     'web': 'developer_web',
+    'developer_web': 'developer_web',
     'data': 'analista_datos',
+    'analista_datos': 'analista_datos',
+    // Roles adicionales que vienen del API
+    'editor': 'administrador',
+    'writer': 'analista_datos',
   };
   return roleMap[apiRole] || 'analista_datos';
 };

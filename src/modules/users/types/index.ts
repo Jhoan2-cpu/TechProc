@@ -13,7 +13,7 @@ export type UserRole =
   | 'developer_web'
   | 'analista_datos';
 
-export type UserStatus = 'active' | 'inactive';
+export type UserStatus = 'active' | 'inactive' | 'banned';
 
 export interface User {
   id: string;
@@ -95,11 +95,11 @@ export interface ApiUser {
   birth_date?: string;
   gender?: string;
   country?: string;
-  role: string;
+  role: string[]; // Array de roles según respuesta del API
   status: string;
   profile_photo?: string;
-  last_access?: string;
-  last_access_ip?: string;
+  last_access?: string | null;
+  last_access_ip?: string | null;
   created_at: string;
   updated_at?: string;
 }

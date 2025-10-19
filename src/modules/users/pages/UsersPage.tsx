@@ -36,7 +36,8 @@ export const UsersPage = () => {
     const matchesStatus =
       filterStatus === 'all' ||
       (filterStatus === 'active' && user.is_active) ||
-      (filterStatus === 'inactive' && !user.is_active);
+      (filterStatus === 'inactive' && !user.is_active) ||
+      (filterStatus === 'banned' && !user.is_active);
     return matchesSearch && matchesRole && matchesStatus;
   });
 
