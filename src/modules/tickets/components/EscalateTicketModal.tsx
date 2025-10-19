@@ -1,42 +1,168 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faExclamationTriangle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import type { Ticket } from '../types';
+import { apiRequest } from '../../../services/api.config';
+import { authService } from '../../../services/authService';
+import { ticketsService } from '../services/ticketsService';
 
-// Lista mock de técnicos disponibles para escalación
-const availableTechnicians = [
-  { id: 2, name: 'Carlos Rodríguez', specialty: 'Seguridad Avanzada', level: 'Senior' },
-  { id: 3, name: 'Ana García', specialty: 'Infraestructura', level: 'Senior' },
-  { id: 4, name: 'Luis Martínez', specialty: 'Desarrollo', level: 'Lead' },
-  { id: 5, name: 'María Fernández', specialty: 'Redes', level: 'Senior' },
-];
+interface ApiUser {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: string[];
+  status: string;
+  employee_id: number | null;
+  last_access: string | null;
+  last_access_ip: string | null;
+  created_at: string;
+}
+
+interface Technician {
+  id: number;
+  employee_id: number;
+  name: string;
+  email: string;
+}
 
 interface EscalateTicketModalProps {
   ticket: Ticket | null;
   isOpen: boolean;
   onClose: () => void;
-  onEscalate: (ticketId: number, technicianId: number, reason: string, observations: string) => void;
+  onSuccess: () => void;
 }
 
 export const EscalateTicketModal = ({
   ticket,
   isOpen,
   onClose,
-  onEscalate,
+  onSuccess,
 }: EscalateTicketModalProps) => {
+  const [technicians, setTechnicians] = useState<Technician[]>([]);
+  const [loadingTechnicians, setLoadingTechnicians] = useState(false);
   const [technicianId, setTechnicianId] = useState('');
   const [reason, setReason] = useState('');
   const [observations, setObservations] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      loadTechnicians();
+    }
+  }, [isOpen]);
+
+  const loadTechnicians = async () => {
+    try {
+      setLoadingTechnicians(true);
+      setError('');
+
+      // Obtener el empleado actual para excluirlo de la lista
+      const currentEmployee = authService.getCurrentEmployee();
+      const currentEmployeeId = currentEmployee?.id;
+
+      // Hacer petición directa al API para obtener usuarios sin transformación
+      const response = await apiRequest<{
+        success: boolean;
+        data: {
+          users: ApiUser[];
+          pagination: any;
+        };
+      }>('/admin/users');
+
+      console.log('Respuesta del API:', response);
+      console.log('Employee ID actual (a excluir):', currentEmployeeId);
+
+      // Filtrar solo técnicos con employee_id, rol support y status active
+      const validTechnicians = response.data.users
+        .filter(user => {
+          console.log('Revisando usuario:', user.first_name, user.last_name, {
+            employee_id: user.employee_id,
+            status: user.status,
+            role: user.role
+          });
+
+          // Verificar que tenga employee_id (no null)
+          if (!user.employee_id) {
+            console.log('  -> Descartado: no tiene employee_id');
+            return false;
+          }
+
+          // Excluir al técnico actual (no puede escalarse a sí mismo)
+          if (user.employee_id === currentEmployeeId) {
+            console.log('  -> Descartado: es el técnico actual');
+            return false;
+          }
+
+          // Verificar que esté activo
+          if (user.status !== 'active') {
+            console.log('  -> Descartado: no está activo');
+            return false;
+          }
+
+          // Verificar que tenga rol support
+          // El rol viene como array en el API, tomamos el primer elemento
+          const userRole = Array.isArray(user.role) ? user.role[0] : user.role;
+
+          // El API devuelve 'support' directamente, no en español
+          if (userRole !== 'support') {
+            console.log('  -> Descartado: rol no es support, es:', userRole);
+            return false;
+          }
+
+          console.log('  -> ACEPTADO como técnico válido');
+          return true;
+        })
+        .map(user => ({
+          id: user.id,
+          employee_id: user.employee_id as number,
+          name: `${user.first_name} ${user.last_name}`,
+          email: user.email,
+        }));
+
+      console.log('Técnicos válidos encontrados:', validTechnicians);
+      setTechnicians(validTechnicians);
+    } catch (err: any) {
+      setError('Error al cargar la lista de técnicos');
+      console.error('Error loading technicians:', err);
+    } finally {
+      setLoadingTechnicians(false);
+    }
+  };
 
   if (!isOpen || !ticket) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onEscalate(ticket.ticket_id, Number(technicianId), reason, observations);
-    // Reset form
-    setTechnicianId('');
-    setReason('');
-    setObservations('');
+    setSubmitting(true);
+    setError('');
+
+    try {
+      // Obtener el employee actual (técnico origen)
+      const currentEmployee = authService.getCurrentEmployee();
+      if (!currentEmployee) {
+        setError('No se pudo obtener los datos del empleado');
+        return;
+      }
+
+      // Enviar escalación al API
+      await ticketsService.escalate(ticket.ticket_id, {
+        technician_origin_id: currentEmployee.id,
+        technician_destiny_id: Number(technicianId),
+        escalation_reason: reason,
+        observations: observations,
+      });
+
+      // Éxito
+      onSuccess();
+      handleClose();
+    } catch (err: any) {
+      setError(err.message || 'Error al escalar el ticket');
+      console.error('Error escalating ticket:', err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -84,24 +210,44 @@ export const EscalateTicketModal = ({
             </div>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           {/* Technician Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Escalar a Técnico *
             </label>
-            <select
-              required
-              value={technicianId}
-              onChange={(e) => setTechnicianId(e.target.value)}
-              className="select"
-            >
-              <option value="">Seleccione un técnico</option>
-              {availableTechnicians.map((tech) => (
-                <option key={tech.id} value={tech.id}>
-                  {tech.name} - {tech.specialty} ({tech.level})
-                </option>
-              ))}
-            </select>
+            {loadingTechnicians ? (
+              <div className="flex items-center justify-center p-4">
+                <FontAwesomeIcon icon={faSpinner} className="text-2xl text-primary-500 animate-spin mr-2" />
+                <span className="text-gray-300">Cargando técnicos...</span>
+              </div>
+            ) : (
+              <select
+                required
+                value={technicianId}
+                onChange={(e) => setTechnicianId(e.target.value)}
+                className="select"
+                disabled={submitting}
+              >
+                <option value="">Seleccione un técnico</option>
+                {technicians.map((tech) => (
+                  <option key={tech.employee_id} value={tech.employee_id}>
+                    {tech.name} - {tech.email}
+                  </option>
+                ))}
+              </select>
+            )}
+            {!loadingTechnicians && technicians.length === 0 && (
+              <p className="text-sm text-yellow-400 mt-2">
+                No hay técnicos disponibles para escalación
+              </p>
+            )}
           </div>
 
           {/* Reason Selection */}

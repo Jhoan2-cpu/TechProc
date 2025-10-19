@@ -133,6 +133,7 @@ export const TicketsMainPage = () => {
   const [ticketToEscalate, setTicketToEscalate] = useState<Ticket | null>(null);
   const [ticketToTake, setTicketToTake] = useState<Ticket | null>(null);
   const [ticketToResolve, setTicketToResolve] = useState<Ticket | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Handlers para modales
   const handleViewDetails = (ticket: Ticket) => {
@@ -143,19 +144,11 @@ export const TicketsMainPage = () => {
     setTicketToEscalate(ticket);
   };
 
-  const handleEscalateConfirm = (ticketId: number, technicianId: number, _reason: string, _observations: string) => {
-    setTickets(tickets.map(t =>
-      t.ticket_id === ticketId
-        ? {
-            ...t,
-            status: 'escalado' as const,
-            assigned_technician: technicianId,
-          }
-        : t
-    ));
-    setTicketToEscalate(null);
-    // Aquí podrías mostrar una notificación de éxito
-    console.log(`Ticket ${ticketId} escalado al técnico ${technicianId}`);
+  const handleEscalateSuccess = () => {
+    // Recargar la lista de tickets después de escalar
+    console.log('Ticket escalado exitosamente');
+    // Incrementar refreshTrigger para forzar recarga en MyTicketsPage
+    setRefreshTrigger(prev => prev + 1);
   };
 
   const handleTakeTicket = (ticket: Ticket) => {
@@ -218,6 +211,7 @@ export const TicketsMainPage = () => {
             onViewDetails={handleViewDetails}
             onEscalate={handleEscalate}
             onResolve={handleResolve}
+            refreshTrigger={refreshTrigger}
           />
         );
       case 'available':
@@ -258,7 +252,7 @@ export const TicketsMainPage = () => {
         ticket={ticketToEscalate}
         isOpen={!!ticketToEscalate}
         onClose={() => setTicketToEscalate(null)}
-        onEscalate={handleEscalateConfirm}
+        onSuccess={handleEscalateSuccess}
       />
 
       <TakeTicketModal

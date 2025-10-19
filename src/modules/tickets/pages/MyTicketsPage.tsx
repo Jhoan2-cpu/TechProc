@@ -10,12 +10,14 @@ interface MyTicketsPageProps {
   onViewDetails: (ticket: Ticket) => void;
   onEscalate: (ticket: Ticket) => void;
   onResolve: (ticket: Ticket) => void;
+  refreshTrigger?: number; // Prop para forzar recarga
 }
 
 export const MyTicketsPage = ({
   onViewDetails,
   onEscalate,
-  onResolve
+  onResolve,
+  refreshTrigger
 }: MyTicketsPageProps) => {
   const [myTickets, setMyTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,7 @@ export const MyTicketsPage = ({
 
   useEffect(() => {
     loadMyTickets();
-  }, []);
+  }, [refreshTrigger]); // Recargar cuando cambie refreshTrigger
 
   const loadMyTickets = async () => {
     try {
