@@ -53,16 +53,16 @@ export const AvailableTicketsPage = ({
       setError('');
       setSuccessMessage('');
 
-      // Obtener el ID del usuario actual
-      const currentUser = authService.getCurrentUser();
-      if (!currentUser) {
-        setError('No se pudo obtener el usuario actual');
+      // Obtener el ID del empleado actual (technician_id es el employee.id)
+      const currentEmployee = authService.getCurrentEmployee();
+      if (!currentEmployee) {
+        setError('No se pudo obtener los datos del empleado');
         return;
       }
 
       // Llamar al servicio para tomar el ticket
       const response = await ticketsService.take(ticket.ticket_id, {
-        technician_id: currentUser.id,
+        technician_id: currentEmployee.id,
       });
 
       // Mostrar mensaje de éxito
