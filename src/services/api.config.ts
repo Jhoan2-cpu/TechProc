@@ -53,10 +53,22 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
       if (errorData && errorData.error) {
         errorMessage = errorData.error.message || errorMessage;
         errorCode = errorData.error.code || errorCode;
-        errorDetails = errorData.error.details;
 
-        // Agregar detalles de validación si existen
-        if (errorDetails && errorDetails.length > 0) {
+        // Manejar detalles de validación en formato objeto { field: [messages] }
+        if (errorData.error.details && typeof errorData.error.details === 'object') {
+          const detailsObj = errorData.error.details;
+          const fieldErrors = Object.entries(detailsObj)
+            .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+            .join('; ');
+          errorMessage += ` (${fieldErrors})`;
+
+          // Convertir a formato de array para compatibilidad
+          errorDetails = Object.entries(detailsObj).map(([field, messages]) => ({
+            field,
+            message: Array.isArray(messages) ? messages.join(', ') : String(messages)
+          }));
+        } else if (errorData.error.details && Array.isArray(errorData.error.details)) {
+          errorDetails = errorData.error.details;
           const fieldErrors = errorDetails
             .map(d => `${d.field}: ${d.message}`)
             .join(', ');
@@ -67,10 +79,10 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
         errorMessage = errorData.message;
       }
 
-      const error = new Error(errorMessage) as Error & { code?: string; status?: number; details?: Array<{ field: string; message: string }> | undefined };
+      const error = new Error(errorMessage) as Error & { code?: string; status?: number; details?: any };
       error.code = errorCode;
       error.status = response.status;
-      error.details = errorDetails;
+      error.details = errorDetails || errorData?.error?.details;
       throw error;
     } else {
       throw new Error(`HTTP error! status: ${response.status}`);

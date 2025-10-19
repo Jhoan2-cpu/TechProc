@@ -3,7 +3,7 @@
 export type UserRole =
   | 'admin'           // Acceso total
   | 'gestor_lms'             // Solo LMS
-  | 'soporte_tecnico'        // Tickets solamente
+  | 'support'        // Tickets solamente
   | 'soporte_seguridad'      // Tickets + Security
   | 'soporte_infraestructura'// Tickets + Infrastructure
   | 'developer_web'          // Web + Tickets
@@ -51,7 +51,7 @@ export interface RegisterData {
   email: string;
   password: string;
   phone_number: string;
-  role: UserRole;
+  role: UserRole | string; // Aceptar tanto UserRole como string para mapeo interno
   reason: string;
   position_id: number;
   department_id: number;
@@ -80,7 +80,7 @@ export interface RefreshTokenResponse {
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
   admin: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
   gestor_lms: ['lms'],
-  soporte_tecnico: ['support'],
+  support: ['support'],
   soporte_seguridad: ['tickets', 'security'],
   soporte_infraestructura: ['tickets', 'infrastructure'],
   developer_web: ['tickets', 'web'],

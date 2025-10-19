@@ -28,13 +28,42 @@ export const authService = {
 
   // Register - Endpoint: POST /auth/register
   async register(data: RegisterData): Promise<RegisterResponse> {
+    // Mapear rol del frontend al formato del API
+    const roleMap: Record<string, string> = {
+      'administrador': 'admin',
+      'admin': 'admin',
+      'gestor_lms': 'lms',
+      'lms': 'lms',
+      'soporte_tecnico': 'data', // Mapear a data por defecto
+      'soporte_seguridad': 'seg',
+      'seg': 'seg',
+      'soporte_infraestructura': 'infra',
+      'infra': 'infra',
+      'developer_web': 'web',
+      'web': 'web',
+      'analista_datos': 'data',
+      'data': 'data',
+    };
+
+    const apiRole = roleMap[data.role] || 'data';
+
     // API real según especificación
     // Aseguramos que position_id y department_id estén presentes con valores fijos
-    const requestData = {
+    const requestData: any = {
       ...data,
+      role: apiRole,
       position_id: 1,
       department_id: 2,
     };
+
+    // Limpiar campos opcionales para evitar problemas de validación
+    // El backend acepta estos valores para employment_status: Active, Inactive, Terminated
+    // Si no es uno de estos valores exactos, mejor no enviarlo (es nullable)
+    if (requestData.employment_status && !['Active', 'Inactive', 'Terminated'].includes(requestData.employment_status)) {
+      delete requestData.employment_status;
+    }
+
+    console.log('Datos finales enviados al API después del mapeo:', JSON.stringify(requestData, null, 2));
 
     return apiRequest<RegisterResponse>('/auth/register', {
       method: 'POST',

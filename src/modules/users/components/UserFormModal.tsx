@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import type { User, UserRole, UserFormModalProps, CreateUserData, UpdateUserData } from '../types';
 import { usersService } from '../services';
+import { authService } from '../../../services/authService';
 
 export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => {
   const isEditing = !!user;
@@ -16,6 +17,13 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
     address: '',
     role: user?.role || ('analista_datos' as UserRole),
     status: user?.is_active ? 'active' : 'inactive',
+    // Campos adicionales para registro
+    reason: '',
+    hire_date: new Date().toISOString().split('T')[0],
+    employment_status: 'Active',
+    schedule: 'Lunes a Viernes, 9:00 AM - 6:00 PM',
+    speciality: '',
+    salary: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -46,6 +54,22 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
       return;
     }
 
+    // Validaciones adicionales para crear usuario
+    if (!isEditing) {
+      if (!formData.reason.trim()) {
+        setError('El motivo/razón es obligatorio');
+        return;
+      }
+      if (!formData.speciality.trim()) {
+        setError('La especialidad es obligatoria');
+        return;
+      }
+      if (!formData.salary || parseFloat(formData.salary) <= 0) {
+        setError('El salario es obligatorio y debe ser mayor a 0');
+        return;
+      }
+    }
+
     try {
       setLoading(true);
 
@@ -64,25 +88,65 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
         onSave(updatedUser);
         onClose();
       } else {
-        // Crear nuevo usuario
-        const createData: CreateUserData = {
+        // Crear nuevo usuario usando el endpoint de registro
+        const registerData = {
           first_name: formData.first_name,
           last_name: formData.last_name,
           email: formData.email,
           password: formData.password,
-          phone_number: formData.phone_number || undefined,
-          address: formData.address || undefined,
+          phone_number: formData.phone_number,
           role: formData.role,
-          status: formData.status,
+          reason: formData.reason,
+          position_id: 1,
+          department_id: 2,
+          hire_date: formData.hire_date,
+          employment_status: formData.employment_status,
+          schedule: formData.schedule,
+          speciality: formData.speciality,
+          salary: parseFloat(formData.salary),
         };
 
-        const newUser = await usersService.create(createData);
-        onSave(newUser);
-        onClose();
+        console.log('Datos enviados al API:', JSON.stringify(registerData, null, 2));
+
+        const response = await authService.register(registerData);
+
+        if (response.success) {
+          alert(`Usuario registrado exitosamente. ID de solicitud: ${response.data.request_id}`);
+          onClose();
+          // Recargar la página de usuarios
+          window.location.reload();
+        } else {
+          setError(response.message || 'Error al registrar el usuario');
+        }
       }
     } catch (err: any) {
       console.error('Error al guardar usuario:', err);
-      setError(err.message || 'Error al guardar el usuario. Por favor, intenta de nuevo.');
+      console.error('Detalles del error:', err.details || err);
+
+      // Mostrar detalles de validación si existen
+      if (err.details) {
+        if (Array.isArray(err.details)) {
+          const errorMessages = err.details
+            .map(detail => `${detail.field}: ${detail.message}`)
+            .join('\n');
+          setError(`Error de validación:\n${errorMessages}`);
+        } else if (typeof err.details === 'object') {
+          const errorMessages = Object.entries(err.details)
+            .map(([field, messages]) => {
+              if (Array.isArray(messages)) {
+                return `${field}: ${messages.join(', ')}`;
+              } else {
+                return `${field}: ${messages}`;
+              }
+            })
+            .join('\n');
+          setError(`Error de validación:\n${errorMessages}`);
+        } else {
+          setError(err.message || 'Error al guardar el usuario. Por favor, intenta de nuevo.');
+        }
+      } else {
+        setError(err.message || 'Error al guardar el usuario. Por favor, intenta de nuevo.');
+      }
     } finally {
       setLoading(false);
     }
@@ -198,17 +262,118 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
             </div>
 
             {/* Dirección */}
-            <div className="md:col-span-2">
-              <label className="block text-sm font-semibold text-gray-300 mb-2">Dirección</label>
-              <input
-                type="text"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                placeholder="Av. Principal 123, Lima"
-                disabled={loading}
-              />
-            </div>
+            {isEditing && (
+              <div className="md:col-span-2">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">Dirección</label>
+                <input
+                  type="text"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                  placeholder="Av. Principal 123, Lima"
+                  disabled={loading}
+                />
+              </div>
+            )}
+
+            {/* Campos adicionales solo para crear usuario */}
+            {!isEditing && (
+              <>
+                {/* Especialidad */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Especialidad <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.speciality}
+                    onChange={(e) => setFormData({ ...formData, speciality: e.target.value })}
+                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                    placeholder="Administración de Sistemas"
+                    disabled={loading}
+                  />
+                </div>
+
+                {/* Salario */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Salario <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    value={formData.salary}
+                    onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
+                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                    placeholder="4500.00"
+                    disabled={loading}
+                  />
+                </div>
+
+                {/* Fecha de contratación */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Fecha de Contratación <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={formData.hire_date}
+                    onChange={(e) => setFormData({ ...formData, hire_date: e.target.value })}
+                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                    disabled={loading}
+                  />
+                </div>
+
+                {/* Estado de empleo */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Estado de Empleo
+                  </label>
+                  <select
+                    value={formData.employment_status}
+                    onChange={(e) => setFormData({ ...formData, employment_status: e.target.value })}
+                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
+                    disabled={loading}
+                  >
+                    <option value="Active" className="bg-secondary-700">Active</option>
+                    <option value="Inactive" className="bg-secondary-700">Inactive</option>
+                    <option value="Terminated" className="bg-secondary-700">Terminated</option>
+                  </select>
+                </div>
+
+                {/* Horario */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">Horario</label>
+                  <input
+                    type="text"
+                    value={formData.schedule}
+                    onChange={(e) => setFormData({ ...formData, schedule: e.target.value })}
+                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                    placeholder="Lunes a Viernes, 9:00 AM - 6:00 PM"
+                    disabled={loading}
+                  />
+                </div>
+
+                {/* Motivo/Razón */}
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Motivo de Registro <span className="text-danger">*</span>
+                  </label>
+                  <textarea
+                    required
+                    value={formData.reason}
+                    onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 min-h-[100px]"
+                    placeholder="Explique brevemente por qué se necesita crear este usuario..."
+                    rows={3}
+                    disabled={loading}
+                  />
+                </div>
+              </>
+            )}
 
             {/* Rol */}
             <div className={isEditing ? '' : 'md:col-span-2'}>
