@@ -9,7 +9,7 @@ export interface ApiSoftware {
   vendor: string;
   install_date: string;
   expiration_date?: string | null;
-  status: 'activo' | 'inactivo';
+  status: string;
 }
 
 // 💡 Modelo usado en el frontend (más limpio)
@@ -32,7 +32,7 @@ export interface CreateSoftwareData {
   vendor: string;
   install_date: string;
   expiration_date?: string | null;
-  status: 'activo' | 'inactivo';
+  status: string;
 }
 
 // 🧩 Datos para actualizar software
