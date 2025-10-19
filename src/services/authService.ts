@@ -15,42 +15,13 @@ export const authService = {
 
    async login(credentials: LoginCredentials): Promise<LoginResponse> {
 
-      //================================DESCOMENTAR CUANDO TODO EL API ESTÉ UNIDO
-  //   // API real
-  //   const response = await apiRequest<LoginResponse>('/auth/login', {
-  //     method: 'POST',
-  //     body: JSON.stringify(credentials),
-  //   });
+    // API real
+    const response = await apiRequest<LoginResponse>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
 
-    //================================
-
-
-    //RESPUESTA FALSA, PARA IMPLEMENTAR OTROS MÓDULOS [ELIMINAR CUANDO SE INCORPORE LA API REAL]
-    const user: User = {
-      id: 18,
-      username: "JhoanAdmin",
-      email: credentials.email,
-      role: ["admin"],
-      name: "Jhoan",
-      first_name: "Cruz",
-      last_name: "Castillo",
-      profile_photo: null,
-      status: "active",
-    }
-    
-    const session: SessionData = {
-      session_id: 1,
-      token: "fasdfasdfasdfij9a8sdfu9aos8dfhj98aoshdf9sadf",
-      expires_at: "2023-10-10T10:00:00Z",
-    }
-    const response : LoginResponse =  {
-      success: true,
-      data: {
-        user: user,
-        session: session,
-      },
-    }
-    
+   
     return response;
     
   },
@@ -58,9 +29,16 @@ export const authService = {
   // Register - Endpoint: POST /auth/register
   async register(data: RegisterData): Promise<RegisterResponse> {
     // API real según especificación
+    // Aseguramos que position_id y department_id estén presentes con valores fijos
+    const requestData = {
+      ...data,
+      position_id: 1,
+      department_id: 2,
+    };
+
     return apiRequest<RegisterResponse>('/auth/register', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(requestData),
     });
   },
 

@@ -76,7 +76,7 @@ export const usersService = {
     const endpoint = `/admin/users${queryString ? `?${queryString}` : ''}`;
 
     const response = await apiRequest<UsersListResponse>(endpoint);
-
+    console.log('Respuesta de getAll usuarios:', response);
     return {
       users: response.data.users.map(mapApiUserToUser),
       pagination: {

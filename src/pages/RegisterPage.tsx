@@ -37,6 +37,11 @@ interface RegisterFormData {
   role: string;
   department: string;
   reason: string;
+  hireDate: string;
+  employmentStatus: string;
+  schedule: string;
+  speciality: string;
+  salary: string;
 }
 
 export const RegisterPage = ({}: RegisterPageProps) => {
@@ -52,6 +57,11 @@ export const RegisterPage = ({}: RegisterPageProps) => {
     role: '',
     department: '',
     reason: '',
+    hireDate: new Date().toISOString().split('T')[0], // Fecha actual por defecto
+    employmentStatus: 'Active',
+    schedule: 'Lunes a Viernes, 9:00 AM - 6:00 PM',
+    speciality: '',
+    salary: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -145,6 +155,15 @@ export const RegisterPage = ({}: RegisterPageProps) => {
     if (!formData.phone.trim()) {
       newErrors.phone = 'El teléfono es requerido';
     }
+    if (!formData.hireDate) {
+      newErrors.hireDate = 'La fecha de contratación es requerida';
+    }
+    if (!formData.speciality.trim()) {
+      newErrors.speciality = 'La especialidad es requerida';
+    }
+    if (!formData.salary || parseFloat(formData.salary) <= 0) {
+      newErrors.salary = 'El salario es requerido y debe ser mayor a 0';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -167,6 +186,13 @@ export const RegisterPage = ({}: RegisterPageProps) => {
           phone_number: formData.phone,
           role: formData.role as UserRole,
           reason: formData.reason,
+          position_id: 1,
+          department_id: 2,
+          hire_date: formData.hireDate,
+          employment_status: formData.employmentStatus,
+          schedule: formData.schedule,
+          speciality: formData.speciality,
+          salary: parseFloat(formData.salary),
         });
 
         // NO guardar sesión - el registro requiere aprobación del administrador
@@ -328,6 +354,38 @@ export const RegisterPage = ({}: RegisterPageProps) => {
           }
         } else {
           delete newErrors.department;
+        }
+        break;
+
+      case 'hireDate':
+        if (!value) {
+          newErrors.hireDate = 'La fecha de contratación es requerida';
+        } else {
+          delete newErrors.hireDate;
+        }
+        break;
+
+      case 'speciality':
+        if (!value.trim()) {
+          newErrors.speciality = 'La especialidad es requerida';
+        } else if (value.trim().length < 3) {
+          newErrors.speciality = 'La especialidad debe tener al menos 3 caracteres';
+        } else if (value.trim().length > 100) {
+          newErrors.speciality = 'La especialidad no puede tener más de 100 caracteres';
+        } else {
+          delete newErrors.speciality;
+        }
+        break;
+
+      case 'salary':
+        if (!value) {
+          newErrors.salary = 'El salario es requerido';
+        } else if (isNaN(parseFloat(value)) || parseFloat(value) <= 0) {
+          newErrors.salary = 'El salario debe ser un número mayor a 0';
+        } else if (parseFloat(value) > 999999.99) {
+          newErrors.salary = 'El salario no puede exceder 999,999.99';
+        } else {
+          delete newErrors.salary;
         }
         break;
 
@@ -577,6 +635,90 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                   {errors.confirmPassword && (
                     <p className="text-danger text-xs mt-1">{errors.confirmPassword}</p>
                   )}
+                </div>
+              </div>
+            </div>
+
+            {/* Información Laboral */}
+            <div>
+              <h3 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
+                <FontAwesomeIcon icon={faBuilding} className="text-primary-400" />
+                Información Laboral
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Especialidad *
+                  </label>
+                  <input
+                    type="text"
+                    className={`input ${errors.speciality ? 'border-danger' : ''}`}
+                    value={formData.speciality}
+                    onChange={(e) => handleChange('speciality', e.target.value)}
+                    placeholder="Administración de Sistemas"
+                    disabled={loading}
+                  />
+                  {errors.speciality && (
+                    <p className="text-danger text-xs mt-1">{errors.speciality}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Salario *
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    className={`input ${errors.salary ? 'border-danger' : ''}`}
+                    value={formData.salary}
+                    onChange={(e) => handleChange('salary', e.target.value)}
+                    placeholder="4500.00"
+                    disabled={loading}
+                  />
+                  {errors.salary && (
+                    <p className="text-danger text-xs mt-1">{errors.salary}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Fecha de Contratación *
+                  </label>
+                  <input
+                    type="date"
+                    className={`input ${errors.hireDate ? 'border-danger' : ''}`}
+                    value={formData.hireDate}
+                    onChange={(e) => handleChange('hireDate', e.target.value)}
+                    disabled={loading}
+                  />
+                  {errors.hireDate && (
+                    <p className="text-danger text-xs mt-1">{errors.hireDate}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Estado de Empleo
+                  </label>
+                  <input
+                    type="text"
+                    className="input"
+                    value={formData.employmentStatus}
+                    onChange={(e) => handleChange('employmentStatus', e.target.value)}
+                    placeholder="Active"
+                    disabled={loading}
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Horario
+                  </label>
+                  <input
+                    type="text"
+                    className="input"
+                    value={formData.schedule}
+                    onChange={(e) => handleChange('schedule', e.target.value)}
+                    placeholder="Lunes a Viernes, 9:00 AM - 6:00 PM"
+                    disabled={loading}
+                  />
                 </div>
               </div>
             </div>

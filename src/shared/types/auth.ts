@@ -53,6 +53,13 @@ export interface RegisterData {
   phone_number: string;
   role: UserRole;
   reason: string;
+  position_id: number;
+  department_id: number;
+  hire_date: string;
+  employment_status: string;
+  schedule: string;
+  speciality: string;
+  salary: number;
 }
 
 // Interfaz para respuesta de registro
