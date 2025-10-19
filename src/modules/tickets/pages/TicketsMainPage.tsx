@@ -215,8 +215,6 @@ export const TicketsMainPage = () => {
       case 'my_tickets':
         return (
           <MyTicketsPage
-            tickets={tickets}
-            currentTechnicianId={currentTechnicianId}
             onViewDetails={handleViewDetails}
             onEscalate={handleEscalate}
             onResolve={handleResolve}
