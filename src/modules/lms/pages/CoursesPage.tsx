@@ -7,6 +7,7 @@ import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModa
 export const CoursesPage = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -15,20 +16,22 @@ export const CoursesPage = () => {
   const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setLoading(true);
-        const data = await coursesService.getAll();
-        setCourses(data.courses);
-      } catch (error) {
-        console.error('Error fetching courses:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCourses();
   }, []);
+
+  const fetchCourses = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const data = await coursesService.getAll();
+      setCourses(data.courses);
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar los cursos');
+      console.error('Error fetching courses:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCreateCourse = async (courseData: Partial<Course>) => {
     try {
@@ -90,6 +93,21 @@ export const CoursesPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-heading font-bold text-white mb-6">Cursos</h1>
+
+      {/* Mensaje de error */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between">
+            <p className="text-red-400">{error}</p>
+            <button
+              onClick={fetchCourses}
+              className="btn bg-red-600 hover:bg-red-700 text-white text-sm"
+            >
+              Reintentar
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Header con filtros */}
       <CourseFilters

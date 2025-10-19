@@ -21,9 +21,18 @@ const mapApiCourseToCourse = (apiCourse: ApiCourse | ApiCourseDetail): Course =>
 
   return {
     id: String(apiCourse.course_id || apiCourse.id),
+    course_id: apiCourse.course_id || apiCourse.id,
     title: apiCourse.title,
     code: `COURSE-${apiCourse.course_id || apiCourse.id}`,
     description: apiCourse.description,
+    level: apiCourse.level,
+    course_image: apiCourse.course_image,
+    duration: apiCourse.duration,
+    sessions: apiCourse.sessions,
+    selling_price: apiCourse.selling_price,
+    discount_price: apiCourse.discount_price,
+    bestseller: apiCourse.bestseller,
+    featured: apiCourse.featured,
     instructor_id: '', // Se debe obtener de los instructores
     duration_weeks: Math.ceil(apiCourse.duration / 7), // Convertir días a semanas
     price: apiCourse.discount_price || apiCourse.selling_price,

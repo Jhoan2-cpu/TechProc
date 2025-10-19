@@ -66,9 +66,18 @@ export interface Instructor extends BaseUser {
 // Curso
 export interface Course {
   id: string;
+  course_id?: number;
   title: string;
   code: string;
   description: string;
+  level?: CourseLevel;
+  course_image?: string;
+  duration?: number; // duración en horas
+  sessions?: number;
+  selling_price?: number;
+  discount_price?: number;
+  bestseller?: boolean;
+  featured?: boolean;
   instructor_id: string;
   instructor?: Instructor;
   duration_weeks: number;
