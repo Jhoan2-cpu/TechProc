@@ -1,6 +1,6 @@
 // Tickets Service - Módulo Soporte Técnico según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { Ticket, Escalation } from '../types';
+import type { Ticket, TicketDetail, Escalation } from '../types';
 
 // Tipos de respuesta según la API
 interface TicketsListResponse {
@@ -195,9 +195,23 @@ export const ticketsService = {
    * Obtener detalles de un ticket
    * Endpoint: GET /tickets/{ticket_id}
    */
-  async getById(id: number): Promise<Ticket> {
+  async getById(id: number): Promise<TicketDetail> {
     const response = await apiRequest<TicketDetailResponse>(`/tickets/${id}`);
-    return mapApiTicketToTicket(response.data);
+    const apiTicket = response.data;
+
+    // Mapear a TicketDetail con toda la información
+    return {
+      ...mapApiTicketToTicket(apiTicket),
+      id: apiTicket.id,
+      user: {
+        id: apiTicket.user.id,
+        name: apiTicket.user.name,
+        email: apiTicket.user.email,
+        phone: apiTicket.user.phone,
+      },
+      assigned_technician_detail: apiTicket.assigned_technician,
+      tracking: apiTicket.tracking,
+    };
   },
 
   /**

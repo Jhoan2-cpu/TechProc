@@ -21,6 +21,29 @@ export interface Ticket {
   notes: string | null;
 }
 
+// Interfaz extendida con detalles completos del ticket desde el API
+export interface TicketDetail extends Ticket {
+  id: number;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  assigned_technician_detail?: {
+    id: number;
+    employee_id: number | null;
+    name: string;
+    speciality: string | null;
+  } | null;
+  tracking?: Array<{
+    ticket_tracking_id: number | null;
+    comment: string;
+    action_type: string;
+    follow_up_date: string;
+  }>;
+}
+
 export interface Escalation {
   id: number;
   escalation_id: number;
