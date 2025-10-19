@@ -33,15 +33,17 @@ export const CoursesPage = () => {
     }
   };
 
-  const handleCreateCourse = async (courseData: Partial<Course>) => {
+  const handleCreateCourse = async (courseData: any) => {
     try {
-      // TODO: Adaptar los datos al formato de la API
-      // const newCourse = await coursesService.create(courseData);
-      // setCourses([...courses, newCourse]);
-      console.log('Curso creado:', courseData);
+      const newCourse = await coursesService.create(courseData);
+      setCourses([...courses, newCourse]);
       setShowCreateModal(false);
+
+      // Recargar la lista de cursos para obtener los datos actualizados
+      fetchCourses();
     } catch (error) {
       console.error('Error creating course:', error);
+      throw error; // Re-lanzar el error para que el modal lo maneje
     }
   };
 
