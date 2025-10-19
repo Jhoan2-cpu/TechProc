@@ -20,3 +20,6 @@ export { CompanyCard } from './CompanyCard';
 export { CreateCompanyModal } from './CreateCompanyModal';
 export { ViewCompanyModal } from './ViewCompanyModal';
 export { CompanyFilters } from './CompanyFilters';
+export { CategoryCard } from './CategoryCard';
+export { CreateCategoryModal } from './CreateCategoryModal';
+export { ViewCategoryModal } from './ViewCategoryModal';

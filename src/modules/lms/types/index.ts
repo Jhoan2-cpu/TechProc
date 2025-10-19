@@ -699,3 +699,79 @@ export interface UpdateCompanyData {
   contact_name?: string;
   contact_email?: string;
 }
+
+// -------------------------------------------------------------------
+// CATEGORÍAS
+// -------------------------------------------------------------------
+
+// Categoría del frontend
+export interface Category {
+  id: string;
+  category_id: number | null;
+  name: string;
+  slug: string;
+  image: string;
+  courses_count: number;
+  created_at: string;
+}
+
+// Categoría de la API
+export interface ApiCategory {
+  id: number;
+  category_id: number | null;
+  name: string;
+  slug: string;
+  image: string;
+  courses_count: number;
+  created_at: string;
+}
+
+// Responses de la API
+export interface CategoriesListResponse {
+  success: boolean;
+  data: ApiCategory[];
+}
+
+export interface CategoryDetailResponse {
+  success: boolean;
+  data: ApiCategory;
+}
+
+export interface CategoryCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    category_id: number | null;
+    name: string;
+    slug: string;
+    image: string;
+    created_at: string;
+  };
+}
+
+export interface CategoryUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface CategoryDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Datos para crear categoría
+export interface CreateCategoryData {
+  name: string;
+  slug: string;
+  image: string;
+  category_id?: number | null;
+}
+
+// Datos para actualizar categoría
+export interface UpdateCategoryData {
+  name?: string;
+  slug?: string;
+  image?: string;
+  category_id?: number | null;
+}

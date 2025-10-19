@@ -4,6 +4,12 @@ import type {
   Category,
   ApiCategory,
   CategoriesListResponse,
+  CategoryDetailResponse,
+  CategoryCreateResponse,
+  CategoryUpdateResponse,
+  CategoryDeleteResponse,
+  CreateCategoryData,
+  UpdateCategoryData,
 } from '../types';
 
 // Conversión de ApiCategory a Category
@@ -30,14 +36,49 @@ export const categoriesService = {
   },
 
   /**
-   * Obtener categoría por ID
+   * Obtener detalles de una categoría
+   * Endpoint: GET /lms/categories/{id}
    */
   async getById(id: string): Promise<Category> {
-    const categories = await this.getAll();
-    const category = categories.find(c => c.id === id);
-    if (!category) {
-      throw new Error('Categoría no encontrada');
-    }
-    return category;
+    const response = await apiRequest<CategoryDetailResponse>(`/lms/categories/${id}`);
+    return mapApiCategoryToCategory(response.data);
+  },
+
+  /**
+   * Crear una nueva categoría
+   * Endpoint: POST /lms/categories
+   */
+  async create(data: CreateCategoryData): Promise<Category> {
+    const response = await apiRequest<CategoryCreateResponse>('/lms/categories', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+
+    // Obtener la categoría completa
+    return this.getById(String(response.data.id));
+  },
+
+  /**
+   * Actualizar una categoría
+   * Endpoint: PUT /lms/categories/{id}
+   */
+  async update(id: string, data: UpdateCategoryData): Promise<Category> {
+    await apiRequest<CategoryUpdateResponse>(`/lms/categories/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+
+    // Obtener la categoría actualizada
+    return this.getById(id);
+  },
+
+  /**
+   * Eliminar una categoría
+   * Endpoint: DELETE /lms/categories/{id}
+   */
+  async delete(id: string): Promise<void> {
+    await apiRequest<CategoryDeleteResponse>(`/lms/categories/${id}`, {
+      method: 'DELETE',
+    });
   },
 };
