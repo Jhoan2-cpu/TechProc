@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import type { Instructor } from '../types';
+import type { Instructor, UpdateInstructorData, ApiStatus } from '../types';
 
 interface EditInstructorModalProps {
   instructor: Instructor | null;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (instructor: Instructor) => void;
+  onSave: (id: string, data: UpdateInstructorData) => Promise<void>;
 }
 
 export const EditInstructorModal = ({
@@ -16,38 +16,57 @@ export const EditInstructorModal = ({
   onClose,
   onSave,
 }: EditInstructorModalProps) => {
-  const [formData, setFormData] = useState<Partial<Instructor>>({
-    first_name: '',
-    last_name: '',
-    email: '',
-    expertise_area: '',
+  const [formData, setFormData] = useState<UpdateInstructorData>({
     bio: '',
-    country_location: '',
-    status: 'activo',
+    expertise_area: '',
+    status: 'active',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (instructor) {
+      // Mapear el status del frontend al formato de la API
+      let apiStatus: ApiStatus = 'active';
+      if (instructor.status === 'inactivo') {
+        apiStatus = 'inactive';
+      }
+
       setFormData({
-        first_name: instructor.first_name,
-        last_name: instructor.last_name,
-        email: instructor.email,
-        expertise_area: instructor.expertise_area,
         bio: instructor.bio,
-        country_location: instructor.country_location,
-        status: instructor.status,
+        expertise_area: instructor.expertise_area,
+        status: apiStatus,
       });
+      setError('');
     }
   }, [instructor]);
 
   if (!isOpen || !instructor) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
-      ...instructor,
-      ...formData,
-    } as Instructor);
+    setLoading(true);
+    setError('');
+
+    try {
+      await onSave(instructor.id, formData);
+      handleClose();
+    } catch (err: any) {
+      setError(err.message || 'Error al actualizar el instructor');
+      console.error('Error updating instructor:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    setFormData({
+      bio: '',
+      expertise_area: '',
+      status: 'active',
+    });
+    setError('');
+    onClose();
   };
 
   const handleChange = (
@@ -66,8 +85,9 @@ export const EditInstructorModal = ({
             Editar Instructor
           </h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            disabled={loading}
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -75,52 +95,35 @@ export const EditInstructorModal = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Nombre *
-              </label>
-              <input
-                type="text"
-                name="first_name"
-                required
-                value={formData.first_name}
-                onChange={handleChange}
-                className="input"
-                placeholder="Nombre del instructor"
-              />
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+              <p className="text-red-400 text-sm">{error}</p>
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Apellido *
-              </label>
-              <input
-                type="text"
-                name="last_name"
-                required
-                value={formData.last_name}
-                onChange={handleChange}
-                className="input"
-                placeholder="Apellido del instructor"
-              />
+          {/* Información no editable */}
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+            <div className="flex items-center gap-4 mb-3">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                <span className="text-white font-bold text-xl">
+                  {instructor.first_name.charAt(0)}{instructor.last_name.charAt(0)}
+                </span>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">
+                  {instructor.name || `${instructor.first_name} ${instructor.last_name}`}
+                </h3>
+                <p className="text-gray-300 text-sm">{instructor.email}</p>
+              </div>
             </div>
+            <p className="text-sm text-blue-300">
+              Los datos personales (nombre y email) no pueden ser editados desde aquí.
+            </p>
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Email *
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="input"
-                placeholder="correo@ejemplo.com"
-              />
-            </div>
-
+          <div className="space-y-4">
+            {/* Área de Expertise */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Área de Expertise *
@@ -132,25 +135,31 @@ export const EditInstructorModal = ({
                 value={formData.expertise_area}
                 onChange={handleChange}
                 className="input"
-                placeholder="Ej: Desarrollo Web, IA, etc."
+                placeholder="Ej: JavaScript, React, Node.js, Python, Docker"
+                disabled={loading}
               />
+              <p className="text-xs text-gray-400 mt-1">
+                Separa las áreas con comas
+              </p>
             </div>
 
+            {/* Biografía */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                País *
+                Biografía *
               </label>
-              <input
-                type="text"
-                name="country_location"
+              <textarea
+                name="bio"
                 required
-                value={formData.country_location}
+                value={formData.bio}
                 onChange={handleChange}
-                className="input"
-                placeholder="País de residencia"
+                className="input min-h-[150px]"
+                placeholder="Describe la experiencia, especialidades y logros del instructor..."
+                disabled={loading}
               />
             </div>
 
+            {/* Estado */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Estado *
@@ -160,24 +169,11 @@ export const EditInstructorModal = ({
                 value={formData.status}
                 onChange={handleChange}
                 className="select"
+                disabled={loading}
               >
-                <option value="activo">Activo</option>
-                <option value="inactivo">Inactivo</option>
+                <option value="active">Activo</option>
+                <option value="inactive">Inactivo</option>
               </select>
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Biografía *
-              </label>
-              <textarea
-                name="bio"
-                required
-                value={formData.bio}
-                onChange={handleChange}
-                className="input min-h-[120px]"
-                placeholder="Biografía del instructor..."
-              />
             </div>
           </div>
 
@@ -185,16 +181,25 @@ export const EditInstructorModal = ({
           <div className="flex gap-3 justify-end pt-4 border-t border-secondary-200">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
+              disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={loading}
             >
-              Guardar Cambios
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Guardando...
+                </span>
+              ) : (
+                'Guardar Cambios'
+              )}
             </button>
           </div>
         </form>

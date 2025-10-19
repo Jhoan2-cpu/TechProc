@@ -64,15 +64,19 @@ export const InstructorsPage = () => {
     }
   };
 
-  const handleEditInstructor = async (updatedInstructor: Instructor) => {
+  const handleEditInstructor = async (id: string, data: any) => {
     try {
-      // TODO: Adaptar los datos al formato de la API
-      // const updated = await instructorsService.update(updatedInstructor.id, updatedInstructor);
-      // setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updated : i));
-      setInstructors(instructors.map(i => i.id === updatedInstructor.id ? updatedInstructor : i));
+      // Actualizar el instructor usando la API
+      const updated = await instructorsService.update(id, data);
+      setInstructors(instructors.map(i => i.id === id ? updated : i));
       setInstructorToEdit(null);
+
+      // Recargar la lista para obtener datos actualizados
+      const response = await instructorsService.getAll();
+      setInstructors(response.instructors);
     } catch (error) {
       console.error('Error updating instructor:', error);
+      throw error; // Re-lanzar el error para que el modal lo maneje
     }
   };
 
