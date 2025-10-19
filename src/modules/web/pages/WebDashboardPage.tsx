@@ -7,36 +7,51 @@ import {
   ActiveAnnouncementsSection,
   RespondContactModal,
 } from '../components';
-import { getContactForms, respondContactForm } from '../../../services/webService';
+import {
+  getContactForms,
+  respondContactForm,
+  getContactFormStats,
+  type ContactFormStats
+} from '../../../services/webService';
 import { mockNews, mockAnnouncements } from '../../../services/mockData';
 
 export const WebDashboardPage = () => {
   const [news] = useState(mockNews);
   const [announcements] = useState(mockAnnouncements);
   const [contacts, setContacts] = useState<ContactForm[]>([]);
+  const [stats, setStats] = useState<ContactFormStats | null>(null);
   const [isLoadingContacts, setIsLoadingContacts] = useState(false);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
   const [showRespondContactModal, setShowRespondContactModal] = useState(false);
   const [contactToRespond, setContactToRespond] = useState<ContactForm | null>(null);
 
   useEffect(() => {
-    const loadContactForms = async () => {
+    const loadData = async () => {
       setIsLoadingContacts(true);
+      setIsLoadingStats(true);
+
       try {
-        const { forms } = await getContactForms('pending');
+        const [{ forms }, statsData] = await Promise.all([
+          getContactForms('pending'),
+          getContactFormStats(),
+        ]);
+
         setContacts(forms);
+        setStats(statsData);
       } catch (error) {
-        console.error('Error al cargar formularios de contacto:', error);
+        console.error('Error al cargar datos:', error);
       } finally {
         setIsLoadingContacts(false);
+        setIsLoadingStats(false);
       }
     };
 
-    loadContactForms();
+    loadData();
   }, []);
 
   const publishedNews = news.filter(n => n.status === 'published').length;
   const activeAnnouncements = announcements.filter(a => a.status === 'active').length;
-  const pendingContacts = contacts.filter(c => c.status === 'pending').length;
+  const pendingContacts = stats?.pending || 0;
 
   const formatDateTime = (dateString: string | null) => {
     if (!dateString) return '-';
@@ -111,6 +126,8 @@ export const WebDashboardPage = () => {
         activeAnnouncements={activeAnnouncements}
         pendingContacts={pendingContacts}
         totalFAQs={0}
+        contactStats={stats}
+        isLoading={isLoadingStats}
       />
 
       <PendingContactsSection

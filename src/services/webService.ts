@@ -19,6 +19,25 @@ interface ContactFormApiResponse {
   submission_date: string;
 }
 
+interface ContactFormStatsResponse {
+  success: boolean;
+  data: {
+    total: number;
+    pending: number;
+    in_progress: number;
+    responded: number;
+    spam: number;
+  };
+}
+
+export interface ContactFormStats {
+  total: number;
+  pending: number;
+  in_progress: number;
+  responded: number;
+  spam: number;
+}
+
 interface PaginatedContactFormsResponse {
   success: boolean;
   data: {
@@ -173,6 +192,23 @@ export const deleteContactForm = async (id: number): Promise<void> => {
     });
   } catch (error) {
     console.error('Error al eliminar formulario de contacto:', error);
+    throw error;
+  }
+};
+
+// Servicio para obtener estadísticas de formularios de contacto
+export const getContactFormStats = async (): Promise<ContactFormStats> => {
+  try {
+    const response = await apiRequest<ContactFormStatsResponse>(
+      '/developer-web/contact-forms/stats/summary',
+      {
+        method: 'GET',
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener estadísticas de formularios de contacto:', error);
     throw error;
   }
 };

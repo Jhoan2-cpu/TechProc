@@ -6,6 +6,7 @@ import {
   faEnvelope,
   faRobot,
 } from '@fortawesome/free-solid-svg-icons';
+import type { ContactFormStats } from '../../../services/webService';
 
 interface WebDashboardStatsProps {
   publishedNews: number;
@@ -13,6 +14,8 @@ interface WebDashboardStatsProps {
   activeAnnouncements: number;
   pendingContacts: number;
   totalFAQs: number;
+  contactStats?: ContactFormStats | null;
+  isLoading?: boolean;
 }
 
 export const WebDashboardStats = ({
@@ -21,6 +24,8 @@ export const WebDashboardStats = ({
   activeAnnouncements,
   pendingContacts,
   totalFAQs,
+  contactStats,
+  isLoading = false,
 }: WebDashboardStatsProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -75,9 +80,19 @@ export const WebDashboardStats = ({
         style={{ animationDelay: '300ms' }}
       >
         <div className="flex items-center justify-between">
-          <div>
+          <div className="flex-1">
             <p className="text-sm text-gray-400 mb-1">Consultas Pendientes</p>
-            <p className="text-3xl font-heading font-bold text-white">{pendingContacts}</p>
+            <p className="text-3xl font-heading font-bold text-white">
+              {isLoading ? '...' : pendingContacts}
+            </p>
+            {contactStats && (
+              <div className="mt-2 text-xs text-gray-400 space-y-0.5">
+                {/* <p>Total: {contactStats.total}</p>
+                <p>En progreso: {contactStats.in_progress}</p>
+                <p>Respondidas: {contactStats.responded}</p>
+                <p>Spam: {contactStats.spam}</p> */}
+              </div>
+            )}
           </div>
           <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
             <FontAwesomeIcon icon={faEnvelope} className="text-white text-2xl" />
