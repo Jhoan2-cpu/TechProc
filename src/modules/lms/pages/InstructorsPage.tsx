@@ -5,7 +5,6 @@ import {
   faEdit,
   faTrash,
   faEnvelope,
-  faMapMarkerAlt,
   faBriefcase,
   faCheckCircle,
   faTimesCircle,
@@ -242,7 +241,7 @@ export const InstructorsPage = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white">
-                    {selectedInstructor.first_name} {selectedInstructor.last_name}
+                    {selectedInstructor.name || `${selectedInstructor.first_name} ${selectedInstructor.last_name}`}
                   </h3>
                   <p className="text-gray-300">{selectedInstructor.email}</p>
                 </div>
@@ -253,10 +252,12 @@ export const InstructorsPage = () => {
                   <label className="text-sm font-medium text-gray-400">Estado</label>
                   <p className="font-semibold text-white capitalize">{selectedInstructor.status}</p>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-400">País</label>
-                  <p className="font-semibold text-white">{selectedInstructor.country_location}</p>
-                </div>
+                {selectedInstructor.courses_count !== undefined && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-400">Cursos</label>
+                    <p className="font-semibold text-white">{selectedInstructor.courses_count}</p>
+                  </div>
+                )}
                 <div className="col-span-2">
                   <label className="text-sm font-medium text-gray-400">Biografía</label>
                   <p className="text-gray-300 mt-1">{selectedInstructor.bio}</p>

@@ -17,9 +17,8 @@ const mapApiInstructorToInstructor = (apiInstructor: ApiInstructor): Instructor 
   let status: Instructor['status'] = 'activo';
   if (apiInstructor.status === 'inactive') {
     status = 'inactivo';
-  } else if (apiInstructor.status === 'suspended') {
-    status = 'suspendido';
   }
+  // Note: 'suspended' is not a valid ApiStatus value according to the API
 
   return {
     id: String(apiInstructor.instructor_id || apiInstructor.id),
