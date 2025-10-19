@@ -87,19 +87,19 @@ export const StudentsPage = () => {
     }
   };
 
-  const handleCreateStudent = async (newStudentData: Omit<Student, 'id'>) => {
+  const handleCreateStudent = async (newStudentData: any) => {
     try {
-      // TODO: Adaptar los datos al formato de la API
-      // const newStudent = await studentsService.create(newStudentData);
-      // setStudents([newStudent, ...students]);
-      const newStudent: Student = {
-        ...newStudentData,
-        id: String(Math.max(...students.map(s => Number(s.id)), 0) + 1),
-      };
+      // Crear el estudiante usando la API
+      const newStudent = await studentsService.create(newStudentData);
       setStudents([newStudent, ...students]);
       setShowCreateModal(false);
+
+      // Recargar la lista para obtener datos actualizados
+      const data = await studentsService.getAll();
+      setStudents(data.students);
     } catch (error) {
       console.error('Error creating student:', error);
+      throw error; // Re-lanzar el error para que el modal lo maneje
     }
   };
 

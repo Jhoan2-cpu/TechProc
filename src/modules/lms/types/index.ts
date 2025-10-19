@@ -531,7 +531,7 @@ export interface StudentsFilterParams {
 }
 
 export interface CreateStudentData {
-  user_id: number;
+  password: string;
   company_id?: number;
   document_number?: string;
   first_name: string;

@@ -82,8 +82,32 @@ export const studentsService = {
       body: JSON.stringify(data),
     });
 
-    // Obtener el estudiante completo
-    return this.getById(String(response.data.student_id));
+    // Obtener el estudiante completo con el id retornado
+    if (response.data.student_id) {
+      return this.getById(String(response.data.student_id));
+    }
+
+    // Si no se puede obtener el estudiante, retornar datos básicos
+    return {
+      id: String(response.data.student_id || response.data.id),
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      phone: data.phone,
+      company: undefined,
+      email_verified_at: null,
+      address: '',
+      birth_date: '',
+      gender: 'Otro',
+      country_location: '',
+      profile_photo: null,
+      role: 'student',
+      state: data.status === 'active' ? 'activo' : 'inactivo',
+      last_access_ip: null,
+      last_access: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
   },
 
   /**

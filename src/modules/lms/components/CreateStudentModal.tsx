@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import type { Student } from '../types';
+import type { CreateStudentData, Company } from '../types';
+import { companiesService } from '../services';
 
 interface CreateStudentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (student: Omit<Student, 'id'>) => void;
+  onSave: (data: CreateStudentData) => Promise<void>;
 }
 
 export const CreateStudentModal = ({
@@ -14,49 +15,71 @@ export const CreateStudentModal = ({
   onClose,
   onSave,
 }: CreateStudentModalProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateStudentData>({
     first_name: '',
     last_name: '',
     email: '',
-    country_location: '',
-    state: 'activo' as const,
+    password: '',
+    phone: '',
+    document_number: '',
+    company_id: undefined,
+    status: 'active',
   });
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingCompanies, setLoadingCompanies] = useState(false);
+  const [error, setError] = useState<string>('');
+
+  // Cargar compañías cuando se abre el modal
+  useEffect(() => {
+    if (isOpen) {
+      loadCompanies();
+    }
+  }, [isOpen]);
+
+  const loadCompanies = async () => {
+    try {
+      setLoadingCompanies(true);
+      const response = await companiesService.getAll();
+      setCompanies(response.companies);
+    } catch (err) {
+      console.error('Error loading companies:', err);
+      setError('Error al cargar las compañías');
+    } finally {
+      setLoadingCompanies(false);
+    }
+  };
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
 
-    const now = new Date().toISOString();
-    const newStudent: Omit<Student, 'id'> = {
-      ...formData,
-      role: 'student' as const,
-      email_verified_at: null,
-      last_access: null,
-      address: '',
-      birth_date: '2000-01-01',
-      gender: 'Otro' as const,
-      profile_photo: null,
-      last_access_ip: null,
-      created_at: now,
-      updated_at: now,
-    };
-
-    onSave(newStudent);
-
-    // Resetear formulario
-    setFormData({
-      first_name: '',
-      last_name: '',
-      email: '',
-      country_location: '',
-      state: 'activo',
-    });
+    try {
+      await onSave(formData);
+      handleClose();
+    } catch (err: any) {
+      setError(err.message || 'Error al crear el estudiante');
+      console.error('Error creating student:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Convertir company_id a número si existe
+    if (name === 'company_id') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value ? Number(value) : undefined
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleClose = () => {
@@ -64,9 +87,13 @@ export const CreateStudentModal = ({
       first_name: '',
       last_name: '',
       email: '',
-      country_location: '',
-      state: 'activo',
+      password: '',
+      phone: '',
+      document_number: '',
+      company_id: undefined,
+      status: 'active',
     });
+    setError('');
     onClose();
   };
 
@@ -81,6 +108,7 @@ export const CreateStudentModal = ({
           <button
             onClick={handleClose}
             className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            disabled={loading}
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -88,7 +116,15 @@ export const CreateStudentModal = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Nombre */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Nombre *
@@ -101,9 +137,11 @@ export const CreateStudentModal = ({
                 onChange={handleChange}
                 className="input"
                 placeholder="Nombre del estudiante"
+                disabled={loading}
               />
             </div>
 
+            {/* Apellido */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Apellido *
@@ -116,9 +154,11 @@ export const CreateStudentModal = ({
                 onChange={handleChange}
                 className="input"
                 placeholder="Apellido del estudiante"
+                disabled={loading}
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email *
@@ -131,43 +171,105 @@ export const CreateStudentModal = ({
                 onChange={handleChange}
                 className="input"
                 placeholder="correo@ejemplo.com"
+                disabled={loading}
               />
             </div>
 
+            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                País *
+                Contraseña *
+              </label>
+              <input
+                type="password"
+                name="password"
+                required
+                minLength={6}
+                value={formData.password}
+                onChange={handleChange}
+                className="input"
+                placeholder="Mínimo 6 caracteres"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Teléfono */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Teléfono
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="input"
+                placeholder="+51 999999999"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Número de documento */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Número de Documento
               </label>
               <input
                 type="text"
-                name="country_location"
-                required
-                value={formData.country_location}
+                name="document_number"
+                value={formData.document_number}
                 onChange={handleChange}
                 className="input"
-                placeholder="País de residencia"
+                placeholder="DNI, Pasaporte, etc."
+                disabled={loading}
               />
             </div>
 
+            {/* Compañía */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Compañía
+              </label>
+              <select
+                name="company_id"
+                value={formData.company_id || ''}
+                onChange={handleChange}
+                className="select"
+                disabled={loading || loadingCompanies}
+              >
+                <option value="">Sin compañía</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
+              {loadingCompanies && (
+                <p className="text-xs text-gray-400 mt-1">Cargando compañías...</p>
+              )}
+            </div>
+
+            {/* Estado */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Estado *
               </label>
               <select
-                name="state"
-                value={formData.state}
+                name="status"
+                value={formData.status}
                 onChange={handleChange}
                 className="select"
+                disabled={loading}
               >
-                <option value="activo">Activo</option>
-                <option value="inactivo">Inactivo</option>
+                <option value="active">Activo</option>
+                <option value="inactive">Inactivo</option>
               </select>
             </div>
           </div>
 
           <div className="bg-primary-900/20 border border-blue-200 rounded-lg p-4 mt-4">
             <p className="text-sm text-blue-700">
-              <strong>Nota:</strong> Se enviará un correo de bienvenida al estudiante con las instrucciones para activar su cuenta.
+              <strong>Nota:</strong> Se creará un usuario con las credenciales proporcionadas. El estudiante podrá iniciar sesión con el email y contraseña ingresados.
             </p>
           </div>
 
@@ -177,14 +279,23 @@ export const CreateStudentModal = ({
               type="button"
               onClick={handleClose}
               className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
+              disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={loading}
             >
-              Crear Estudiante
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Creando...
+                </span>
+              ) : (
+                'Crear Estudiante'
+              )}
             </button>
           </div>
         </form>
