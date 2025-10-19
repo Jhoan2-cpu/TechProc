@@ -53,6 +53,11 @@ export interface BaseUser {
 // Estudiante
 export interface Student extends BaseUser {
   role: 'student';
+  phone?: string;
+  company?: {
+    id: number;
+    name: string;
+  };
 }
 
 // Instructor

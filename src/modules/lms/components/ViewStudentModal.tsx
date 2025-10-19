@@ -7,6 +7,8 @@ import {
   faCheckCircle,
   faTimesCircle,
   faUser,
+  faPhone,
+  faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student } from '../types';
 
@@ -69,29 +71,25 @@ export const ViewStudentModal = ({
                 <FontAwesomeIcon icon={faEnvelope} />
                 <span className="text-sm font-medium">Correo Electrónico</span>
               </div>
-              <div className="flex items-center gap-2">
-                <p className="font-semibold text-white">{student.email}</p>
-                {student.email_verified_at ? (
-                  <span className="flex items-center gap-1 text-xs text-green-600 bg-success/20 px-2 py-1 rounded-full">
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                    Verificado
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1 text-xs text-red-600 bg-danger/20 px-2 py-1 rounded-full">
-                    <FontAwesomeIcon icon={faTimesCircle} />
-                    No verificado
-                  </span>
-                )}
-              </div>
+              <p className="font-semibold text-white">{student.email}</p>
             </div>
 
-            {/* País */}
+            {/* Teléfono */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-gray-400">
-                <FontAwesomeIcon icon={faMapMarkerAlt} />
-                <span className="text-sm font-medium">País</span>
+                <FontAwesomeIcon icon={faPhone} />
+                <span className="text-sm font-medium">Teléfono</span>
               </div>
-              <p className="font-semibold text-white">{student.country_location}</p>
+              <p className="font-semibold text-white">{student.phone || 'No registrado'}</p>
+            </div>
+
+            {/* Compañía */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-gray-400">
+                <FontAwesomeIcon icon={faBuilding} />
+                <span className="text-sm font-medium">Compañía</span>
+              </div>
+              <p className="font-semibold text-white">{student.company?.name || 'Sin compañía asignada'}</p>
             </div>
 
             {/* Estado */}
@@ -111,29 +109,16 @@ export const ViewStudentModal = ({
               </span>
             </div>
 
-            {/* Último acceso */}
+            {/* Fecha de creación */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-gray-400">
                 <FontAwesomeIcon icon={faCalendar} />
-                <span className="text-sm font-medium">Último Acceso</span>
+                <span className="text-sm font-medium">Fecha de Registro</span>
               </div>
               <p className="font-semibold text-white">
-                {formatDate(student.last_access)}
+                {formatDate(student.created_at)}
               </p>
             </div>
-
-            {/* Email verificado en */}
-            {student.email_verified_at && (
-              <div className="space-y-2 md:col-span-2">
-                <div className="flex items-center gap-2 text-gray-400">
-                  <FontAwesomeIcon icon={faCheckCircle} />
-                  <span className="text-sm font-medium">Email Verificado El</span>
-                </div>
-                <p className="font-semibold text-white">
-                  {formatDate(student.email_verified_at)}
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Estadísticas adicionales */}

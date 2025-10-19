@@ -9,6 +9,8 @@ import {
   faCalendar,
   faCheckCircle,
   faTimesCircle,
+  faPhone,
+  faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student, Course, Enrollment } from '../types';
 import { studentsService, coursesService, enrollmentsService } from '../services';
@@ -145,8 +147,8 @@ export const StudentsPage = () => {
               <tr>
                 <th className="text-left p-4 text-sm font-semibold text-gray-300">Estudiante</th>
                 <th className="text-left p-4 text-sm font-semibold text-gray-300">Email</th>
-                <th className="text-left p-4 text-sm font-semibold text-gray-300">Ubicación</th>
-                <th className="text-left p-4 text-sm font-semibold text-gray-300">Último Acceso</th>
+                <th className="text-left p-4 text-sm font-semibold text-gray-300">Teléfono</th>
+                <th className="text-left p-4 text-sm font-semibold text-gray-300">Compañía</th>
                 <th className="text-left p-4 text-sm font-semibold text-gray-300">Estado</th>
                 <th className="text-center p-4 text-sm font-semibold text-gray-300">Acciones</th>
               </tr>
@@ -179,27 +181,18 @@ export const StudentsPage = () => {
                     <div className="flex items-center gap-2">
                       <FontAwesomeIcon icon={faEnvelope} className="text-gray-400 text-sm" />
                       <span className="text-sm text-gray-300">{student.email}</span>
-                      {student.email_verified_at ? (
-                        <FontAwesomeIcon icon={faCheckCircle} className="text-green-600 text-xs" title="Email verificado" />
-                      ) : (
-                        <FontAwesomeIcon icon={faTimesCircle} className="text-red-600 text-xs" title="Email no verificado" />
-                      )}
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-2">
-                      <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-400 text-sm" />
-                      <span className="text-sm text-gray-300">{student.country_location}</span>
+                      <FontAwesomeIcon icon={faPhone} className="text-gray-400 text-sm" />
+                      <span className="text-sm text-gray-300">{student.phone || 'N/A'}</span>
                     </div>
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-2">
-                      <FontAwesomeIcon icon={faCalendar} className="text-gray-400 text-sm" />
-                      <span className="text-sm text-gray-300">
-                        {student.last_access
-                          ? new Date(student.last_access).toLocaleDateString('es-ES')
-                          : 'Nunca'}
-                      </span>
+                      <FontAwesomeIcon icon={faBuilding} className="text-gray-400 text-sm" />
+                      <span className="text-sm text-gray-300">{student.company?.name || 'Sin compañía'}</span>
                     </div>
                   </td>
                   <td className="p-4">
