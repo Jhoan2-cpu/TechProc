@@ -13,6 +13,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
     email: user?.email || '',
     password: '',
     phone_number: user?.phone || '',
+    address: '',
     role: user?.role || ('analista_datos' as UserRole),
     status: user?.is_active ? 'active' : 'inactive',
   });
@@ -54,6 +55,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
           first_name: formData.first_name,
           last_name: formData.last_name,
           phone_number: formData.phone_number || undefined,
+          address: formData.address || undefined,
           status: formData.status,
           role: formData.role,
         };
@@ -69,6 +71,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
           email: formData.email,
           password: formData.password,
           phone_number: formData.phone_number || undefined,
+          address: formData.address || undefined,
           role: formData.role,
           status: formData.status,
         };
@@ -194,6 +197,19 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
               />
             </div>
 
+            {/* Dirección */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold text-gray-300 mb-2">Dirección</label>
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                placeholder="Av. Principal 123, Lima"
+                disabled={loading}
+              />
+            </div>
+
             {/* Rol */}
             <div className={isEditing ? '' : 'md:col-span-2'}>
               <label className="block text-sm font-semibold text-gray-300 mb-2">
@@ -248,6 +264,9 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
                   </option>
                   <option value="inactive" className="bg-secondary-700">
                     Inactivo
+                  </option>
+                  <option value="banned" className="bg-secondary-700">
+                    Bloqueado
                   </option>
                 </select>
               </div>

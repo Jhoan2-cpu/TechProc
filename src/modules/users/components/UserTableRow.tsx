@@ -48,24 +48,13 @@ export const UserTableRow = ({
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <button
             onClick={() => onEdit(user)}
             className="p-2 bg-secondary-700/50 hover:bg-primary-500/20 text-gray-300 hover:text-primary-400 rounded-lg border border-gray-700/50 hover:border-primary-500/50 transition-all duration-300 hover:scale-110"
             title="Editar usuario"
           >
             <FontAwesomeIcon icon={faEdit} />
-          </button>
-          <button
-            onClick={() => onToggleStatus(user.id)}
-            className={`p-2 rounded-lg border transition-all duration-300 hover:scale-110 ${
-              user.is_active
-                ? 'bg-danger/20 hover:bg-danger/30 text-danger border-danger/30 hover:border-danger/50'
-                : 'bg-success/20 hover:bg-success/30 text-success border-success/30 hover:border-success/50'
-            }`}
-            title={user.is_active ? 'Desactivar' : 'Activar'}
-          >
-            <FontAwesomeIcon icon={user.is_active ? faToggleOff : faToggleOn} />
           </button>
         </div>
       </td>

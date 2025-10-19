@@ -74,10 +74,12 @@ export const PendingRegistrationsPage = () => {
     if (!selectedUser) return;
 
     try {
-      // Eliminar el usuario o marcarlo como rechazado
-      await usersService.delete(selectedUser.id);
+      // Usar el servicio de registration requests para rechazar
+      await registrationRequestsService.reject(selectedUser.id, {
+        rejection_reason: reason,
+      });
 
-      alert(`Usuario rechazado: ${reason}`);
+      alert('Solicitud rechazada exitosamente');
       setRejectModalOpen(false);
       setSelectedUser(null);
       fetchInactiveUsers(); // Recargar lista
