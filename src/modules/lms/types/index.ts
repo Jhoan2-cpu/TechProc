@@ -54,10 +54,18 @@ export interface BaseUser {
 export interface Student extends BaseUser {
   role: 'student';
   phone?: string;
+  document_number?: string;
   company?: {
     id: number;
     name: string;
+    industry?: string;
   };
+  enrollments?: Array<{
+    enrollment_id: number;
+    course_title: string;
+    enrollment_date: string;
+    status: string;
+  }>;
 }
 
 // Instructor
