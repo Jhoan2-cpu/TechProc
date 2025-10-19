@@ -282,4 +282,18 @@ export const ticketsService = {
     }>('/tickets/escalations');
     return response.data;
   },
+
+  /**
+   * Aprobar una escalación
+   * Endpoint: POST /tickets/escalations/{escalation_id}/approve
+   */
+  async approveEscalation(escalationId: number): Promise<{ success: boolean; message: string }> {
+    const response = await apiRequest<{
+      success: boolean;
+      message: string;
+    }>(`/tickets/escalations/${escalationId}/approve`, {
+      method: 'POST',
+    });
+    return response;
+  },
 };

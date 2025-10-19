@@ -24,6 +24,8 @@ export const EscalationsPage = () => {
   const [activeTab, setActiveTab] = useState<EscalationTab>('sent');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [processingEscalationId, setProcessingEscalationId] = useState<number | null>(null);
 
   useEffect(() => {
     loadEscalations();
@@ -57,13 +59,35 @@ export const EscalationsPage = () => {
     }
   };
 
-  const handleAcceptEscalation = (escalationId: number) => {
-    // TODO: Implementar llamada al API para aceptar escalación
-    setEscalations(escalations.map(e =>
-      e.escalation_id === escalationId
-        ? { ...e, approved: true }
-        : e
-    ));
+  const handleAcceptEscalation = async (escalationId: number) => {
+    try {
+      setProcessingEscalationId(escalationId);
+      setError('');
+      setSuccessMessage('');
+
+      // Llamar al API para aprobar la escalación
+      const response = await ticketsService.approveEscalation(escalationId);
+
+      console.log('Escalación aprobada:', response);
+
+      // Actualizar el estado local para reflejar la aprobación
+      setEscalations(escalations.map(e =>
+        e.escalation_id === escalationId
+          ? { ...e, approved: true }
+          : e
+      ));
+
+      // Mostrar mensaje de éxito
+      setSuccessMessage(response.message || 'Escalación aprobada exitosamente');
+
+      // Ocultar mensaje después de 5 segundos
+      setTimeout(() => setSuccessMessage(''), 5000);
+    } catch (err: any) {
+      setError(err.message || 'Error al aprobar la escalación');
+      console.error('Error approving escalation:', err);
+    } finally {
+      setProcessingEscalationId(null);
+    }
   };
 
   const handleRejectEscalation = (escalationId: number) => {
@@ -255,6 +279,18 @@ export const EscalationsPage = () => {
 
   const renderReceivedEscalations = () => (
     <div className="space-y-6">
+      {/* Success Message */}
+      {successMessage && (
+        <div className="animate-fade-in">
+          <div className="bg-green-500/10 border border-green-500/50 rounded-lg p-4">
+            <p className="text-green-400 text-center flex items-center justify-center gap-2">
+              <FontAwesomeIcon icon={faCheckCircle} />
+              {successMessage}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Estadísticas de Recibidas */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
@@ -388,14 +424,25 @@ export const EscalationsPage = () => {
                 <div className="flex gap-3 mt-4 pt-4 border-t border-secondary-200">
                   <button
                     onClick={() => handleAcceptEscalation(escalation.escalation_id)}
-                    className="btn bg-green-600 hover:bg-green-700 text-white flex-1 flex items-center justify-center gap-2"
+                    disabled={processingEscalationId === escalation.escalation_id}
+                    className="btn bg-green-600 hover:bg-green-700 text-white flex-1 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <FontAwesomeIcon icon={faCheckCircle} />
-                    Aceptar Escalación
+                    {processingEscalationId === escalation.escalation_id ? (
+                      <>
+                        <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                        Procesando...
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                        Aceptar Escalación
+                      </>
+                    )}
                   </button>
                   <button
                     onClick={() => handleRejectEscalation(escalation.escalation_id)}
-                    className="btn bg-red-600 hover:bg-red-700 text-white flex-1 flex items-center justify-center gap-2"
+                    disabled={processingEscalationId === escalation.escalation_id}
+                    className="btn bg-red-600 hover:bg-red-700 text-white flex-1 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <FontAwesomeIcon icon={faTimesCircle} />
                     Rechazar
