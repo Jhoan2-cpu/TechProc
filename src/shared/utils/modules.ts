@@ -31,6 +31,7 @@ import {
   faBookOpen,
   faUserGraduate,
   faChalkboardTeacher,
+  faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const modules = [
@@ -52,6 +53,7 @@ export const modules = [
         { id: 'lms-courses', name: 'Cursos', icon: faBookOpen },
         { id: 'lms-students', name: 'Estudiantes', icon: faUserGraduate },
         { id: 'lms-instructors', name: 'Instructores', icon: faChalkboardTeacher },
+        { id: 'lms-companies', name: 'Compañías', icon: faBuilding },
       ],
     },
     {

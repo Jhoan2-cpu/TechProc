@@ -16,3 +16,7 @@ export { StudentFilters } from './StudentFilters';
 export { InstructorFilters } from './InstructorFilters';
 export { StudentStatsCards } from './StudentStatsCards';
 export { InstructorStatsCards } from './InstructorStatsCards';
+export { CompanyCard } from './CompanyCard';
+export { CreateCompanyModal } from './CreateCompanyModal';
+export { ViewCompanyModal } from './ViewCompanyModal';
+export { CompanyFilters } from './CompanyFilters';

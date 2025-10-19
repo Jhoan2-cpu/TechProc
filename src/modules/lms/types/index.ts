@@ -592,3 +592,84 @@ export interface InstructorExtended extends Instructor {
   user_id?: number;
   name?: string;
 }
+
+// -------------------------------------------------------------------
+// COMPAÑÍAS
+// -------------------------------------------------------------------
+
+// Compañía del frontend
+export interface Company {
+  id: string;
+  name: string;
+  industry: string;
+  contact_name: string;
+  contact_email: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// Compañía de la API
+export interface ApiCompany {
+  id: number;
+  name: string;
+  industry: string;
+  contact_name: string;
+  contact_email: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// Responses de la API
+export interface CompaniesListResponse {
+  success: boolean;
+  data: {
+    companies: ApiCompany[];
+    pagination: Pagination;
+  };
+}
+
+export interface CompanyDetailResponse {
+  success: boolean;
+  data: ApiCompany;
+}
+
+export interface CompanyCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+  };
+}
+
+export interface CompanyUpdateResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface CompanyDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Parámetros de filtrado
+export interface CompaniesFilterParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+// Datos para crear compañía
+export interface CreateCompanyData {
+  name: string;
+  industry: string;
+  contact_name: string;
+  contact_email: string;
+}
+
+// Datos para actualizar compañía
+export interface UpdateCompanyData {
+  name?: string;
+  industry?: string;
+  contact_name?: string;
+  contact_email?: string;
+}

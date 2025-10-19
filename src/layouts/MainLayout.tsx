@@ -173,6 +173,7 @@ export default function Layout({
             <Route path="/lms-courses" element={<LMSMainPage />} />
             <Route path="/lms-students" element={<LMSMainPage />} />
             <Route path="/lms-instructors" element={<LMSMainPage />} />
+            <Route path="/lms-companies" element={<LMSMainPage />} />
             <Route path="/tickets-dashboard" element={<TicketsMainPage />} />
             <Route path="/tickets-my-tickets" element={<TicketsMainPage />} />
             <Route path="/tickets-available" element={<TicketsMainPage />} />

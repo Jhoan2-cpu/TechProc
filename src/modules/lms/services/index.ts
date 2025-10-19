@@ -5,3 +5,4 @@ export { studentsService } from './studentsService';
 export { instructorsService } from './instructorsService';
 export { enrollmentsService } from './enrollmentsService';
 export { categoriesService } from './categoriesService';
+export { companiesService } from './companiesService';

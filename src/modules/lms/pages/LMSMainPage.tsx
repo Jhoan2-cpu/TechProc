@@ -3,6 +3,7 @@ import { LMSPage } from './LMSPage';
 import { CoursesPage } from './CoursesPage';
 import { StudentsPage } from './StudentsPage';
 import { InstructorsPage } from './InstructorsPage';
+import { CompaniesPage } from './CompaniesPage';
 
 export const LMSMainPage = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ export const LMSMainPage = () => {
     if (path.includes('courses')) return 'courses';
     if (path.includes('students')) return 'students';
     if (path.includes('instructors')) return 'instructors';
+    if (path.includes('companies')) return 'companies';
     return 'dashboard';
   };
 
@@ -26,6 +28,8 @@ export const LMSMainPage = () => {
         return <StudentsPage />;
       case 'instructors':
         return <InstructorsPage />;
+      case 'companies':
+        return <CompaniesPage />;
       case 'dashboard':
       default:
         return <LMSPage />;
