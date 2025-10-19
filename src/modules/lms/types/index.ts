@@ -509,7 +509,11 @@ export interface UpdateCourseData {
   selling_price?: number;
   discount_price?: number;
   prerequisites?: string;
+  certificate_name?: boolean;
+  certificate_issuer?: string;
   status?: boolean;
+  category_ids?: number[];
+  instructor_ids?: number[];
 }
 
 // Students

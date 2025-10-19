@@ -131,14 +131,14 @@ export const coursesService = {
    * Actualizar un curso
    * Endpoint: PUT /lms/courses/{course_id}
    */
-  async update(id: string, data: UpdateCourseData): Promise<Course> {
+  async update(id: string | number, data: UpdateCourseData): Promise<Course> {
     await apiRequest<CourseUpdateResponse>(`/lms/courses/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
 
     // Obtener el curso actualizado
-    return this.getById(id);
+    return this.getById(String(id));
   },
 
   /**

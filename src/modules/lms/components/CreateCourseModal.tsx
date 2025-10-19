@@ -1,16 +1,27 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { Course, CourseLevel, CreateCourseData } from '../types';
+import type { Course, CourseLevel, CreateCourseData, UpdateCourseData } from '../types';
 
 interface CreateCourseModalProps {
   course?: Course;
   onClose: () => void;
-  onSave: (courseData: CreateCourseData) => Promise<void>;
+  onSave: (courseData: CreateCourseData | UpdateCourseData) => Promise<void>;
 }
 
 export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModalProps) => {
   const isEditing = !!course;
+
+  // Determinar el estado inicial basado en si estamos editando o creando
+  const getInitialStatus = (): boolean => {
+    if (!course) return false; // Por defecto borrador para nuevo curso
+    // Si course.status es string, convertir a boolean
+    if (typeof course.status === 'string') {
+      return course.status === 'publicado';
+    }
+    // Si ya es boolean, usarlo directamente
+    return course.status as boolean;
+  };
 
   const [formData, setFormData] = useState<CreateCourseData>({
     title: course?.title || '',
@@ -25,7 +36,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
     prerequisites: '',
     certificate_name: false,
     certificate_issuer: '',
-    status: course?.status === 'publicado',
+    status: getInitialStatus(),
     category_ids: [],
     instructor_ids: [],
   });

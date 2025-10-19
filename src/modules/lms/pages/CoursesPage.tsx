@@ -47,17 +47,19 @@ export const CoursesPage = () => {
     }
   };
 
-  const handleEditCourse = async (updatedCourse: Partial<Course>) => {
-    if (courseToEdit && updatedCourse) {
+  const handleEditCourse = async (updatedData: any) => {
+    if (courseToEdit) {
       try {
-        // TODO: Adaptar los datos al formato de la API
-        // const updated = await coursesService.update(courseToEdit.id, updatedCourse);
-        // setCourses(courses.map(c => c.id === courseToEdit.id ? updated : c));
-        const fullCourse: Course = { ...courseToEdit, ...updatedCourse };
-        setCourses(courses.map(c => c.id === courseToEdit.id ? fullCourse : c));
+        // Actualizar el curso usando la API
+        const updated = await coursesService.update(courseToEdit.course_id || courseToEdit.id, updatedData);
+        setCourses(courses.map(c => c.id === courseToEdit.id ? updated : c));
         setCourseToEdit(null);
+
+        // Recargar la lista de cursos para obtener los datos actualizados
+        fetchCourses();
       } catch (error) {
         console.error('Error updating course:', error);
+        throw error; // Re-lanzar el error para que el modal lo maneje
       }
     }
   };
