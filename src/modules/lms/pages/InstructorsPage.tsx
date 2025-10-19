@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye,
   faEdit,
-  faTrash,
   faEnvelope,
   faBriefcase,
   faCheckCircle,
@@ -12,7 +11,6 @@ import {
 import type { Instructor } from '../types';
 import { instructorsService } from '../services';
 import { EditInstructorModal, CreateInstructorModal, InstructorFilters, InstructorStatsCards } from '../components';
-import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const InstructorsPage = () => {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
@@ -20,7 +18,6 @@ export const InstructorsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [selectedInstructor, setSelectedInstructor] = useState<Instructor | null>(null);
-  const [instructorToDelete, setInstructorToDelete] = useState<Instructor | null>(null);
   const [instructorToEdit, setInstructorToEdit] = useState<Instructor | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -50,19 +47,6 @@ export const InstructorsPage = () => {
       </div>
     );
   }
-
-  const handleDeleteInstructor = async () => {
-    if (instructorToDelete) {
-      try {
-        await instructorsService.delete(instructorToDelete.id);
-        setInstructors(instructors.filter(i => i.id !== instructorToDelete.id));
-        setInstructorToDelete(null);
-      } catch (error) {
-        console.error('Error deleting instructor:', error);
-        alert('No se puede eliminar el instructor. La API no soporta esta operación.');
-      }
-    }
-  };
 
   const handleEditInstructor = async (id: string, data: any) => {
     try {
@@ -199,13 +183,6 @@ export const InstructorsPage = () => {
                 >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button
-                  onClick={() => setInstructorToDelete(instructor)}
-                  className="text-red-400 hover:bg-red-500/20 p-2 rounded-lg transition-colors"
-                  title="Eliminar"
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
               </div>
             </div>
           </div>
@@ -288,15 +265,6 @@ export const InstructorsPage = () => {
         isOpen={!!instructorToEdit}
         onClose={() => setInstructorToEdit(null)}
         onSave={handleEditInstructor}
-      />
-
-      <ConfirmDeleteModal
-        isOpen={!!instructorToDelete}
-        title="Confirmar Eliminación"
-        message="¿Estás seguro de que deseas eliminar al instructor?"
-        itemName={instructorToDelete ? `${instructorToDelete.first_name} ${instructorToDelete.last_name}` : ''}
-        onConfirm={handleDeleteInstructor}
-        onCancel={() => setInstructorToDelete(null)}
       />
     </div>
   );
