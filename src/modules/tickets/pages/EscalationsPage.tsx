@@ -44,13 +44,11 @@ export const EscalationsPage = () => {
         return;
       }
 
-      // Filtrar solo las escalaciones donde el técnico de origen es el actual
-      const myEscalations = allEscalations.filter(
-        escalation => escalation.technician_origin.id === currentEmployee.id
-      );
+      console.log('Todas las escalaciones:', allEscalations);
+      console.log('Employee ID actual:', currentEmployee.id);
 
-      console.log('Escalaciones filtradas:', myEscalations);
-      setEscalations(myEscalations);
+      // Guardar todas las escalaciones (ya las filtraremos en el renderizado)
+      setEscalations(allEscalations);
     } catch (err: any) {
       setError(err.message || 'Error al cargar las escalaciones');
       console.error('Error loading escalations:', err);
@@ -73,10 +71,19 @@ export const EscalationsPage = () => {
     setEscalations(escalations.filter(e => e.escalation_id !== escalationId));
   };
 
-  // Las escalaciones ya están filtradas para mostrar solo las enviadas por el técnico actual
-  // No hay escalaciones recibidas en esta vista según los requisitos
-  const sentEscalations = escalations;
-  const receivedEscalations: Escalation[] = []; // No se muestran recibidas según indi.txt
+  // Obtener el employee_id del técnico actual para filtrar
+  const currentEmployee = authService.getCurrentEmployee();
+  const currentEmployeeId = currentEmployee?.id;
+
+  // Filtrar escalaciones enviadas (donde el técnico de origen es el actual)
+  const sentEscalations = escalations.filter(
+    e => e.technician_origin.id === currentEmployeeId
+  );
+
+  // Filtrar escalaciones recibidas (donde el técnico destino es el actual)
+  const receivedEscalations = escalations.filter(
+    e => e.technician_destiny.id === currentEmployeeId
+  );
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -277,7 +284,24 @@ export const EscalationsPage = () => {
 
       {/* Lista de escalaciones recibidas */}
       <div className="space-y-4">
-        {receivedEscalations.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-12">
+            <FontAwesomeIcon icon={faSpinner} className="text-6xl text-primary-500 mb-4 animate-spin" />
+            <p className="text-xl text-gray-300">Cargando escalaciones...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-6 mb-4">
+              <p className="text-red-400 text-lg">{error}</p>
+            </div>
+            <button
+              onClick={loadEscalations}
+              className="btn bg-primary-600 hover:bg-primary-700 text-white"
+            >
+              Reintentar
+            </button>
+          </div>
+        ) : receivedEscalations.length > 0 ? (
           receivedEscalations.map((escalation, index) => (
             <div
               key={escalation.escalation_id}
@@ -289,8 +313,11 @@ export const EscalationsPage = () => {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-heading font-bold text-white">
-                    Escalación #{escalation.escalation_id} - Ticket #{escalation.ticket_id}
+                    Escalación #{escalation.escalation_id}
                   </h3>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Ticket #{escalation.ticket.id}: {escalation.ticket.title}
+                  </p>
                   <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
                     <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                     <span>{formatDate(escalation.escalation_date)}</span>
@@ -316,7 +343,9 @@ export const EscalationsPage = () => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">De</p>
-                      <p className="font-semibold text-white">Técnico #{escalation.technician_origin_id}</p>
+                      <p className="font-semibold text-white">
+                        {escalation.technician_origin.name || `Técnico #${escalation.technician_origin.id}`}
+                      </p>
                     </div>
                   </div>
                   <FontAwesomeIcon icon={faArrowRight} className="text-gray-400 text-xl flex-shrink-0" />
@@ -326,7 +355,9 @@ export const EscalationsPage = () => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">Para ti</p>
-                      <p className="font-semibold text-white">Técnico #{escalation.technician_destination_id}</p>
+                      <p className="font-semibold text-white">
+                        {escalation.technician_destiny.name || `Técnico #${escalation.technician_destiny.id}`}
+                      </p>
                     </div>
                   </div>
                 </div>

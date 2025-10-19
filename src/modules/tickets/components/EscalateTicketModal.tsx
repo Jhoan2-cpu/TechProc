@@ -62,22 +62,40 @@ export const EscalateTicketModal = ({
       const currentEmployee = authService.getCurrentEmployee();
       const currentEmployeeId = currentEmployee?.id;
 
-      // Hacer petición directa al API para obtener usuarios sin transformación
-      const response = await apiRequest<{
-        success: boolean;
-        data: {
-          users: ApiUser[];
-          pagination: any;
-        };
-      }>('/admin/users');
+      console.log('Employee ID del técnico actual:', currentEmployeeId);
 
-      console.log('Respuesta del API:', response);
-      console.log('Employee ID actual (a excluir):', currentEmployeeId);
+      // Obtener TODOS los usuarios de todas las páginas
+      let allUsers: ApiUser[] = [];
+      let currentPage = 1;
+      let totalPages = 1;
+
+      do {
+        const response = await apiRequest<{
+          success: boolean;
+          data: {
+            users: ApiUser[];
+            pagination: {
+              current_page: number;
+              total_pages: number;
+              total_records: number;
+              per_page: number;
+            };
+          };
+        }>(`/admin/users?page=${currentPage}`);
+
+        allUsers = [...allUsers, ...response.data.users];
+        totalPages = response.data.pagination.total_pages;
+        currentPage++;
+
+        console.log(`Página ${currentPage - 1}/${totalPages} cargada. Total usuarios acumulados: ${allUsers.length}`);
+      } while (currentPage <= totalPages);
+
+      console.log('Total de usuarios obtenidos:', allUsers.length);
 
       // Filtrar solo técnicos con employee_id, rol support y status active
-      const validTechnicians = response.data.users
+      const validTechnicians = allUsers
         .filter(user => {
-          console.log('Revisando usuario:', user.first_name, user.last_name, {
+          console.log(`\nRevisando usuario ID ${user.id}:`, user.first_name, user.last_name, {
             employee_id: user.employee_id,
             status: user.status,
             role: user.role
@@ -85,19 +103,19 @@ export const EscalateTicketModal = ({
 
           // Verificar que tenga employee_id (no null)
           if (!user.employee_id) {
-            console.log('  -> Descartado: no tiene employee_id');
+            console.log('  ❌ Descartado: no tiene employee_id');
             return false;
           }
 
           // Excluir al técnico actual (no puede escalarse a sí mismo)
           if (user.employee_id === currentEmployeeId) {
-            console.log('  -> Descartado: es el técnico actual');
+            console.log('  ❌ Descartado: es el técnico actual');
             return false;
           }
 
           // Verificar que esté activo
           if (user.status !== 'active') {
-            console.log('  -> Descartado: no está activo');
+            console.log('  ❌ Descartado: no está activo, status:', user.status);
             return false;
           }
 
@@ -107,11 +125,11 @@ export const EscalateTicketModal = ({
 
           // El API devuelve 'support' directamente, no en español
           if (userRole !== 'support') {
-            console.log('  -> Descartado: rol no es support, es:', userRole);
+            console.log('  ❌ Descartado: rol no es support, es:', userRole);
             return false;
           }
 
-          console.log('  -> ACEPTADO como técnico válido');
+          console.log('  ✅ ACEPTADO como técnico válido');
           return true;
         })
         .map(user => ({
@@ -121,7 +139,9 @@ export const EscalateTicketModal = ({
           email: user.email,
         }));
 
-      console.log('Técnicos válidos encontrados:', validTechnicians);
+      console.log('\n📋 Técnicos válidos encontrados:', validTechnicians.length);
+      console.log('Técnicos:', validTechnicians);
+
       setTechnicians(validTechnicians);
     } catch (err: any) {
       setError('Error al cargar la lista de técnicos');
@@ -159,7 +179,7 @@ export const EscalateTicketModal = ({
       handleClose();
     } catch (err: any) {
       setError(err.message || 'Error al escalar el ticket');
-      console.error('Error escalating ticket:', err);
+
     } finally {
       setSubmitting(false);
     }
