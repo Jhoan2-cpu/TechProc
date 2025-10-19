@@ -30,11 +30,32 @@ export interface SessionData {
 }
 
 // Interfaz completa para respuesta de login según especificación real de la API
+// Interfaz para datos del empleado
+export interface Employee {
+  id: number;
+  employee_id: string | null;
+  hire_date: string;
+  position: {
+    id: number;
+    position_name: string;
+    department_id: number;
+  };
+  department: {
+    id: number;
+    department_name: string;
+  };
+  employment_status: string;
+  schedule: string;
+  speciality: string;
+  salary: string;
+}
+
 export interface LoginResponse {
   success: boolean;
   data: {
     user: User;
     session: SessionData;
+    employee: Employee;
   };
 }
 

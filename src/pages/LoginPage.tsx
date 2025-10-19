@@ -157,12 +157,12 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       setLoading(true);
       const response = await authService.login({ email, password });
 
-      // La respuesta ahora tiene la estructura: { success: true, data: { user, session } }
+      // La respuesta ahora tiene la estructura: { success: true, data: { user, session, employee } }
       if (response.success && response.data) {
-        const { user, session } = response.data;
+        const { user, session, employee } = response.data;
 
-        // Guardar sesión con el nuevo formato
-        authService.saveSession(user, session.token, session.session_id);
+        // Guardar sesión con el nuevo formato (incluyendo employee)
+        authService.saveSession(user, session.token, session.session_id, employee);
 
         // Notificar al componente padre
         onLogin(user);

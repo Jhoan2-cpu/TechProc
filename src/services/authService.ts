@@ -108,12 +108,27 @@ export const authService = {
     }
   },
 
+  // Obtener empleado actual
+  getCurrentEmployee(): any | null {
+    const employeeStr = sessionStorage.getItem('employee');
+    if (!employeeStr) return null;
+
+    try {
+      return JSON.parse(employeeStr);
+    } catch {
+      return null;
+    }
+  },
+
   // Guardar sesión (adaptado a la nueva estructura de la API)
-  saveSession(user: User, token: string, sessionId?: number): void {
+  saveSession(user: User, token: string, sessionId?: number, employee?: any): void {
     sessionStorage.setItem('auth_token', token);
     sessionStorage.setItem('user', JSON.stringify(user));
     if (sessionId) {
       sessionStorage.setItem('session_id', sessionId.toString());
+    }
+    if (employee) {
+      sessionStorage.setItem('employee', JSON.stringify(employee));
     }
   },
 
@@ -123,6 +138,7 @@ export const authService = {
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('session_id');
+    sessionStorage.removeItem('employee');
   },
 
   // Verificar si está autenticado
