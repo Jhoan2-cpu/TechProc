@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import type { Instructor } from '../types';
+import type { CreateInstructorData } from '../types';
 
 interface CreateInstructorModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (instructor: Omit<Instructor, 'id'>) => void;
+  onSave: (data: CreateInstructorData) => Promise<void>;
 }
 
 export const CreateInstructorModal = ({
@@ -14,49 +14,36 @@ export const CreateInstructorModal = ({
   onClose,
   onSave,
 }: CreateInstructorModalProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateInstructorData>({
     first_name: '',
     last_name: '',
     email: '',
-    expertise_area: '',
+    password: '',
+    phone_number: '',
+    document_number: '',
     bio: '',
-    country_location: '',
-    status: 'activo' as const,
+    expertise_area: '',
+    status: 'active',
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
 
-    const now = new Date().toISOString();
-    const newInstructor: Omit<Instructor, 'id'> = {
-      ...formData,
-      role: 'instructor' as const,
-      email_verified_at: now,
-      address: '',
-      birth_date: '1980-01-01',
-      gender: 'Otro' as const,
-      profile_photo: null,
-      state: 'activo',
-      last_access_ip: null,
-      last_access: null,
-      created_at: now,
-      updated_at: now,
-    };
-
-    onSave(newInstructor);
-
-    // Resetear formulario
-    setFormData({
-      first_name: '',
-      last_name: '',
-      email: '',
-      expertise_area: '',
-      bio: '',
-      country_location: '',
-      status: 'activo',
-    });
+    try {
+      await onSave(formData);
+      handleClose();
+    } catch (err: any) {
+      setError(err.message || 'Error al crear el instructor');
+      console.error('Error creating instructor:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
@@ -71,17 +58,20 @@ export const CreateInstructorModal = ({
       first_name: '',
       last_name: '',
       email: '',
-      expertise_area: '',
+      password: '',
+      phone_number: '',
+      document_number: '',
       bio: '',
-      country_location: '',
-      status: 'activo',
+      expertise_area: '',
+      status: 'active',
     });
+    setError('');
     onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
+      <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-secondary-200 flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600">
           <h2 className="text-2xl font-heading font-bold text-white">
@@ -90,6 +80,7 @@ export const CreateInstructorModal = ({
           <button
             onClick={handleClose}
             className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            disabled={loading}
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -97,7 +88,15 @@ export const CreateInstructorModal = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Nombre */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Nombre *
@@ -110,9 +109,11 @@ export const CreateInstructorModal = ({
                 onChange={handleChange}
                 className="input"
                 placeholder="Nombre del instructor"
+                disabled={loading}
               />
             </div>
 
+            {/* Apellido */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Apellido *
@@ -125,9 +126,11 @@ export const CreateInstructorModal = ({
                 onChange={handleChange}
                 className="input"
                 placeholder="Apellido del instructor"
+                disabled={loading}
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email *
@@ -140,10 +143,62 @@ export const CreateInstructorModal = ({
                 onChange={handleChange}
                 className="input"
                 placeholder="correo@ejemplo.com"
+                disabled={loading}
               />
             </div>
 
+            {/* Password */}
             <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Contraseña *
+              </label>
+              <input
+                type="password"
+                name="password"
+                required
+                minLength={6}
+                value={formData.password}
+                onChange={handleChange}
+                className="input"
+                placeholder="Mínimo 6 caracteres"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Teléfono */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Teléfono
+              </label>
+              <input
+                type="tel"
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
+                className="input"
+                placeholder="+51 999999999"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Número de documento */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Número de Documento
+              </label>
+              <input
+                type="text"
+                name="document_number"
+                value={formData.document_number}
+                onChange={handleChange}
+                className="input"
+                placeholder="DNI, Pasaporte, etc."
+                disabled={loading}
+              />
+            </div>
+
+            {/* Área de Expertise */}
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Área de Expertise *
               </label>
@@ -154,40 +209,12 @@ export const CreateInstructorModal = ({
                 value={formData.expertise_area}
                 onChange={handleChange}
                 className="input"
-                placeholder="Ej: Desarrollo Web, IA, Diseño UX"
+                placeholder="Ej: JavaScript, React, Node.js"
+                disabled={loading}
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                País *
-              </label>
-              <input
-                type="text"
-                name="country_location"
-                required
-                value={formData.country_location}
-                onChange={handleChange}
-                className="input"
-                placeholder="País de residencia"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Estado *
-              </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="select"
-              >
-                <option value="activo">Activo</option>
-                <option value="inactivo">Inactivo</option>
-              </select>
-            </div>
-
+            {/* Biografía */}
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Biografía *
@@ -199,13 +226,31 @@ export const CreateInstructorModal = ({
                 onChange={handleChange}
                 className="input min-h-[120px]"
                 placeholder="Describe la experiencia, especialidades y logros del instructor..."
+                disabled={loading}
               />
+            </div>
+
+            {/* Estado */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Estado *
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="select"
+                disabled={loading}
+              >
+                <option value="active">Activo</option>
+                <option value="inactive">Inactivo</option>
+              </select>
             </div>
           </div>
 
-          <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mt-4">
-            <p className="text-sm text-green-400">
-              <strong>Nota:</strong> Se enviará un correo al instructor con las credenciales de acceso y los pasos para configurar su perfil.
+          <div className="bg-primary-900/20 border border-blue-200 rounded-lg p-4 mt-4">
+            <p className="text-sm text-blue-700">
+              <strong>Nota:</strong> Se creará un usuario con las credenciales proporcionadas. El instructor podrá iniciar sesión con el email y contraseña ingresados.
             </p>
           </div>
 
@@ -215,14 +260,23 @@ export const CreateInstructorModal = ({
               type="button"
               onClick={handleClose}
               className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
+              disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={loading}
             >
-              Crear Instructor
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Creando...
+                </span>
+              ) : (
+                'Crear Instructor'
+              )}
             </button>
           </div>
         </form>

@@ -77,19 +77,19 @@ export const InstructorsPage = () => {
     }
   };
 
-  const handleCreateInstructor = async (newInstructorData: Omit<Instructor, 'id'>) => {
+  const handleCreateInstructor = async (newInstructorData: any) => {
     try {
-      // TODO: Adaptar los datos al formato de la API
-      // const newInstructor = await instructorsService.create(newInstructorData);
-      // setInstructors([newInstructor, ...instructors]);
-      const newInstructor: Instructor = {
-        ...newInstructorData,
-        id: String(Math.max(...instructors.map(i => Number(i.id)), 0) + 1),
-      };
+      // Crear el instructor usando la API
+      const newInstructor = await instructorsService.create(newInstructorData);
       setInstructors([newInstructor, ...instructors]);
       setShowCreateModal(false);
+
+      // Recargar la lista para obtener datos actualizados
+      const data = await instructorsService.getAll();
+      setInstructors(data.instructors);
     } catch (error) {
       console.error('Error creating instructor:', error);
+      throw error; // Re-lanzar el error para que el modal lo maneje
     }
   };
 

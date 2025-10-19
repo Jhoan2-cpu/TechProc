@@ -572,7 +572,12 @@ export interface InstructorsFilterParams {
 }
 
 export interface CreateInstructorData {
-  user_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  phone_number?: string;
+  document_number?: string;
   bio: string;
   expertise_area: string;
   status: ApiStatus;
