@@ -1,6 +1,6 @@
 // Tickets Service - Módulo Soporte Técnico según DOCUMENTACION_BACKEND_API.md
 import { apiRequest } from '../../../services/api.config';
-import type { Ticket } from '../types';
+import type { Ticket, Escalation } from '../types';
 
 // Tipos de respuesta según la API
 interface TicketsListResponse {
@@ -269,5 +269,17 @@ export const ticketsService = {
       method: 'POST',
       body: JSON.stringify(data),
     });
+  },
+
+  /**
+   * Obtener todas las escalaciones
+   * Endpoint: GET /tickets/escalations
+   */
+  async getEscalations(): Promise<Escalation[]> {
+    const response = await apiRequest<{
+      success: boolean;
+      data: Escalation[];
+    }>('/tickets/escalations');
+    return response.data;
   },
 };

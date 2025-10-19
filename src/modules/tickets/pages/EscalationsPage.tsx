@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faExchangeAlt,
@@ -11,64 +11,56 @@ import {
   faFileAlt,
   faPaperPlane,
   faInbox,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Escalation } from '../types';
-
-// Datos mock de escalaciones - Técnico actual ID 1
-const currentTechnicianId = 1;
-
-const mockEscalations: Escalation[] = [
-  // Escalaciones enviadas por el técnico actual
-  {
-    escalation_id: 1,
-    ticket_id: 5,
-    technician_origin_id: 1,
-    technician_destination_id: 3,
-    escalation_reason: 'Requiere conocimiento especializado en seguridad avanzada',
-    observations: 'El caso involucra posible intrusión externa que necesita análisis forense',
-    escalation_date: '2024-03-15 08:30:00',
-    approved: true,
-  },
-  {
-    escalation_id: 3,
-    ticket_id: 1,
-    technician_origin_id: 1,
-    technician_destination_id: 4,
-    escalation_reason: 'Problema requiere acceso a infraestructura de producción',
-    observations: 'Se necesitan permisos elevados que solo tiene el equipo senior',
-    escalation_date: '2024-03-15 11:30:00',
-    approved: false,
-  },
-  // Escalaciones recibidas por el técnico actual
-  {
-    escalation_id: 2,
-    ticket_id: 2,
-    technician_origin_id: 2,
-    technician_destination_id: 1,
-    escalation_reason: 'Sobrecarga de trabajo del técnico actual',
-    observations: 'El técnico está manejando casos críticos, se necesita redistribución',
-    escalation_date: '2024-03-15 10:00:00',
-    approved: false,
-  },
-  {
-    escalation_id: 4,
-    ticket_id: 8,
-    technician_origin_id: 5,
-    technician_destination_id: 1,
-    escalation_reason: 'Problema de autenticación 2FA requiere experiencia del técnico',
-    observations: 'El técnico junior no puede resolver el caso, necesita escalación',
-    escalation_date: '2024-03-15 13:00:00',
-    approved: false,
-  },
-];
+import { ticketsService } from '../services/ticketsService';
+import { authService } from '../../../services/authService';
 
 type EscalationTab = 'sent' | 'received';
 
 export const EscalationsPage = () => {
-  const [escalations, setEscalations] = useState<Escalation[]>(mockEscalations);
+  const [escalations, setEscalations] = useState<Escalation[]>([]);
   const [activeTab, setActiveTab] = useState<EscalationTab>('sent');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    loadEscalations();
+  }, []);
+
+  const loadEscalations = async () => {
+    try {
+      setLoading(true);
+      setError('');
+
+      const allEscalations = await ticketsService.getEscalations();
+
+      // Obtener el employee_id del técnico actual
+      const currentEmployee = authService.getCurrentEmployee();
+
+      if (!currentEmployee) {
+        setError('No se pudo obtener los datos del empleado');
+        return;
+      }
+
+      // Filtrar solo las escalaciones donde el técnico de origen es el actual
+      const myEscalations = allEscalations.filter(
+        escalation => escalation.technician_origin.id === currentEmployee.id
+      );
+
+      console.log('Escalaciones filtradas:', myEscalations);
+      setEscalations(myEscalations);
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar las escalaciones');
+      console.error('Error loading escalations:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAcceptEscalation = (escalationId: number) => {
+    // TODO: Implementar llamada al API para aceptar escalación
     setEscalations(escalations.map(e =>
       e.escalation_id === escalationId
         ? { ...e, approved: true }
@@ -77,12 +69,14 @@ export const EscalationsPage = () => {
   };
 
   const handleRejectEscalation = (escalationId: number) => {
+    // TODO: Implementar llamada al API para rechazar escalación
     setEscalations(escalations.filter(e => e.escalation_id !== escalationId));
   };
 
-  // Filtrar escalaciones enviadas y recibidas
-  const sentEscalations = escalations.filter(e => e.technician_origin_id === currentTechnicianId);
-  const receivedEscalations = escalations.filter(e => e.technician_destination_id === currentTechnicianId);
+  // Las escalaciones ya están filtradas para mostrar solo las enviadas por el técnico actual
+  // No hay escalaciones recibidas en esta vista según los requisitos
+  const sentEscalations = escalations;
+  const receivedEscalations: Escalation[] = []; // No se muestran recibidas según indi.txt
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -142,7 +136,24 @@ export const EscalationsPage = () => {
 
       {/* Lista de escalaciones enviadas */}
       <div className="space-y-4">
-        {sentEscalations.length > 0 ? (
+        {loading ? (
+          <div className="text-center py-12">
+            <FontAwesomeIcon icon={faSpinner} className="text-6xl text-primary-500 mb-4 animate-spin" />
+            <p className="text-xl text-gray-300">Cargando escalaciones...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-6 mb-4">
+              <p className="text-red-400 text-lg">{error}</p>
+            </div>
+            <button
+              onClick={loadEscalations}
+              className="btn bg-primary-600 hover:bg-primary-700 text-white"
+            >
+              Reintentar
+            </button>
+          </div>
+        ) : sentEscalations.length > 0 ? (
           sentEscalations.map((escalation, index) => (
             <div
               key={escalation.escalation_id}
@@ -152,8 +163,11 @@ export const EscalationsPage = () => {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-heading font-bold text-white">
-                    Escalación #{escalation.escalation_id} - Ticket #{escalation.ticket_id}
+                    Escalación #{escalation.escalation_id}
                   </h3>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Ticket #{escalation.ticket.id}: {escalation.ticket.title}
+                  </p>
                   <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
                     <FontAwesomeIcon icon={faCalendar} className="text-gray-400" />
                     <span>{formatDate(escalation.escalation_date)}</span>
@@ -179,7 +193,9 @@ export const EscalationsPage = () => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">Tú (Origen)</p>
-                      <p className="font-semibold text-white">Técnico #{escalation.technician_origin_id}</p>
+                      <p className="font-semibold text-white">
+                        {escalation.technician_origin.name || `Técnico #${escalation.technician_origin.id}`}
+                      </p>
                     </div>
                   </div>
                   <FontAwesomeIcon icon={faArrowRight} className="text-gray-400 text-xl flex-shrink-0" />
@@ -189,7 +205,9 @@ export const EscalationsPage = () => {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">Destino</p>
-                      <p className="font-semibold text-white">Técnico #{escalation.technician_destination_id}</p>
+                      <p className="font-semibold text-white">
+                        {escalation.technician_destiny.name || `Técnico #${escalation.technician_destiny.id}`}
+                      </p>
                     </div>
                   </div>
                 </div>

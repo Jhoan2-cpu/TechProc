@@ -22,12 +22,24 @@ export interface Ticket {
 }
 
 export interface Escalation {
+  id: number;
   escalation_id: number;
-  ticket_id: number;
-  technician_origin_id: number;
-  technician_destination_id: number;
+  ticket: {
+    id: number;
+    title: string;
+  };
+  technician_origin: {
+    id: number;
+    name: string;
+    speciality: string | null;
+  };
+  technician_destiny: {
+    id: number;
+    name: string;
+    speciality: string | null;
+  };
   escalation_reason: string;
-  observations: string | null;
+  observations: string;
   escalation_date: string;
   approved: boolean;
 }
