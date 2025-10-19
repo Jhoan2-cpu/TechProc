@@ -217,11 +217,10 @@ export const TicketsMainPage = () => {
       default:
         return (
           <TicketsDashboardPage
-            tickets={tickets}
-            currentTechnicianId={currentTechnicianId}
             onViewDetails={handleViewDetails}
             onEscalate={handleEscalate}
             onResolve={handleResolve}
+            refreshTrigger={refreshTrigger}
           />
         );
     }
