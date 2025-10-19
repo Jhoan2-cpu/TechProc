@@ -5,7 +5,7 @@ export type UserRole =
   | 'lms'             // Solo LMS
   | 'support'        // Tickets solamente
   | 'soporte_seguridad'      // Tickets + Security
-  | 'soporte_infraestructura'// Tickets + Infrastructure
+  | 'infra'// Tickets + Infrastructure
   | 'developer_web'          // Web + Tickets
   | 'analista_datos';        // Solo Analytics
 
@@ -99,11 +99,11 @@ export interface RefreshTokenResponse {
 
 // Permisos de acceso a módulos por rol según tabla de la especificación
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
-  admin: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
+  admin: ['users', 'lms', 'tickets', 'security', 'infra', 'web', 'analytics'],
   lms: ['lms'],
   support: ['support'],
   soporte_seguridad: ['tickets', 'security'],
-  soporte_infraestructura: ['tickets', 'infrastructure'],
+  infra: ['tickets', 'infra'],
   developer_web: ['tickets', 'web'],
   analista_datos: ['analytics'],
 };

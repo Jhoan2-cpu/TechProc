@@ -85,7 +85,7 @@ export const modules = [
       ],
     },
     {
-      id: 'infrastructure',
+      id: 'infra',
       name: 'Infraestructura',
       icon: faServer,
       submodules: [
