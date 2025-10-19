@@ -1,34 +1,62 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCheckCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import type { Ticket } from '../types';
+import { ticketsService } from '../services/ticketsService';
+import { authService } from '../../../services/authService';
 
 interface ResolveTicketModalProps {
   ticket: Ticket | null;
   isOpen: boolean;
   onClose: () => void;
-  onResolve: (ticketId: number, resolution: string) => void;
+  onSuccess: () => void;
 }
 
 export const ResolveTicketModal = ({
   ticket,
   isOpen,
   onClose,
-  onResolve,
+  onSuccess,
 }: ResolveTicketModalProps) => {
   const [resolution, setResolution] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   if (!isOpen || !ticket) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onResolve(ticket.ticket_id, resolution);
-    // Reset form
-    setResolution('');
+    setSubmitting(true);
+    setError('');
+
+    try {
+      // Obtener el employee ID del técnico actual
+      const currentEmployee = authService.getCurrentEmployee();
+      if (!currentEmployee) {
+        setError('No se pudo obtener los datos del empleado');
+        return;
+      }
+
+      // Llamar al API para resolver el ticket
+      await ticketsService.resolve(ticket.ticket_id, {
+        resolution_notes: resolution,
+        technician_id: currentEmployee.id,
+      });
+
+      // Éxito - cerrar modal y notificar al padre
+      onSuccess();
+      handleClose();
+    } catch (err: any) {
+      setError(err.message || 'Error al resolver el ticket');
+      console.error('Error resolving ticket:', err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleClose = () => {
     setResolution('');
+    setError('');
     onClose();
   };
 
@@ -75,6 +103,13 @@ export const ResolveTicketModal = ({
             </div>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           {/* Resolution Details */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -86,6 +121,7 @@ export const ResolveTicketModal = ({
               onChange={(e) => setResolution(e.target.value)}
               className="input min-h-[200px]"
               placeholder="Describe detalladamente la solución implementada, los pasos realizados y cualquier acción de seguimiento necesaria..."
+              disabled={submitting}
             />
           </div>
 
@@ -103,14 +139,26 @@ export const ResolveTicketModal = ({
               type="button"
               onClick={handleClose}
               className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
+              disabled={submitting}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="btn bg-green-600 hover:bg-green-700 text-white"
+              className="btn bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={submitting}
             >
-              Marcar como Resuelto
+              {submitting ? (
+                <>
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                  Resolviendo...
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faCheckCircle} />
+                  Marcar como Resuelto
+                </>
+              )}
             </button>
           </div>
         </form>

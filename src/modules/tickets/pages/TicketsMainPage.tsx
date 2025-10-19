@@ -175,21 +175,11 @@ export const TicketsMainPage = () => {
     setTicketToResolve(ticket);
   };
 
-  const handleResolveConfirm = (ticketId: number, resolution: string) => {
-    const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    setTickets(tickets.map(t =>
-      t.ticket_id === ticketId
-        ? {
-            ...t,
-            status: 'resuelto' as const,
-            resolution_date: now,
-            notes: resolution
-          }
-        : t
-    ));
-    setTicketToResolve(null);
-    // Aquí podrías mostrar una notificación de éxito
-    console.log(`Ticket ${ticketId} resuelto. Solución: ${resolution}`);
+  const handleResolveSuccess = () => {
+    // Recargar la lista de tickets después de resolver
+    console.log('Ticket resuelto exitosamente');
+    // Incrementar refreshTrigger para forzar recarga en MyTicketsPage
+    setRefreshTrigger(prev => prev + 1);
   };
 
   // Determinar la sección actual basándose en la ruta
@@ -266,7 +256,7 @@ export const TicketsMainPage = () => {
         ticket={ticketToResolve}
         isOpen={!!ticketToResolve}
         onClose={() => setTicketToResolve(null)}
-        onResolve={handleResolveConfirm}
+        onSuccess={handleResolveSuccess}
       />
     </div>
   );
