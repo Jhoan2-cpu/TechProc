@@ -145,7 +145,7 @@ export const coursesService = {
    * Eliminar un curso
    * Endpoint: DELETE /lms/courses/{course_id}
    */
-  async delete(id: string): Promise<void> {
+  async delete(id: string | number): Promise<void> {
     await apiRequest<CourseDeleteResponse>(`/lms/courses/${id}`, {
       method: 'DELETE',
     });

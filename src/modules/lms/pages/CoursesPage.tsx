@@ -67,9 +67,13 @@ export const CoursesPage = () => {
   const handleDeleteCourse = async () => {
     if (courseToDelete) {
       try {
-        await coursesService.delete(courseToDelete.id);
+        // Usar course_id para eliminar el curso
+        await coursesService.delete(String(courseToDelete.course_id || courseToDelete.id));
         setCourses(courses.filter(c => c.id !== courseToDelete.id));
         setCourseToDelete(null);
+
+        // Recargar la lista de cursos para asegurar que esté actualizada
+        fetchCourses();
       } catch (error) {
         console.error('Error deleting course:', error);
       }
