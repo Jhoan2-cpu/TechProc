@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { Course, CourseLevel, CreateCourseData, UpdateCourseData } from '../types';
+import type { Course, CourseLevel, CreateCourseData, UpdateCourseData, Category, Instructor } from '../types';
+import { categoriesService, instructorsService } from '../services';
 
 interface CreateCourseModalProps {
   course?: Course;
@@ -43,6 +44,31 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [instructors, setInstructors] = useState<Instructor[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
+
+  // Cargar categorías e instructores al montar el componente
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoadingData(true);
+        const [categoriesData, instructorsData] = await Promise.all([
+          categoriesService.getAll(),
+          instructorsService.getAll(),
+        ]);
+        setCategories(categoriesData);
+        setInstructors(instructorsData.instructors);
+      } catch (err) {
+        console.error('Error loading data:', err);
+        setError('Error al cargar categorías e instructores');
+      } finally {
+        setLoadingData(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -304,48 +330,74 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
               </div>
             </div>
 
-            {/* IDs de Categorías e Instructores */}
+            {/* Categorías e Instructores */}
             <div className="border-t border-secondary-200 pt-6">
               <h3 className="text-lg font-heading font-semibold text-white mb-4">
                 Categorías e Instructores
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    IDs de Categorías (separados por coma) *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.category_ids?.join(',') || ''}
-                    onChange={(e) => {
-                      const ids = e.target.value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-                      setFormData({ ...formData, category_ids: ids });
-                    }}
-                    className="input"
-                    placeholder="1,2,3"
-                  />
-                  <p className="text-xs text-gray-400 mt-1">Ejemplo: 1 o 1,2,3</p>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    IDs de Instructores (separados por coma) *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.instructor_ids?.join(',') || ''}
-                    onChange={(e) => {
-                      const ids = e.target.value.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
-                      setFormData({ ...formData, instructor_ids: ids });
-                    }}
-                    className="input"
-                    placeholder="1,2"
-                  />
-                  <p className="text-xs text-gray-400 mt-1">Ejemplo: 12 o 12,15</p>
+              {loadingData ? (
+                <div className="flex items-center justify-center py-8">
+                  <FontAwesomeIcon icon={faSpinner} className="animate-spin text-2xl text-primary-500" />
+                  <span className="ml-3 text-gray-400">Cargando datos...</span>
                 </div>
-              </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Categorías *
+                    </label>
+                    <select
+                      multiple
+                      required
+                      value={formData.category_ids?.map(String) || []}
+                      onChange={(e) => {
+                        const selectedOptions = Array.from(e.target.selectedOptions);
+                        const ids = selectedOptions.map(option => parseInt(option.value));
+                        setFormData({ ...formData, category_ids: ids });
+                      }}
+                      className="input min-h-[150px]"
+                      size={6}
+                    >
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples categorías
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Instructores *
+                    </label>
+                    <select
+                      multiple
+                      required
+                      value={formData.instructor_ids?.map(String) || []}
+                      onChange={(e) => {
+                        const selectedOptions = Array.from(e.target.selectedOptions);
+                        const ids = selectedOptions.map(option => parseInt(option.value));
+                        setFormData({ ...formData, instructor_ids: ids });
+                      }}
+                      className="input min-h-[150px]"
+                      size={6}
+                    >
+                      {instructors.map((instructor) => (
+                        <option key={instructor.id} value={instructor.id}>
+                          {instructor.name || `${instructor.first_name} ${instructor.last_name}`}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Mantén presionado Ctrl (Cmd en Mac) para seleccionar múltiples instructores
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
