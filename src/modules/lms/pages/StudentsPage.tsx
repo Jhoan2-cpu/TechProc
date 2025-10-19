@@ -75,15 +75,18 @@ export const StudentsPage = () => {
     }
   };
 
-  const handleEditStudent = async (updatedStudent: Student) => {
+  const handleEditStudent = async (studentId: string, updatedData: any) => {
     try {
-      // TODO: Adaptar los datos al formato de la API
-      // const updated = await studentsService.update(updatedStudent.id, updatedStudent);
-      // setStudents(students.map(s => s.id === updatedStudent.id ? updated : s));
-      setStudents(students.map(s => s.id === updatedStudent.id ? updatedStudent : s));
+      // Actualizar el estudiante usando la API
+      await studentsService.update(studentId, updatedData);
+
+      // Recargar la lista de estudiantes para obtener datos actualizados
+      const data = await studentsService.getAll();
+      setStudents(data.students);
       setStudentToEdit(null);
     } catch (error) {
       console.error('Error updating student:', error);
+      throw error; // Re-lanzar el error para que el modal lo maneje
     }
   };
 

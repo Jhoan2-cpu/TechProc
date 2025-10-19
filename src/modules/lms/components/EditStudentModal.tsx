@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import type { Student } from '../types';
+import type { Student, UpdateStudentData, Company } from '../types';
+import { companiesService } from '../services';
 
 interface EditStudentModalProps {
   student: Student | null;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (student: Student) => void;
+  onSave: (studentId: string, data: UpdateStudentData) => Promise<void>;
 }
 
 export const EditStudentModal = ({
@@ -16,39 +17,84 @@ export const EditStudentModal = ({
   onClose,
   onSave,
 }: EditStudentModalProps) => {
-  const [formData, setFormData] = useState<Partial<Student>>({
+  const [formData, setFormData] = useState<UpdateStudentData>({
     first_name: '',
     last_name: '',
     email: '',
-    country_location: '',
-    state: 'activo',
+    phone: '',
+    document_number: '',
+    company_id: undefined,
+    status: 'active',
   });
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingCompanies, setLoadingCompanies] = useState(false);
+  const [error, setError] = useState<string>('');
 
+  // Cargar compañías y datos del estudiante cuando se abre el modal
   useEffect(() => {
-    if (student) {
+    if (isOpen && student) {
+      loadCompanies();
       setFormData({
         first_name: student.first_name,
         last_name: student.last_name,
         email: student.email,
-        country_location: student.country_location,
-        state: student.state,
+        phone: student.phone || '',
+        document_number: student.document_number || '',
+        company_id: student.company?.id,
+        status: student.state === 'activo' ? 'active' : 'inactive',
       });
     }
-  }, [student]);
+  }, [isOpen, student]);
+
+  const loadCompanies = async () => {
+    try {
+      setLoadingCompanies(true);
+      const response = await companiesService.getAll();
+      setCompanies(response.companies);
+    } catch (err) {
+      console.error('Error loading companies:', err);
+      setError('Error al cargar las compañías');
+    } finally {
+      setLoadingCompanies(false);
+    }
+  };
 
   if (!isOpen || !student) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
-      ...student,
-      ...formData,
-    } as Student);
+    setLoading(true);
+    setError('');
+
+    try {
+      await onSave(student.id, formData);
+      onClose();
+    } catch (err: any) {
+      setError(err.message || 'Error al actualizar el estudiante');
+      console.error('Error updating student:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Convertir company_id a número si existe
+    if (name === 'company_id') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value ? Number(value) : undefined
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleClose = () => {
+    setError('');
+    onClose();
   };
 
   return (
@@ -60,8 +106,9 @@ export const EditStudentModal = ({
             Editar Estudiante
           </h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-white hover:bg-gradient-to-br from-secondary-600 to-secondary-700 hover:bg-opacity-20 p-2 rounded-lg transition-colors"
+            disabled={loading}
           >
             <FontAwesomeIcon icon={faTimes} className="text-xl" />
           </button>
@@ -69,97 +116,165 @@ export const EditStudentModal = ({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Nombre */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Nombre *
+                Nombre
               </label>
               <input
                 type="text"
                 name="first_name"
-                required
                 value={formData.first_name}
                 onChange={handleChange}
                 className="input"
                 placeholder="Nombre del estudiante"
+                disabled={loading}
               />
             </div>
 
+            {/* Apellido */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Apellido *
+                Apellido
               </label>
               <input
                 type="text"
                 name="last_name"
-                required
                 value={formData.last_name}
                 onChange={handleChange}
                 className="input"
                 placeholder="Apellido del estudiante"
+                disabled={loading}
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Email *
+                Email
               </label>
               <input
                 type="email"
                 name="email"
-                required
                 value={formData.email}
                 onChange={handleChange}
                 className="input"
                 placeholder="correo@ejemplo.com"
+                disabled={loading}
               />
             </div>
 
+            {/* Teléfono */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                País *
+                Teléfono
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="input"
+                placeholder="+51 999999999"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Número de documento */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Número de Documento
               </label>
               <input
                 type="text"
-                name="country_location"
-                required
-                value={formData.country_location}
+                name="document_number"
+                value={formData.document_number}
                 onChange={handleChange}
                 className="input"
-                placeholder="País de residencia"
+                placeholder="DNI, Pasaporte, etc."
+                disabled={loading}
               />
             </div>
 
+            {/* Compañía */}
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Estado *
+                Compañía
               </label>
               <select
-                name="state"
-                value={formData.state}
+                name="company_id"
+                value={formData.company_id || ''}
                 onChange={handleChange}
                 className="select"
+                disabled={loading || loadingCompanies}
               >
-                <option value="activo">Activo</option>
-                <option value="inactivo">Inactivo</option>
+                <option value="">Sin compañía</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
+              {loadingCompanies && (
+                <p className="text-xs text-gray-400 mt-1">Cargando compañías...</p>
+              )}
+            </div>
+
+            {/* Estado */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Estado
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="select"
+                disabled={loading}
+              >
+                <option value="active">Activo</option>
+                <option value="inactive">Inactivo</option>
               </select>
             </div>
+          </div>
+
+          <div className="bg-blue-500/10 border border-blue-500/50 rounded-lg p-4 mt-4">
+            <p className="text-sm text-blue-400">
+              <strong>Nota:</strong> Los campos que no modifiques mantendrán sus valores actuales.
+            </p>
           </div>
 
           {/* Footer */}
           <div className="flex gap-3 justify-end pt-4 border-t border-secondary-200">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="btn bg-secondary-200 text-gray-300 hover:bg-secondary-300"
+              disabled={loading}
             >
               Cancelar
             </button>
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={loading}
             >
-              Guardar Cambios
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Guardando...
+                </span>
+              ) : (
+                'Guardar Cambios'
+              )}
             </button>
           </div>
         </form>

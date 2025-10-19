@@ -550,8 +550,12 @@ export interface CreateStudentData {
 }
 
 export interface UpdateStudentData {
-  phone?: string;
   company_id?: number;
+  document_number?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone?: string;
   status?: ApiStatus;
 }
 
