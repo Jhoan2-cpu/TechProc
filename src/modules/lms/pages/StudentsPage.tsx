@@ -66,11 +66,19 @@ export const StudentsPage = () => {
   const handleDeleteStudent = async () => {
     if (studentToDelete) {
       try {
+        // Eliminar el estudiante usando la API
         await studentsService.delete(studentToDelete.id);
+
+        // Filtrar el estudiante eliminado de la lista local
         setStudents(students.filter(s => s.id !== studentToDelete.id));
         setStudentToDelete(null);
-      } catch (error) {
+
+        // Opcionalmente, recargar la lista completa para asegurar sincronización
+        const data = await studentsService.getAll();
+        setStudents(data.students);
+      } catch (error: any) {
         console.error('Error deleting student:', error);
+        alert(error.message || 'Error al eliminar el estudiante');
       }
     }
   };
