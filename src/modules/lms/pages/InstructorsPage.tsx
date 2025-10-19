@@ -159,10 +159,12 @@ export const InstructorsPage = () => {
                 <FontAwesomeIcon icon={faBriefcase} className="text-blue-600 mt-1" />
                 <span className="text-gray-300 flex-1">{instructor.expertise_area}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="text-purple-600" />
-                <span className="text-gray-300">{instructor.country_location}</span>
-              </div>
+              {instructor.courses_count !== undefined && (
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-gray-400">Cursos:</span>
+                  <span className="text-blue-400 font-semibold">{instructor.courses_count}</span>
+                </div>
+              )}
             </div>
 
             {/* Estado y acciones */}

@@ -74,6 +74,10 @@ export interface Instructor extends BaseUser {
   bio: string;
   expertise_area: string;
   status: InstructorStatus;
+  courses_count?: number;
+  instructor_id?: number;
+  user_id?: number;
+  name?: string;
 }
 
 // Curso

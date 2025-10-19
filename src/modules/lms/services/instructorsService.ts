@@ -17,6 +17,8 @@ const mapApiInstructorToInstructor = (apiInstructor: ApiInstructor): Instructor 
   let status: Instructor['status'] = 'activo';
   if (apiInstructor.status === 'inactive') {
     status = 'inactivo';
+  } else if (apiInstructor.status === 'suspended') {
+    status = 'suspendido';
   }
 
   return {
@@ -39,6 +41,10 @@ const mapApiInstructorToInstructor = (apiInstructor: ApiInstructor): Instructor 
     bio: apiInstructor.bio,
     expertise_area: apiInstructor.expertise_area,
     status,
+    courses_count: apiInstructor.courses_count,
+    instructor_id: apiInstructor.instructor_id,
+    user_id: apiInstructor.user_id,
+    name: apiInstructor.name,
   };
 };
 
