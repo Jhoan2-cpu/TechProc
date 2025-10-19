@@ -23,3 +23,6 @@ export { CompanyFilters } from './CompanyFilters';
 export { CategoryCard } from './CategoryCard';
 export { CreateCategoryModal } from './CreateCategoryModal';
 export { ViewCategoryModal } from './ViewCategoryModal';
+export { AcademicPeriodCard } from './AcademicPeriodCard';
+export { CreateAcademicPeriodModal } from './CreateAcademicPeriodModal';
+export { ViewAcademicPeriodModal } from './ViewAcademicPeriodModal';

@@ -775,3 +775,70 @@ export interface UpdateCategoryData {
   image?: string;
   category_id?: number | null;
 }
+
+// -------------------------------------------------------------------
+// PERIODOS ACADÉMICOS
+// -------------------------------------------------------------------
+
+// Status de periodo académico
+export type AcademicPeriodStatus = 'open' | 'completed' | 'cancelled';
+
+// Periodo académico del frontend
+export interface AcademicPeriod {
+  id: string;
+  academic_period_id: number | null;
+  name: string;
+  start_date: string;
+  end_date: string;
+  status: AcademicPeriodStatus;
+  created_at: string;
+}
+
+// Periodo académico de la API
+export interface ApiAcademicPeriod {
+  id: number;
+  academic_period_id: number | null;
+  name: string;
+  start_date: string;
+  end_date: string;
+  status: AcademicPeriodStatus;
+  created_at: string;
+}
+
+// Responses de la API
+export interface AcademicPeriodsListResponse {
+  success: boolean;
+  data: ApiAcademicPeriod[];
+}
+
+export interface AcademicPeriodDetailResponse {
+  success: boolean;
+  data: ApiAcademicPeriod;
+}
+
+export interface AcademicPeriodCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    academic_period_id: number | null;
+    name: string;
+    start_date: string;
+    end_date: string;
+    status: AcademicPeriodStatus;
+    created_at: string;
+  };
+}
+
+export interface AcademicPeriodDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Datos para crear periodo académico
+export interface CreateAcademicPeriodData {
+  name: string;
+  start_date: string;
+  end_date: string;
+  status: AcademicPeriodStatus;
+}

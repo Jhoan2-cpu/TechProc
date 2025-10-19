@@ -33,6 +33,7 @@ import {
   faChalkboardTeacher,
   faBuilding,
   faFolder,
+  faCalendar,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const modules = [
@@ -56,6 +57,7 @@ export const modules = [
         { id: 'lms-instructors', name: 'Instructores', icon: faChalkboardTeacher },
         { id: 'lms-companies', name: 'Compañías', icon: faBuilding },
         { id: 'lms-categories', name: 'Categorías', icon: faFolder },
+        { id: 'lms-academic-periods', name: 'Periodos Académicos', icon: faCalendar },
       ],
     },
     {
