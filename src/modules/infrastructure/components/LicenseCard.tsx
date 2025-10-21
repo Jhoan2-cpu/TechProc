@@ -16,7 +16,7 @@ interface LicenseCardProps {
 }
 
 export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onDelete }: LicenseCardProps) => {
-  const getLicenseStatusColor = (status: string) => {
+  const getLicenseStatusColor = (status: License['status']) => {
     switch (status) {
       case 'active': return 'bg-success/20 text-green-700';
       case 'expired': return 'bg-danger/20 text-red-700';
@@ -42,7 +42,7 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
         <div className="flex-1">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h3 className="text-lg font-heading font-bold text-white">{license.software_name}</h3>
+              <h3 className="text-lg font-heading font-bold text-white">{license.softwareName}</h3>
               <p className="text-sm text-gray-400">{license.provider}</p>
             </div>
             <span className={`px-4 py-2 rounded-full text-sm font-medium ${getLicenseStatusColor(license.status)}`}>
@@ -53,25 +53,25 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div>
               <p className="text-xs text-gray-400">Tipo</p>
-              <p className="font-semibold text-white capitalize">{license.license_type}</p>
+              <p className="font-semibold text-white capitalize">{license.licenseType}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400">Licencias Usadas</p>
-              <p className="font-semibold text-white">{license.seats_used}/{license.seats_total}</p>
+              <p className="font-semibold text-white">{license.seatsUsed}/{license.seatsTotal}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400">Costo Anual</p>
-              <p className="font-semibold text-white">S/ {license.cost_annual.toLocaleString()}</p>
+              <p className="font-semibold text-white">S/ {license.costAnnual.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400">Vencimiento</p>
-              <p className="font-semibold text-white">{formatDate(license.expiration_date)}</p>
+              <p className="font-semibold text-white">{formatDate(license.expirationDate)}</p>
             </div>
           </div>
 
           <div className="bg-secondary-600/50 rounded-lg p-3 mb-3">
             <p className="text-xs text-gray-400 mb-1">Clave de Licencia</p>
-            <p className="font-mono text-sm text-white">{license.license_key}</p>
+            <p className="font-mono text-sm text-white">{license.licenseKey}</p>
           </div>
 
           {license.notes && (
@@ -82,7 +82,7 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
 
           <div className="mt-3 text-sm text-gray-400">
             <p>
-              <span className="font-semibold">Compra:</span> {formatDate(license.purchase_date)}
+              <span className="font-semibold">Compra:</span> {formatDate(license.purchaseDate)}
             </p>
           </div>
         </div>

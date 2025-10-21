@@ -5,7 +5,6 @@
  */
 export interface ApiLicense {
   id: number;
-  id_license: number;
   software_name: string;
   license_key: string;
   license_type: string;
@@ -27,7 +26,6 @@ export interface ApiLicense {
  */
 export interface License {
   id: number;
-  code: number; // alias más semántico para id_license
   softwareName: string;
   licenseKey: string;
   licenseType: string;
@@ -46,6 +44,7 @@ export interface License {
 
 /**
  * ✏️ Datos requeridos para crear una licencia
+ * Todos los campos son obligatorios excepto los opcionales definidos por el backend
  */
 export interface CreateLicenseData {
   software_name: string;
@@ -59,11 +58,11 @@ export interface CreateLicenseData {
   cost_annual: number;
   status: string;
   responsible_id?: number | null;
-  notes: string;
+  notes?: string | null;
 }
 
 /**
  * 🧩 Datos para actualizar una licencia existente
- * (todos los campos opcionales)
+ * Todos los campos opcionales para poder actualizar solo los que cambian
  */
-export interface UpdateLicenseData extends Partial<CreateLicenseData> {}
+export type UpdateLicenseData = Partial<CreateLicenseData>;

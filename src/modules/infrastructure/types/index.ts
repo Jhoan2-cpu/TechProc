@@ -5,6 +5,8 @@ export type LicenseType = 'perpetua' | 'suscripcion' | 'trial';
 export type StorageType = 'local' | 'cloud' | 'nas' | 'san';
 export type ResourceStatus = 'available' | 'in_use' | 'maintenance' | 'retired';
 
+
+export * from './license.types';
 // Interfaces - Servidores
 export interface Server {
   id_server: number;
@@ -28,18 +30,18 @@ export interface Server {
 
 // Interfaces - Licencias
 export interface License {
-  id_license: number;
-  software_name: string;
-  license_key: string;
-  license_type: LicenseType;
+  id: number;
+  softwareName: string;
+  licenseKey: string;
+  licenseType: LicenseType;
   provider: string;
-  purchase_date: string;
-  expiration_date: string | null;
-  seats_total: number;
-  seats_used: number;
-  cost_annual: number;
+  purchaseDate: string;
+  expirationDate: string | null;
+  seatsTotal: number;
+  seatsUsed: number;
+  costAnnual: number;
   status: LicenseStatus;
-  responsible_id: number;
+  responsibleId: number;
   notes: string | null;
 }
 

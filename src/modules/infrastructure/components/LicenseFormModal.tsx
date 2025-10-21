@@ -12,50 +12,41 @@ interface LicenseFormModalProps {
 
 export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseFormModalProps) => {
   const [formData, setFormData] = useState({
-    software_name: '',
-    license_key: '',
+    softwareName: '',
+    licenseKey: '',
     license_type: 'suscripcion' as LicenseType,
     provider: '',
     purchase_date: new Date().toISOString().split('T')[0],
     expiration_date: '',
     seats_total: 1,
     seats_used: 0,
-    cost_annual: 0,
+    costAnnual: 0,
     status: 'active' as LicenseStatus,
     notes: '',
   });
 
   useEffect(() => {
+    if(!isOpen) return;
     if (license) {
       setFormData({
-        software_name: license.software_name,
-        license_key: license.license_key,
-        license_type: license.license_type,
+        softwareName: license.softwareName,
+        licenseKey: license.licenseKey,
+        license_type: license.licenseType,
         provider: license.provider,
-        purchase_date: license.purchase_date.split('T')[0],
-        expiration_date: license.expiration_date ? license.expiration_date.split('T')[0] : '',
-        seats_total: license.seats_total,
-        seats_used: license.seats_used,
-        cost_annual: license.cost_annual,
+        purchase_date: license.purchaseDate.split('T')[0],
+        expiration_date: license.expirationDate ? license.expirationDate.split('T')[0] : '',
+        seats_total: license.seatsTotal,
+        seats_used: license.seatsUsed,
+        costAnnual: license.costAnnual,
         status: license.status,
         notes: license.notes || '',
       });
-    } else {
-      setFormData({
-        software_name: '',
-        license_key: '',
-        license_type: 'suscripcion',
-        provider: '',
-        purchase_date: new Date().toISOString().split('T')[0],
-        expiration_date: '',
-        seats_total: 1,
-        seats_used: 0,
-        cost_annual: 0,
-        status: 'active',
-        notes: '',
-      });
     }
   }, [license, isOpen]);
+
+  useEffect(() => {
+    console.log('Qué estoy enviando', formData);
+  }, [formData])
 
   if (!isOpen) return null;
 
@@ -63,21 +54,21 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
     e.preventDefault();
 
     const licenseData: Partial<License> = {
-      software_name: formData.software_name,
-      license_key: formData.license_key,
-      license_type: formData.license_type,
+      softwareName: formData.softwareName,
+      licenseKey: formData.licenseKey,
+      licenseType: formData.license_type,
       provider: formData.provider,
-      purchase_date: new Date(formData.purchase_date).toISOString(),
-      expiration_date: formData.expiration_date ? new Date(formData.expiration_date).toISOString() : null,
-      seats_total: formData.seats_total,
-      seats_used: formData.seats_used,
-      cost_annual: formData.cost_annual,
+      purchaseDate: new Date(formData.purchase_date).toISOString(),
+      expirationDate: formData.expiration_date ? new Date(formData.expiration_date).toISOString() : null,
+      seatsTotal: formData.seats_total,
+      seatsUsed: formData.seats_used,
+      costAnnual: formData.costAnnual,
       status: formData.status,
       notes: formData.notes || null,
     };
 
     if (license) {
-      licenseData.id_license = license.id_license;
+      licenseData.id = license.id;
     }
 
     onSave(licenseData);
@@ -87,7 +78,7 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
     const segments = Array.from({ length: 5 }, () =>
       Math.random().toString(36).substring(2, 7).toUpperCase()
     );
-    setFormData({ ...formData, license_key: segments.join('-') });
+    setFormData({ ...formData, licenseKey: segments.join('-') });
   };
 
   return (
@@ -123,8 +114,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                 </label>
                 <input
                   type="text"
-                  value={formData.software_name}
-                  onChange={(e) => setFormData({ ...formData, software_name: e.target.value })}
+                  value={formData.softwareName}
+                  onChange={(e) => setFormData({ ...formData, softwareName: e.target.value })}
                   className="input w-full"
                   required
                   placeholder="ej: Microsoft Office 365"
@@ -185,8 +176,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
             <div className="flex gap-2">
               <input
                 type="text"
-                value={formData.license_key}
-                onChange={(e) => setFormData({ ...formData, license_key: e.target.value })}
+                value={formData.licenseKey}
+                onChange={(e) => setFormData({ ...formData, licenseKey: e.target.value })}
                 className="input flex-1 font-mono"
                 required
                 placeholder="XXXXX-XXXXX-XXXXX-XXXXX"
@@ -277,8 +268,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                 </label>
                 <input
                   type="number"
-                  value={formData.cost_annual}
-                  onChange={(e) => setFormData({ ...formData, cost_annual: parseFloat(e.target.value) })}
+                  value={formData.costAnnual}
+                  onChange={(e) => setFormData({ ...formData, costAnnual: parseFloat(e.target.value) })}
                   className="input w-full"
                   required
                   min="0"
