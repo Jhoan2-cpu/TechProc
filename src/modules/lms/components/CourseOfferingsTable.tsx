@@ -42,24 +42,24 @@ export const CourseOfferingsTable = ({ offerings, loading, onDelete }: CourseOff
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-secondary-200">
+          <thead className="bg-gradient-to-r from-primary-600 to-primary-700">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                 Curso
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                 Periodo
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                 Instructor
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                 Horario
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                 Modalidad
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                 Acciones
               </th>
             </tr>
@@ -68,7 +68,7 @@ export const CourseOfferingsTable = ({ offerings, loading, onDelete }: CourseOff
             {offerings.map((offering, index) => (
               <tr
                 key={offering.id}
-                className="hover:bg-secondary-100 transition-colors animate-slide-up"
+                className="hover:bg-primary-500/10 hover:shadow-md transition-all duration-200 animate-slide-up cursor-pointer"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -111,11 +111,14 @@ export const CourseOfferingsTable = ({ offerings, loading, onDelete }: CourseOff
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    onClick={() => onDelete(offering)}
-                    className="text-red-400 hover:text-red-300 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(offering);
+                    }}
+                    className="p-2 rounded-lg text-red-400 hover:text-white hover:bg-red-500/20 transition-all duration-200 hover:scale-110"
                     title="Eliminar oferta"
                   >
-                    <FontAwesomeIcon icon={faTrash} />
+                    <FontAwesomeIcon icon={faTrash} className="w-4 h-4" />
                   </button>
                 </td>
               </tr>
