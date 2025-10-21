@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react';
-import type { Course } from '../types';
-import { CreateCourseModal, CourseCard, ViewCourseModal, CourseFilters } from '../components';
-import { coursesService } from '../services';
+import { faBook, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import type { Course, CourseOffering, CreateCourseOfferingData } from '../types';
+import {
+  CreateCourseModal,
+  CourseCard,
+  ViewCourseModal,
+  CourseFilters,
+  CreateCourseOfferingModal,
+  CourseOfferingsTable,
+  Tabs,
+  TabPanel
+} from '../components';
+import { coursesService, courseOfferingsService } from '../services';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const CoursesPage = () => {
+  // Estado de tabs
+  const [activeTab, setActiveTab] = useState('courses');
+
+  // Estados de cursos
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -15,9 +29,26 @@ export const CoursesPage = () => {
   const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
   const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
+  // Estados de ofertas de cursos
+  const [offerings, setOfferings] = useState<CourseOffering[]>([]);
+  const [loadingOfferings, setLoadingOfferings] = useState(false);
+  const [showCreateOfferingModal, setShowCreateOfferingModal] = useState(false);
+
+  // Definición de tabs
+  const tabs = [
+    { id: 'courses', label: 'Cursos', icon: faBook },
+    { id: 'offerings', label: 'Ofertas de Cursos', icon: faCalendarAlt },
+  ];
+
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === 'offerings') {
+      fetchOfferings();
+    }
+  }, [activeTab]);
 
   const fetchCourses = async () => {
     try {
@@ -80,6 +111,29 @@ export const CoursesPage = () => {
     }
   };
 
+  const fetchOfferings = async () => {
+    try {
+      setLoadingOfferings(true);
+      const data = await courseOfferingsService.getAll();
+      setOfferings(data);
+    } catch (err: any) {
+      console.error('Error fetching offerings:', err);
+    } finally {
+      setLoadingOfferings(false);
+    }
+  };
+
+  const handleCreateOffering = async (data: CreateCourseOfferingData) => {
+    try {
+      await courseOfferingsService.create(data);
+      setShowCreateOfferingModal(false);
+      fetchOfferings();
+    } catch (error) {
+      console.error('Error creating course offering:', error);
+      throw error;
+    }
+  };
+
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       course.code.toLowerCase().includes(searchTerm.toLowerCase());
@@ -99,53 +153,83 @@ export const CoursesPage = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-heading font-bold text-white mb-6">Cursos</h1>
-
-      {/* Mensaje de error */}
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <p className="text-red-400">{error}</p>
-            <button
-              onClick={fetchCourses}
-              className="btn bg-red-600 hover:bg-red-700 text-white text-sm"
-            >
-              Reintentar
-            </button>
-          </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-heading font-bold text-white mb-2">Gestión de Cursos</h1>
+          <p className="text-gray-400">Administra cursos y sus ofertas académicas</p>
         </div>
-      )}
-
-      {/* Header con filtros */}
-      <CourseFilters
-        searchTerm={searchTerm}
-        filterStatus={filterStatus}
-        onSearchChange={setSearchTerm}
-        onStatusChange={setFilterStatus}
-        onCreateClick={() => setShowCreateModal(true)}
-      />
-
-      {/* Grid de cursos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourses.map((course, index) => (
-          <CourseCard
-            key={course.id}
-            course={course}
-            index={index}
-            onView={(course) => setSelectedCourse(course)}
-            onEdit={(course) => setCourseToEdit(course)}
-            onDelete={(course) => setCourseToDelete(course)}
-          />
-        ))}
       </div>
 
-      {/* Mensaje si no hay cursos */}
-      {filteredCourses.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-400 text-lg">No se encontraron cursos</p>
+      {/* Tabs */}
+      <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* Tab Panel: Cursos */}
+      <TabPanel isActive={activeTab === 'courses'}>
+        {/* Mensaje de error */}
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <p className="text-red-400">{error}</p>
+              <button
+                onClick={fetchCourses}
+                className="btn bg-red-600 hover:bg-red-700 text-white text-sm"
+              >
+                Reintentar
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Header con filtros */}
+        <CourseFilters
+          searchTerm={searchTerm}
+          filterStatus={filterStatus}
+          onSearchChange={setSearchTerm}
+          onStatusChange={setFilterStatus}
+          onCreateClick={() => setShowCreateModal(true)}
+        />
+
+        {/* Grid de cursos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCourses.map((course, index) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              index={index}
+              onView={(course) => setSelectedCourse(course)}
+              onEdit={(course) => setCourseToEdit(course)}
+              onDelete={(course) => setCourseToDelete(course)}
+            />
+          ))}
         </div>
-      )}
+
+        {/* Mensaje si no hay cursos */}
+        {filteredCourses.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">No se encontraron cursos</p>
+          </div>
+        )}
+      </TabPanel>
+
+      {/* Tab Panel: Ofertas de Cursos */}
+      <TabPanel isActive={activeTab === 'offerings'}>
+        <div className="space-y-6">
+          {/* Header con botón */}
+          <div className="flex items-center justify-end">
+            <button
+              onClick={() => setShowCreateOfferingModal(true)}
+              className="btn btn-primary"
+            >
+              Crear Oferta
+            </button>
+          </div>
+
+          {/* Tabla de ofertas */}
+          <CourseOfferingsTable offerings={offerings} loading={loadingOfferings} />
+        </div>
+      </TabPanel>
 
       {/* Modal de creación */}
       {showCreateModal && (
@@ -180,6 +264,13 @@ export const CoursesPage = () => {
         itemName={courseToDelete ? courseToDelete.title : ''}
         onConfirm={handleDeleteCourse}
         onCancel={() => setCourseToDelete(null)}
+      />
+
+      {/* Modal de crear oferta de curso */}
+      <CreateCourseOfferingModal
+        isOpen={showCreateOfferingModal}
+        onClose={() => setShowCreateOfferingModal(false)}
+        onSave={handleCreateOffering}
       />
     </div>
   );

@@ -842,3 +842,88 @@ export interface CreateAcademicPeriodData {
   end_date: string;
   status: AcademicPeriodStatus;
 }
+
+// -------------------------------------------------------------------
+// COURSE OFFERINGS (Ofertas de Cursos)
+// -------------------------------------------------------------------
+
+// Oferta de curso del frontend
+export interface CourseOffering {
+  id: string;
+  course_offering_id: number | null;
+  course_id: number;
+  academic_period_id: number;
+  instructor_id: number | null;
+  schedule: string;
+  delivery_method: string;
+  created_at: string;
+  // Relaciones
+  course?: {
+    id: number;
+    name: string | null;
+    title: string | null;
+  };
+  academic_period?: {
+    id: number;
+    name: string;
+    start_date?: string;
+    end_date?: string;
+  };
+  instructor?: {
+    id: number;
+    first_name: string | null;
+    last_name: string | null;
+    email: string | null;
+  };
+}
+
+// Oferta de curso de la API
+export interface ApiCourseOffering {
+  id: number;
+  course_offering_id: number | null;
+  course_id: number;
+  academic_period_id: number;
+  instructor_id: number | null;
+  schedule: string;
+  delivery_method: string;
+  created_at: string;
+  course?: {
+    id: number;
+    name: string | null;
+    title: string | null;
+  };
+  academic_period?: {
+    id: number;
+    name: string;
+    start_date?: string;
+    end_date?: string;
+  };
+  instructor?: {
+    id: number;
+    first_name: string | null;
+    last_name: string | null;
+    email: string | null;
+  };
+}
+
+// Response al listar ofertas
+export interface CourseOfferingsListResponse {
+  success: boolean;
+  data: ApiCourseOffering[];
+}
+
+// Response al crear oferta
+export interface CourseOfferingCreateResponse {
+  success: boolean;
+  message: string;
+  data: ApiCourseOffering;
+}
+
+// Datos para crear oferta de curso
+export interface CreateCourseOfferingData {
+  course_id: number;
+  academic_period_id: number;
+  instructor_id?: number | null;
+  schedule?: string;
+  delivery_method?: string;
+}
