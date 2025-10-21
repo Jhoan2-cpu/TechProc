@@ -1,11 +1,14 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import type { CourseOffering } from '../types';
 
 interface CourseOfferingsTableProps {
   offerings: CourseOffering[];
   loading: boolean;
+  onDelete: (offering: CourseOffering) => void;
 }
 
-export const CourseOfferingsTable = ({ offerings, loading }: CourseOfferingsTableProps) => {
+export const CourseOfferingsTable = ({ offerings, loading, onDelete }: CourseOfferingsTableProps) => {
   const getDeliveryMethodText = (method: string) => {
     switch (method) {
       case 'regular': return 'Presencial';
@@ -56,6 +59,9 @@ export const CourseOfferingsTable = ({ offerings, loading }: CourseOfferingsTabl
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Modalidad
               </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-secondary-200">
@@ -102,6 +108,15 @@ export const CourseOfferingsTable = ({ offerings, loading }: CourseOfferingsTabl
                   }`}>
                     {getDeliveryMethodText(offering.delivery_method)}
                   </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button
+                    onClick={() => onDelete(offering)}
+                    className="text-red-400 hover:text-red-300 transition-colors"
+                    title="Eliminar oferta"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 </td>
               </tr>
             ))}

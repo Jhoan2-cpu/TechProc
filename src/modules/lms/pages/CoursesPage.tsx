@@ -33,6 +33,7 @@ export const CoursesPage = () => {
   const [offerings, setOfferings] = useState<CourseOffering[]>([]);
   const [loadingOfferings, setLoadingOfferings] = useState(false);
   const [showCreateOfferingModal, setShowCreateOfferingModal] = useState(false);
+  const [offeringToDelete, setOfferingToDelete] = useState<CourseOffering | null>(null);
 
   // Definición de tabs
   const tabs = [
@@ -134,6 +135,21 @@ export const CoursesPage = () => {
     }
   };
 
+  const handleDeleteOffering = async () => {
+    if (offeringToDelete) {
+      try {
+        await courseOfferingsService.delete(offeringToDelete.id);
+        setOfferings(offerings.filter(o => o.id !== offeringToDelete.id));
+        setOfferingToDelete(null);
+
+        // Recargar la lista de ofertas para asegurar que esté actualizada
+        fetchOfferings();
+      } catch (error) {
+        console.error('Error deleting course offering:', error);
+      }
+    }
+  };
+
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       course.code.toLowerCase().includes(searchTerm.toLowerCase());
@@ -227,7 +243,11 @@ export const CoursesPage = () => {
           </div>
 
           {/* Tabla de ofertas */}
-          <CourseOfferingsTable offerings={offerings} loading={loadingOfferings} />
+          <CourseOfferingsTable
+            offerings={offerings}
+            loading={loadingOfferings}
+            onDelete={(offering) => setOfferingToDelete(offering)}
+          />
         </div>
       </TabPanel>
 
@@ -271,6 +291,16 @@ export const CoursesPage = () => {
         isOpen={showCreateOfferingModal}
         onClose={() => setShowCreateOfferingModal(false)}
         onSave={handleCreateOffering}
+      />
+
+      {/* Modal de confirmación de eliminación de oferta */}
+      <ConfirmDeleteModal
+        isOpen={!!offeringToDelete}
+        title="Confirmar Eliminación"
+        message="¿Estás seguro de que deseas eliminar esta oferta de curso?"
+        itemName={offeringToDelete ? `${offeringToDelete.course?.title || 'Curso'} - ${offeringToDelete.academic_period?.name || 'Período'}` : ''}
+        onConfirm={handleDeleteOffering}
+        onCancel={() => setOfferingToDelete(null)}
       />
     </div>
   );

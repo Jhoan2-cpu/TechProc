@@ -919,6 +919,12 @@ export interface CourseOfferingCreateResponse {
   data: ApiCourseOffering;
 }
 
+// Response al eliminar oferta
+export interface CourseOfferingDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
 // Datos para crear oferta de curso
 export interface CreateCourseOfferingData {
   course_id: number;

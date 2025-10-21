@@ -5,6 +5,7 @@ import type {
   ApiCourseOffering,
   CourseOfferingsListResponse,
   CourseOfferingCreateResponse,
+  CourseOfferingDeleteResponse,
   CreateCourseOfferingData,
 } from '../types';
 
@@ -45,5 +46,15 @@ export const courseOfferingsService = {
       body: JSON.stringify(data),
     });
     return mapApiCourseOfferingToCourseOffering(response.data);
+  },
+
+  /**
+   * Eliminar una oferta de curso
+   * Endpoint: DELETE /lms/course-offerings/{id}
+   */
+  async delete(id: string | number): Promise<void> {
+    await apiRequest<CourseOfferingDeleteResponse>(`/lms/course-offerings/${id}`, {
+      method: 'DELETE',
+    });
   },
 };
