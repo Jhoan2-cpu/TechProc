@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { faBook, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faCalendarAlt, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import type { Course, CourseOffering, CreateCourseOfferingData } from '../types';
 import {
   CreateCourseModal,
@@ -8,6 +8,8 @@ import {
   CourseFilters,
   CreateCourseOfferingModal,
   CourseOfferingsTable,
+  EnrollmentsTable,
+  CreateEnrollmentModal,
   Tabs,
   TabPanel
 } from '../components';
@@ -35,10 +37,38 @@ export const CoursesPage = () => {
   const [showCreateOfferingModal, setShowCreateOfferingModal] = useState(false);
   const [offeringToDelete, setOfferingToDelete] = useState<CourseOffering | null>(null);
 
+  // Estados de matrículas (datos temporales de ejemplo)
+  const [enrollments] = useState([
+    {
+      id: '1',
+      student_name: 'Juan Pérez',
+      academic_period: '2024-I',
+      courses_count: 3,
+      instructor: 'Dr. Carlos López'
+    },
+    {
+      id: '2',
+      student_name: 'María García',
+      academic_period: '2024-I',
+      courses_count: 4,
+      instructor: 'Dra. Ana Martínez'
+    },
+    {
+      id: '3',
+      student_name: 'Pedro Rodríguez',
+      academic_period: '2024-II',
+      courses_count: 2,
+      instructor: 'Dr. Carlos López'
+    }
+  ]);
+  const [loadingEnrollments] = useState(false);
+  const [showCreateEnrollmentModal, setShowCreateEnrollmentModal] = useState(false);
+
   // Definición de tabs
   const tabs = [
     { id: 'courses', label: 'Cursos', icon: faBook },
     { id: 'offerings', label: 'Ofertas de Cursos', icon: faCalendarAlt },
+    { id: 'enrollments', label: 'Matrículas', icon: faUserGraduate },
   ];
 
   useEffect(() => {
@@ -301,6 +331,36 @@ export const CoursesPage = () => {
         itemName={offeringToDelete ? `${offeringToDelete.course?.title || 'Curso'} - ${offeringToDelete.academic_period?.name || 'Período'}` : ''}
         onConfirm={handleDeleteOffering}
         onCancel={() => setOfferingToDelete(null)}
+      />
+
+      {/* Tab Panel: Matrículas */}
+      <TabPanel isActive={activeTab === 'enrollments'}>
+        <div className="space-y-6">
+          {/* Header con botón */}
+          <div className="flex items-center justify-end">
+            <button
+              onClick={() => setShowCreateEnrollmentModal(true)}
+              className="btn btn-primary"
+            >
+              Matricular
+            </button>
+          </div>
+
+          {/* Tabla de matrículas */}
+          <EnrollmentsTable
+            enrollments={enrollments}
+            loading={loadingEnrollments}
+            onView={(enrollment) => console.log('Ver:', enrollment)}
+            onEdit={(enrollment) => console.log('Editar:', enrollment)}
+            onDelete={(enrollment) => console.log('Eliminar:', enrollment)}
+          />
+        </div>
+      </TabPanel>
+
+      {/* Modal de crear matrícula */}
+      <CreateEnrollmentModal
+        isOpen={showCreateEnrollmentModal}
+        onClose={() => setShowCreateEnrollmentModal(false)}
       />
     </div>
   );
