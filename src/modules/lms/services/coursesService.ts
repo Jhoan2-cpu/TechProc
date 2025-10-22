@@ -27,13 +27,14 @@ const mapApiCourseToCourse = (apiCourse: ApiCourse | ApiCourseDetail): Course =>
     code: `COURSE-${apiCourse.course_id || apiCourse.id}`,
     description: apiCourse.description,
     level: apiCourse.level,
-    course_image: apiCourse.course_image,
+    course_image: apiCourse.course_image || undefined,
     duration: apiCourse.duration,
     sessions: apiCourse.sessions,
     selling_price: apiCourse.selling_price,
     discount_price: apiCourse.discount_price,
-    bestseller: apiCourse.bestseller,
-    featured: apiCourse.featured,
+    bestseller: apiCourse.bestseller || false,
+    featured: apiCourse.featured || false,
+    highest_rated: apiCourse.highest_rated || false,
     instructor_id: '', // Se debe obtener de los instructores
     duration_weeks: Math.ceil(apiCourse.duration / 7), // Convertir días a semanas
     price: apiCourse.discount_price || apiCourse.selling_price,

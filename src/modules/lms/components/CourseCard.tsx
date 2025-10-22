@@ -92,6 +92,12 @@ export const CourseCard = ({
               Destacado
             </span>
           )}
+          {course.highest_rated && (
+            <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400 flex items-center gap-1">
+              <FontAwesomeIcon icon={faStar} />
+              Mejor Valorado
+            </span>
+          )}
         </div>
 
         {/* Header del card */}

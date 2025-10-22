@@ -95,6 +95,7 @@ export interface Course {
   discount_price?: number;
   bestseller?: boolean;
   featured?: boolean;
+  highest_rated?: boolean;
   instructor_id: string;
   instructor?: Instructor;
   duration_weeks: number;
@@ -282,9 +283,10 @@ export interface ApiCourse {
   id: number;
   course_id: number;
   title: string;
+  name?: string | null;
   description: string;
   level: CourseLevel;
-  course_image?: string;
+  course_image?: string | null;
   duration: number;
   sessions: number;
   selling_price: number;
@@ -292,6 +294,7 @@ export interface ApiCourse {
   status: boolean;
   bestseller?: boolean;
   featured?: boolean;
+  highest_rated?: boolean;
   created_at: string;
 }
 
