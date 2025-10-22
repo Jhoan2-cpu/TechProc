@@ -6,3 +6,4 @@ export { instructorsService } from './instructorsService';
 export { categoriesService } from './categoriesService';
 export { companiesService } from './companiesService';
 export { academicPeriodsService } from './academicPeriodsService';
+export { courseContentsService } from './courseContentsService';

@@ -10,7 +10,7 @@ import type {
 import { coursesService } from './coursesService';
 import { studentsService } from './studentsService';
 import { instructorsService } from './instructorsService';
-import { enrollmentsService } from './enrollmentsService';
+// import { enrollmentsService } from './enrollmentsService'; // Servicio no disponible
 
 export const lmsService = {
   /**
@@ -29,14 +29,14 @@ export const lmsService = {
       const instructorsResponse = await instructorsService.getAll({ limit: 1 });
 
       // Obtener matrículas activas
-      const enrollmentsResponse = await enrollmentsService.getAll({ status: 'active' });
+      // const enrollmentsResponse = await enrollmentsService.getAll({ status: 'active' });
 
       return {
         total_courses: coursesStatsResponse.data.total_courses,
         published_courses: coursesStatsResponse.data.active_courses,
         draft_courses: coursesStatsResponse.data.inactive_courses,
         total_students: studentsStatsResponse.data.total_students,
-        active_enrollments: enrollmentsResponse.length,
+        active_enrollments: 0, // enrollmentsResponse.length - Servicio no disponible
         total_instructors: instructorsResponse.pagination?.total_records || 0,
       };
     } catch (error) {
@@ -75,6 +75,10 @@ export const lmsService = {
    */
   async getRecentEnrollments(): Promise<RecentEnrollment[]> {
     try {
+      // Servicio de enrollments no disponible - retornar array vacío
+      return [];
+
+      /* CÓDIGO COMENTADO - Servicio enrollmentsService no disponible
       const enrollments = await enrollmentsService.getAll();
 
       // Ordenar por fecha de inscripción (más recientes primero) y tomar las primeras 5
@@ -110,6 +114,7 @@ export const lmsService = {
       );
 
       return enrichedEnrollments;
+      */
     } catch (error) {
       console.error('Error al obtener inscripciones recientes:', error);
       throw error;

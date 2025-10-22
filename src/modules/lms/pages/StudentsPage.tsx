@@ -13,7 +13,8 @@ import {
   faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student, Course, Enrollment } from '../types';
-import { studentsService, coursesService, enrollmentsService } from '../services';
+import { studentsService, coursesService } from '../services';
+// import { enrollmentsService } from '../services'; // Servicio no disponible
 import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters, StudentStatsCards } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
@@ -34,14 +35,14 @@ export const StudentsPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [studentsData, coursesData, enrollmentsData] = await Promise.all([
+        const [studentsData, coursesData] = await Promise.all([
           studentsService.getAll(),
           coursesService.getAll(),
-          enrollmentsService.getAll(),
+          // enrollmentsService.getAll(), // Servicio no disponible
         ]);
         setStudents(studentsData.students);
         setCourses(coursesData.courses);
-        setEnrollments(enrollmentsData);
+        setEnrollments([]); // enrollmentsData - Servicio no disponible
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {

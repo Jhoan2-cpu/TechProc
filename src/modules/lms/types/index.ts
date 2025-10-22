@@ -719,6 +719,72 @@ export interface UpdateCategoryData {
 }
 
 // -------------------------------------------------------------------
+// CONTENIDOS DE CURSO (COURSE CONTENTS)
+// -------------------------------------------------------------------
+
+// Contenido de curso de la API
+export interface ApiCourseContent {
+  id: number;
+  course_id: number;
+  course?: {
+    id: number;
+    course_id: number;
+    title: string;
+  };
+  session: number;
+  type: string;
+  title: string;
+  content: string;
+  order_number: number;
+  created_at: string;
+}
+
+// Contenido de curso del frontend (actualizado)
+export interface CourseContentItem {
+  id: number;
+  course_id: number;
+  session: number;
+  type: string;
+  title: string;
+  content: string;
+  order_number: number;
+  created_at: string;
+}
+
+// Response de la API
+export interface CourseContentsListResponse {
+  success: boolean;
+  data: {
+    data: ApiCourseContent[];
+    current_page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+  };
+}
+
+export interface CourseContentCreateResponse {
+  success: boolean;
+  message: string;
+  data: ApiCourseContent;
+}
+
+export interface CourseContentDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Datos para crear contenido
+export interface CreateCourseContentData {
+  course_id: number;
+  session: number;
+  type: string;
+  title: string;
+  content: string;
+  order_number: number;
+}
+
+// -------------------------------------------------------------------
 // PERIODOS ACADÉMICOS
 // -------------------------------------------------------------------
 
