@@ -16,6 +16,7 @@ interface ChatbotConfigModalProps {
   config: ChatbotConfig;
   onSave: (config: ChatbotConfig) => void;
   onCancel: () => void;
+  loading?: boolean; // Opcional: para mostrar estado de carga
 }
 
 export const ChatbotConfigModal = ({ isOpen, config, onSave, onCancel }: ChatbotConfigModalProps) => {

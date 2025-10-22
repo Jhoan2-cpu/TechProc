@@ -10,6 +10,14 @@ interface FAQFormModalProps {
   onCancel: () => void;
 }
 
+// Definir las categorías predefinidas
+const CATEGORIAS_PREDEFINIDAS = [
+  { value: 'cursos', label: 'Cursos' },
+  { value: 'pagos', label: 'Pagos' },
+  { value: 'certificaciones', label: 'Certificaciones' },
+  { value: 'general', label: 'General' }
+];
+
 export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProps) => {
   const [formData, setFormData] = useState({
     question: '',
@@ -34,7 +42,7 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
       setFormData({
         question: '',
         answer: '',
-        category: '',
+        category: 'general', // Valor por defecto
         keywords: [],
         active: true,
       });
@@ -124,14 +132,22 @@ export const FAQFormModal = ({ isOpen, faq, onSave, onCancel }: FAQFormModalProp
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Categoría *
                 </label>
-                <input
-                  type="text"
+                <select
                   required
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="input w-full"
-                  placeholder="Ej: General, Cursos, Pagos, Certificaciones"
-                />
+                >
+                  <option value="">Selecciona una categoría</option>
+                  {CATEGORIAS_PREDEFINIDAS.map((categoria) => (
+                    <option key={categoria.value} value={categoria.value}>
+                      {categoria.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-400 mt-1">
+                  Selecciona la categoría más apropiada para esta pregunta
+                </p>
               </div>
             </div>
           </div>

@@ -12,7 +12,7 @@ export const RecentNewsSection = ({ news, getStatusColor }: RecentNewsSectionPro
       <div className="space-y-3">
         {news.slice(0, 3).map((item) => (
           <div
-            key={item.id_news}
+            key={item.id}
             className="border-l-4 border-blue-500 bg-gradient-to-r from-blue-900/20 to-transparent p-3 rounded hover:from-blue-900/30 transition-all duration-300"
           >
             <div className="flex justify-between items-start">

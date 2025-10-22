@@ -1,38 +1,36 @@
 import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload, faFilter } from '@fortawesome/free-solid-svg-icons';
 import type { ContactForm, ContactFormStatus } from '../types';
 import { ContactFormCard, RespondContactModal } from '../components';
-import {
-  getContactForms,
-  respondContactForm,
-  markContactFormAsSpam,
-} from '../../../services/webService';
+import { contactFormsService } from '../services/webService';
 
 export const ContactsPage = () => {
   const [contacts, setContacts] = useState<ContactForm[]>([]);
-  const [isLoadingContacts, setIsLoadingContacts] = useState(false);
-  const [contactsError, setContactsError] = useState<string | null>(null);
-  const [contactsFilter, setContactsFilter] = useState<'all' | 'pending' | 'in_progress' | 'resolved' | 'spam'>('all');
-  const [showRespondContactModal, setShowRespondContactModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<ContactFormStatus | 'all'>('all');
+  const [showRespondModal, setShowRespondModal] = useState(false);
   const [contactToRespond, setContactToRespond] = useState<ContactForm | null>(null);
 
   useEffect(() => {
-    const loadContactForms = async () => {
-      setIsLoadingContacts(true);
-      setContactsError(null);
+    fetchContacts();
+  }, [statusFilter]);
 
-      try {
-        const { forms } = await getContactForms(contactsFilter);
-        setContacts(forms);
-      } catch (error) {
-        console.error('Error al cargar formularios de contacto:', error);
-        setContactsError('Error al cargar los formularios de contacto. Por favor, intenta nuevamente.');
-      } finally {
-        setIsLoadingContacts(false);
-      }
-    };
-
-    loadContactForms();
-  }, [contactsFilter]);
+  const fetchContacts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const filters = statusFilter !== 'all' ? { status: statusFilter } : undefined;
+      const { forms } = await contactFormsService.getAll(filters);
+      setContacts(forms);
+    } catch (err: any) {
+      console.error('Error al cargar consultas:', err);
+      setError(err.message || 'Error al cargar las consultas');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatDateTime = (dateString: string | null) => {
     if (!dateString) return '-';
@@ -61,117 +59,109 @@ export const ContactsPage = () => {
       case 'resolved':
         return 'bg-success/20 text-green-700';
       case 'pending':
-      case 'in_progress':
         return 'bg-warning/20 text-yellow-700';
+      case 'in_progress':
+        return 'bg-primary-900/20 text-blue-700';
       case 'spam':
         return 'bg-danger/20 text-red-700';
       default:
-        return 'bg-primary-900/20 text-blue-700';
+        return 'bg-gray-100 text-gray-700';
     }
   };
 
   const handleRespondContact = (contact: ContactForm) => {
     setContactToRespond(contact);
-    setShowRespondContactModal(true);
+    setShowRespondModal(true);
   };
 
   const handleMarkAsSpam = async (contact: ContactForm) => {
     try {
-      await markContactFormAsSpam(contact.id_contact);
-      const { forms } = await getContactForms(contactsFilter);
-      setContacts(forms);
-    } catch (error) {
-      console.error('Error al marcar como spam:', error);
-      alert('Error al marcar el formulario como spam. Por favor, intenta nuevamente.');
+      await contactFormsService.markAsSpam(contact.id); // USAR contact.id
+      await fetchContacts();
+    } catch (err: any) {
+      console.error('Error al marcar como spam:', err);
+      alert('Error: ' + (err.message || 'No se pudo marcar como spam'));
     }
   };
 
   const handleResolve = async (contact: ContactForm) => {
     try {
-      const updatedContact = await respondContactForm(
-        contact.id_contact,
-        contact.response || 'Resuelto',
-        'resolved'
-      );
-
-      const updatedContacts = contacts.map(c =>
-        c.id_contact === contact.id_contact ? updatedContact : c
-      );
-      setContacts(updatedContacts);
-    } catch (error) {
-      console.error('Error al resolver:', error);
-      alert('Error al resolver el formulario. Por favor, intenta nuevamente.');
+      await contactFormsService.updateStatus(contact.id, 'resolved'); // USAR contact.id
+      await fetchContacts();
+    } catch (err: any) {
+      console.error('Error al resolver:', err);
+      alert('Error: ' + (err.message || 'No se pudo resolver la consulta'));
     }
   };
 
-  const handleViewContactDetails = (contact: ContactForm) => {
+  const handleViewDetails = (contact: ContactForm) => {
     setContactToRespond(contact);
-    setShowRespondContactModal(true);
+    setShowRespondModal(true);
   };
 
-  const handleSaveContactResponse = async (
-    contactId: number,
-    response: string,
-    status: ContactFormStatus,
-    assignedTo: number | null
-  ) => {
+  const handleSaveResponse = async (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
     try {
-      const updatedContact = await respondContactForm(contactId, response, status);
-
-      const updatedContacts = contacts.map(c =>
-        c.id_contact === contactId ? updatedContact : c
-      );
-      setContacts(updatedContacts);
-      setShowRespondContactModal(false);
+      await contactFormsService.respond(contactId, { response, status });
+      setShowRespondModal(false);
       setContactToRespond(null);
-    } catch (error) {
-      console.error('Error al guardar respuesta:', error);
-      alert('Error al guardar la respuesta. Por favor, intenta nuevamente.');
+      await fetchContacts();
+    } catch (err: any) {
+      console.error('Error al responder:', err);
+      alert('Error: ' + (err.message || 'No se pudo guardar la respuesta'));
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-gray-400">Cargando consultas...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-heading font-bold text-white">Consultas y Formularios de Contacto</h2>
-        <div className="flex gap-2">
+        <h2 className="text-2xl font-heading font-bold text-white">
+          Consultas y Formularios de Contacto
+        </h2>
+      </div>
+
+      {/* Filtros */}
+      <div className="card p-4">
+        <div className="flex items-center gap-4">
+          <FontAwesomeIcon icon={faFilter} className="text-gray-400" />
           <select
-            className="select"
-            value={contactsFilter}
-            onChange={(e) => setContactsFilter(e.target.value as typeof contactsFilter)}
+            className="input"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
           >
-            <option value="all">Todos</option>
+            <option value="all">Todos los estados</option>
             <option value="pending">Pendientes</option>
-            <option value="in_progress">En Progreso</option>
             <option value="resolved">Resueltos</option>
             <option value="spam">Spam</option>
           </select>
         </div>
       </div>
 
-      {isLoadingContacts && (
-        <div className="text-center py-8">
-          <p className="text-gray-400">Cargando formularios de contacto...</p>
-        </div>
-      )}
-
-      {contactsError && (
+      {error && (
         <div className="bg-danger/20 border border-red-300 text-red-700 px-4 py-3 rounded">
-          {contactsError}
+          {error}
         </div>
       )}
 
-      {!isLoadingContacts && !contactsError && contacts.length === 0 && (
-        <div className="text-center py-8">
-          <p className="text-gray-400">No hay formularios de contacto para mostrar.</p>
-        </div>
-      )}
-
-      {!isLoadingContacts && !contactsError && contacts.length > 0 && (
-        <div className="grid grid-cols-1 gap-4">
-          {contacts.map((contact, index) => (
+      <div className="grid grid-cols-1 gap-4">
+        {contacts.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-400">No hay consultas para mostrar.</p>
+          </div>
+        ) : (
+          contacts.map((contact, index) => (
             <ContactFormCard
-              key={contact.id_contact}
+              key={contact.id} // Usar contact.id como key
               contact={contact}
               index={index}
               formatDateTime={formatDateTime}
@@ -180,18 +170,18 @@ export const ContactsPage = () => {
               onRespond={handleRespondContact}
               onMarkAsSpam={handleMarkAsSpam}
               onResolve={handleResolve}
-              onViewDetails={handleViewContactDetails}
+              onViewDetails={handleViewDetails}
             />
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
 
       <RespondContactModal
-        isOpen={showRespondContactModal}
+        isOpen={showRespondModal}
         contact={contactToRespond}
-        onSave={handleSaveContactResponse}
+        onSave={handleSaveResponse}
         onCancel={() => {
-          setShowRespondContactModal(false);
+          setShowRespondModal(false);
           setContactToRespond(null);
         }}
         formatDateTime={formatDateTime}

@@ -13,7 +13,7 @@ interface RespondContactModalProps {
 
 export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatDateTime }: RespondContactModalProps) => {
   const [response, setResponse] = useState('');
-  const [status, setStatus] = useState<ContactFormStatus>('in_progress');
+  const [status, setStatus] = useState<ContactFormStatus>('pending');
   const [assignedTo, setAssignedTo] = useState<number | null>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
       setAssignedTo(contact.assigned_to || 1);
     } else {
       setResponse('');
-      setStatus('in_progress');
+      setStatus('pending');
       setAssignedTo(1);
     }
   }, [contact, isOpen]);
@@ -178,7 +178,7 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       Estado *
@@ -190,23 +190,9 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
                       className="input w-full"
                     >
                       <option value="pending">Pendiente</option>
-                      <option value="in_progress">En Progreso</option>
                       <option value="resolved">Resuelto</option>
                       <option value="spam">Spam</option>
                     </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Asignar a (ID Usuario)
-                    </label>
-                    <input
-                      type="number"
-                      value={assignedTo || ''}
-                      onChange={(e) => setAssignedTo(parseInt(e.target.value) || null)}
-                      className="input w-full"
-                      placeholder="ID del usuario"
-                    />
                   </div>
                 </div>
               </div>
