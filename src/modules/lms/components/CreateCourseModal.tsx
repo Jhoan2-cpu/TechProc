@@ -26,6 +26,7 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
 
   const [formData, setFormData] = useState<CreateCourseData>({
     title: course?.title || '',
+    name: '',
     description: course?.description || '',
     level: course?.level || 'basic',
     course_image: course?.course_image || '',
@@ -37,6 +38,9 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
     prerequisites: '',
     certificate_name: false,
     certificate_issuer: '',
+    bestseller: course?.bestseller || false,
+    featured: course?.featured || false,
+    highest_rated: false,
     status: getInitialStatus(),
     category_ids: [],
     instructor_ids: [],
@@ -130,6 +134,19 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     className="input"
                     placeholder="Ej: Curso de Laravel desde cero"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Nombre Corto
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="input"
+                    placeholder="Ej: Laravel Masterclass"
                   />
                 </div>
 
@@ -278,6 +295,53 @@ export const CreateCourseModal = ({ course, onClose, onSave }: CreateCourseModal
                     className="input"
                     placeholder="https://youtube.com/watch?v=123"
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Etiquetas Especiales */}
+            <div className="border-t border-secondary-200 pt-6">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4">
+                Etiquetas Especiales
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="bestseller"
+                    checked={formData.bestseller || false}
+                    onChange={(e) => setFormData({ ...formData, bestseller: e.target.checked })}
+                    className="w-4 h-4 text-primary-600 bg-secondary-700 border-gray-300 rounded focus:ring-primary-500"
+                  />
+                  <label htmlFor="bestseller" className="text-sm font-medium text-gray-300">
+                    Bestseller
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="featured"
+                    checked={formData.featured || false}
+                    onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                    className="w-4 h-4 text-primary-600 bg-secondary-700 border-gray-300 rounded focus:ring-primary-500"
+                  />
+                  <label htmlFor="featured" className="text-sm font-medium text-gray-300">
+                    Destacado
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="highest_rated"
+                    checked={formData.highest_rated || false}
+                    onChange={(e) => setFormData({ ...formData, highest_rated: e.target.checked })}
+                    className="w-4 h-4 text-primary-600 bg-secondary-700 border-gray-300 rounded focus:ring-primary-500"
+                  />
+                  <label htmlFor="highest_rated" className="text-sm font-medium text-gray-300">
+                    Mejor Valorado
+                  </label>
                 </div>
               </div>
             </div>

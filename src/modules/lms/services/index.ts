@@ -3,8 +3,6 @@ export { lmsService } from './lmsService';
 export { coursesService } from './coursesService';
 export { studentsService } from './studentsService';
 export { instructorsService } from './instructorsService';
-export { enrollmentsService } from './enrollmentsService';
 export { categoriesService } from './categoriesService';
 export { companiesService } from './companiesService';
 export { academicPeriodsService } from './academicPeriodsService';
-export { courseOfferingsService } from './courseOfferingsService';

@@ -117,17 +117,6 @@ export interface CourseContent {
   created_at: string;
 }
 
-// Inscripción
-export interface Enrollment {
-  id: string;
-  student_id: string;
-  student?: Student;
-  course_id: string;
-  course?: Course;
-  enrolled_at: string;
-  status: 'activo' | 'completado' | 'abandonado';
-  progress: number; // 0-100
-}
 
 // Categoría
 export interface Category {
@@ -164,14 +153,6 @@ export interface RecentCourse {
   created_at: string;
 }
 
-// Inscripciones recientes (para dashboard)
-export interface RecentEnrollment {
-  id: string;
-  student_name: string;
-  student_email: string;
-  course_title: string;
-  enrolled_at: string;
-}
 
 // -------------------------------------------------------------------
 // TIPOS DE LA API - Responses
@@ -266,19 +247,6 @@ export interface InstructorUpdateResponse {
   message: string;
 }
 
-// Enrollments
-export interface EnrollmentsListResponse {
-  success: boolean;
-  data: ApiEnrollment[];
-}
-
-export interface EnrollmentCreateResponse {
-  success: boolean;
-  message: string;
-  data: {
-    enrollment_id: number;
-  };
-}
 
 // Categories
 export interface CategoriesListResponse {
@@ -401,24 +369,6 @@ export interface ApiInstructor {
   created_at: string;
 }
 
-// Matrícula de la API
-export interface ApiEnrollment {
-  enrollment_id: number;
-  student: {
-    id: number;
-    name: string;
-  };
-  academic_period: {
-    id: number;
-    name: string;
-  };
-  enrollment_date: string;
-  status: ApiStatus;
-  courses: Array<{
-    course_offering_id: number;
-    course_title: string;
-  }>;
-}
 
 // Categoría de la API
 export interface ApiCategory {
@@ -499,6 +449,7 @@ export interface CoursesFilterParams {
 
 export interface CreateCourseData {
   title: string;
+  name?: string;
   description: string;
   level: CourseLevel;
   course_image?: string;
@@ -510,6 +461,9 @@ export interface CreateCourseData {
   prerequisites?: string;
   certificate_name?: boolean;
   certificate_issuer?: string;
+  bestseller?: boolean;
+  featured?: boolean;
+  highest_rated?: boolean;
   status: boolean;
   category_ids?: number[];
   instructor_ids?: number[];
@@ -517,6 +471,7 @@ export interface CreateCourseData {
 
 export interface UpdateCourseData {
   title?: string;
+  name?: string;
   description?: string;
   level?: CourseLevel;
   course_image?: string;
@@ -528,6 +483,9 @@ export interface UpdateCourseData {
   prerequisites?: string;
   certificate_name?: boolean;
   certificate_issuer?: string;
+  bestseller?: boolean;
+  featured?: boolean;
+  highest_rated?: boolean;
   status?: boolean;
   category_ids?: number[];
   instructor_ids?: number[];
@@ -589,21 +547,6 @@ export interface UpdateInstructorData {
   status?: ApiStatus;
 }
 
-// Enrollments
-export interface EnrollmentsFilterParams {
-  student_id?: number;
-  academic_period_id?: number;
-  status?: ApiStatus;
-}
-
-export interface CreateEnrollmentData {
-  student_id: number;
-  academic_period_id: number;
-  course_offering_ids: number[];
-  enrollment_type: 'new' | 'renewal';
-  enrollment_date: string;
-  status: ApiStatus;
-}
 
 // -------------------------------------------------------------------
 // TIPOS DE COMPATIBILIDAD
@@ -843,93 +786,3 @@ export interface CreateAcademicPeriodData {
   status: AcademicPeriodStatus;
 }
 
-// -------------------------------------------------------------------
-// COURSE OFFERINGS (Ofertas de Cursos)
-// -------------------------------------------------------------------
-
-// Oferta de curso del frontend
-export interface CourseOffering {
-  id: string;
-  course_offering_id: number | null;
-  course_id: number;
-  academic_period_id: number;
-  instructor_id: number | null;
-  schedule: string;
-  delivery_method: string;
-  created_at: string;
-  // Relaciones
-  course?: {
-    id: number;
-    name: string | null;
-    title: string | null;
-  };
-  academic_period?: {
-    id: number;
-    name: string;
-    start_date?: string;
-    end_date?: string;
-  };
-  instructor?: {
-    id: number;
-    first_name: string | null;
-    last_name: string | null;
-    email: string | null;
-  };
-}
-
-// Oferta de curso de la API
-export interface ApiCourseOffering {
-  id: number;
-  course_offering_id: number | null;
-  course_id: number;
-  academic_period_id: number;
-  instructor_id: number | null;
-  schedule: string;
-  delivery_method: string;
-  created_at: string;
-  course?: {
-    id: number;
-    name: string | null;
-    title: string | null;
-  };
-  academic_period?: {
-    id: number;
-    name: string;
-    start_date?: string;
-    end_date?: string;
-  };
-  instructor?: {
-    id: number;
-    first_name: string | null;
-    last_name: string | null;
-    email: string | null;
-  };
-}
-
-// Response al listar ofertas
-export interface CourseOfferingsListResponse {
-  success: boolean;
-  data: ApiCourseOffering[];
-}
-
-// Response al crear oferta
-export interface CourseOfferingCreateResponse {
-  success: boolean;
-  message: string;
-  data: ApiCourseOffering;
-}
-
-// Response al eliminar oferta
-export interface CourseOfferingDeleteResponse {
-  success: boolean;
-  message: string;
-}
-
-// Datos para crear oferta de curso
-export interface CreateCourseOfferingData {
-  course_id: number;
-  academic_period_id: number;
-  instructor_id?: number | null;
-  schedule?: string;
-  delivery_method?: string;
-}

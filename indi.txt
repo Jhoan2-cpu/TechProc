@@ -1,0 +1,39 @@
+Bien, ahora, hay cambios en la manera que se crea el curso.
+ve a CoursesPage.tsx de lms/pages
+en el botón para "Crear curso" abre un modal, pero ahora se envían estos datos.
+basate en esto:
+se envía un post a http://127.0.0.1:8000/api/lms/courses
+
+pasando estos datos.
+  {
+      "title": "Curso de Vue.js 3 Completo",
+      "name": "Vue 3 Masterclass",
+      "description": "Aprende Vue.js 3 con Composition API, TypeScript, Pinia y Vite. Crea aplicaciones modernas y escalables.",
+      "level": "intermediate",
+      "course_image": "https://example.com/images/vue.jpg",
+      "video_url": "https://youtube.com/watch?v=preview-vue",
+      "duration": 80.00,
+      "sessions": 20,
+      "selling_price": 199.99,
+      "discount_price": 149.99,
+      "prerequisites": "HTML, CSS, JavaScript básico",
+      "certificate_name": true,
+      "certificate_issuer": "Tech Academy",
+      "bestseller": false,
+      "featured": true,
+      "highest_rated": false,
+      "status": true
+  }
+
+
+  y se espera una resuesta como esta.
+  {
+    "success": true,
+    "message": "Curso creado exitosamente",
+    "data": {
+        "id": 5,
+        "course_id": 5
+    }
+}
+
+entonces, necesitas cambiar los services y otras cosas necesarias para adaptar el front a esta nueva forma.

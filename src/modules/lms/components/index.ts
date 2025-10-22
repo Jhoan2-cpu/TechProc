@@ -26,8 +26,3 @@ export { ViewCategoryModal } from './ViewCategoryModal';
 export { AcademicPeriodCard } from './AcademicPeriodCard';
 export { CreateAcademicPeriodModal } from './CreateAcademicPeriodModal';
 export { ViewAcademicPeriodModal } from './ViewAcademicPeriodModal';
-export { CreateCourseOfferingModal } from './CreateCourseOfferingModal';
-export { CourseOfferingsTable } from './CourseOfferingsTable';
-export { Tabs, TabPanel } from './Tabs';
-export { EnrollmentsTable } from './EnrollmentsTable';
-export { CreateEnrollmentModal } from './CreateEnrollmentModal';
