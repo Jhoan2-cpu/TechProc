@@ -11,7 +11,7 @@ import type { ContactFormStats } from '../../../services/webService';
 interface WebDashboardStatsProps {
   publishedNews: number;
   activeAlerts: number;
-  activeAnnouncements: number;
+  publishedAnnouncements: number;
   pendingContacts: number;
   totalFAQs: number;
   contactStats?: ContactFormStats | null;
@@ -21,7 +21,7 @@ interface WebDashboardStatsProps {
 export const WebDashboardStats = ({
   publishedNews,
   activeAlerts,
-  activeAnnouncements,
+  publishedAnnouncements,
   pendingContacts,
   totalFAQs,
   contactStats,
@@ -65,8 +65,8 @@ export const WebDashboardStats = ({
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-400 mb-1">Anuncios Activos</p>
-            <p className="text-3xl font-heading font-bold text-white">{activeAnnouncements}</p>
+            <p className="text-sm text-gray-400 mb-1">Anuncios Publicados</p>
+            <p className="text-3xl font-heading font-bold text-white">{publishedAnnouncements}</p>
           </div>
           <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
             <FontAwesomeIcon icon={faBullhorn} className="text-white text-2xl" />

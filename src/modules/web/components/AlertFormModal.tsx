@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faBell, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import type { Alert, AlertType, AlertStatus } from '../types';
 
 interface AlertFormModalProps {
   isOpen: boolean;
   alert: Alert | null;
-  onSave: (alert: Partial<Alert>) => void;
+  onSave: (alert: Partial<Alert>) => Promise<void>;
   onCancel: () => void;
 }
 
@@ -22,6 +22,9 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
     priority: 1,
     created_by: 1,
   });
+  
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (alert) {
@@ -31,8 +34,8 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
         status: alert.status,
         link_url: alert.link_url || '',
         link_text: alert.link_text || '',
-        start_date: alert.start_date,
-        end_date: alert.end_date || '',
+        start_date: alert.start_date.split('T')[0],
+        end_date: alert.end_date ? alert.end_date.split('T')[0] : '',
         priority: alert.priority,
         created_by: alert.created_by,
       });
@@ -50,11 +53,26 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
         created_by: 1,
       });
     }
+    setErrors({});
   }, [alert, isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    setErrors({});
+    setIsSubmitting(true);
+    
+    try {
+      await onSave(formData);
+    } catch (error: any) {
+      // Capturar errores de validación del backend
+      if (error.details && typeof error.details === 'object') {
+        setErrors(error.details);
+      } else if (error.message) {
+        setErrors({ general: [error.message] });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -80,6 +98,20 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Errores Generales */}
+          {errors.general && (
+            <div className="bg-red-900/20 border-l-4 border-red-500 p-4 rounded">
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-500" />
+                <div>
+                  {errors.general.map((error, idx) => (
+                    <p key={idx} className="text-sm text-red-300">{error}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Información de la Alerta */}
           <div className="card p-6">
             <h4 className="text-lg font-heading font-bold text-white mb-4">
@@ -94,10 +126,13 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="input w-full"
+                  className={`input w-full ${errors.message ? 'border-red-500' : ''}`}
                   rows={3}
                   placeholder="Mensaje de la alerta que se mostrará en el sitio web"
                 />
+                {errors.message && (
+                  <p className="text-xs text-red-400 mt-1">{errors.message[0]}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -109,13 +144,17 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                     required
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as AlertType })}
-                    className="input w-full"
+                    className={`input w-full ${errors.type ? 'border-red-500' : ''}`}
                   >
                     <option value="info">Información</option>
                     <option value="success">Éxito</option>
                     <option value="warning">Advertencia</option>
                     <option value="error">Error</option>
+                    <option value="maintenance">Mantenimiento</option>
                   </select>
+                  {errors.type && (
+                    <p className="text-xs text-red-400 mt-1">{errors.type[0]}</p>
+                  )}
                 </div>
 
                 <div>
@@ -126,12 +165,14 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                     required
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as AlertStatus })}
-                    className="input w-full"
+                    className={`input w-full ${errors.status ? 'border-red-500' : ''}`}
                   >
                     <option value="active">Activa</option>
                     <option value="inactive">Inactiva</option>
-                    <option value="expired">Expirada</option>
                   </select>
+                  {errors.status && (
+                    <p className="text-xs text-red-400 mt-1">{errors.status[0]}</p>
+                  )}
                 </div>
 
                 <div>
@@ -142,14 +183,14 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                     type="number"
                     required
                     min="1"
-                    max="10"
+                    max="5"
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) })}
-                    className="input w-full"
+                    className={`input w-full ${errors.priority ? 'border-red-500' : ''}`}
                   />
-                  <p className="text-xs text-gray-300 mt-1">
-                    Orden de visualización (1-10)
-                  </p>
+                  {errors.priority && (
+                    <p className="text-xs text-red-400 mt-1">{errors.priority[0]}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -169,9 +210,12 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                   type="text"
                   value={formData.link_url}
                   onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
-                  className="input w-full"
-                  placeholder="/cursos/python-basico"
+                  className={`input w-full ${errors.link_url ? 'border-red-500' : ''}`}
+                  placeholder="https://ejemplo.com/pagina"
                 />
+                {errors.link_url && (
+                  <p className="text-xs text-red-400 mt-1">{errors.link_url[0]}</p>
+                )}
               </div>
 
               <div>
@@ -182,9 +226,12 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                   type="text"
                   value={formData.link_text}
                   onChange={(e) => setFormData({ ...formData, link_text: e.target.value })}
-                  className="input w-full"
+                  className={`input w-full ${errors.link_text ? 'border-red-500' : ''}`}
                   placeholder="Ver más"
                 />
+                {errors.link_text && (
+                  <p className="text-xs text-red-400 mt-1">{errors.link_text[0]}</p>
+                )}
               </div>
             </div>
           </div>
@@ -204,23 +251,27 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
                   required
                   value={formData.start_date}
                   onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                  className="input w-full"
+                  className={`input w-full ${errors.start_date ? 'border-red-500' : ''}`}
                 />
+                {errors.start_date && (
+                  <p className="text-xs text-red-400 mt-1">{errors.start_date[0]}</p>
+                )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Fecha de Fin
+                  Fecha de Fin *
                 </label>
                 <input
                   type="date"
+                  required
                   value={formData.end_date}
                   onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
-                  className="input w-full"
+                  className={`input w-full ${errors.end_date ? 'border-red-500' : ''}`}
                 />
-                <p className="text-xs text-gray-300 mt-1">
-                  Dejar vacío para alerta sin fecha de fin
-                </p>
+                {errors.end_date && (
+                  <p className="text-xs text-red-400 mt-1">{errors.end_date[0]}</p>
+                )}
               </div>
             </div>
           </div>
@@ -252,15 +303,17 @@ export const AlertFormModal = ({ isOpen, alert, onSave, onCancel }: AlertFormMod
             <button
               type="button"
               onClick={onCancel}
+              disabled={isSubmitting}
               className="btn bg-secondary-200 hover:bg-secondary-300 text-white-300"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="btn bg-primary-600 hover:bg-primary-700 text-white"
+              disabled={isSubmitting}
+              className="btn bg-primary-600 hover:bg-primary-700 text-white disabled:opacity-50"
             >
-              {alert ? 'Guardar Cambios' : 'Crear Alerta'}
+              {isSubmitting ? 'Guardando...' : (alert ? 'Guardar Cambios' : 'Crear Alerta')}
             </button>
           </div>
         </form>

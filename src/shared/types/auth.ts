@@ -7,7 +7,11 @@ export type UserRole =
   | 'soporte_seguridad'      // Tickets + Security
   | 'soporte_infraestructura'// Tickets + Infrastructure
   | 'developer_web'          // Web + Tickets
-  | 'analista_datos';        // Solo Analytics
+  | 'analista_datos'        // Solo Analytics
+  | 'seg'             // Tickets + Security (cambiado de 'soporte_seguridad')
+  | 'infra'           // Tickets + Infrastructure (cambiado de 'soporte_infraestructura')  
+  | 'web'             // Web + Tickets
+  | 'data';           // Solo Analytics (cambiado de 'analista_datos')
 
 // Interfaz User según schema de la especificación
 export interface User {
@@ -105,5 +109,6 @@ export const MODULE_ACCESS: Record<UserRole, string[]> = {
   soporte_seguridad: ['tickets', 'security'],
   soporte_infraestructura: ['tickets', 'infrastructure'],
   developer_web: ['tickets', 'web'],
+  web: ['tickets', 'web'],
   analista_datos: ['analytics'],
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { ContactForm, News, Announcement } from '../types';
+import type { ContactForm, ContactFormStatus, News, Alert, Announcement } from '../types';
 import {
   WebDashboardStats,
   PendingContactsSection,
@@ -8,50 +8,63 @@ import {
   RespondContactModal,
 } from '../components';
 import {
-  getContactForms,
-  respondContactForm,
-  getContactFormStats,
-  type ContactFormStats
-} from '../../../services/webService';
-import { mockNews, mockAnnouncements } from '../../../services/mockData';
+  dashboardService,
+  type DashboardStats,
+  newsService,
+  alertsService,
+  announcementsService,
+  contactFormsService,
+} from '../services/webService';
 
 export const WebDashboardPage = () => {
-  const [news] = useState(mockNews);
-  const [announcements] = useState(mockAnnouncements);
-  const [contacts, setContacts] = useState<ContactForm[]>([]);
-  const [stats, setStats] = useState<ContactFormStats | null>(null);
-  const [isLoadingContacts, setIsLoadingContacts] = useState(false);
-  const [isLoadingStats, setIsLoadingStats] = useState(false);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [news, setNews] = useState<News[]>([]);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [pendingContacts, setPendingContacts] = useState<ContactForm[]>([]);
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const [showRespondContactModal, setShowRespondContactModal] = useState(false);
   const [contactToRespond, setContactToRespond] = useState<ContactForm | null>(null);
 
   useEffect(() => {
-    const loadData = async () => {
-      setIsLoadingContacts(true);
-      setIsLoadingStats(true);
-
-      try {
-        const [{ forms }, statsData] = await Promise.all([
-          getContactForms('pending'),
-          getContactFormStats(),
-        ]);
-
-        setContacts(forms);
-        setStats(statsData);
-      } catch (error) {
-        console.error('Error al cargar datos:', error);
-      } finally {
-        setIsLoadingContacts(false);
-        setIsLoadingStats(false);
-      }
-    };
-
-    loadData();
+    fetchDashboardData();
   }, []);
 
-  const publishedNews = news.filter(n => n.status === 'published').length;
-  const activeAnnouncements = announcements.filter(a => a.status === 'active').length;
-  const pendingContacts = stats?.pending || 0;
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Obtener estadísticas y datos recientes en paralelo
+      const [
+        statsData,
+        { news: newsData },
+        { alerts: alertsData },
+        { announcements: announcementsData },
+        { forms: contactsData },
+      ] = await Promise.all([
+        dashboardService.getStatistics(),
+        newsService.getAll({ limit: 5, status: 'published' }),
+        alertsService.getAll({ limit: 5, status: 'active' }),
+        announcementsService.getAll({ limit: 10, status: 'published' }), // Aumentar límite
+        contactFormsService.getAll({ limit: 10, status: 'pending' }),
+      ]);
+
+      setStats(statsData);
+      setNews(newsData);
+      setAlerts(alertsData);
+      setAnnouncements(announcementsData);
+      setPendingContacts(contactsData);
+    } catch (err: any) {
+      console.error('Error al cargar datos del dashboard:', err);
+      setError(err.message || 'Error al cargar los datos del dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatDateTime = (dateString: string | null) => {
     if (!dateString) return '-';
@@ -67,11 +80,11 @@ export const WebDashboardPage = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-danger/20 text-red-700';
-      case 'high': return 'bg-orange-900/20 text-orange-700';
-      case 'medium': return 'bg-warning/20 text-yellow-700';
-      case 'low': return 'bg-primary-900/20 text-blue-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'urgent': return 'bg-danger/20 text-red-700 border-red-300';
+      case 'high': return 'bg-orange-900/20 text-orange-700 border-orange-300';
+      case 'medium': return 'bg-warning/20 text-yellow-700 border-yellow-300';
+      case 'low': return 'bg-primary-900/20 text-blue-700 border-blue-300';
+      default: return 'bg-gray-100 text-gray-700 border-gray-300';
     }
   };
 
@@ -80,18 +93,18 @@ export const WebDashboardPage = () => {
       case 'published':
       case 'active':
       case 'resolved':
-        return 'bg-success/20 text-green-700';
+        return 'bg-success/20 text-green-700 border-green-300';
       case 'draft':
       case 'pending':
       case 'in_progress':
-        return 'bg-warning/20 text-yellow-700';
+        return 'bg-warning/20 text-yellow-700 border-yellow-300';
       case 'inactive':
       case 'archived':
-        return 'bg-gray-100 text-gray-700';
+        return 'bg-gray-100 text-gray-700 border-gray-300';
       case 'spam':
-        return 'bg-danger/20 text-red-700';
+        return 'bg-danger/20 text-red-700 border-red-300';
       default:
-        return 'bg-primary-900/20 text-blue-700';
+        return 'bg-primary-900/20 text-blue-700 border-blue-300';
     }
   };
 
@@ -100,48 +113,91 @@ export const WebDashboardPage = () => {
     setShowRespondContactModal(true);
   };
 
-  const handleSaveContactResponse = async (
-    contactId: number,
-    response: string,
-    status: 'pending' | 'in_progress' | 'resolved' | 'spam',
-    assignedTo: number | null
-  ) => {
+  const handleSaveContactResponse = async (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
+    if (!contactToRespond) return;
+
     try {
-      await respondContactForm(contactId, response, status);
-      const { forms } = await getContactForms('pending');
-      setContacts(forms);
+      await contactFormsService.respond(contactId, { response, status });
+      
+      // Recargar solo las consultas pendientes
+      const { forms } = await contactFormsService.getAll({ 
+        limit: 10, 
+        status: 'pending' 
+      });
+      setPendingContacts(forms);
+
+      // Recargar estadísticas para actualizar contadores
+      const statsData = await dashboardService.getStatistics();
+      setStats(statsData);
+
       setShowRespondContactModal(false);
       setContactToRespond(null);
-    } catch (error) {
-      console.error('Error al guardar respuesta:', error);
-      alert('Error al guardar la respuesta. Por favor, intenta nuevamente.');
+    } catch (err: any) {
+      console.error('Error al guardar respuesta:', err);
+      throw err; // Propagar el error al modal para que lo muestre
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-gray-400">Cargando dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-danger/20 border border-red-300 text-red-700 px-4 py-3 rounded">
+        {error}
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div className="space-y-6">
+      {/* Estadísticas Principales */}
       <WebDashboardStats
-        publishedNews={publishedNews}
-        activeAlerts={0}
-        activeAnnouncements={activeAnnouncements}
-        pendingContacts={pendingContacts}
-        totalFAQs={0}
-        contactStats={stats}
-        isLoading={isLoadingStats}
+        publishedNews={stats?.news.published || 0}
+        activeAlerts={stats?.alerts.active || 0}
+        publishedAnnouncements={stats?.announcements.published || 0}
+        pendingContacts={stats?.contact_forms.pending || 0}
+        totalFAQs={stats?.chatbot.total_faqs || 0}
+        contactStats={{
+          total: stats?.contact_forms.total || 0,
+          pending: stats?.contact_forms.pending || 0,
+          in_progress: stats?.contact_forms.in_progress || 0,
+          responded: stats?.contact_forms.resolved || 0,
+          spam: stats?.contact_forms.spam || 0,
+        }}
+        isLoading={loading}
       />
 
-      <PendingContactsSection
-        contacts={contacts}
-        formatDateTime={formatDateTime}
-        getPriorityColor={getPriorityColor}
-        onRespond={handleRespondContact}
-      />
+      {/* Consultas Pendientes */}
+      {pendingContacts.length > 0 && (
+        <PendingContactsSection
+          contacts={pendingContacts}
+          formatDateTime={formatDateTime}
+          getPriorityColor={getPriorityColor}
+          onRespond={handleRespondContact}
+        />
+      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <RecentNewsSection news={news} getStatusColor={getStatusColor} />
-        <ActiveAnnouncementsSection announcements={announcements} />
+      {/* Noticias Recientes y Anuncios Activos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RecentNewsSection 
+          news={news} 
+          getStatusColor={getStatusColor} 
+        />
+        <ActiveAnnouncementsSection 
+          announcements={announcements} 
+        />
       </div>
 
+      {/* Modal de Respuesta */}
       <RespondContactModal
         isOpen={showRespondContactModal}
         contact={contactToRespond}
@@ -152,6 +208,6 @@ export const WebDashboardPage = () => {
         }}
         formatDateTime={formatDateTime}
       />
-    </>
+    </div>
   );
 };

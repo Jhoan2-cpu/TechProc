@@ -12,7 +12,10 @@ interface DeleteAnnouncementModalProps {
 export const DeleteAnnouncementModal = ({ isOpen, announcement, onConfirm, onCancel }: DeleteAnnouncementModalProps) => {
   if (!isOpen || !announcement) return null;
 
-  const ctr = announcement.views > 0 ? ((announcement.clicks / announcement.views) * 100).toFixed(1) : '0';
+  // Manejar valores undefined/null
+  const views = announcement.views || 0;
+  const clicks = announcement.clicks || 0;
+  const ctr = views > 0 ? ((clicks / views) * 100).toFixed(1) : '0';
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
@@ -47,22 +50,24 @@ export const DeleteAnnouncementModal = ({ isOpen, announcement, onConfirm, onCan
                 </span>
               </div>
               <div className="text-gray-400">
-                Vistas: <span className="font-bold">{announcement.views}</span>
+                Vistas: <span className="font-bold">{views.toLocaleString()}</span>
               </div>
               <div className="text-gray-400">
-                Clics: <span className="font-bold">{announcement.clicks}</span> ({ctr}% CTR)
+                Clics: <span className="font-bold">{clicks.toLocaleString()}</span> ({ctr}% CTR)
               </div>
             </div>
           </div>
 
-          <div className="bg-amber-50 border-l-4 border-amber-400 p-4">
-            <p className="text-sm text-amber-800">
-              <span className="font-semibold">Nota:</span> Se perderán las estadísticas de este anuncio ({announcement.views} vistas y {announcement.clicks} clics).
-            </p>
-          </div>
+          {views > 0 && (
+            <div className="bg-amber-900/20 border-l-4 border-amber-400 p-4">
+              <p className="text-sm text-amber-300">
+                <span className="font-semibold">Nota:</span> Se perderán las estadísticas de este anuncio ({views.toLocaleString()} vistas y {clicks.toLocaleString()} clics).
+              </p>
+            </div>
+          )}
 
           <div className="bg-danger/20 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-danger font-semibold">
+            <p className="text-sm text-red-300 font-semibold">
               Este anuncio será eliminado permanentemente del sistema.
             </p>
           </div>

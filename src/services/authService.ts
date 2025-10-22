@@ -39,8 +39,8 @@ export const authService = {
       'seg': 'seg',
       'soporte_infraestructura': 'infra',
       'infra': 'infra',
-      'developer_web': 'web',
       'web': 'web',
+      'developer_web': 'web',
       'analista_datos': 'data',
       'data': 'data',
     };

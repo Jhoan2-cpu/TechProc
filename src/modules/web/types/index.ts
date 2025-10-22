@@ -1,14 +1,27 @@
 // Enums
 export type NewsStatus = 'draft' | 'published' | 'archived';
-export type AlertType = 'info' | 'warning' | 'error' | 'success';
+export type AlertType = 'info' | 'warning' | 'error' | 'success' | 'maintenance';
 export type AlertStatus = 'active' | 'inactive' | 'expired';
-export type AnnouncementStatus = 'active' | 'inactive' | 'scheduled';
-export type ContactFormStatus = 'pending' | 'in_progress' | 'resolved' | 'spam';
+export type AnnouncementStatus = 'draft' | 'published' | 'archived';
+export type ContactFormStatus = 'pending' | 'resolved' | 'spam';
 export type ContactFormPriority = 'low' | 'medium' | 'high' | 'urgent';
 export type ChatbotStatus = 'active' | 'inactive' | 'training';
 
-// Interfaces - Noticias
+export type NewsCategory = 
+  | 'educación' 
+  | 'tecnología' 
+  | 'eventos' 
+  | 'investigación' 
+  | 'noticias' 
+  | 'anuncios' 
+  | 'becas' 
+  | 'internacionalización'
+  | 'desarrollo-estudiantil'
+  | 'vinculación';
+
+// Actualizar la interfaz News para usar el tipo de categoría
 export interface News {
+  id: number;
   id_news: number;
   title: string;
   slug: string;
@@ -17,20 +30,21 @@ export interface News {
   featured_image: string | null;
   author_id: number;
   author_name?: string;
-  category: string;
+  category: NewsCategory; // Cambiar a NewsCategory
   tags: string[];
   status: NewsStatus;
   views: number;
   published_date: string | null;
   created_date: string;
   updated_date: string | null;
-  seo_title?: string;
-  seo_description?: string;
+  seo_title?: string | null;
+  seo_description?: string | null;
 }
 
 // Interfaces - Alertas (Banner superior del sitio)
 export interface Alert {
-  id_alert: number;
+  id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+  id_alert: number; // ID legible para humanos
   message: string;
   type: AlertType;
   status: AlertStatus;
@@ -41,16 +55,18 @@ export interface Alert {
   priority: number; // Orden de visualización
   created_by: number;
   created_date: string;
+  creator?: any; // Relación con usuario
 }
 
 // Interfaces - Anuncios (Pop-ups, banners laterales, etc.)
 export interface Announcement {
+  id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
   id_announcement: number;
   title: string;
   content: string;
   image_url: string | null;
-  display_type: 'popup' | 'banner' | 'sidebar'; // Tipo de visualización
-  target_page: string; // all, home, courses, etc.
+  display_type: 'banner' | 'modal' | 'popup' | 'notification';
+  target_page: string;
   link_url: string | null;
   button_text: string | null;
   status: AnnouncementStatus;
@@ -64,6 +80,7 @@ export interface Announcement {
 
 // Interfaces - Formularios de Contacto
 export interface ContactForm {
+  id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
   id_contact: number;
   full_name: string;
   email: string;
@@ -71,7 +88,7 @@ export interface ContactForm {
   company: string | null;
   subject: string;
   message: string;
-  form_type: 'contact' | 'quote' | 'support' | 'partnership'; // Tipo de formulario
+  form_type: 'contact' | 'quote' | 'support' | 'partnership' | 'general' | 'sales';
   status: ContactFormStatus;
   priority: ContactFormPriority;
   assigned_to: number | null;
@@ -79,25 +96,37 @@ export interface ContactForm {
   response: string | null;
   response_date: string | null;
   submission_date: string;
-  ip_address: string;
-  user_agent: string;
-  utm_source?: string; // Para tracking de marketing
+  ip_address?: string;
+  user_agent?: string;
+  utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
 }
 
-// Interfaces - Configuración del Chatbot
+// Agregar este tipo para la configuración del chatbot
 export interface ChatbotConfig {
+  enabled: boolean;
+  greeting_message: string;
+  fallback_message: string;
+  response_delay: number;
+  max_conversations_per_day: number;
+  contact_threshold: number;
+  updated_at?: string;
+}
+
+// Mantener los tipos existentes pero actualizar ChatbotConfig si es necesario
+export interface ChatbotConfigLegacy {
+  id: number;
   id_config: number;
   chatbot_name: string;
   welcome_message: string;
-  fallback_message: string; // Mensaje cuando no entiende
+  fallback_message: string;
   status: ChatbotStatus;
   language: string;
   theme_color: string;
   position: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
   auto_open: boolean;
-  auto_open_delay: number; // segundos
+  auto_open_delay: number;
   working_hours_enabled: boolean;
   working_hours_start: string | null;
   working_hours_end: string | null;
@@ -108,27 +137,25 @@ export interface ChatbotConfig {
 
 // Interfaces - Preguntas Frecuentes del Chatbot
 export interface ChatbotFAQ {
+  id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
   id_faq: number;
   question: string;
   answer: string;
   category: string;
-  keywords: string[]; // Para mejorar matching
+  keywords: string[];
   active: boolean;
-  usage_count: number; // Cuántas veces se usó
+  usage_count: number;
   created_date: string;
   updated_date: string | null;
 }
 
 // Interfaces - Conversaciones del Chatbot
 export interface ChatbotConversation {
+  id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
   id_conversation: number;
-  session_id: string;
-  user_name: string | null;
-  user_email: string | null;
-  messages: ChatbotMessage[];
   started_date: string;
   ended_date: string | null;
-  satisfaction_rating: number | null; // 1-5 estrellas
+  satisfaction_rating: number | null;
   feedback: string | null;
   resolved: boolean;
   handed_to_human: boolean;
@@ -136,12 +163,13 @@ export interface ChatbotConversation {
 
 // Interfaces - Mensajes individuales del chat
 export interface ChatbotMessage {
+  id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
   id_message: number;
   conversation_id: number;
   sender: 'user' | 'bot' | 'agent';
   message: string;
   timestamp: string;
-  faq_matched?: number | null; // ID de FAQ si coincidió con una
+  faq_matched?: number | null;
 }
 
 // Interfaces - Estadísticas del Sitio Web
