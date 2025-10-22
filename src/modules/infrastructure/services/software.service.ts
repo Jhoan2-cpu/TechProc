@@ -37,13 +37,13 @@ interface SoftwareDeleteResponse{
 // Mapeo de API -> modelo de frontend
 const mapApiSoftwareToSoftware = (apiSoftware: ApiSoftware): Software => ({
     id: apiSoftware.id,
-    name: apiSoftware.name,
+    software_name: apiSoftware.software_name,
     version: apiSoftware.version,
-    license_type: apiSoftware.license_type,
+    category: apiSoftware.category,
     vendor: apiSoftware.vendor,
-    install_date: apiSoftware.install_date,
-    expiration_date: apiSoftware.expiration_date,
-    status: apiSoftware.status,
+    license_id: apiSoftware.license_id,
+    installation_date: apiSoftware.installation_date,
+    last_update: apiSoftware.last_update,
 });
 
 

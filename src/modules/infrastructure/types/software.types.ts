@@ -3,13 +3,13 @@
 // 💾 Estructura que devuelve la API
 export interface ApiSoftware {
   id: number;
-  name: string;
+  software_name: string;
   version: string;
-  license_type: string;
+  category: string;
   vendor: string;
-  install_date: string;
-  expiration_date?: string | null;
-  status: string;
+  license_id: number;
+  installation_date: string;
+  last_update: string;
 }
 
 // 💡 Modelo usado en el frontend (más limpio)

@@ -36,9 +36,9 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
         license_id: software.license_id,
         installation_date: software.installation_date,
         last_update: software.last_update || '',
-        server_ids: software.server_ids,
         auto_update: software.auto_update,
         support_until: software.support_until || '',
+        server_ids: software.server_ids,
       });
     } else {
       setFormData({
@@ -255,7 +255,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
               </p>
             </div>
 
-            {formData.server_ids.length > 0 ? (
+            {Array.isArray(formData.server_ids) && formData.server_ids.length > 0 && (
               <div className="space-y-2">
                 <p className="text-sm text-gray-400 mb-2">
                   Servidores asociados ({formData.server_ids.length}):
@@ -278,7 +278,7 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
                   ))}
                 </div>
               </div>
-            ) : (
+            ) && (
               <div className="bg-amber-50 border-l-4 border-amber-400 p-4">
                 <p className="text-sm text-amber-800">
                   <span className="font-semibold">Advertencia:</span> No hay servidores asociados a este software.
