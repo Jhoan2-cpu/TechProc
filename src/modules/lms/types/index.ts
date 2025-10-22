@@ -465,8 +465,6 @@ export interface CreateCourseData {
   featured?: boolean;
   highest_rated?: boolean;
   status: boolean;
-  category_ids?: number[];
-  instructor_ids?: number[];
 }
 
 export interface UpdateCourseData {
@@ -487,8 +485,6 @@ export interface UpdateCourseData {
   featured?: boolean;
   highest_rated?: boolean;
   status?: boolean;
-  category_ids?: number[];
-  instructor_ids?: number[];
 }
 
 // Students

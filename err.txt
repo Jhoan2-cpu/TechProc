@@ -1,0 +1,219 @@
+react-dom_client.js?v=df61630b:20103 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+App.tsx:47 Sesión restaurada para el usuario: Object
+App.tsx:47 Sesión restaurada para el usuario: Object
+CoursesPage.tsx?t=1761122426939:30 Uncaught ReferenceError: activeTab is not defined
+    at CoursesPage (CoursesPage.tsx?t=1761122426939:30:7)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=df61630b:18509:20)
+    at renderWithHooks (react-dom_client.js?v=df61630b:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=df61630b:7475:21)
+    at beginWork (react-dom_client.js?v=df61630b:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=df61630b:997:72)
+    at performUnitOfWork (react-dom_client.js?v=df61630b:12561:98)
+    at workLoopSync (react-dom_client.js?v=df61630b:12424:43)
+    at renderRootSync (react-dom_client.js?v=df61630b:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=df61630b:11827:37)
+react-dom_client.js?v=df61630b:6966 An error occurred in the <CoursesPage> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=df61630b:6966
+App.tsx:47 Sesión restaurada para el usuario: Object
+App.tsx:47 Sesión restaurada para el usuario: Object
+CoursesPage.tsx?t=1761122433260:156 Uncaught ReferenceError: Tabs is not defined
+    at CoursesPage (CoursesPage.tsx?t=1761122433260:156:28)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=df61630b:18509:20)
+    at renderWithHooks (react-dom_client.js?v=df61630b:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=df61630b:7475:21)
+    at beginWork (react-dom_client.js?v=df61630b:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=df61630b:997:72)
+    at performUnitOfWork (react-dom_client.js?v=df61630b:12561:98)
+    at workLoopSync (react-dom_client.js?v=df61630b:12424:43)
+    at renderRootSync (react-dom_client.js?v=df61630b:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=df61630b:11827:37)
+react-dom_client.js?v=df61630b:6966 An error occurred in the <CoursesPage> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=df61630b:6966
+App.tsx:47 Sesión restaurada para el usuario: Object
+App.tsx:47 Sesión restaurada para el usuario: Object
+CoursesPage.tsx?t=1761122446105:123 Uncaught ReferenceError: Tabs is not defined
+    at CoursesPage (CoursesPage.tsx?t=1761122446105:123:28)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=df61630b:18509:20)
+    at renderWithHooks (react-dom_client.js?v=df61630b:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=df61630b:7475:21)
+    at beginWork (react-dom_client.js?v=df61630b:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=df61630b:997:72)
+    at performUnitOfWork (react-dom_client.js?v=df61630b:12561:98)
+    at workLoopSync (react-dom_client.js?v=df61630b:12424:43)
+    at renderRootSync (react-dom_client.js?v=df61630b:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=df61630b:11827:37)
+react-dom_client.js?v=df61630b:6966 An error occurred in the <CoursesPage> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=df61630b:6966
+src/modules/lms/pages/CoursesPage.tsx?t=1761122455850:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+client:809 [vite] Failed to reload /src/modules/lms/pages/CoursesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+App.tsx:47 Sesión restaurada para el usuario: Object
+App.tsx:47 Sesión restaurada para el usuario: Object
+CoursesPage.tsx?t=1761122464828:277 Uncaught ReferenceError: CreateCourseOfferingModal is not defined
+    at CoursesPage (CoursesPage.tsx?t=1761122464828:277:7)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=df61630b:18509:20)
+    at renderWithHooks (react-dom_client.js?v=df61630b:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=df61630b:7475:21)
+    at beginWork (react-dom_client.js?v=df61630b:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=df61630b:997:72)
+    at performUnitOfWork (react-dom_client.js?v=df61630b:12561:98)
+    at workLoopSync (react-dom_client.js?v=df61630b:12424:43)
+    at renderRootSync (react-dom_client.js?v=df61630b:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=df61630b:11827:37)
+react-dom_client.js?v=df61630b:6966 An error occurred in the <CoursesPage> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=df61630b:6966
+App.tsx:47 Sesión restaurada para el usuario: Object
+App.tsx:47 Sesión restaurada para el usuario: Object
+src/modules/lms/components/CreateEnrollmentModal.tsx?t=1761122495053:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateEnrollmentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+src/modules/lms/components/EnrollmentsTable.tsx?t=1761122495054:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+client:809 [vite] Failed to reload /src/modules/lms/components/EnrollmentsTable.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+src/modules/lms/components/CreateCourseOfferingModal.tsx?t=1761122495055:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateCourseOfferingModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+src/modules/lms/components/CourseOfferingsTable.tsx?t=1761122495056:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+client:809 [vite] Failed to reload /src/modules/lms/components/CourseOfferingsTable.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+src/modules/lms/components/Tabs.tsx?t=1761122495057:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+client:809 [vite] Failed to reload /src/modules/lms/components/Tabs.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CoursesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CompaniesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/InstructorsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/StudentsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CategoriesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/LMSPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+src/modules/lms/services/enrollmentsService.ts?t=1761122507277:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+src/modules/lms/services/courseOfferingsService.ts?t=1761122507278:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateCourseModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/AcademicPeriodsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/ViewCourseModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/EditStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/ViewStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateCourseModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/EditStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/ViewCourseModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/ViewStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CoursesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/AcademicPeriodsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CategoriesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/LMSPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CompaniesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/InstructorsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/StudentsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CoursesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/LMSPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CompaniesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CategoriesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/InstructorsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/StudentsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/StudentsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CategoriesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/ViewStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/LMSPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateCourseModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CompaniesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/InstructorsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/AcademicPeriodsPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/ViewCourseModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/CreateStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/components/EditStudentModal.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+client:809 [vite] Failed to reload /src/modules/lms/pages/CoursesPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+error @ client:809
+CreateCourseModal.tsx?t=1761122753628:715 Uncaught ReferenceError: loadingData is not defined
+    at CreateCourseModal (CreateCourseModal.tsx?t=1761122753628:715:11)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=df61630b:18509:20)
+    at renderWithHooks (react-dom_client.js?v=df61630b:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=df61630b:7475:21)
+    at beginWork (react-dom_client.js?v=df61630b:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=df61630b:997:72)
+    at performUnitOfWork (react-dom_client.js?v=df61630b:12561:98)
+    at workLoopSync (react-dom_client.js?v=df61630b:12424:43)
+    at renderRootSync (react-dom_client.js?v=df61630b:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=df61630b:11827:37)
+react-dom_client.js?v=df61630b:6966 An error occurred in the <CreateCourseModal> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=df61630b:6966
+App.tsx:47 Sesión restaurada para el usuario: Object
+App.tsx:47 Sesión restaurada para el usuario: Object
+CreateCourseModal.tsx:387 Uncaught ReferenceError: faSpinner is not defined
+    at CreateCourseModal (CreateCourseModal.tsx:387:42)
+    at Object.react_stack_bottom_frame (react-dom_client.js?v=df61630b:18509:20)
+    at renderWithHooks (react-dom_client.js?v=df61630b:5654:24)
+    at updateFunctionComponent (react-dom_client.js?v=df61630b:7475:21)
+    at beginWork (react-dom_client.js?v=df61630b:8525:20)
+    at runWithFiberInDEV (react-dom_client.js?v=df61630b:997:72)
+    at performUnitOfWork (react-dom_client.js?v=df61630b:12561:98)
+    at workLoopSync (react-dom_client.js?v=df61630b:12424:43)
+    at renderRootSync (react-dom_client.js?v=df61630b:12408:13)
+    at performWorkOnRoot (react-dom_client.js?v=df61630b:11827:37)
+react-dom_client.js?v=df61630b:6966 An error occurred in the <CreateCourseModal> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+defaultOnUncaughtError @ react-dom_client.js?v=df61630b:6966
