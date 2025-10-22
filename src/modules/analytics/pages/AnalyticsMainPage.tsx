@@ -9,7 +9,7 @@ import type {
   CourseAnalytics,
 } from '../types';
 import { AnalyticsDashboardPage } from './AnalyticsDashboardPage';
-import { AttendancePage } from './AttendancePage';
+import { AttendanceAnalyticsPage } from './AttendanceAnalyticsPage';
 import { ProgressPage } from './ProgressPage';
 import { PerformancePage } from './PerformancePage';
 import { DropoutPage } from './DropoutPage';
@@ -432,11 +432,7 @@ export const AnalyticsMainPage = () => {
         />
       )}
       {activeTab === 'attendance' && (
-        <AttendancePage
-          attendance={mockAttendance}
-          courses={mockCourseAnalytics}
-          onExportCSV={exportToCSV}
-        />
+        <AttendanceAnalyticsPage />
       )}
       {activeTab === 'progress' && (
         <ProgressPage

@@ -11,3 +11,12 @@ export { ProgressCard } from './ProgressCard';
 export { PerformanceCard } from './PerformanceCard';
 export { DropoutPredictionCard } from './DropoutPredictionCard';
 export { ReportCard } from './ReportCard';
+
+// Attendance Analytics Components
+export { AttendanceFiltersComponent } from './AttendanceFilters';
+export { AttendanceRecordCard } from './AttendanceRecordCard';
+export { AttendanceSummaryCards } from './AttendanceSummaryCards';
+export { StudentStatsCard } from './StudentStatsCard';
+export { GroupStatsCard } from './GroupStatsCard';
+export { TrendChart } from './TrendChart';
+export { RiskStudentCard } from './RiskStudentCard';

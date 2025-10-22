@@ -1,80 +1,2123 @@
-Al dar click en detalles se abre un modal mostrando información del course, ten como referencia los cursos que se traen con el servicio de courseservice.
+Bien, ahora vamos al modulo analytics
+allí quiero que impplementes los siguientes endpoins para hacer análisis de datos:
 
-y como cada item de los cursos tiene esta estructura:
-{
-                "id": 2,
-                "course_id": 2,
-                "title": "Curso de Prueba Laravel V2",
-                "name": null,
-                "description": "Aprende Laravel desde cero",
-                "level": "intermediate",
-                "course_image": "https://ejemplo.com/imagen.jpg",
-                "duration": 50,
-                "sessions": 23,
-                "selling_price": 399.99,
-                "discount_price": 299.99,
-                "status": true,
-                "bestseller": false,
-                "featured": false,
-                "highest_rated": false,
-                "created_at": "2025-10-21T14:36:22-05:00"
-            },
-
-            quiero que hagas lo siguiente, primero en el modal muestra inforación del curso.
-            luego más abajo agrega Contendio, y en esa sección de contenido pon las sesiones: 
-            por ejemplo si tiene 3 sesiones, entonces la estructura sería:
-            Sesión 1
-
-            Sesión 2
-
-            Sesión 3
-
-            y al lado de cada sesión agregar un botón para agregar contenido.
-            para agregar el contenido  (cada contenido por separado se usará:
-            se envía POST a http://127.0.0.1:8000/api/lms/course-contents
-
-            enviando estos datos:
-              {
-      "course_id": 1,
-      "session": 2,
-      "type": "video",
-      "title": "Routing en Laravel",
-      "content": "Aprende a crear rutas en Laravel. En esta lección veremos rutas básicas, rutas con parámetros, grupos de rutas y middleware.",
-      "order_number": 3
-  }
-
-el course_id se obtiene del course al que se dio click para ver detalles,
-el session se puede saber  por la manera en como se muestran los session, por orden, el de arriba es 1 el de abajo es 2 y así sucesivamente.
-el order_number es en orden, según se agreguen los contenidos, el primero será el 1 el segundo que aparece abajo será el 2, y así sucesivamente.
-
-y para obtener los contenidos usa esto:
-GET a http://127.0.0.1:8000/api/lms/course-contents
-y se obtendrá una lista de contenidos como este:
+GET a http://127.0.0.1:8000/api/data-analyst/attendance
+devuelve algo como:
 {
     "success": true,
     "data": {
         "data": [
             {
-                "id": 1,
-                "course_id": 1,
-                "course": {
-                    "id": 1,
-                    "course_id": 1,
-                    "title": "Nuevo curso de Laravel"
+                "id": 566,
+                "student": {
+                    "id": 29,
+                    "name": "Camila Ccama",
+                    "email": "camila.ccama@student.inca.edu"
                 },
-                "session": 2,
-                "type": "video",
-                "title": "Routing en Laravel",
-                "content": "Aprende a crear rutas en Laravel. En esta lección veremos rutas básicas, rutas con parámetros, grupos de rutas y middleware.",
-                "order_number": 3,
-                "created_at": "2025-10-22T04:20:33-05:00"
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:14:51.230684-05",
+                "exit_time": "2025-10-12 20:58:02.088178-05",
+                "connected_minutes": 116,
+                "connection_quality": "GOOD",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 662,
+                "student": {
+                    "id": 46,
+                    "name": "Francisco Gutiérrez",
+                    "email": "francisco.gutierrez@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 710,
+                "student": {
+                    "id": 52,
+                    "name": "Adrián Cordero",
+                    "email": "adrian.cordero@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 582,
+                "student": {
+                    "id": 36,
+                    "name": "Benjamín Yana",
+                    "email": "benjamin.yana@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:04:39.914823-05",
+                "exit_time": "2025-10-12 20:50:13.698939-05",
+                "connected_minutes": 113,
+                "connection_quality": "GOOD",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 534,
+                "student": {
+                    "id": 25,
+                    "name": "Sofía Vargas",
+                    "email": "sofia.vargas@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:05:52.782909-05",
+                "exit_time": "2025-10-12 20:50:05.06062-05",
+                "connected_minutes": 115,
+                "connection_quality": "GOOD",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 614,
+                "student": {
+                    "id": 40,
+                    "name": "Nicolás Ramos",
+                    "email": "nicolas.ramos@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 678,
+                "student": {
+                    "id": 48,
+                    "name": "Maximiliano Aguilar",
+                    "email": "maximiliano.aguilar@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 694,
+                "student": {
+                    "id": 50,
+                    "name": "Alejandro Núñez",
+                    "email": "alejandro.nunez@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:04:26.643576-05",
+                "exit_time": "2025-10-12 20:56:13.171004-05",
+                "connected_minutes": 112,
+                "connection_quality": "EXCELLENT",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 726,
+                "student": {
+                    "id": 54,
+                    "name": "Daniel Reyes",
+                    "email": "daniel.reyes@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:13:39.938226-05",
+                "exit_time": "2025-10-12 20:51:14.591222-05",
+                "connected_minutes": 113,
+                "connection_quality": "EXCELLENT",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 598,
+                "student": {
+                    "id": 38,
+                    "name": "Gabriel Nina",
+                    "email": "gabriel.nina@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:11:09.315079-05",
+                "exit_time": "2025-10-12 20:56:53.400251-05",
+                "connected_minutes": 118,
+                "connection_quality": "EXCELLENT",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 550,
+                "student": {
+                    "id": 27,
+                    "name": "Valentina Quispe",
+                    "email": "valentina.quispe@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:05:04.588934-05",
+                "exit_time": "2025-10-12 20:56:45.170421-05",
+                "connected_minutes": 117,
+                "connection_quality": "GOOD",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 630,
+                "student": {
+                    "id": 42,
+                    "name": "Tomás Luna",
+                    "email": "tomas.luna@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-12 19:10:58.106176-05",
+                "exit_time": "2025-10-12 20:58:00.175616-05",
+                "connected_minutes": 128,
+                "connection_quality": "GOOD",
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 646,
+                "student": {
+                    "id": 44,
+                    "name": "Joaquín Medina",
+                    "email": "joaquin.medina@student.inca.edu"
+                },
+                "class": {
+                    "id": 48,
+                    "name": "Sesión 16",
+                    "date": "2025-10-12"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-12 00:00:00-05"
+            },
+            {
+                "id": 661,
+                "student": {
+                    "id": 46,
+                    "name": "Francisco Gutiérrez",
+                    "email": "francisco.gutierrez@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-05 00:00:00-05"
+            },
+            {
+                "id": 629,
+                "student": {
+                    "id": 42,
+                    "name": "Tomás Luna",
+                    "email": "tomas.luna@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-05 00:00:00-05"
+            },
+            {
+                "id": 645,
+                "student": {
+                    "id": 44,
+                    "name": "Joaquín Medina",
+                    "email": "joaquin.medina@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-05 19:03:22.943073-05",
+                "exit_time": "2025-10-05 20:56:06.549778-05",
+                "connected_minutes": 119,
+                "connection_quality": "EXCELLENT",
+                "record_date": "2025-10-05 00:00:00-05"
+            },
+            {
+                "id": 677,
+                "student": {
+                    "id": 48,
+                    "name": "Maximiliano Aguilar",
+                    "email": "maximiliano.aguilar@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "NO",
+                "entry_time": null,
+                "exit_time": null,
+                "connected_minutes": 0,
+                "connection_quality": null,
+                "record_date": "2025-10-05 00:00:00-05"
+            },
+            {
+                "id": 597,
+                "student": {
+                    "id": 38,
+                    "name": "Gabriel Nina",
+                    "email": "gabriel.nina@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-05 19:10:05.949379-05",
+                "exit_time": "2025-10-05 20:51:29.191108-05",
+                "connected_minutes": 128,
+                "connection_quality": "GOOD",
+                "record_date": "2025-10-05 00:00:00-05"
+            },
+            {
+                "id": 613,
+                "student": {
+                    "id": 40,
+                    "name": "Nicolás Ramos",
+                    "email": "nicolas.ramos@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-05 19:05:45.522221-05",
+                "exit_time": "2025-10-05 20:54:00.652204-05",
+                "connected_minutes": 127,
+                "connection_quality": "EXCELLENT",
+                "record_date": "2025-10-05 00:00:00-05"
+            },
+            {
+                "id": 565,
+                "student": {
+                    "id": 29,
+                    "name": "Camila Ccama",
+                    "email": "camila.ccama@student.inca.edu"
+                },
+                "class": {
+                    "id": 47,
+                    "name": "Sesión 15",
+                    "date": "2025-10-05"
+                },
+                "group": {
+                    "id": 3,
+                    "name": "Desarrollo Web - Grupo 1"
+                },
+                "course": {
+                    "id": 2,
+                    "title": "Curso de Prueba Laravel V2"
+                },
+                "attended": "YES",
+                "entry_time": "2025-10-05 19:10:32.46466-05",
+                "exit_time": "2025-10-05 20:54:01.727333-05",
+                "connected_minutes": 120,
+                "connection_quality": "EXCELLENT",
+                "record_date": "2025-10-05 00:00:00-05"
             }
         ],
-        "current_page": 1,
-        "per_page": 20,
-        "total": 1,
-        "last_page": 1
+        "pagination": {
+            "current_page": 1,
+            "per_page": 20,
+            "total": 888,
+            "last_page": 45,
+            "from": 1,
+            "to": 20
+        }
     }
 }
 
-filtra y muestra solo aquellos que tienen el course_id igual al que se le dió click en detalles.
+
+GET a http://127.0.0.1:8000/api/data-analyst/attendance/stats/summary
+devuelve algo como:
+{
+    "success": true,
+    "data": {
+        "total_records": 888,
+        "total_attended": 619,
+        "total_missed": 269,
+        "attendance_rate": 69.71,
+        "avg_connected_minutes": 83.04,
+        "connection_quality_distribution": {
+            "excellent": 431,
+            "good": 170,
+            "fair": 18,
+            "poor": 0
+        },
+        "performance_indicators": {
+            "status": "needs_improvement",
+            "trend": "critical_decline",
+            "health_score": 79.86
+        }
+    }
+}
+
+get a http://127.0.0.1:8000/api/data-analyst/attendance/stats/by-student
+devuelve:
+{
+    "success": true,
+    "data": [
+        {
+            "student_id": 24,
+            "student_name": "Juan Pérez",
+            "student_email": "juan.perez@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 24,
+            "classes_missed": 0,
+            "attendance_rate": "100.00",
+            "avg_connected_minutes": "118.00",
+            "performance_level": "excellent",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 41,
+            "student_name": "Victoria Ortiz",
+            "student_email": "victoria.ortiz@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 23,
+            "classes_missed": 1,
+            "attendance_rate": "95.83",
+            "avg_connected_minutes": "117.91",
+            "performance_level": "excellent",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 25,
+            "student_name": "Sofía Vargas",
+            "student_email": "sofia.vargas@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 27,
+            "classes_missed": 3,
+            "attendance_rate": "90.00",
+            "avg_connected_minutes": "121.85",
+            "performance_level": "excellent",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 39,
+            "student_name": "Emilia Soto",
+            "student_email": "emilia.soto@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 21,
+            "classes_missed": 3,
+            "attendance_rate": "87.50",
+            "avg_connected_minutes": "118.52",
+            "performance_level": "good",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 56,
+            "student_name": "Ignacio Pineda",
+            "student_email": "ignacio.pineda@student.inca.edu",
+            "total_classes": 14,
+            "classes_attended": 12,
+            "classes_missed": 2,
+            "attendance_rate": "85.71",
+            "avg_connected_minutes": "118.58",
+            "performance_level": "good",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 33,
+            "student_name": "Isabella Choque",
+            "student_email": "isabella.choque@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 17,
+            "classes_missed": 3,
+            "attendance_rate": "85.00",
+            "avg_connected_minutes": "120.18",
+            "performance_level": "good",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 32,
+            "student_name": "Santiago Mamani",
+            "student_email": "santiago.mamani@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 17,
+            "classes_missed": 3,
+            "attendance_rate": "85.00",
+            "avg_connected_minutes": "119.24",
+            "performance_level": "good",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 43,
+            "student_name": "Renata Bravo",
+            "student_email": "renata.bravo@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 20,
+            "classes_missed": 4,
+            "attendance_rate": "83.33",
+            "avg_connected_minutes": "120.25",
+            "performance_level": "good",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 36,
+            "student_name": "Benjamín Yana",
+            "student_email": "benjamin.yana@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 24,
+            "classes_missed": 6,
+            "attendance_rate": "80.00",
+            "avg_connected_minutes": "120.33",
+            "performance_level": "good",
+            "risk_level": "low"
+        },
+        {
+            "student_id": 50,
+            "student_name": "Alejandro Núñez",
+            "student_email": "alejandro.nunez@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 23,
+            "classes_missed": 7,
+            "attendance_rate": "76.67",
+            "avg_connected_minutes": "120.26",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 29,
+            "student_name": "Camila Ccama",
+            "student_email": "camila.ccama@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 23,
+            "classes_missed": 7,
+            "attendance_rate": "76.67",
+            "avg_connected_minutes": "118.65",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 28,
+            "student_name": "Mateo Huamán",
+            "student_email": "mateo.huaman@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 18,
+            "classes_missed": 6,
+            "attendance_rate": "75.00",
+            "avg_connected_minutes": "118.28",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 34,
+            "student_name": "Sebastián Ticona",
+            "student_email": "sebastian.ticona@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 15,
+            "classes_missed": 5,
+            "attendance_rate": "75.00",
+            "avg_connected_minutes": "117.27",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 26,
+            "student_name": "Diego Rojas",
+            "student_email": "diego.rojas@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 18,
+            "classes_missed": 6,
+            "attendance_rate": "75.00",
+            "avg_connected_minutes": "117.33",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 35,
+            "student_name": "Mía Apaza",
+            "student_email": "mia.apaza@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 15,
+            "classes_missed": 5,
+            "attendance_rate": "75.00",
+            "avg_connected_minutes": "118.80",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 27,
+            "student_name": "Valentina Quispe",
+            "student_email": "valentina.quispe@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 22,
+            "classes_missed": 8,
+            "attendance_rate": "73.33",
+            "avg_connected_minutes": "119.45",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 42,
+            "student_name": "Tomás Luna",
+            "student_email": "tomas.luna@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 22,
+            "classes_missed": 8,
+            "attendance_rate": "73.33",
+            "avg_connected_minutes": "120.86",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 44,
+            "student_name": "Joaquín Medina",
+            "student_email": "joaquin.medina@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 22,
+            "classes_missed": 8,
+            "attendance_rate": "73.33",
+            "avg_connected_minutes": "118.32",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 38,
+            "student_name": "Gabriel Nina",
+            "student_email": "gabriel.nina@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 22,
+            "classes_missed": 8,
+            "attendance_rate": "73.33",
+            "avg_connected_minutes": "119.59",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 45,
+            "student_name": "Julieta Romero",
+            "student_email": "julieta.romero@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 17,
+            "classes_missed": 7,
+            "attendance_rate": "70.83",
+            "avg_connected_minutes": "118.88",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 30,
+            "student_name": "Lucas Puma",
+            "student_email": "lucas.puma@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 17,
+            "classes_missed": 7,
+            "attendance_rate": "70.83",
+            "avg_connected_minutes": "119.88",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 37,
+            "student_name": "Martina Cruz",
+            "student_email": "martina.cruz@student.inca.edu",
+            "total_classes": 24,
+            "classes_attended": 17,
+            "classes_missed": 7,
+            "attendance_rate": "70.83",
+            "avg_connected_minutes": "118.65",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 31,
+            "student_name": "Emma Condori",
+            "student_email": "emma.condori@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 14,
+            "classes_missed": 6,
+            "attendance_rate": "70.00",
+            "avg_connected_minutes": "119.71",
+            "performance_level": "regular",
+            "risk_level": "medium"
+        },
+        {
+            "student_id": 40,
+            "student_name": "Nicolás Ramos",
+            "student_email": "nicolas.ramos@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 20,
+            "classes_missed": 10,
+            "attendance_rate": "66.67",
+            "avg_connected_minutes": "118.65",
+            "performance_level": "poor",
+            "risk_level": "high"
+        },
+        {
+            "student_id": 52,
+            "student_name": "Adrián Cordero",
+            "student_email": "adrian.cordero@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 18,
+            "classes_missed": 12,
+            "attendance_rate": "60.00",
+            "avg_connected_minutes": "119.56",
+            "performance_level": "poor",
+            "risk_level": "high"
+        },
+        {
+            "student_id": 54,
+            "student_name": "Daniel Reyes",
+            "student_email": "daniel.reyes@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 18,
+            "classes_missed": 12,
+            "attendance_rate": "60.00",
+            "avg_connected_minutes": "121.00",
+            "performance_level": "poor",
+            "risk_level": "high"
+        },
+        {
+            "student_id": 49,
+            "student_name": "Antonella Paredes",
+            "student_email": "antonella.paredes@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 12,
+            "classes_missed": 8,
+            "attendance_rate": "60.00",
+            "avg_connected_minutes": "117.33",
+            "performance_level": "poor",
+            "risk_level": "high"
+        },
+        {
+            "student_id": 58,
+            "student_name": "Ángel Palacios",
+            "student_email": "angel.palacios@student.inca.edu",
+            "total_classes": 14,
+            "classes_attended": 8,
+            "classes_missed": 6,
+            "attendance_rate": "57.14",
+            "avg_connected_minutes": "118.88",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 60,
+            "student_name": "Bruno Carbajal",
+            "student_email": "bruno.carbajal@student.inca.edu",
+            "total_classes": 14,
+            "classes_attended": 8,
+            "classes_missed": 6,
+            "attendance_rate": "57.14",
+            "avg_connected_minutes": "119.75",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 48,
+            "student_name": "Maximiliano Aguilar",
+            "student_email": "maximiliano.aguilar@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 17,
+            "classes_missed": 13,
+            "attendance_rate": "56.67",
+            "avg_connected_minutes": "117.71",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 53,
+            "student_name": "Florencia Moreno",
+            "student_email": "florencia.moreno@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 11,
+            "classes_missed": 9,
+            "attendance_rate": "55.00",
+            "avg_connected_minutes": "118.82",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 47,
+            "student_name": "Catalina Espinoza",
+            "student_email": "catalina.espinoza@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 10,
+            "classes_missed": 10,
+            "attendance_rate": "50.00",
+            "avg_connected_minutes": "122.90",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 46,
+            "student_name": "Francisco Gutiérrez",
+            "student_email": "francisco.gutierrez@student.inca.edu",
+            "total_classes": 30,
+            "classes_attended": 14,
+            "classes_missed": 16,
+            "attendance_rate": "46.67",
+            "avg_connected_minutes": "117.93",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 51,
+            "student_name": "Luciana Salazar",
+            "student_email": "luciana.salazar@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 9,
+            "classes_missed": 11,
+            "attendance_rate": "45.00",
+            "avg_connected_minutes": "115.89",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 55,
+            "student_name": "Paula Valdivia",
+            "student_email": "paula.valdivia@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 9,
+            "classes_missed": 11,
+            "attendance_rate": "45.00",
+            "avg_connected_minutes": "118.78",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 57,
+            "student_name": "Renata Cáceres",
+            "student_email": "renata.caceres@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 8,
+            "classes_missed": 12,
+            "attendance_rate": "40.00",
+            "avg_connected_minutes": "118.13",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        },
+        {
+            "student_id": 59,
+            "student_name": "Natalia Velasco",
+            "student_email": "natalia.velasco@student.inca.edu",
+            "total_classes": 20,
+            "classes_attended": 7,
+            "classes_missed": 13,
+            "attendance_rate": "35.00",
+            "avg_connected_minutes": "117.00",
+            "performance_level": "very_poor",
+            "risk_level": "critical"
+        }
+    ],
+    "meta": {
+        "total_students": 37
+    }
+}
+
+get a http://127.0.0.1:8000/api/data-analyst/attendance/stats/by-group
+devuelve:
+{
+    "success": true,
+    "data": [
+        {
+            "group_id": 4,
+            "group_name": "Python Avanzado - Grupo 1",
+            "group_code": "PY-ADV-2024-G1",
+            "course_title": "fas fas fasd f",
+            "total_students": 9,
+            "total_records": 90,
+            "total_attended": 72,
+            "attendance_rate": "80.00",
+            "performance_level": "good",
+            "avg_attendance_per_student": 10
+        },
+        {
+            "group_id": 1,
+            "group_name": "Fundamentos de Programación - Grupo 1",
+            "group_code": "PROG-2024-G1",
+            "course_title": "Nuevo curso de Laravel",
+            "total_students": 12,
+            "total_records": 168,
+            "total_attended": 129,
+            "attendance_rate": "76.79",
+            "performance_level": "regular",
+            "avg_attendance_per_student": 14
+        },
+        {
+            "group_id": 3,
+            "group_name": "Desarrollo Web - Grupo 1",
+            "group_code": "WEB-2024-G1",
+            "course_title": "Curso de Prueba Laravel V2",
+            "total_students": 13,
+            "total_records": 208,
+            "total_attended": 146,
+            "attendance_rate": "70.19",
+            "performance_level": "regular",
+            "avg_attendance_per_student": 16
+        },
+        {
+            "group_id": 2,
+            "group_name": "Fundamentos de Programación - Grupo 2",
+            "group_code": "PROG-2024-G2",
+            "course_title": "Nuevo curso de Laravel",
+            "total_students": 25,
+            "total_records": 350,
+            "total_attended": 228,
+            "attendance_rate": "65.14",
+            "performance_level": "poor",
+            "avg_attendance_per_student": 14
+        },
+        {
+            "group_id": 5,
+            "group_name": "Laravel Backend - Grupo 1",
+            "group_code": "LARAVEL-2024-G1",
+            "course_title": "vbsdfgsdfg",
+            "total_students": 12,
+            "total_records": 72,
+            "total_attended": 44,
+            "attendance_rate": "61.11",
+            "performance_level": "poor",
+            "avg_attendance_per_student": 6
+        }
+    ],
+    "meta": {
+        "total_groups": 5
+    }
+}
+
+
+get a http://127.0.0.1:8000/api/data-analyst/attendance/trend
+
+devuelve:
+{
+    "success": true,
+    "data": [
+        {
+            "period": "2025-06-29",
+            "total_records": 50,
+            "attended": 34,
+            "missed": 16,
+            "attendance_rate": "68.00"
+        },
+        {
+            "period": "2025-07-06",
+            "total_records": 50,
+            "attended": 35,
+            "missed": 15,
+            "attendance_rate": "70.00"
+        },
+        {
+            "period": "2025-07-13",
+            "total_records": 50,
+            "attended": 35,
+            "missed": 15,
+            "attendance_rate": "70.00"
+        },
+        {
+            "period": "2025-07-20",
+            "total_records": 50,
+            "attended": 41,
+            "missed": 9,
+            "attendance_rate": "82.00"
+        },
+        {
+            "period": "2025-07-27",
+            "total_records": 50,
+            "attended": 32,
+            "missed": 18,
+            "attendance_rate": "64.00"
+        },
+        {
+            "period": "2025-07-29",
+            "total_records": 9,
+            "attended": 7,
+            "missed": 2,
+            "attendance_rate": "77.78"
+        },
+        {
+            "period": "2025-08-03",
+            "total_records": 50,
+            "attended": 34,
+            "missed": 16,
+            "attendance_rate": "68.00"
+        },
+        {
+            "period": "2025-08-05",
+            "total_records": 9,
+            "attended": 7,
+            "missed": 2,
+            "attendance_rate": "77.78"
+        },
+        {
+            "period": "2025-08-10",
+            "total_records": 50,
+            "attended": 39,
+            "missed": 11,
+            "attendance_rate": "78.00"
+        },
+        {
+            "period": "2025-08-12",
+            "total_records": 9,
+            "attended": 8,
+            "missed": 1,
+            "attendance_rate": "88.89"
+        },
+        {
+            "period": "2025-08-17",
+            "total_records": 50,
+            "attended": 35,
+            "missed": 15,
+            "attendance_rate": "70.00"
+        },
+        {
+            "period": "2025-08-19",
+            "total_records": 9,
+            "attended": 7,
+            "missed": 2,
+            "attendance_rate": "77.78"
+        },
+        {
+            "period": "2025-08-24",
+            "total_records": 50,
+            "attended": 34,
+            "missed": 16,
+            "attendance_rate": "68.00"
+        },
+        {
+            "period": "2025-08-26",
+            "total_records": 9,
+            "attended": 6,
+            "missed": 3,
+            "attendance_rate": "66.67"
+        },
+        {
+            "period": "2025-08-29",
+            "total_records": 12,
+            "attended": 5,
+            "missed": 7,
+            "attendance_rate": "41.67"
+        },
+        {
+            "period": "2025-08-31",
+            "total_records": 50,
+            "attended": 34,
+            "missed": 16,
+            "attendance_rate": "68.00"
+        },
+        {
+            "period": "2025-09-02",
+            "total_records": 9,
+            "attended": 8,
+            "missed": 1,
+            "attendance_rate": "88.89"
+        },
+        {
+            "period": "2025-09-05",
+            "total_records": 12,
+            "attended": 8,
+            "missed": 4,
+            "attendance_rate": "66.67"
+        },
+        {
+            "period": "2025-09-07",
+            "total_records": 50,
+            "attended": 33,
+            "missed": 17,
+            "attendance_rate": "66.00"
+        },
+        {
+            "period": "2025-09-09",
+            "total_records": 9,
+            "attended": 8,
+            "missed": 1,
+            "attendance_rate": "88.89"
+        },
+        {
+            "period": "2025-09-12",
+            "total_records": 12,
+            "attended": 8,
+            "missed": 4,
+            "attendance_rate": "66.67"
+        },
+        {
+            "period": "2025-09-14",
+            "total_records": 50,
+            "attended": 32,
+            "missed": 18,
+            "attendance_rate": "64.00"
+        },
+        {
+            "period": "2025-09-16",
+            "total_records": 9,
+            "attended": 6,
+            "missed": 3,
+            "attendance_rate": "66.67"
+        },
+        {
+            "period": "2025-09-19",
+            "total_records": 12,
+            "attended": 8,
+            "missed": 4,
+            "attendance_rate": "66.67"
+        },
+        {
+            "period": "2025-09-21",
+            "total_records": 50,
+            "attended": 35,
+            "missed": 15,
+            "attendance_rate": "70.00"
+        },
+        {
+            "period": "2025-09-23",
+            "total_records": 9,
+            "attended": 7,
+            "missed": 2,
+            "attendance_rate": "77.78"
+        },
+        {
+            "period": "2025-09-26",
+            "total_records": 12,
+            "attended": 8,
+            "missed": 4,
+            "attendance_rate": "66.67"
+        },
+        {
+            "period": "2025-09-28",
+            "total_records": 50,
+            "attended": 36,
+            "missed": 14,
+            "attendance_rate": "72.00"
+        },
+        {
+            "period": "2025-09-30",
+            "total_records": 9,
+            "attended": 8,
+            "missed": 1,
+            "attendance_rate": "88.89"
+        },
+        {
+            "period": "2025-10-03",
+            "total_records": 12,
+            "attended": 7,
+            "missed": 5,
+            "attendance_rate": "58.33"
+        },
+        {
+            "period": "2025-10-05",
+            "total_records": 13,
+            "attended": 6,
+            "missed": 7,
+            "attendance_rate": "46.15"
+        },
+        {
+            "period": "2025-10-12",
+            "total_records": 13,
+            "attended": 8,
+            "missed": 5,
+            "attendance_rate": "61.54"
+        }
+    ],
+    "analysis": {
+        "direction": "stable",
+        "change_percentage": -1.3,
+        "average_rate": 70.39,
+        "first_period_avg": 71.04,
+        "recent_period_avg": 69.74
+    }
+}
+
+
+get a http://127.0.0.1:8000/api/data-analyst/attendance/risk-analysis
+
+devuelve:
+{
+    "success": true,
+    "data": {
+        "threshold": 70,
+        "total_at_risk": 31,
+        "students": [
+            {
+                "student_id": 46,
+                "student_name": "Francisco Gutiérrez",
+                "student_email": "francisco.gutierrez@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 4,
+                "classes_missed": 10,
+                "attendance_rate": "28.57",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 53,
+                "student_name": "Florencia Moreno",
+                "student_email": "florencia.moreno@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 2,
+                "classes_missed": 4,
+                "attendance_rate": "33.33",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 59,
+                "student_name": "Natalia Velasco",
+                "student_email": "natalia.velasco@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 2,
+                "classes_missed": 4,
+                "attendance_rate": "33.33",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 47,
+                "student_name": "Catalina Espinoza",
+                "student_email": "catalina.espinoza@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 2,
+                "classes_missed": 4,
+                "attendance_rate": "33.33",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 59,
+                "student_name": "Natalia Velasco",
+                "student_email": "natalia.velasco@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 5,
+                "classes_missed": 9,
+                "attendance_rate": "35.71",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 51,
+                "student_name": "Luciana Salazar",
+                "student_email": "luciana.salazar@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 5,
+                "classes_missed": 9,
+                "attendance_rate": "35.71",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 57,
+                "student_name": "Renata Cáceres",
+                "student_email": "renata.caceres@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 5,
+                "classes_missed": 9,
+                "attendance_rate": "35.71",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 45,
+                "student_name": "Julieta Romero",
+                "student_email": "julieta.romero@student.inca.edu",
+                "group_id": 4,
+                "group_name": "Python Avanzado - Grupo 1",
+                "course_title": "fas fas fasd f",
+                "total_classes": 10,
+                "classes_attended": 4,
+                "classes_missed": 6,
+                "attendance_rate": "40.00",
+                "last_attendance_date": "2025-09-30 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 22,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 55,
+                "student_name": "Paula Valdivia",
+                "student_email": "paula.valdivia@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 6,
+                "classes_missed": 8,
+                "attendance_rate": "42.86",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 40,
+                "student_name": "Nicolás Ramos",
+                "student_email": "nicolas.ramos@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 7,
+                "classes_missed": 9,
+                "attendance_rate": "43.75",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "critical",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Intervención urgente requerida",
+                    "Contacto inmediato con el estudiante y familia",
+                    "Evaluación de causas de inasistencia",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 57,
+                "student_name": "Renata Cáceres",
+                "student_email": "renata.caceres@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 3,
+                "classes_missed": 3,
+                "attendance_rate": "50.00",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 48,
+                "student_name": "Maximiliano Aguilar",
+                "student_email": "maximiliano.aguilar@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 7,
+                "classes_missed": 7,
+                "attendance_rate": "50.00",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 54,
+                "student_name": "Daniel Reyes",
+                "student_email": "daniel.reyes@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 8,
+                "classes_missed": 8,
+                "attendance_rate": "50.00",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 55,
+                "student_name": "Paula Valdivia",
+                "student_email": "paula.valdivia@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 3,
+                "classes_missed": 3,
+                "attendance_rate": "50.00",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 49,
+                "student_name": "Antonella Paredes",
+                "student_email": "antonella.paredes@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 7,
+                "classes_missed": 7,
+                "attendance_rate": "50.00",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 47,
+                "student_name": "Catalina Espinoza",
+                "student_email": "catalina.espinoza@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 8,
+                "classes_missed": 6,
+                "attendance_rate": "57.14",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 60,
+                "student_name": "Bruno Carbajal",
+                "student_email": "bruno.carbajal@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 8,
+                "classes_missed": 6,
+                "attendance_rate": "57.14",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 28,
+                "student_name": "Mateo Huamán",
+                "student_email": "mateo.huaman@student.inca.edu",
+                "group_id": 1,
+                "group_name": "Fundamentos de Programación - Grupo 1",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 8,
+                "classes_missed": 6,
+                "attendance_rate": "57.14",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 58,
+                "student_name": "Ángel Palacios",
+                "student_email": "angel.palacios@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 8,
+                "classes_missed": 6,
+                "attendance_rate": "57.14",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 52,
+                "student_name": "Adrián Cordero",
+                "student_email": "adrian.cordero@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 8,
+                "classes_missed": 6,
+                "attendance_rate": "57.14",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "high",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Seguimiento cercano requerido",
+                    "Entrevista con el estudiante",
+                    "Plan de recuperación personalizado",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 52,
+                "student_name": "Adrián Cordero",
+                "student_email": "adrian.cordero@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 10,
+                "classes_missed": 6,
+                "attendance_rate": "62.50",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 46,
+                "student_name": "Francisco Gutiérrez",
+                "student_email": "francisco.gutierrez@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 10,
+                "classes_missed": 6,
+                "attendance_rate": "62.50",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 48,
+                "student_name": "Maximiliano Aguilar",
+                "student_email": "maximiliano.aguilar@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 10,
+                "classes_missed": 6,
+                "attendance_rate": "62.50",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 30,
+                "student_name": "Lucas Puma",
+                "student_email": "lucas.puma@student.inca.edu",
+                "group_id": 1,
+                "group_name": "Fundamentos de Programación - Grupo 1",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 9,
+                "classes_missed": 5,
+                "attendance_rate": "64.29",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 53,
+                "student_name": "Florencia Moreno",
+                "student_email": "florencia.moreno@student.inca.edu",
+                "group_id": 2,
+                "group_name": "Fundamentos de Programación - Grupo 2",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 9,
+                "classes_missed": 5,
+                "attendance_rate": "64.29",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 29,
+                "student_name": "Camila Ccama",
+                "student_email": "camila.ccama@student.inca.edu",
+                "group_id": 1,
+                "group_name": "Fundamentos de Programación - Grupo 1",
+                "course_title": "Nuevo curso de Laravel",
+                "total_classes": 14,
+                "classes_attended": 9,
+                "classes_missed": 5,
+                "attendance_rate": "64.29",
+                "last_attendance_date": "2025-09-28 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 24,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 35,
+                "student_name": "Mía Apaza",
+                "student_email": "mia.apaza@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 4,
+                "classes_missed": 2,
+                "attendance_rate": "66.67",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 31,
+                "student_name": "Emma Condori",
+                "student_email": "emma.condori@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 4,
+                "classes_missed": 2,
+                "attendance_rate": "66.67",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 51,
+                "student_name": "Luciana Salazar",
+                "student_email": "luciana.salazar@student.inca.edu",
+                "group_id": 5,
+                "group_name": "Laravel Backend - Grupo 1",
+                "course_title": "vbsdfgsdfg",
+                "total_classes": 6,
+                "classes_attended": 4,
+                "classes_missed": 2,
+                "attendance_rate": "66.67",
+                "last_attendance_date": "2025-10-03 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 19,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 27,
+                "student_name": "Valentina Quispe",
+                "student_email": "valentina.quispe@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 11,
+                "classes_missed": 5,
+                "attendance_rate": "68.75",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            },
+            {
+                "student_id": 42,
+                "student_name": "Tomás Luna",
+                "student_email": "tomas.luna@student.inca.edu",
+                "group_id": 3,
+                "group_name": "Desarrollo Web - Grupo 1",
+                "course_title": "Curso de Prueba Laravel V2",
+                "total_classes": 16,
+                "classes_attended": 11,
+                "classes_missed": 5,
+                "attendance_rate": "68.75",
+                "last_attendance_date": "2025-10-12 00:00:00-05",
+                "risk_level": "medium",
+                "days_since_last_attendance": 10,
+                "recommendations": [
+                    "Monitoreo continuo",
+                    "Recordatorios de clases programadas",
+                    "Estudiante inactivo - contacto urgente"
+                ]
+            }
+        ],
+        "risk_distribution": {
+            "critical": 10,
+            "high": 10,
+            "medium": 11
+        }
+    }
+}
+
+get a http://127.0.0.1:8000/api/data-analyst/attendance/filters/options
+devuelve:
+{
+    "success": true,
+    "data": {
+        "groups": [
+            {
+                "id": 3,
+                "name": "Desarrollo Web - Grupo 1",
+                "code": "WEB-2024-G1",
+                "course_title": "Curso de Prueba Laravel V2"
+            },
+            {
+                "id": 1,
+                "name": "Fundamentos de Programación - Grupo 1",
+                "code": "PROG-2024-G1",
+                "course_title": "Nuevo curso de Laravel"
+            },
+            {
+                "id": 2,
+                "name": "Fundamentos de Programación - Grupo 2",
+                "code": "PROG-2024-G2",
+                "course_title": "Nuevo curso de Laravel"
+            },
+            {
+                "id": 5,
+                "name": "Laravel Backend - Grupo 1",
+                "code": "LARAVEL-2024-G1",
+                "course_title": "vbsdfgsdfg"
+            },
+            {
+                "id": 4,
+                "name": "Python Avanzado - Grupo 1",
+                "code": "PY-ADV-2024-G1",
+                "course_title": "fas fas fasd f"
+            }
+        ],
+        "courses": [
+            {
+                "id": 2,
+                "title": "Curso de Prueba Laravel V2",
+                "level": "intermediate"
+            },
+            {
+                "id": 5,
+                "title": "Curso de Vue.js 3 Completo",
+                "level": "intermediate"
+            },
+            {
+                "id": 11,
+                "title": "Desarrollo Backend con Laravel",
+                "level": "intermediate"
+            },
+            {
+                "id": 9,
+                "title": "Desarrollo Web con HTML, CSS y JavaScript",
+                "level": "basic"
+            },
+            {
+                "id": 6,
+                "title": "EL NUEVO CURSO ESPERADO",
+                "level": "intermediate"
+            },
+            {
+                "id": 7,
+                "title": "fas fas dfasdf",
+                "level": "intermediate"
+            },
+            {
+                "id": 8,
+                "title": "Fundamentos de Programación",
+                "level": "basic"
+            },
+            {
+                "id": 1,
+                "title": "Nuevo curso de Laravel",
+                "level": "basic"
+            },
+            {
+                "id": 10,
+                "title": "Python Avanzado y POO",
+                "level": "intermediate"
+            },
+            {
+                "id": 12,
+                "title": "React y TypeScript",
+                "level": "advanced"
+            },
+            {
+                "id": 4,
+                "title": "vbsdfgsdfg",
+                "level": "intermediate"
+            }
+        ],
+        "connection_quality_options": [
+            "EXCELLENT",
+            "GOOD",
+            "FAIR",
+            "POOR"
+        ],
+        "attended_options": [
+            "YES",
+            "NO"
+        ]
+    }
+}
+
+y obviamente no te olvides de envairle con el token de autenticación.
+también guiate del documento MODULO1_ATTENDANCE_IMPLEMENTATION
+
+implementalo en la sección correspondiente bien modular, services a services, componentes reutilizables en components
