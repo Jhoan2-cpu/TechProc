@@ -88,12 +88,29 @@ export const LicensesPage = () => {
     setShowFormModal(true);
   };
 
-  
+  const toApiLicensePayload = (data: any) => ({
+        software_name: data.software_name,
+        license_key: data.license_key,
+        license_type: data.license_type,
+        provider: data.provider,
+        purchase_date: data.purchase_date,
+        expiration_date: data.expiration_date || null,
+        seats_total:data.seats_total,
+        seats_used: data.seats_used,
+        cost_annual: data.cost_annual,
+        status: data.status,
+        responsible_id: data.responsible_id || 1,
+        notes: data.notes,
+        //createdAt: apiLicense.created_at,
+        //updatedAt: apiLicense.updated_at,
+  });
 
   const handleSaveLicense = async(licenseData: Partial<License>) => {
     try{
         setError(null);
         setLoading(true);
+      console.log('licenseToEdit', licenseToEdit);
+      console.log('licenseData recibido: ', licenseData);
       if (licenseToEdit) {
         // Editar licencia existente
         const updated = await LicenseServices.update(
@@ -105,21 +122,9 @@ export const LicensesPage = () => {
           setSuccessMessage('Licencia actualizada correctamente');
       } else {
         // Crear nueva licencia
-        const createdApi = await LicenseServices.create({
-          software_name: licenseData.softwareName!,
-          license_key: licenseData.licenseKey!,
-          license_type: licenseData.licenseType!,
-          provider: licenseData.provider!,
-          purchase_date: licenseData.purchaseDate!,
-          expiration_date: licenseData.expirationDate!,
-          seats_total: licenseData.seatsTotal!,
-          seats_used: licenseData.seatsUsed!,
-          cost_annual: licenseData.costAnnual!,
-          status: licenseData.status!,
-          notes: licenseData.notes || '',
-          responsible_id: 1, //modificar después
-        });
-        const created = createdApi;
+        const created = await LicenseServices.create(
+          toApiLicensePayload(licenseData));
+        console.log('Payload que envío al backend:', toApiLicensePayload(licenseData));
         setLicenses(prev => [created, ...prev]);
         setSuccessMessage('Licencia creada correctamente');
       }
@@ -156,8 +161,8 @@ export const LicensesPage = () => {
   const today = new Date();
   const thirtyDaysFromNow = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
   const expiringLicenses = licenses.filter(l => {
-    if (!l.expirationDate) return false;
-    const expirationDate = new Date(l.expirationDate);
+    if (!l.expiration_date) return false;
+    const expirationDate = new Date(l.expiration_date);
     return expirationDate > today && expirationDate <= thirtyDaysFromNow && l.status === 'active';
   }).length;
 

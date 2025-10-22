@@ -40,19 +40,19 @@ interface LicenseDeleteResponse{
 }
 
 // Mapeo de API -> modelo de frontend
-const mapApiLicenseToLicense =(apiLicense: ApiLicense): License => ({
+const mapApiLicenseToLicense =(apiLicense: License) => ({
     id: apiLicense.id,
-    softwareName: apiLicense.software_name,
-    licenseKey: apiLicense.license_key,
-    licenseType: apiLicense.license_type as LicenseType,
+    software_name: apiLicense.software_name,
+    license_key: apiLicense.license_key,
+    license_type: apiLicense.license_type as LicenseType,
     provider: apiLicense.provider,
-    purchaseDate: apiLicense.purchase_date,
-    expirationDate: apiLicense.expiration_date || null,
-    seatsTotal:apiLicense.seats_total,
-    seatsUsed: apiLicense.seats_used,
-    costAnnual: apiLicense.cost_annual,
+    purchase_date: apiLicense.purchase_date,
+    expiration_date: apiLicense.expiration_date || null,
+    seats_total:apiLicense.seats_total,
+    seats_used: apiLicense.seats_used,
+    cost_annual: apiLicense.cost_annual,
     status: apiLicense.status as LicenseStatus,
-    responsibleId: apiLicense.responsible_id || 0,
+    responsible_id: apiLicense.responsible_id || 0,
     notes: apiLicense.notes,
     //createdAt: apiLicense.created_at,
     //updatedAt: apiLicense.updated_at,
@@ -83,6 +83,7 @@ export const LicenseServices = {
             method: 'POST',
             body: JSON.stringify(data),
         });
+        console.log('Cómo enviamos al hacer post', res);
         return mapApiLicenseToLicense(res.data);
     },
 

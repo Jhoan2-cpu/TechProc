@@ -54,7 +54,8 @@ export const SoftwareServices = {
         const res = await apiRequest<SoftwareListResponse>(BASE_ENDPOINT, {
             method: 'GET',
         });
-        return res.data.map(mapApiSoftwareToSoftware);
+        console.log('Cómo estamos traendo los softwares', res);
+        return res.map(mapApiSoftwareToSoftware);
     },
 
     async getById(id: number): Promise<Software>{

@@ -28,22 +28,6 @@ export interface Server {
   uptime_hours: number;
 }
 
-// Interfaces - Licencias
-export interface License {
-  id: number;
-  softwareName: string;
-  licenseKey: string;
-  licenseType: LicenseType;
-  provider: string;
-  purchaseDate: string;
-  expirationDate: string | null;
-  seatsTotal: number;
-  seatsUsed: number;
-  costAnnual: number;
-  status: LicenseStatus;
-  responsibleId: number;
-  notes: string | null;
-}
 
 // Interfaces - Almacenamiento
 export interface Storage {

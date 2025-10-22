@@ -18,7 +18,7 @@ export interface ApiLicense {
   responsible_id?: number | null; // id del empleado responsable
   notes: string;
   created_at?: string;
-  updated_at?: string;
+  //updated_at?: string;
 }
 
 /**
@@ -26,20 +26,20 @@ export interface ApiLicense {
  */
 export interface License {
   id: number;
-  softwareName: string;
-  licenseKey: string;
-  licenseType: string;
-  provider: string;
-  purchaseDate: string;
-  expirationDate?: string | null;
-  seatsTotal: number;
-  seatsUsed: number;
-  costAnnual: number;
-  status: string;
-  responsibleId?: number | null;
-  notes: string;
-  createdAt?: string;
-  updatedAt?: string;
+  software_name: string;
+  license_key: string;
+  license_type?: string;
+  provider?: string;
+  purchase_date?: string;
+  expiration_date?: string;
+  seats_total?: number;
+  seats_used?: number;
+  cost_annual?: number;
+  status?: string;
+  responsible_id?: number | null;
+  notes?: string;
+  //created_At?: string;
+  //updated_At?: string;
 }
 
 /**
