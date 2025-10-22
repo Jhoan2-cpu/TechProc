@@ -2,16 +2,10 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBookOpen,
-  faUsers,
-  faCheckCircle,
   faGraduationCap,
   faChalkboardTeacher,
-  faTags,
   faCalendar,
-  faFire,
-  faStar,
   faBuilding,
-  faTrophy,
   faFileAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import type { LMSStats, RecentCourse } from '../types';
@@ -21,7 +15,6 @@ import {
   coursesService,
   studentsService,
   instructorsService,
-  categoriesService,
   companiesService,
   courseContentsService,
   academicPeriodsService,
@@ -30,7 +23,6 @@ import {
 export const LMSPage = () => {
   const [stats, setStats] = useState<LMSStats | null>(null);
   const [recentCourses, setRecentCourses] = useState<RecentCourse[]>([]);
-  const [topCategories, setTopCategories] = useState<any[]>([]);
   const [topInstructors, setTopInstructors] = useState<any[]>([]);
   const [topCompanies, setTopCompanies] = useState<any[]>([]);
   const [activePeriods, setActivePeriods] = useState<any[]>([]);
@@ -48,7 +40,6 @@ export const LMSPage = () => {
         const [
           statsData,
           coursesData,
-          categoriesData,
           instructorsData,
           companiesData,
           periodsData,
@@ -56,7 +47,6 @@ export const LMSPage = () => {
         ] = await Promise.all([
           lmsService.getStats(),
           lmsService.getRecentCourses(),
-          categoriesService.getAll().catch(() => []),
           instructorsService.getAll({ limit: 5 }).catch(() => ({ instructors: [], pagination: null })),
           companiesService.getAll({ limit: 5 }).catch(() => ({ companies: [], pagination: null })),
           academicPeriodsService.getAll().catch(() => []),
@@ -65,9 +55,6 @@ export const LMSPage = () => {
 
         setStats(statsData);
         setRecentCourses(coursesData);
-
-        // Top categorías (ordenadas por número de cursos)
-        setTopCategories(categoriesData.sort((a: any, b: any) => b.courses_count - a.courses_count).slice(0, 5));
 
         // Top instructores
         setTopInstructors(instructorsData.instructors.slice(0, 5));
@@ -190,9 +177,9 @@ export const LMSPage = () => {
       </div>
 
       {/* Grid Principal */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 gap-6 mb-6">
         {/* Cursos Recientes */}
-        <div className="lg:col-span-2 card p-6 animate-slide-up" style={{ animationDelay: '400ms' }}>
+        <div className="card p-6 animate-slide-up" style={{ animationDelay: '400ms' }}>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-blue-900/20 flex items-center justify-center">
@@ -214,45 +201,6 @@ export const LMSPage = () => {
               <div className="text-center py-8 text-gray-400">
                 <FontAwesomeIcon icon={faBookOpen} className="text-4xl mb-3 opacity-50" />
                 <p>No hay cursos recientes</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Top Categorías */}
-        <div className="card p-6 animate-slide-up" style={{ animationDelay: '500ms' }}>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-yellow-900/20 flex items-center justify-center">
-              <FontAwesomeIcon icon={faTags} className="text-yellow-600" />
-            </div>
-            <h2 className="text-xl font-heading font-semibold text-white">
-              Top Categorías
-            </h2>
-          </div>
-
-          <div className="space-y-3">
-            {topCategories.length > 0 ? (
-              topCategories.map((category, index) => (
-                <div
-                  key={category.id}
-                  className="flex items-center gap-3 p-3 bg-secondary-600/50 rounded-lg hover:bg-secondary-600/70 transition-colors"
-                >
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-600/20 text-yellow-400 font-bold text-sm">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white font-medium truncate">{category.name}</p>
-                    <p className="text-xs text-gray-400">{category.courses_count} cursos</p>
-                  </div>
-                  {category.courses_count > 5 && (
-                    <FontAwesomeIcon icon={faFire} className="text-orange-500" />
-                  )}
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-8 text-gray-400">
-                <FontAwesomeIcon icon={faTags} className="text-3xl mb-2 opacity-50" />
-                <p className="text-sm">No hay categorías</p>
               </div>
             )}
           </div>
