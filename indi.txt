@@ -1,0 +1,80 @@
+Al dar click en detalles se abre un modal mostrando información del course, ten como referencia los cursos que se traen con el servicio de courseservice.
+
+y como cada item de los cursos tiene esta estructura:
+{
+                "id": 2,
+                "course_id": 2,
+                "title": "Curso de Prueba Laravel V2",
+                "name": null,
+                "description": "Aprende Laravel desde cero",
+                "level": "intermediate",
+                "course_image": "https://ejemplo.com/imagen.jpg",
+                "duration": 50,
+                "sessions": 23,
+                "selling_price": 399.99,
+                "discount_price": 299.99,
+                "status": true,
+                "bestseller": false,
+                "featured": false,
+                "highest_rated": false,
+                "created_at": "2025-10-21T14:36:22-05:00"
+            },
+
+            quiero que hagas lo siguiente, primero en el modal muestra inforación del curso.
+            luego más abajo agrega Contendio, y en esa sección de contenido pon las sesiones: 
+            por ejemplo si tiene 3 sesiones, entonces la estructura sería:
+            Sesión 1
+
+            Sesión 2
+
+            Sesión 3
+
+            y al lado de cada sesión agregar un botón para agregar contenido.
+            para agregar el contenido  (cada contenido por separado se usará:
+            se envía POST a http://127.0.0.1:8000/api/lms/course-contents
+
+            enviando estos datos:
+              {
+      "course_id": 1,
+      "session": 2,
+      "type": "video",
+      "title": "Routing en Laravel",
+      "content": "Aprende a crear rutas en Laravel. En esta lección veremos rutas básicas, rutas con parámetros, grupos de rutas y middleware.",
+      "order_number": 3
+  }
+
+el course_id se obtiene del course al que se dio click para ver detalles,
+el session se puede saber  por la manera en como se muestran los session, por orden, el de arriba es 1 el de abajo es 2 y así sucesivamente.
+el order_number es en orden, según se agreguen los contenidos, el primero será el 1 el segundo que aparece abajo será el 2, y así sucesivamente.
+
+y para obtener los contenidos usa esto:
+GET a http://127.0.0.1:8000/api/lms/course-contents
+y se obtendrá una lista de contenidos como este:
+{
+    "success": true,
+    "data": {
+        "data": [
+            {
+                "id": 1,
+                "course_id": 1,
+                "course": {
+                    "id": 1,
+                    "course_id": 1,
+                    "title": "Nuevo curso de Laravel"
+                },
+                "session": 2,
+                "type": "video",
+                "title": "Routing en Laravel",
+                "content": "Aprende a crear rutas en Laravel. En esta lección veremos rutas básicas, rutas con parámetros, grupos de rutas y middleware.",
+                "order_number": 3,
+                "created_at": "2025-10-22T04:20:33-05:00"
+            }
+        ],
+        "current_page": 1,
+        "per_page": 20,
+        "total": 1,
+        "last_page": 1
+    }
+}
+
+filtra y muestra solo aquellos que tienen el course_id igual al que se le dió click en detalles.
