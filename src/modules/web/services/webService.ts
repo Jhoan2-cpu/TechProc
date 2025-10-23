@@ -148,6 +148,15 @@ export const alertsService = {
       method: 'DELETE',
     });
   },
+
+  // Endpoint público para obtener alertas activas sin autenticación
+  // La respuesta viene como: { "success": true, "data": [...] }
+  async getPublicAlerts(): Promise<Alert[]> {
+    const response = await apiRequest<{ success: boolean; data: Alert[] }>('/developer-web/alerts/public/', {
+      method: 'GET',
+    });
+    return response.data;
+  },
 };
 
 // ============================================

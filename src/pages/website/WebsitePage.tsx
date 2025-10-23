@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { WebsiteNavbar } from './WebsiteNavbar';
 import { WebsiteHero } from './WebsiteHero';
 import { WebsiteNews } from './WebsiteNews';
@@ -6,6 +7,7 @@ import { WebsiteContact } from './WebsiteContact';
 import { WebsiteChatbot } from './WebsiteChatbot';
 import { WebsiteFooter } from './WebsiteFooter';
 import type { News, Alert } from '../../modules/web/types';
+import { alertsService } from '../../modules/web/services/webService';
 
 // Mock Data
 const mockAlerts: Alert[] = [
@@ -154,10 +156,36 @@ const mockNews: News[] = [
 // Los FAQs del chatbot ahora se obtienen directamente desde la API en el componente WebsiteChatbot
 
 export const WebsitePage = () => {
+  const [activeAlerts, setActiveAlerts] = useState<Alert[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Cargar alertas activas desde el endpoint público (sin autenticación)
+        const alerts = await alertsService.getPublicAlerts();
+
+        // El backend ya devuelve solo las alertas activas y válidas
+        // Ordenar por prioridad (menor número = mayor prioridad)
+        const sortedAlerts = alerts.sort((a, b) =>
+          (a.priority || 999) - (b.priority || 999)
+        );
+
+        setActiveAlerts(sortedAlerts);
+
+      } catch (error) {
+        console.error('Error al cargar alertas públicas:', error);
+        // En caso de error, usar las alertas mock como fallback
+        setActiveAlerts(mockAlerts);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="bg-gradient-to-br from-dark-600 to-smoky-700 min-h-screen">
       <WebsiteNavbar />
-      <WebsiteHero activeAlerts={mockAlerts} />
+      <WebsiteHero activeAlerts={activeAlerts} />
       <WebsiteNews news={mockNews} />
       <WebsiteAnnouncements />
       <WebsiteContact />
