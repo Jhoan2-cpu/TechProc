@@ -13,14 +13,8 @@ interface FilterSectionProps {
 
 export const FilterSection = ({
   searchTerm,
-  selectedCourse,
-  courses,
   onSearchChange,
-  onCourseChange,
-  onClearFilters,
 }: FilterSectionProps) => {
-  const hasFilters = searchTerm !== '' || selectedCourse !== 'all';
-
   return (
     <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-4 border border-gray-700/30 shadow-xl">
       <div className="flex items-center gap-3 flex-wrap">

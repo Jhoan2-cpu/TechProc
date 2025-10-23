@@ -1,7 +1,4 @@
 import { useLocation } from 'react-router-dom';
-import type {
-  Report,
-} from '../types';
 import { AttendancePage } from './AttendancePage';
 import { ReportsPage } from './ReportsPage';
 import { StudentsPage } from './StudentsPage';

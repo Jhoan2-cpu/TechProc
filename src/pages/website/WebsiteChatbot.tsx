@@ -13,9 +13,9 @@ import {
   sendMessage,
   endConversation,
   getAllActiveFaqs,
-  validateMessage,
-  type ConversationFeedback
+  validateMessage
 } from '../../services/chatbotService';
+import type { ChatbotFAQ } from '../../modules/web/types';
 
 // ELIMINAR: No necesitamos la prop faqs ya que siempre cargamos desde el backend
 interface WebsiteChatbotProps {} // ← Vacío, sin prop faqs

@@ -11,15 +11,15 @@ interface ApiResponse<T> {
   message?: string;
 }
 
-interface PaginatedResponse<T> {
-  data: T[];
-  pagination: {
-    current_page: number;
-    total_pages: number;
-    total_records: number;
-    per_page: number;
-  };
-}
+// interface PaginatedResponse<T> {
+//   data: T[];
+//   pagination: {
+//     current_page: number;
+//     total_pages: number;
+//     total_records: number;
+//     per_page: number;
+//   };
+// }
 
 // ============================================
 // Report Service

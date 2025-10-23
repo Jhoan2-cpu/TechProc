@@ -65,7 +65,7 @@ export const LicenseServices = {
             method: 'GET',
         });
         console.log("Lista de licencias: ", res);
-        return res.map(mapApiLicenseToLicense);
+        return res.data.map(mapApiLicenseToLicense);
     },
 
     async getById(id: number): Promise<License>{
@@ -81,7 +81,7 @@ export const LicenseServices = {
             body: JSON.stringify(data),
         });
         console.log('Cómo enviamos al hacer post', res);
-        return mapApiLicenseToLicense(res);
+        return mapApiLicenseToLicense(res.data);
     },
 
     async update(id: number, data: UpdateLicenseData): Promise<License> {
@@ -91,7 +91,7 @@ export const LicenseServices = {
 
         });
         console.log('Cómo enviamos al actualizar', res);
-        return mapApiLicenseToLicense(res);
+        return mapApiLicenseToLicense(res.data);
     },
 
     async delete(id: number): Promise<boolean>{

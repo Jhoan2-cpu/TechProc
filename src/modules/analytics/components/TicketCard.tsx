@@ -8,16 +8,6 @@ interface TicketCardProps {
 }
 
 export const TicketCard = ({ ticket, index }: TicketCardProps) => {
-  const getPriorityColor = (priority: string) => {
-    const colors = {
-      'baja': 'text-blue-400',
-      'media': 'text-yellow-400',
-      'alta': 'text-orange-400',
-      'critica': 'text-red-400'
-    };
-    return colors[priority as keyof typeof colors] || 'text-gray-400';
-  };
-
   const getPriorityBadge = (priority: string) => {
     const colors = {
       'baja': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
@@ -27,16 +17,6 @@ export const TicketCard = ({ ticket, index }: TicketCardProps) => {
     };
     
     return `px-2 py-1 rounded-full text-xs border ${colors[priority as keyof typeof colors] || colors.baja}`;
-  };
-
-  const getStatusColor = (status: string) => {
-    const colors = {
-      'abierto': 'text-blue-400',
-      'en_progreso': 'text-yellow-400',
-      'resuelto': 'text-green-400',
-      'cerrado': 'text-gray-400'
-    };
-    return colors[status as keyof typeof colors] || 'text-gray-400';
   };
 
   const getStatusBadge = (status: string) => {

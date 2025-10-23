@@ -106,41 +106,41 @@ export const ReportsPage = () => {
     setShowDeleteReportModal(true);
   };
 
-  const verifyFileOnServer = async (report: Report) => {
-    try {
-      const token = report.download_url.split('/').pop();
-      if (!token) return;
+  // const verifyFileOnServer = async (report: Report) => {
+  //   try {
+  //     const token = report.download_url.split('/').pop();
+  //     if (!token) return;
 
-      console.log('🔍 [VERIFY] Verificando archivo en servidor para token:', token);
+  //     console.log('🔍 [VERIFY] Verificando archivo en servidor para token:', token);
 
-      // Hacer una petición HEAD para verificar sin descargar el archivo completo
-      const response = await fetch(`/api/data-analyst/export/download/${token}`, {
-        method: 'HEAD',
-        credentials: 'include',
-      });
+  //     // Hacer una petición HEAD para verificar sin descargar el archivo completo
+  //     const response = await fetch(`/api/data-analyst/export/download/${token}`, {
+  //       method: 'HEAD',
+  //       credentials: 'include',
+  //     });
 
-      console.log('🔍 [VERIFY] HEAD Response:', {
-        status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries()),
-        ok: response.ok
-      });
+  //     console.log('🔍 [VERIFY] HEAD Response:', {
+  //       status: response.status,
+  //       statusText: response.statusText,
+  //       headers: Object.fromEntries(response.headers.entries()),
+  //       ok: response.ok
+  //     });
 
-      if (response.ok) {
-        const contentLength = response.headers.get('content-length');
-        const contentType = response.headers.get('content-type');
-        console.log('🔍 [VERIFY] Archivo disponible:', {
-          size: contentLength ? `${contentLength} bytes` : 'desconocido',
-          type: contentType || 'desconocido'
-        });
-      } else {
-        console.error('🔍 [VERIFY] Archivo no disponible:', response.status, response.statusText);
-      }
+  //     if (response.ok) {
+  //       const contentLength = response.headers.get('content-length');
+  //       const contentType = response.headers.get('content-type');
+  //       console.log('🔍 [VERIFY] Archivo disponible:', {
+  //         size: contentLength ? `${contentLength} bytes` : 'desconocido',
+  //         type: contentType || 'desconocido'
+  //       });
+  //     } else {
+  //       console.error('🔍 [VERIFY] Archivo no disponible:', response.status, response.statusText);
+  //     }
 
-    } catch (error) {
-      console.error('🔍 [VERIFY] Error en verificación:', error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('🔍 [VERIFY] Error en verificación:', error);
+  //   }
+  // };
 
   const [downloadingReports, setDownloadingReports] = useState<Set<number>>(new Set());
 

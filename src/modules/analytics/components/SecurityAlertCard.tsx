@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faExclamationTriangle, 
-  faShieldAlt, 
-  faCalendar, 
+import {
+  faExclamationTriangle,
+  faCalendar,
   faNetworkWired,
   faBan,
   faCheckCircle,

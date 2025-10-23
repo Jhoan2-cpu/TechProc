@@ -82,13 +82,13 @@ export const RegisterPage = ({}: RegisterPageProps) => {
       color: 'text-red-600',
     },
     {
-      value: 'gestor_lms',
+      value: 'lms',
       label: 'Gestor LMS',
       icon: faGraduationCap,
       color: 'text-blue-600',
     },
     {
-      value: 'soporte_tecnico',
+      value: 'support',
       label: 'Soporte Técnico',
       icon: faTicket,
       color: 'text-yellow-600',

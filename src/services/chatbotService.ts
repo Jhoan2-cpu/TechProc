@@ -50,10 +50,10 @@ interface StartConversationRequest {
   initial_context?: string;
 }
 
-interface SendMessageRequest {
-  conversation_id: number; // Cambiado a number
-  message: string;
-}
+// interface SendMessageRequest {
+//   conversation_id: number; // Cambiado a number
+//   message: string;
+// }
 
 // Función para transformar la respuesta de la API al formato de ChatbotFAQ
 const transformChatbotFaq = (apiFaq: ChatbotFaqApiResponse): ChatbotFAQ => {

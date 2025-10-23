@@ -32,8 +32,6 @@ export const SecurityReportsPage = () => {
     error,
     eventsPagination,
     alertsPagination,
-    fetchEvents,
-    fetchAlerts,
     refreshData
   } = useSecurity(filters);
 

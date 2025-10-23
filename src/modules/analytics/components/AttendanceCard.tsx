@@ -1,10 +1,9 @@
 // src/modules/analytics/components/AttendanceCard.tsx
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faUser, 
-  faBook, 
-  faCalendar, 
-  faCheckCircle, 
+import {
+  faUser,
+  faBook,
+  faCheckCircle,
   faTimesCircle,
   faUsers,
   faClock

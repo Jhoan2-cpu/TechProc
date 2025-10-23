@@ -8,7 +8,6 @@ import { useStudents } from '../hooks/useStudents';
 export const StudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState<StudentFilters>({});
-  const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
 
   const {
     students,

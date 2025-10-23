@@ -47,7 +47,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
 
   const userCards: UserCardType[] = [
     {
-      value: 'administrador',
+      value: 'admin',
       label: 'Administrador',
       description: 'Acceso total al sistema',
       color: 'from-red-500 to-red-700',
@@ -55,7 +55,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'admin@techproc.com',
     },
     {
-      value: 'gestor_lms',
+      value: 'lms',
       label: 'Gestor LMS',
       description: 'Gestión del sistema de aprendizaje',
       color: 'from-blue-500 to-blue-700',
@@ -63,7 +63,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'lms@techproc.com',
     },
     {
-      value: 'soporte_tecnico',
+      value: 'support',
       label: 'Soporte Técnico',
       description: 'Gestión de tickets de soporte',
       color: 'from-yellow-500 to-yellow-700',
@@ -443,8 +443,8 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
             </p>
             <div className="text-xs text-gray-300 space-y-1">
               <p>• Email: {selectedProfile?.suggestedEmail}</p>
-              <p>• Contraseña: {selectedProfile?.value === 'administrador' ? 'admin123' :
-                               selectedProfile?.value === 'gestor_lms' ? 'lms123' :
+              <p>• Contraseña: {selectedProfile?.value === 'admin' ? 'admin123' :
+                               selectedProfile?.value === 'lms' ? 'lms123' :
                                selectedProfile?.value === 'soporte_seguridad' ? 'security123' :
                                selectedProfile?.value === 'soporte_infraestructura' ? 'infra123' :
                                selectedProfile?.value === 'developer_web' ? 'web123' : 'data123'}</p>

@@ -8,7 +8,6 @@ import {
   faMoneyBillWave,
   faHeadset,
   faShieldAlt,
-  faClock,
   faGraduationCap,
   faChartBar
 } from '@fortawesome/free-solid-svg-icons';
@@ -171,7 +170,7 @@ export const DashboardPage = () => {
             Estudiantes por Empresa
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {studentMetrics.by_company.map((company, index) => (
+            {studentMetrics.by_company.map((company) => (
               <div
                 key={company.company_id}
                 className="p-4 bg-gray-800/50 rounded-lg border border-gray-700/30"
@@ -207,7 +206,7 @@ export const DashboardPage = () => {
             <div className="mb-6">
               <h4 className="text-white font-medium mb-3">Fuentes de Ingresos</h4>
               <div className="space-y-2">
-                {financialMetrics.revenue_sources.map((source, index) => (
+                {financialMetrics.revenue_sources.map((source) => (
                   <div key={source.source_id} className="flex items-center justify-between p-3 bg-gray-800/30 rounded">
                     <span className="text-white">{source.source_name}</span>
                     <div className="text-right">

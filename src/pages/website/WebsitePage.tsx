@@ -5,7 +5,7 @@ import { WebsiteAnnouncements } from './WebsiteAnnouncements';
 import { WebsiteContact } from './WebsiteContact';
 import { WebsiteChatbot } from './WebsiteChatbot';
 import { WebsiteFooter } from './WebsiteFooter';
-import type { News, Alert, ChatbotFAQ } from '../../modules/web/types';
+import type { News, Alert } from '../../modules/web/types';
 
 // Mock Data
 const mockAlerts: Alert[] = [
@@ -151,81 +151,7 @@ const mockNews: News[] = [
 ];
 
 // Los announcements ahora se obtienen directamente desde la API en el componente WebsiteAnnouncements
-
-const mockFAQs: ChatbotFAQ[] = [
-  {
-    id: 1,
-    id_faq: 1,
-    question: '¿Cuáles son los requisitos para inscribirme?',
-    answer: 'Los requisitos básicos son: tener acceso a internet, una computadora con especificaciones mínimas, y disposición para aprender. Algunos cursos avanzados pueden requerir conocimientos previos específicos.',
-    category: 'Admisión',
-    keywords: ['requisitos', 'inscripción', 'inscribirse', 'admisión'],
-    active: true,
-    usage_count: 450,
-    created_date: '2024-01-01',
-    updated_date: null
-  },
-  {
-    id: 2,
-    id_faq: 2,
-    question: '¿Qué métodos de pago aceptan?',
-    answer: 'Aceptamos tarjetas de crédito/débito (Visa, Mastercard), transferencias bancarias, y pagos en línea a través de plataformas seguras. También ofrecemos planes de financiamiento sin intereses.',
-    category: 'Pagos',
-    keywords: ['pago', 'precio', 'costo', 'tarjeta', 'financiamiento'],
-    active: true,
-    usage_count: 380,
-    created_date: '2024-01-01',
-    updated_date: null
-  },
-  {
-    id: 3,
-    id_faq: 3,
-    question: '¿Los certificados tienen validez internacional?',
-    answer: 'Sí, nuestros certificados son reconocidos internacionalmente. Además, ofrecemos preparación para certificaciones oficiales de empresas como Microsoft, AWS, Google, y otras.',
-    category: 'Certificación',
-    keywords: ['certificado', 'validez', 'internacional', 'reconocimiento'],
-    active: true,
-    usage_count: 320,
-    created_date: '2024-01-01',
-    updated_date: null
-  },
-  {
-    id: 4,
-    id_faq: 4,
-    question: '¿Cuál es la duración de los cursos?',
-    answer: 'La duración varía según el programa. Los cursos regulares duran entre 8 y 16 semanas, mientras que los bootcamps intensivos pueden completarse en 12 semanas. Todos incluyen acceso de por vida al material.',
-    category: 'Cursos',
-    keywords: ['duración', 'tiempo', 'semanas', 'cuánto dura'],
-    active: true,
-    usage_count: 290,
-    created_date: '2024-01-01',
-    updated_date: null
-  },
-  {
-    id: 5,
-    id_faq: 5,
-    question: '¿Ofrecen becas o descuentos?',
-    answer: 'Sí, contamos con un programa de becas para estudiantes destacados y descuentos por pronto pago, grupos, y situaciones especiales. Contáctanos para más información sobre las oportunidades disponibles.',
-    category: 'Financiamiento',
-    keywords: ['beca', 'descuento', 'financiamiento', 'ayuda económica'],
-    active: true,
-    usage_count: 275,
-    created_date: '2024-01-01',
-    updated_date: null
-  },
-  {
-    id: 6,
-    id_faq: 6,
-    question: '¿Puedo estudiar mientras trabajo?',
-    answer: 'Absolutamente. Nuestros programas están diseñados para personas que trabajan. Las clases son en horarios flexibles, con acceso 24/7 al material grabado, y puedes estudiar a tu propio ritmo.',
-    category: 'Modalidad',
-    keywords: ['trabajo', 'horario', 'flexible', 'tiempo'],
-    active: true,
-    usage_count: 260,
-    created_date: '2024-01-01',
-    updated_date: null
-  }
-];
+// Los FAQs del chatbot ahora se obtienen directamente desde la API en el componente WebsiteChatbot
 
 export const WebsitePage = () => {
   return (
@@ -236,7 +162,7 @@ export const WebsitePage = () => {
       <WebsiteAnnouncements />
       <WebsiteContact />
       <WebsiteFooter />
-      <WebsiteChatbot faqs={mockFAQs} />
+      <WebsiteChatbot />
     </div>
   );
 };

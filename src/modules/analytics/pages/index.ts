@@ -1,4 +1,3 @@
-export { AnalyticsPage } from './AnalyticsPage';
 export { AnalyticsMainPage } from './AnalyticsMainPage';
 export { DashboardPage } from './DashboardPage';
 export { AttendancePage } from './AttendancePage';

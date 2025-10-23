@@ -8,10 +8,6 @@ interface StudentCardProps {
 }
 
 export const StudentCard = ({ student, index }: StudentCardProps) => {
-  const getStatusColor = (status: string) => {
-    return status === 'active' ? 'text-green-400' : 'text-red-400';
-  };
-
   const getStatusBadge = (status: string) => {
     const colors = status === 'active' 
       ? 'bg-green-500/20 text-green-400 border-green-500/30' 
