@@ -69,10 +69,12 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
           }));
         } else if (errorData.error.details && Array.isArray(errorData.error.details)) {
           errorDetails = errorData.error.details;
-          const fieldErrors = errorDetails
-            .map(d => `${d.field}: ${d.message}`)
-            .join(', ');
-          errorMessage += ` (${fieldErrors})`;
+          if (errorDetails && errorDetails.length > 0) {
+            const fieldErrors = errorDetails
+              .map(d => `${d.field}: ${d.message}`)
+              .join(', ');
+            errorMessage += ` (${fieldErrors})`;
+          }
         }
       } else if (errorData && errorData.message) {
         // Si tiene un mensaje directo

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { User, UserRole, UserFormModalProps, CreateUserData, UpdateUserData } from '../types';
+import type { UserRole, UserFormModalProps, UpdateUserData } from '../types';
 import { usersService } from '../services';
 import { authService } from '../../../services/authService';
 
@@ -127,7 +127,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
       if (err.details) {
         if (Array.isArray(err.details)) {
           const errorMessages = err.details
-            .map(detail => `${detail.field}: ${detail.message}`)
+            .map((detail: any) => `${detail.field}: ${detail.message}`)
             .join('\n');
           setError(`Error de validación:\n${errorMessages}`);
         } else if (typeof err.details === 'object') {

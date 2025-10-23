@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import type { ContactForm, ContactFormStatus } from '../types';
 import { ContactFormCard, RespondContactModal } from '../components';
 import { contactFormsService } from '../services/webService';
@@ -99,7 +99,7 @@ export const ContactsPage = () => {
     setShowRespondModal(true);
   };
 
-  const handleSaveResponse = async (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
+  const handleSaveResponse = async (contactId: number, response: string, status: ContactFormStatus) => {
     try {
       await contactFormsService.respond(contactId, { response, status });
       setShowRespondModal(false);

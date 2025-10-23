@@ -10,6 +10,7 @@ import type { News, Alert, ChatbotFAQ } from '../../modules/web/types';
 // Mock Data
 const mockAlerts: Alert[] = [
   {
+    id: 1,
     id_alert: 1,
     message: '¡Inscripciones abiertas para el curso de Python Avanzado! Cupos limitados.',
     type: 'info',
@@ -23,6 +24,7 @@ const mockAlerts: Alert[] = [
     created_date: '2024-01-01'
   },
   {
+    id: 2,
     id_alert: 2,
     message: 'Descuento del 20% en todos los cursos por tiempo limitado',
     type: 'success',
@@ -39,6 +41,7 @@ const mockAlerts: Alert[] = [
 
 const mockNews: News[] = [
   {
+    id: 1,
     id_news: 1,
     title: 'INCADEV lanza nuevo programa de Inteligencia Artificial',
     slug: 'nuevo-programa-ia',
@@ -56,6 +59,7 @@ const mockNews: News[] = [
     updated_date: null
   },
   {
+    id: 2,
     id_news: 2,
     title: 'Estudiantes de INCADEV ganan hackathon nacional',
     slug: 'hackathon-nacional',
@@ -73,6 +77,7 @@ const mockNews: News[] = [
     updated_date: null
   },
   {
+    id: 3,
     id_news: 3,
     title: 'Convenio internacional con universidades de tecnología',
     slug: 'convenio-internacional',
@@ -90,6 +95,7 @@ const mockNews: News[] = [
     updated_date: null
   },
   {
+    id: 4,
     id_news: 4,
     title: 'Webinar gratuito: Introducción al Cloud Computing',
     slug: 'webinar-cloud',
@@ -107,6 +113,7 @@ const mockNews: News[] = [
     updated_date: null
   },
   {
+    id: 5,
     id_news: 5,
     title: 'Nuevas becas disponibles para estudiantes destacados',
     slug: 'becas-disponibles',
@@ -124,6 +131,7 @@ const mockNews: News[] = [
     updated_date: null
   },
   {
+    id: 6,
     id_news: 6,
     title: 'Actualización de plataforma LMS con nuevas funcionalidades',
     slug: 'actualizacion-lms',
@@ -146,6 +154,7 @@ const mockNews: News[] = [
 
 const mockFAQs: ChatbotFAQ[] = [
   {
+    id: 1,
     id_faq: 1,
     question: '¿Cuáles son los requisitos para inscribirme?',
     answer: 'Los requisitos básicos son: tener acceso a internet, una computadora con especificaciones mínimas, y disposición para aprender. Algunos cursos avanzados pueden requerir conocimientos previos específicos.',
@@ -157,6 +166,7 @@ const mockFAQs: ChatbotFAQ[] = [
     updated_date: null
   },
   {
+    id: 2,
     id_faq: 2,
     question: '¿Qué métodos de pago aceptan?',
     answer: 'Aceptamos tarjetas de crédito/débito (Visa, Mastercard), transferencias bancarias, y pagos en línea a través de plataformas seguras. También ofrecemos planes de financiamiento sin intereses.',
@@ -168,6 +178,7 @@ const mockFAQs: ChatbotFAQ[] = [
     updated_date: null
   },
   {
+    id: 3,
     id_faq: 3,
     question: '¿Los certificados tienen validez internacional?',
     answer: 'Sí, nuestros certificados son reconocidos internacionalmente. Además, ofrecemos preparación para certificaciones oficiales de empresas como Microsoft, AWS, Google, y otras.',
@@ -179,6 +190,7 @@ const mockFAQs: ChatbotFAQ[] = [
     updated_date: null
   },
   {
+    id: 4,
     id_faq: 4,
     question: '¿Cuál es la duración de los cursos?',
     answer: 'La duración varía según el programa. Los cursos regulares duran entre 8 y 16 semanas, mientras que los bootcamps intensivos pueden completarse en 12 semanas. Todos incluyen acceso de por vida al material.',
@@ -190,6 +202,7 @@ const mockFAQs: ChatbotFAQ[] = [
     updated_date: null
   },
   {
+    id: 5,
     id_faq: 5,
     question: '¿Ofrecen becas o descuentos?',
     answer: 'Sí, contamos con un programa de becas para estudiantes destacados y descuentos por pronto pago, grupos, y situaciones especiales. Contáctanos para más información sobre las oportunidades disponibles.',
@@ -201,6 +214,7 @@ const mockFAQs: ChatbotFAQ[] = [
     updated_date: null
   },
   {
+    id: 6,
     id_faq: 6,
     question: '¿Puedo estudiar mientras trabajo?',
     answer: 'Absolutamente. Nuestros programas están diseñados para personas que trabajan. Las clases son en horarios flexibles, con acceso 24/7 al material grabado, y puedes estudiar a tu propio ritmo.',

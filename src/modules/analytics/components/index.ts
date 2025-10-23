@@ -13,4 +13,3 @@ export { StudentCard } from './StudentCard';
 export { StudentFilterSection } from './StudentFilterSection';
 // Exportar componentes de calificaciones
 export { GradeFilterSection } from './GradeFilterSection';
-

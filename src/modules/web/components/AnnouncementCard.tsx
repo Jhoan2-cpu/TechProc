@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faEdit, faTrash, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import type { Announcement } from '../types';
 
 interface AnnouncementCardProps {

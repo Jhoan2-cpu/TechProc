@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { ContactForm, ContactFormStatus, News, Alert, Announcement } from '../types';
+import type { ContactForm, ContactFormStatus, News, Announcement } from '../types';
 import {
   WebDashboardStats,
   PendingContactsSection,
@@ -11,7 +11,6 @@ import {
   dashboardService,
   type DashboardStats,
   newsService,
-  alertsService,
   announcementsService,
   contactFormsService,
 } from '../services/webService';
@@ -19,7 +18,6 @@ import {
 export const WebDashboardPage = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [news, setNews] = useState<News[]>([]);
-  const [alerts, setAlerts] = useState<Alert[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [pendingContacts, setPendingContacts] = useState<ContactForm[]>([]);
   
@@ -42,20 +40,17 @@ export const WebDashboardPage = () => {
       const [
         statsData,
         { news: newsData },
-        { alerts: alertsData },
         { announcements: announcementsData },
         { forms: contactsData },
       ] = await Promise.all([
         dashboardService.getStatistics(),
         newsService.getAll({ limit: 5, status: 'published' }),
-        alertsService.getAll({ limit: 5, status: 'active' }),
         announcementsService.getAll({ limit: 10, status: 'published' }), // Aumentar límite
         contactFormsService.getAll({ limit: 10, status: 'pending' }),
       ]);
 
       setStats(statsData);
       setNews(newsData);
-      setAlerts(alertsData);
       setAnnouncements(announcementsData);
       setPendingContacts(contactsData);
     } catch (err: any) {
@@ -113,16 +108,16 @@ export const WebDashboardPage = () => {
     setShowRespondContactModal(true);
   };
 
-  const handleSaveContactResponse = async (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
+  const handleSaveContactResponse = async (contactId: number, response: string, status: ContactFormStatus) => {
     if (!contactToRespond) return;
 
     try {
       await contactFormsService.respond(contactId, { response, status });
-      
+
       // Recargar solo las consultas pendientes
-      const { forms } = await contactFormsService.getAll({ 
-        limit: 10, 
-        status: 'pending' 
+      const { forms } = await contactFormsService.getAll({
+        limit: 10,
+        status: 'pending'
       });
       setPendingContacts(forms);
 

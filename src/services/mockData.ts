@@ -9,6 +9,7 @@ import type {
 // Datos mock - Noticias
 export const mockNews: News[] = [
   {
+    id: 1,
     id_news: 1,
     title: 'Nueva Certificación en Desarrollo Web Disponible',
     slug: 'nueva-certificacion-desarrollo-web',
@@ -26,6 +27,7 @@ export const mockNews: News[] = [
     updated_date: '2024-03-09',
   },
   {
+    id: 2,
     id_news: 2,
     title: 'Convenio con Microsoft para Capacitaciones',
     slug: 'convenio-microsoft-capacitaciones',
@@ -43,6 +45,7 @@ export const mockNews: News[] = [
     updated_date: null,
   },
   {
+    id: 3,
     id_news: 3,
     title: 'Próximo Webinar: Inteligencia Artificial en 2024',
     slug: 'webinar-ia-2024',
@@ -64,6 +67,7 @@ export const mockNews: News[] = [
 // Datos mock - Alertas
 export const mockAlerts: Alert[] = [
   {
+    id: 1,
     id_alert: 1,
     message: '¡Inscripciones abiertas para el curso de Python! 50% de descuento hasta el 31 de marzo',
     type: 'success',
@@ -77,6 +81,7 @@ export const mockAlerts: Alert[] = [
     created_date: '2024-03-01',
   },
   {
+    id: 2,
     id_alert: 2,
     message: 'Mantenimiento programado del 16 al 17 de marzo. El sitio estará temporalmente fuera de línea.',
     type: 'warning',
@@ -90,6 +95,7 @@ export const mockAlerts: Alert[] = [
     created_date: '2024-03-14',
   },
   {
+    id: 3,
     id_alert: 3,
     message: 'Nueva plataforma de certificaciones disponible. Verifica tus logros.',
     type: 'info',
@@ -107,6 +113,7 @@ export const mockAlerts: Alert[] = [
 // Datos mock - Anuncios
 export const mockAnnouncements: Announcement[] = [
   {
+    id: 1,
     id_announcement: 1,
     title: '¡Semana de Descuentos!',
     content: 'Todos los cursos con 40% de descuento esta semana. No te lo pierdas.',
@@ -124,6 +131,7 @@ export const mockAnnouncements: Announcement[] = [
     created_date: '2024-03-14',
   },
   {
+    id: 2,
     id_announcement: 2,
     title: 'Nuevo Campus Virtual',
     content: 'Descubre nuestro renovado campus virtual con mejor experiencia de usuario',
@@ -145,6 +153,7 @@ export const mockAnnouncements: Announcement[] = [
 // Datos mock - Consultas
 export const mockContactForms: ContactForm[] = [
   {
+    id: 1,
     id_contact: 1,
     full_name: 'María González',
     email: 'maria.gonzalez@empresa.com',
@@ -166,6 +175,7 @@ export const mockContactForms: ContactForm[] = [
     utm_campaign: 'empresas-2024',
   },
   {
+    id: 2,
     id_contact: 2,
     full_name: 'Carlos Ramírez',
     email: 'carlos.ram@gmail.com',
@@ -185,6 +195,7 @@ export const mockContactForms: ContactForm[] = [
     user_agent: 'Mozilla/5.0...',
   },
   {
+    id: 3,
     id_contact: 3,
     full_name: 'Ana Torres',
     email: 'ana.torres@startup.pe',
@@ -203,6 +214,7 @@ export const mockContactForms: ContactForm[] = [
     user_agent: 'Mozilla/5.0...',
   },
   {
+    id: 4,
     id_contact: 4,
     full_name: 'Spam Bot',
     email: 'spam@test.com',
@@ -225,6 +237,7 @@ export const mockContactForms: ContactForm[] = [
 // Datos mock - FAQs del Chatbot
 export const mockChatbotFAQs: ChatbotFAQ[] = [
   {
+    id: 1,
     id_faq: 1,
     question: '¿Cuáles son los horarios de atención?',
     answer: 'Nuestro horario de atención es de lunes a viernes de 9:00 AM a 6:00 PM, y sábados de 9:00 AM a 1:00 PM.',
@@ -236,6 +249,7 @@ export const mockChatbotFAQs: ChatbotFAQ[] = [
     updated_date: '2024-02-15',
   },
   {
+    id: 2,
     id_faq: 2,
     question: '¿Cómo me inscribo a un curso?',
     answer: 'Para inscribirte, ve a nuestra sección de Cursos, selecciona el curso de tu interés y haz clic en "Inscribirse". Luego completa el formulario y realiza el pago.',
@@ -247,6 +261,7 @@ export const mockChatbotFAQs: ChatbotFAQ[] = [
     updated_date: null,
   },
   {
+    id: 3,
     id_faq: 3,
     question: '¿Ofrecen certificados?',
     answer: 'Sí, al completar exitosamente un curso recibirás un certificado digital con validez internacional que puedes compartir en LinkedIn.',
@@ -258,6 +273,7 @@ export const mockChatbotFAQs: ChatbotFAQ[] = [
     updated_date: '2024-03-01',
   },
   {
+    id: 4,
     id_faq: 4,
     question: '¿Cuáles son las formas de pago?',
     answer: 'Aceptamos tarjetas de crédito/débito, transferencias bancarias, y pagos por Yape o Plin.',

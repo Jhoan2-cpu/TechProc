@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faBan } from '@fortawesome/free-solid-svg-icons';
-import type { RegistrationRequest, RejectRegistrationModalProps } from '../types';
+import type { RejectRegistrationModalProps } from '../types';
 
 export const RejectRegistrationModal = ({
   isOpen,

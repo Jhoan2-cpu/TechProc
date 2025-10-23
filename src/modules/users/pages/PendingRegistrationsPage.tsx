@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserClock, faUserCheck, faUserTimes, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faUserClock, faUserCheck, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { usersService, registrationRequestsService } from '../services';
 import type { User } from '../types';
 import {
-  PendingRegistrationCard,
-  PendingRegistrationStats,
   ApproveRegistrationModal,
   RejectRegistrationModal,
 } from '../components';
@@ -91,8 +89,6 @@ export const PendingRegistrationsPage = () => {
 
   // Estadísticas - todos los usuarios inactivos están pendientes de aprobación
   const pendingCount = users.length;
-  const approvedCount = 0; // No mostramos los aprobados aquí
-  const rejectedCount = 0; // No mostramos los rechazados aquí
 
   if (loading) {
     return (

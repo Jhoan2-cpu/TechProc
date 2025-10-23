@@ -1,12 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
-import type { User, RoleInfo, UserTableRowProps } from '../types';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import type { UserTableRowProps } from '../types';
 
 export const UserTableRow = ({
   user,
   roleInfo,
   onEdit,
-  onToggleStatus,
 }: UserTableRowProps) => {
   return (
     <tr className="border-b border-gray-700/50 hover:border-transparent transition-colors duration-300">

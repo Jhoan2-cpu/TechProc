@@ -1,19 +1,40 @@
-import { useState } from 'react';
+import {useEffect, useState } from 'react';
 import type { License } from '../types';
 import { LicenseCard, LicenseDetailsModal, LicenseFormModal, DeleteLicenseModal, LicensesStats, LicensesHeader } from '../components';
+import { LicenseServices } from '../services/license.service';
 
-interface LicensesPageProps {
-  licenses: License[];
-  onUpdateLicenses: (licenses: License[]) => void;
-}
+//interface LicensesPageProps {
+  //licenses: License[];
+  //onUpdateLicenses: (licenses: License[]) => void;
+//}
 
-export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) => {
+
+export const LicensesPage = () => {
   const [selectedLicense, setSelectedLicense] = useState<License | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [licenseToEdit, setLicenseToEdit] = useState<License | null>(null);
   const [licenseToDelete, setLicenseToDelete] = useState<License | null>(null);
+  const [licenses, setLicenses]= useState<License[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const fetchLicenses = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await LicenseServices.getAll();
+      setLicenses(res);
+    }catch (error){
+      console.error('Error al cargar licencias: ', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // función helper
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '-';
@@ -24,6 +45,27 @@ export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) 
       year: 'numeric',
     });
   };
+
+
+
+
+  useEffect(() => {
+    fetchLicenses();
+  }, []);
+
+  useEffect(() => {
+    if(successMessage){
+      const timer = setTimeout(() => setSuccessMessage(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if(error){
+      const timer = setTimeout(() => setError(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const handleDetails = (license: License) => {
     setSelectedLicense(license);
@@ -45,37 +87,76 @@ export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) 
     setShowFormModal(true);
   };
 
-  const handleSaveLicense = (licenseData: Partial<License>) => {
-    if (licenseToEdit) {
-      // Editar licencia existente
-      const updatedLicenses = licenses.map(license =>
-        license.id_license === licenseToEdit.id_license
-          ? { ...license, ...licenseData }
-          : license
-      );
-      onUpdateLicenses(updatedLicenses);
-    } else {
-      // Crear nueva licencia
-      const newLicense: License = {
-        id_license: Date.now(),
-        ...licenseData as Omit<License, 'id_license'>,
-        responsible_id: 1,
-      };
-      onUpdateLicenses([newLicense, ...licenses]);
+  const toApiLicensePayload = (data: any) => ({
+        software_name: data.software_name,
+        license_key: data.license_key,
+        license_type: data.license_type,
+        provider: data.provider,
+        purchase_date: data.purchase_date,
+        expiration_date: data.expiration_date || null,
+        seats_total:data.seats_total,
+        seats_used: data.seats_used,
+        cost_annual: data.cost_annual,
+        status: data.status,
+        responsible_id: data.responsible_id || 1,
+        notes: data.notes,
+        //createdAt: apiLicense.created_at,
+        //updatedAt: apiLicense.updated_at,
+  });
+
+  const handleSaveLicense = async(licenseData: Partial<License>) => {
+    try{
+        setError(null);
+        setLoading(true);
+      console.log('licenseToEdit', licenseToEdit);
+      console.log('licenseData recibido: ', licenseData);
+      if (licenseToEdit) {
+        // Editar licencia existente
+        const updated = await LicenseServices.update(
+          licenseToEdit.id,
+          licenseData
+        );
+        setLicenses( prev =>
+          prev.map(l => l.id === updated.id? updated : l));
+          setSuccessMessage('Licencia actualizada correctamente');
+      } else {
+        // Crear nueva licencia
+        const created = await LicenseServices.create(
+          toApiLicensePayload(licenseData));
+        console.log('Payload que envío al backend:', toApiLicensePayload(licenseData));
+        setLicenses(prev => [created, ...prev]);
+        setSuccessMessage('Licencia creada correctamente');
+      }
+      //await fetchLicenses().then(() => {
+        //setShowFormModal(false);
+        //setLicenseToEdit(null);
+        //setSuccessMessage(licenseToEdit ? 'Licencia actualizada correctamente': 'Licencia creada correctamente');
+      //});
+      setShowFormModal(false);
+      setLicenseToEdit(null);
+    } catch(err: unknown){
+      console.error('Error al guardar licencia:', err);
+    } finally {
+      setLoading(false);
     }
-    setShowFormModal(false);
-    setLicenseToEdit(null);
+    
   };
 
-  const handleConfirmDelete = () => {
-    if (licenseToDelete) {
-      const updatedLicenses = licenses.filter(
-        license => license.id_license !== licenseToDelete.id_license
-      );
-      onUpdateLicenses(updatedLicenses);
+  const handleConfirmDelete = async () => { //falta codear;
+    try{
+      setLoading(true);
+      if (licenseToDelete) {
+      await LicenseServices.delete(licenseToDelete.id);
+      await fetchLicenses();
       setShowDeleteModal(false);
       setLicenseToDelete(null);
+      }
+    } catch(e: unknown){
+      console.error('Error al eliminar licencia', e);
+    } finally {
+      setLoading(false);
     }
+
   };
 
   // Estadísticas
@@ -104,12 +185,14 @@ export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) 
       {/* Header */}
       <LicensesHeader onNewLicense={handleNewLicense} />
 
+      {loading && <div className="text-sm">Cargando... </div>}
+      {successMessage && <div className="text-sm text-green-400">{successMessage}</div>}
       {/* Lista de licencias */}
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-4 mt-4">
         {licenses.length > 0 ? (
-          licenses.map((license, index) => (
+          licenses.map((license: License, index: number) => (
             <LicenseCard
-              key={license.id_license}
+              key={license.id}
               license={license}
               formatDate={formatDate}
               index={index}
@@ -146,7 +229,7 @@ export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) 
         }}
       />
 
-      <DeleteLicenseModal
+      {showDeleteModal && ( <DeleteLicenseModal
         isOpen={showDeleteModal}
         license={licenseToDelete}
         onConfirm={handleConfirmDelete}
@@ -154,7 +237,7 @@ export const LicensesPage = ({ licenses, onUpdateLicenses }: LicensesPageProps) 
           setShowDeleteModal(false);
           setLicenseToDelete(null);
         }}
-      />
+      />)}
     </div>
   );
 };

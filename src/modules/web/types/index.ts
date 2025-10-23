@@ -2,22 +2,28 @@
 export type NewsStatus = 'draft' | 'published' | 'archived';
 export type AlertType = 'info' | 'warning' | 'error' | 'success' | 'maintenance';
 export type AlertStatus = 'active' | 'inactive' | 'expired';
-export type AnnouncementStatus = 'draft' | 'published' | 'archived';
-export type ContactFormStatus = 'pending' | 'resolved' | 'spam';
+export type AnnouncementStatus = 'draft' | 'published' | 'active' | 'archived';
+export type ContactFormStatus = 'pending' | 'in_progress' | 'resolved' | 'spam';
 export type ContactFormPriority = 'low' | 'medium' | 'high' | 'urgent';
 export type ChatbotStatus = 'active' | 'inactive' | 'training';
 
-export type NewsCategory = 
-  | 'educación' 
-  | 'tecnología' 
-  | 'eventos' 
-  | 'investigación' 
-  | 'noticias' 
-  | 'anuncios' 
-  | 'becas' 
+export type NewsCategory =
+  | 'educación'
+  | 'tecnología'
+  | 'eventos'
+  | 'investigación'
+  | 'noticias'
+  | 'anuncios'
+  | 'becas'
   | 'internacionalización'
   | 'desarrollo-estudiantil'
-  | 'vinculación';
+  | 'vinculación'
+  | 'Educación'
+  | 'Tecnología'
+  | 'Eventos'
+  | 'Becas'
+  | 'Logros'
+  | 'Alianzas';
 
 // Actualizar la interfaz News para usar el tipo de categoría
 export interface News {

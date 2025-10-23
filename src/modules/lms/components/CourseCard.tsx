@@ -1,11 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye,
-  faEdit,
   faTrash,
   faClock,
   faMoneyBill,
-  faChalkboardTeacher,
   faStar,
   faFire,
   faBookOpen,
@@ -17,7 +15,6 @@ interface CourseCardProps {
   course: Course;
   index?: number;
   onView?: (course: Course) => void;
-  onEdit?: (course: Course) => void;
   onDelete?: (course: Course) => void;
 }
 
@@ -25,7 +22,6 @@ export const CourseCard = ({
   course,
   index = 0,
   onView,
-  onEdit,
   onDelete,
 }: CourseCardProps) => {
   const getStatusBadge = (status: string) => {
@@ -92,6 +88,12 @@ export const CourseCard = ({
               Destacado
             </span>
           )}
+          {course.highest_rated && (
+            <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400 flex items-center gap-1">
+              <FontAwesomeIcon icon={faStar} />
+              Mejor Valorado
+            </span>
+          )}
         </div>
 
         {/* Header del card */}
@@ -151,18 +153,11 @@ export const CourseCard = ({
             className="flex-1 btn bg-primary-300/20 text-primary-300 hover:bg-primary-500/30 border border-primary-500/30 hover:border-primary-500 py-2 text-sm transition-all duration-300"
           >
             <FontAwesomeIcon icon={faEye} className="mr-1" />
-            Ver
-          </button>
-          <button
-            onClick={() => onEdit?.(course)}
-            className="flex-1 btn bg-warning/20 text-warning hover:bg-warning/25 border border-warning/30 hover:border-warning py-2 text-sm transition-all duration-300"
-          >
-            <FontAwesomeIcon icon={faEdit} className="mr-1" />
-            Editar
+            Detalles
           </button>
           <button
             onClick={() => onDelete?.(course)}
-            className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-2 px-3 text-sm transition-all duration-300"
+            className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-2 px-4 text-sm transition-all duration-300"
           >
             <FontAwesomeIcon icon={faTrash} />
           </button>

@@ -32,6 +32,7 @@ import {
   faUserGraduate,
   faChalkboardTeacher,
   faBuilding,
+<<<<<<< HEAD
   faFolder,
   faUser,
   faChalkboard,
@@ -39,6 +40,9 @@ import {
   faChartBar,
   faDollarSign,
   faFileInvoiceDollar,
+=======
+  faCalendar,
+>>>>>>> origin/DEV-ADAPTANDO
 } from '@fortawesome/free-solid-svg-icons';
 
 export const modules = [
@@ -61,7 +65,7 @@ export const modules = [
         { id: 'lms-students', name: 'Estudiantes', icon: faUserGraduate },
         { id: 'lms-instructors', name: 'Instructores', icon: faChalkboardTeacher },
         { id: 'lms-companies', name: 'Compañías', icon: faBuilding },
-        { id: 'lms-categories', name: 'Categorías', icon: faFolder },
+        { id: 'lms-academic-periods', name: 'Periodos Académicos', icon: faCalendar },
       ],
     },
     {
@@ -89,7 +93,7 @@ export const modules = [
       ],
     },
     {
-      id: 'infrastructure',
+      id: 'infra',
       name: 'Infraestructura',
       icon: faServer,
       submodules: [

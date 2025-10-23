@@ -1,16 +1,13 @@
 // LMS Dashboard Service - Módulo LMS según DOCUMENTACION_BACKEND_API.md
-import { apiRequest } from '../../../services/api.config';
 import type {
   LMSStats,
   RecentCourse,
   RecentEnrollment,
-  StudentsStatsResponse,
-  CoursesStatsResponse,
 } from '../types';
 import { coursesService } from './coursesService';
 import { studentsService } from './studentsService';
 import { instructorsService } from './instructorsService';
-import { enrollmentsService } from './enrollmentsService';
+// import { enrollmentsService } from './enrollmentsService'; // Servicio no disponible
 
 export const lmsService = {
   /**
@@ -19,24 +16,24 @@ export const lmsService = {
    */
   async getStats(): Promise<LMSStats> {
     try {
-      // Obtener estadísticas de estudiantes
-      const studentsStatsResponse = await apiRequest<StudentsStatsResponse>('/analytics/students/stats');
+      // Obtener datos directamente de los servicios disponibles
+      const [coursesResponse, studentsResponse, instructorsResponse] = await Promise.all([
+        coursesService.getAll({ limit: 1 }),
+        studentsService.getAll({ limit: 1 }),
+        instructorsService.getAll({ limit: 1 }),
+      ]);
 
-      // Obtener estadísticas de cursos
-      const coursesStatsResponse = await apiRequest<CoursesStatsResponse>('/analytics/courses/stats');
-
-      // Obtener instructores (solo necesitamos el conteo)
-      const instructorsResponse = await instructorsService.getAll({ limit: 1 });
-
-      // Obtener matrículas activas
-      const enrollmentsResponse = await enrollmentsService.getAll({ status: 'active' });
+      // Contar cursos publicados/borradores
+      const allCourses = await coursesService.getAll();
+      const publishedCourses = allCourses.courses.filter(c => c.status === 'publicado').length;
+      const draftCourses = allCourses.courses.filter(c => c.status === 'borrador').length;
 
       return {
-        total_courses: coursesStatsResponse.data.total_courses,
-        published_courses: coursesStatsResponse.data.active_courses,
-        draft_courses: coursesStatsResponse.data.inactive_courses,
-        total_students: studentsStatsResponse.data.total_students,
-        active_enrollments: enrollmentsResponse.length,
+        total_courses: coursesResponse.pagination?.total_records || 0,
+        published_courses: publishedCourses,
+        draft_courses: draftCourses,
+        total_students: studentsResponse.pagination?.total_records || 0,
+        active_enrollments: 0, // Servicio no disponible
         total_instructors: instructorsResponse.pagination?.total_records || 0,
       };
     } catch (error) {
@@ -75,6 +72,10 @@ export const lmsService = {
    */
   async getRecentEnrollments(): Promise<RecentEnrollment[]> {
     try {
+      // Servicio de enrollments no disponible - retornar array vacío
+      return [];
+
+      /* CÓDIGO COMENTADO - Servicio enrollmentsService no disponible
       const enrollments = await enrollmentsService.getAll();
 
       // Ordenar por fecha de inscripción (más recientes primero) y tomar las primeras 5
@@ -110,6 +111,7 @@ export const lmsService = {
       );
 
       return enrichedEnrollments;
+      */
     } catch (error) {
       console.error('Error al obtener inscripciones recientes:', error);
       throw error;

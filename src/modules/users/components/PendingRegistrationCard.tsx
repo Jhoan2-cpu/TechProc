@@ -8,7 +8,7 @@ import {
   faBuilding,
   faCalendar,
 } from '@fortawesome/free-solid-svg-icons';
-import type { RegistrationRequest, PendingRegistrationCardProps } from '../types';
+import type { PendingRegistrationCardProps } from '../types';
 import { getRoleInfo } from '../utils/roleUtils';
 
 export const PendingRegistrationCard = ({

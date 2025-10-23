@@ -12,50 +12,55 @@ interface LicenseFormModalProps {
 
 export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseFormModalProps) => {
   const [formData, setFormData] = useState({
-    software_name: '',
-    license_key: '',
-    license_type: 'suscripcion' as LicenseType,
+    softwareName: '',
+    licenseKey: '',
+    licenseType: 'Suscripción' as LicenseType,
     provider: '',
-    purchase_date: new Date().toISOString().split('T')[0],
-    expiration_date: '',
-    seats_total: 1,
-    seats_used: 0,
-    cost_annual: 0,
+    purchaseDate: new Date().toISOString().split('T')[0],
+    expirationDate: '',
+    seatsTotal: 4,
+    seatsUsed: 1,
+    costAnnual: 0,
     status: 'active' as LicenseStatus,
     notes: '',
   });
 
   useEffect(() => {
+    if(!isOpen) return;
     if (license) {
       setFormData({
-        software_name: license.software_name,
-        license_key: license.license_key,
-        license_type: license.license_type,
-        provider: license.provider,
-        purchase_date: license.purchase_date.split('T')[0],
-        expiration_date: license.expiration_date ? license.expiration_date.split('T')[0] : '',
-        seats_total: license.seats_total,
-        seats_used: license.seats_used,
-        cost_annual: license.cost_annual,
-        status: license.status,
+        softwareName: license.software_name,
+        licenseKey: license.license_key,
+        licenseType: license.license_type as LicenseType,
+        provider: license.provider ?? '',
+        purchaseDate: license.purchase_date?.split('T')[0] || '',
+        expirationDate: license.expiration_date ? license.expiration_date.split('T')[0] : '',
+        seatsTotal: license.seats_total ?? 0,
+        seatsUsed: license.seats_used ?? 0,
+        costAnnual: license.cost_annual ?? 0,
+        status: (license.status as LicenseStatus) ?? 'active',
         notes: license.notes || '',
       });
-    } else {
+    }else{
       setFormData({
-        software_name: '',
-        license_key: '',
-        license_type: 'suscripcion',
+        softwareName: '',
+        licenseKey: '',
+        licenseType: 'Suscripción' as LicenseType,
         provider: '',
-        purchase_date: new Date().toISOString().split('T')[0],
-        expiration_date: '',
-        seats_total: 1,
-        seats_used: 0,
-        cost_annual: 0,
-        status: 'active',
+        purchaseDate: new Date().toISOString().split('T')[0],
+        expirationDate: '',
+        seatsTotal: 0,
+        seatsUsed: 0,
+        costAnnual: 0,
+        status: 'active' as LicenseStatus,
         notes: '',
       });
     }
   }, [license, isOpen]);
+
+  useEffect(() => {
+    console.log('Qué estoy enviando', formData);
+  }, [formData])
 
   if (!isOpen) return null;
 
@@ -63,21 +68,21 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
     e.preventDefault();
 
     const licenseData: Partial<License> = {
-      software_name: formData.software_name,
-      license_key: formData.license_key,
-      license_type: formData.license_type,
+      software_name: formData.softwareName,
+      license_key: formData.licenseKey,
+      license_type: formData.licenseType,
       provider: formData.provider,
-      purchase_date: new Date(formData.purchase_date).toISOString(),
-      expiration_date: formData.expiration_date ? new Date(formData.expiration_date).toISOString() : null,
-      seats_total: formData.seats_total,
-      seats_used: formData.seats_used,
-      cost_annual: formData.cost_annual,
+      purchase_date: new Date(formData.purchaseDate).toISOString(),
+      expiration_date: formData.expirationDate ? new Date(formData.expirationDate).toISOString() : undefined,
+      seats_total: formData.seatsTotal,
+      seats_used: formData.seatsUsed,
+      cost_annual: formData.costAnnual,
       status: formData.status,
-      notes: formData.notes || null,
+      notes: formData.notes,
     };
 
     if (license) {
-      licenseData.id_license = license.id_license;
+      licenseData.id = license.id;
     }
 
     onSave(licenseData);
@@ -87,7 +92,7 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
     const segments = Array.from({ length: 5 }, () =>
       Math.random().toString(36).substring(2, 7).toUpperCase()
     );
-    setFormData({ ...formData, license_key: segments.join('-') });
+    setFormData({ ...formData, licenseKey: segments.join('-') });
   };
 
   return (
@@ -119,12 +124,12 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Nombre del Software *
+                  Nombre del Software Aquí lo editamosxasdam*
                 </label>
                 <input
                   type="text"
-                  value={formData.software_name}
-                  onChange={(e) => setFormData({ ...formData, software_name: e.target.value })}
+                  value={formData.softwareName}
+                  onChange={(e) => setFormData({ ...formData, softwareName: e.target.value })}
                   className="input w-full"
                   required
                   placeholder="ej: Microsoft Office 365"
@@ -148,8 +153,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                   Tipo de Licencia *
                 </label>
                 <select
-                  value={formData.license_type}
-                  onChange={(e) => setFormData({ ...formData, license_type: e.target.value as LicenseType })}
+                  value={formData.licenseType}
+                  onChange={(e) => setFormData({ ...formData, licenseType: e.target.value as LicenseType })}
                   className="select w-full"
                   required
                 >
@@ -185,8 +190,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
             <div className="flex gap-2">
               <input
                 type="text"
-                value={formData.license_key}
-                onChange={(e) => setFormData({ ...formData, license_key: e.target.value })}
+                value={formData.licenseKey}
+                onChange={(e) => setFormData({ ...formData, licenseKey: e.target.value })}
                 className="input flex-1 font-mono"
                 required
                 placeholder="XXXXX-XXXXX-XXXXX-XXXXX"
@@ -213,25 +218,25 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                 </label>
                 <input
                   type="date"
-                  value={formData.purchase_date}
-                  onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })}
+                  value={formData.purchaseDate}
+                  onChange={(e) => setFormData({ ...formData, purchaseDate: e.target.value })}
                   className="input w-full"
                   required
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Fecha de Vencimiento {formData.license_type !== 'perpetua' && '*'}
+                  Fecha de Vencimiento {formData.licenseType !== 'perpetua' && '*'}
                 </label>
                 <input
                   type="date"
-                  value={formData.expiration_date}
-                  onChange={(e) => setFormData({ ...formData, expiration_date: e.target.value })}
+                  value={formData.expirationDate}
+                  onChange={(e) => setFormData({ ...formData, expirationDate: e.target.value })}
                   className="input w-full"
-                  required={formData.license_type !== 'perpetua'}
-                  disabled={formData.license_type === 'perpetua'}
+                  required={formData.licenseType !== 'perpetua'}
+                  disabled={formData.licenseType === 'perpetua'}
                 />
-                {formData.license_type === 'perpetua' && (
+                {formData.licenseType === 'perpetua' && (
                   <p className="text-xs text-gray-300 mt-1">Las licencias perpetuas no vencen</p>
                 )}
               </div>
@@ -250,8 +255,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                 </label>
                 <input
                   type="number"
-                  value={formData.seats_total}
-                  onChange={(e) => setFormData({ ...formData, seats_total: parseInt(e.target.value) })}
+                  value={formData.seatsTotal}
+                  onChange={(e) => setFormData({ ...formData, seatsTotal: parseInt(e.target.value) })}
                   className="input w-full"
                   required
                   min="1"
@@ -263,12 +268,12 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                 </label>
                 <input
                   type="number"
-                  value={formData.seats_used}
-                  onChange={(e) => setFormData({ ...formData, seats_used: parseInt(e.target.value) })}
+                  value={formData.seatsUsed}
+                  onChange={(e) => setFormData({ ...formData, seatsUsed: parseInt(e.target.value) })}
                   className="input w-full"
                   required
                   min="0"
-                  max={formData.seats_total}
+                  max={formData.seatsTotal}
                 />
               </div>
               <div>
@@ -277,8 +282,8 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
                 </label>
                 <input
                   type="number"
-                  value={formData.cost_annual}
-                  onChange={(e) => setFormData({ ...formData, cost_annual: parseFloat(e.target.value) })}
+                  value={formData.costAnnual}
+                  onChange={(e) => setFormData({ ...formData, costAnnual: parseFloat(e.target.value) })}
                   className="input w-full"
                   required
                   min="0"

@@ -54,8 +54,8 @@ export const SoftwareCard = ({ software, formatDate, index, onDetails, onEdit, o
               <p className="font-semibold text-white">{formatDate(software.support_until)}</p>
             </div>
           </div>
-
-          {software.server_ids.length > 0 && (
+      
+          {Array.isArray(software.server_ids) && software.server_ids.length > 0 && (
             <div className="bg-secondary-600/50 rounded-lg p-3">
               <p className="text-xs text-gray-400 mb-2">Instalado en {software.server_ids.length} servidor(es)</p>
               <div className="flex flex-wrap gap-2">

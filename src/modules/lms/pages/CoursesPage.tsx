@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
 import type { Course } from '../types';
-import { CreateCourseModal, CourseCard, ViewCourseModal, CourseFilters } from '../components';
+import {
+  CreateCourseModal,
+  CourseCard,
+  ViewCourseModal,
+  CourseFilters
+} from '../components';
 import { coursesService } from '../services';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const CoursesPage = () => {
+  // Estados de cursos
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -99,53 +105,60 @@ export const CoursesPage = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-heading font-bold text-white mb-6">Cursos</h1>
-
-      {/* Mensaje de error */}
-      {error && (
-        <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <p className="text-red-400">{error}</p>
-            <button
-              onClick={fetchCourses}
-              className="btn bg-red-600 hover:bg-red-700 text-white text-sm"
-            >
-              Reintentar
-            </button>
-          </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-heading font-bold text-white mb-2">Gestión de Cursos</h1>
+          <p className="text-gray-400">Administra los cursos del sistema</p>
         </div>
-      )}
-
-      {/* Header con filtros */}
-      <CourseFilters
-        searchTerm={searchTerm}
-        filterStatus={filterStatus}
-        onSearchChange={setSearchTerm}
-        onStatusChange={setFilterStatus}
-        onCreateClick={() => setShowCreateModal(true)}
-      />
-
-      {/* Grid de cursos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourses.map((course, index) => (
-          <CourseCard
-            key={course.id}
-            course={course}
-            index={index}
-            onView={(course) => setSelectedCourse(course)}
-            onEdit={(course) => setCourseToEdit(course)}
-            onDelete={(course) => setCourseToDelete(course)}
-          />
-        ))}
       </div>
 
-      {/* Mensaje si no hay cursos */}
-      {filteredCourses.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-400 text-lg">No se encontraron cursos</p>
+      <div>
+        {/* Mensaje de error */}
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <p className="text-red-400">{error}</p>
+              <button
+                onClick={fetchCourses}
+                className="btn bg-red-600 hover:bg-red-700 text-white text-sm"
+              >
+                Reintentar
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Header con filtros */}
+        <CourseFilters
+          searchTerm={searchTerm}
+          filterStatus={filterStatus}
+          onSearchChange={setSearchTerm}
+          onStatusChange={setFilterStatus}
+          onCreateClick={() => setShowCreateModal(true)}
+        />
+
+        {/* Grid de cursos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCourses.map((course, index) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              index={index}
+              onView={(course: Course) => setSelectedCourse(course)}
+              onDelete={(course: Course) => setCourseToDelete(course)}
+            />
+          ))}
         </div>
-      )}
+
+        {/* Mensaje si no hay cursos */}
+        {filteredCourses.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">No se encontraron cursos</p>
+          </div>
+        )}
+      </div>
 
       {/* Modal de creación */}
       {showCreateModal && (

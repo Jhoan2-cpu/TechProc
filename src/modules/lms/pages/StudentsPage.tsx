@@ -5,15 +5,12 @@ import {
   faEdit,
   faTrash,
   faEnvelope,
-  faMapMarkerAlt,
-  faCalendar,
-  faCheckCircle,
-  faTimesCircle,
   faPhone,
   faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
 import type { Student, Course, Enrollment } from '../types';
-import { studentsService, coursesService, enrollmentsService } from '../services';
+import { studentsService, coursesService } from '../services';
+// import { enrollmentsService } from '../services'; // Servicio no disponible
 import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters, StudentStatsCards } from '../components';
 import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
@@ -34,14 +31,14 @@ export const StudentsPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [studentsData, coursesData, enrollmentsData] = await Promise.all([
+        const [studentsData, coursesData] = await Promise.all([
           studentsService.getAll(),
           coursesService.getAll(),
-          enrollmentsService.getAll(),
+          // enrollmentsService.getAll(), // Servicio no disponible
         ]);
         setStudents(studentsData.students);
         setCourses(coursesData.courses);
-        setEnrollments(enrollmentsData);
+        setEnrollments([]); // enrollmentsData - Servicio no disponible
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -124,8 +121,8 @@ export const StudentsPage = () => {
     // Filtrar por curso: verificar si el estudiante está inscrito en el curso seleccionado
     const matchesCourse = filterCourse === 'all' ||
       enrollments.some(enrollment =>
-        enrollment.student_id === student.id &&
-        enrollment.course_id === filterCourse
+        enrollment.student_id === Number(student.id) &&
+        enrollment.course_id === Number(filterCourse)
       );
 
     return matchesSearch && matchesState && matchesCourse;

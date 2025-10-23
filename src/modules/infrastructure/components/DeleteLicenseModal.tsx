@@ -38,7 +38,7 @@ export const DeleteLicenseModal = ({ isOpen, license, onConfirm, onCancel }: Del
             <p><span className="font-semibold">Proveedor:</span> {license.provider}</p>
             <p><span className="font-semibold">Tipo:</span> {license.license_type}</p>
             <p><span className="font-semibold">Licencias:</span> {license.seats_used}/{license.seats_total}</p>
-            <p><span className="font-semibold">Costo Anual:</span> S/ {license.cost_annual.toLocaleString()}</p>
+            <p><span className="font-semibold">Costo Anual:</span> S/ {(license.cost_annual || 0).toLocaleString()}</p>
           </div>
 
           <div className="flex gap-3">

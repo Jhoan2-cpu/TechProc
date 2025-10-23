@@ -16,7 +16,7 @@ interface LicenseCardProps {
 }
 
 export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onDelete }: LicenseCardProps) => {
-  const getLicenseStatusColor = (status: string) => {
+  const getLicenseStatusColor = (status: License['status']) => {
     switch (status) {
       case 'active': return 'bg-success/20 text-green-700';
       case 'expired': return 'bg-danger/20 text-red-700';
@@ -26,13 +26,13 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
     }
   };
 
-  const getStatusText = (status: string) => {
+  const getStatusText = (status?: string) => {
     switch (status) {
       case 'expiring_soon': return 'Por Vencer';
       case 'expired': return 'Vencida';
       case 'active': return 'Activa';
       case 'suspended': return 'Suspendida';
-      default: return status;
+      default: return status || 'N/A';
     }
   };
 
@@ -45,7 +45,7 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
               <h3 className="text-lg font-heading font-bold text-white">{license.software_name}</h3>
               <p className="text-sm text-gray-400">{license.provider}</p>
             </div>
-            <span className={`px-4 py-2 rounded-full text-sm font-medium ${getLicenseStatusColor(license.status)}`}>
+            <span className={`px-4 py-2 rounded-full text-sm font-medium ${getLicenseStatusColor(license.status || 'active')}`}>
               {getStatusText(license.status)}
             </span>
           </div>
@@ -61,11 +61,11 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
             </div>
             <div>
               <p className="text-xs text-gray-400">Costo Anual</p>
-              <p className="font-semibold text-white">S/ {license.cost_annual.toLocaleString()}</p>
+              <p className="font-semibold text-white">S/ {(license.cost_annual || 0).toLocaleString()}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400">Vencimiento</p>
-              <p className="font-semibold text-white">{formatDate(license.expiration_date)}</p>
+              <p className="font-semibold text-white">{formatDate(license.expiration_date || null)}</p>
             </div>
           </div>
 
@@ -82,7 +82,7 @@ export const LicenseCard = ({ license, formatDate, index, onDetails, onEdit, onD
 
           <div className="mt-3 text-sm text-gray-400">
             <p>
-              <span className="font-semibold">Compra:</span> {formatDate(license.purchase_date)}
+              <span className="font-semibold">Compra:</span> {formatDate(license.purchase_date || null)}
             </p>
           </div>
         </div>
