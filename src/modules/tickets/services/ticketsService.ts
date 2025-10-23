@@ -30,11 +30,6 @@ interface TicketCreateResponse {
   };
 }
 
-interface TicketUpdateResponse {
-  success: boolean;
-  message: string;
-}
-
 interface TicketActionResponse {
   success: boolean;
   message: string;

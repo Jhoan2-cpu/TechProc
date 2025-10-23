@@ -32,7 +32,6 @@ import {
   faUserGraduate,
   faChalkboardTeacher,
   faBuilding,
-  faFolder,
   faCalendar,
 } from '@fortawesome/free-solid-svg-icons';
 

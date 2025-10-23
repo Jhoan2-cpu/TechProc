@@ -25,7 +25,7 @@ export const CreateCategoryModal = ({ isOpen, onClose, onSave, categoryToEdit }:
       setFormData({
         name: categoryToEdit.name,
         slug: categoryToEdit.slug,
-        image: categoryToEdit.image,
+        image: categoryToEdit.image || '',
         category_id: categoryToEdit.category_id,
       });
     }

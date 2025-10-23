@@ -65,6 +65,7 @@ interface PaginatedContactFormsResponse {
 // Función para transformar la respuesta de la API al formato de ContactForm
 const transformContactForm = (apiForm: ContactFormApiResponse): ContactForm => {
   return {
+    id: apiForm.id_contact,
     id_contact: apiForm.id_contact,
     full_name: apiForm.full_name,
     email: apiForm.email,

@@ -25,8 +25,8 @@ export const lmsService = {
 
       // Contar cursos publicados/borradores
       const allCourses = await coursesService.getAll();
-      const publishedCourses = allCourses.courses.filter(c => c.status === 'publicado' || c.status === true).length;
-      const draftCourses = allCourses.courses.filter(c => c.status === 'borrador' || c.status === false).length;
+      const publishedCourses = allCourses.courses.filter(c => c.status === 'publicado').length;
+      const draftCourses = allCourses.courses.filter(c => c.status === 'borrador').length;
 
       return {
         total_courses: coursesResponse.pagination?.total_records || 0,

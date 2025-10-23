@@ -52,9 +52,6 @@ export const TrendChart = ({ data, analysis }: TrendChartProps) => {
     });
   };
 
-  const maxRate = Math.max(...data.map((d) => parseFloat(d.attendance_rate)));
-  const minRate = Math.min(...data.map((d) => parseFloat(d.attendance_rate)));
-
   return (
     <div className="bg-gradient-to-br from-secondary-500/60 to-secondary-600/60 backdrop-blur-sm rounded-xl p-6 border border-gray-700/30">
       {/* Header */}
@@ -102,7 +99,6 @@ export const TrendChart = ({ data, analysis }: TrendChartProps) => {
       <div className="space-y-2">
         {data.slice(-10).map((period, index) => {
           const rate = parseFloat(period.attendance_rate);
-          const heightPercentage = ((rate - minRate) / (maxRate - minRate)) * 100;
 
           return (
             <div key={index} className="flex items-center gap-3">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faFilter, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faFilter, faTimes } from '@fortawesome/free-solid-svg-icons';
 import type { Announcement, AnnouncementStatus } from '../types';
 import { AnnouncementCard, AnnouncementFormModal, DeleteAnnouncementModal } from '../components';
 import { announcementsService } from '../services/webService';
@@ -196,11 +196,6 @@ export const AnnouncementsPage = () => {
     }));
   };
 
-  const handleSearch = () => {
-    // Ejecutar búsqueda cuando se presiona el botón
-    fetchAnnouncements();
-  };
-
   const clearFilters = () => {
     setFilters({
       status: '',
@@ -208,12 +203,6 @@ export const AnnouncementsPage = () => {
       target_page: '',
       search: ''
     });
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
   };
 
   const hasActiveFilters = filters.status || filters.display_type || filters.target_page || filters.search;

@@ -1,0 +1,981 @@
+PS C:\Users\anton\Desktop\PRODUCTO MIRKO\TechProc> npm run build
+
+> techproc@0.0.0 build
+> tsc -b && vite build
+
+src/layouts/MainLayout.tsx:1:8 - error TS6133: 'React' is declared but its value is never read.
+
+1 import React, { useState } from "react";
+         ~~~~~
+
+src/modules/analytics/components/StudentStatsCard.tsx:5:3 - error TS6133: 'faChartLine' is declared but its value is never read.
+
+5   faChartLine,
+    ~~~~~~~~~~~
+
+src/modules/analytics/components/TrendChart.tsx:105:17 - error TS6133: 'heightPercentage' is declared but its value is never read.
+
+105           const heightPercentage = ((rate - minRate) / (maxRate - minRate)) * 100;
+                    ~~~~~~~~~~~~~~~~
+
+src/modules/analytics/pages/AnalyticsMainPage.tsx:83:7 - error TS6133: 'mockAttendance' is declared but its value is never read.
+
+83 const mockAttendance: StudentAttendance[] = [
+         ~~~~~~~~~~~~~~
+
+src/modules/analytics/pages/AnalyticsMainPage.tsx:139:7 - error TS6133: 'mockProgress' is declared but its value is never read.
+
+139 const mockProgress: StudentProgress[] = [
+          ~~~~~~~~~~~~
+
+src/modules/analytics/pages/ProgressAnalyticsPage.tsx:58:9 - error TS6133: 'getProgressLevelColor' is declared but its value is never read.
+
+58   const getProgressLevelColor = (level: ProgressLevelType) => {
+           ~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/analytics/pages/ProgressAnalyticsPage.tsx:75:9 - error TS6133: 'getProgressLevelLabel' is declared but its value is never read.
+
+75   const getProgressLevelLabel = (level: ProgressLevelType) => {
+           ~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/DeleteLicenseModal.tsx:41:72 - error TS18048: 'license.cost_annual' is possibly 'undefined'.
+
+41             <p><span className="font-semibold">Costo Anual:</span> S/ {license.cost_annual.toLocaleString()}</p>
+                                                                          ~~~~~~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseCard.tsx:49:30 - error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+49               {getStatusText(license.status)}
+                                ~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseCard.tsx:64:59 - error TS18048: 'license.cost_annual' is possibly 'undefined'.
+
+64               <p className="font-semibold text-white">S/ {license.cost_annual.toLocaleString()}</p>
+                                                             ~~~~~~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseCard.tsx:68:67 - error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+
+68               <p className="font-semibold text-white">{formatDate(license.expiration_date)}</p>
+                                                                     ~~~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseCard.tsx:85:74 - error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+
+85               <span className="font-semibold">Compra:</span> {formatDate(license.purchase_date)}
+                                                                            ~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:44:36 - error TS2551: Property 'seatsUsed' does not exist on type 'License'. Did you mean 'seats_used'?
+
+44   const seatsPercentage = (license.seatsUsed / license.seatsTotal) * 100;
+                                      ~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:36:3
+    36   seats_used?: number;
+         ~~~~~~~~~~
+    'seats_used' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:44:56 - error TS2551: Property 'seatsTotal' does not exist on type 'License'. Did you mean 'seats_total'?
+
+44   const seatsPercentage = (license.seatsUsed / license.seatsTotal) * 100;
+                                                          ~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:35:3
+    35   seats_total?: number;
+         ~~~~~~~~~~~
+    'seats_total' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:56:26 - error TS2551: Property 'softwareName' does not exist on type 'License'. Did you mean 'software_name'?
+
+56                 {license.softwareName}
+                            ~~~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:29:3
+    29   software_name: string;
+         ~~~~~~~~~~~~~
+    'software_name' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:73:109 - error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+73             <span className={`px-6 py-3 rounded-full text-lg font-bold inline-block ${getLicenseStatusColor(license.status)}`}>
+                                                                                                               ~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:74:30 - error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+
+74               {getStatusText(license.status)}
+                                ~~~~~~~~~~~~~~
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:87:89 - error TS2551: Property 'licenseType' does not exist on type 'License'. Did you mean 'license_type'?
+
+87                 <p className="text-lg font-bold text-white">{getLicenseTypeText(license.licenseType)}</p>
+                                                                                           ~~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:31:3
+    31   license_type?: string;
+         ~~~~~~~~~~~~
+    'license_type' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:104:26 - error TS2551: Property 'licenseKey' does not exist on type 'License'. Did you mean 'license_key'?
+
+104                 {license.licenseKey}
+                             ~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:30:3
+    30   license_key: string;
+         ~~~~~~~~~~~
+    'license_key' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:122:28 - error TS2551: Property 'seatsUsed' does not exist on type 'License'. Did you mean 'seats_used'?
+
+122                   {license.seatsUsed} / {license.seatsTotal}
+                               ~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:36:3
+    36   seats_used?: number;
+         ~~~~~~~~~~
+    'seats_used' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:122:50 - error TS2551: Property 'seatsTotal' does not exist on type 'License'. Did you mean 'seats_total'?
+
+122                   {license.seatsUsed} / {license.seatsTotal}
+                                                     ~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:35:3
+    35   seats_total?: number;
+         ~~~~~~~~~~~
+    'seats_total' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:140:26 - error TS2551: Property 'seatsTotal' does not exist on type 'License'. Did you mean 'seats_total'?
+
+140                 {license.seatsTotal - license.seatsUsed} licencias disponibles
+                             ~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:35:3
+    35   seats_total?: number;
+         ~~~~~~~~~~~
+    'seats_total' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:140:47 - error TS2551: Property 'seatsUsed' does not exist on type 'License'. Did you mean 'seats_used'?
+
+140                 {license.seatsTotal - license.seatsUsed} licencias disponibles
+                                                  ~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:36:3
+    36   seats_used?: number;
+         ~~~~~~~~~~
+    'seats_used' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:154:73 - error TS2551: Property 'purchaseDate' does not exist on type 'License'. Did you mean 'purchase_date'?
+
+154                 <p className="font-bold text-white">{formatDate(license.purchaseDate)}</p>
+                                                                            ~~~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:33:3
+    33   purchase_date?: string;
+         ~~~~~~~~~~~~~
+    'purchase_date' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:158:73 - error TS2551: Property 'expirationDate' does not exist on type 'License'. Did you mean 'expiration_date'?
+
+158                 <p className="font-bold text-white">{formatDate(license.expirationDate)}</p>
+                                                                            ~~~~~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:34:3
+    34   expiration_date?: string;
+         ~~~~~~~~~~~~~~~
+    'expiration_date' is declared here.
+
+src/modules/infrastructure/components/LicenseDetailsModal.tsx:172:29 - error TS2551: Property 'costAnnual' does not exist on type 'License'. Did you mean 'cost_annual'?
+
+172                 S/ {license.costAnnual.toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                                ~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:37:3
+    37   cost_annual?: number;
+         ~~~~~~~~~~~
+    'cost_annual' is declared here.
+
+src/modules/infrastructure/components/LicenseFormModal.tsx:76:7 - error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+
+76       expiration_date: formData.expirationDate ? new Date(formData.expirationDate).toISOString() : null,
+         ~~~~~~~~~~~~~~~
+
+  src/modules/infrastructure/types/license.types.ts:34:3
+    34   expiration_date?: string;
+         ~~~~~~~~~~~~~~~
+    The expected type comes from property 'expiration_date' which is declared here on type 'Partial<License>'
+
+src/modules/infrastructure/pages/InfrastructureMainPage.tsx:379:20 - error TS6133: 'setLicenses' is declared but its value is never read.
+
+379   const [licenses, setLicenses] = useState(mockLicenses);
+                       ~~~~~~~~~~~
+
+src/modules/infrastructure/services/software.service.ts:83:24 - error TS2304: Cannot find name 'CreateSoftwareData'.
+
+83     async create(data: CreateSoftwareData): Promise<Software>{
+                          ~~~~~~~~~~~~~~~~~~
+
+src/modules/infrastructure/services/software.service.ts:91:36 - error TS2304: Cannot find name 'UpdateSoftwareData'.
+
+91     async update(id: number, data: UpdateSoftwareData): Promise<Software> {
+                                      ~~~~~~~~~~~~~~~~~~
+
+src/modules/lms/components/CourseCard.tsx:26:3 - error TS6133: 'onEdit' is declared but its value is never read.
+
+26   onEdit,
+     ~~~~~~
+
+src/modules/lms/pages/LMSPage.tsx:12:10 - error TS6133: 'LMSStatsCard' is declared but its value is never read.
+
+12 import { LMSStatsCard, RecentCourseCard } from '../components';
+            ~~~~~~~~~~~~
+
+src/modules/lms/pages/LMSPage.tsx:16:3 - error TS6133: 'studentsService' is declared but its value is never read.
+
+16   studentsService,
+     ~~~~~~~~~~~~~~~
+
+src/modules/lms/pages/LMSPage.tsx:46:11 - error TS6133: 'allCourses' is declared but its value is never read.
+
+46           allCourses,
+             ~~~~~~~~~~
+
+src/modules/lms/pages/StudentsPage.tsx:8:3 - error TS6133: 'faMapMarkerAlt' is declared but its value is never read.
+
+8   faMapMarkerAlt,
+    ~~~~~~~~~~~~~~
+
+src/modules/lms/pages/StudentsPage.tsx:9:3 - error TS6133: 'faCalendar' is declared but its value is never read.
+
+9   faCalendar,
+    ~~~~~~~~~~
+
+src/modules/lms/pages/StudentsPage.tsx:10:3 - error TS6133: 'faCheckCircle' is declared but its value is never read.
+
+10   faCheckCircle,
+     ~~~~~~~~~~~~~
+
+src/modules/lms/pages/StudentsPage.tsx:11:3 - error TS6133: 'faTimesCircle' is declared but its value is never read.
+
+11   faTimesCircle,
+     ~~~~~~~~~~~~~
+
+src/modules/lms/pages/StudentsPage.tsx:128:9 - error TS2367: This comparison appears to be unintentional because the types 'number' and 'string' have no overlap.
+
+128         enrollment.student_id === student.id &&
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/lms/pages/StudentsPage.tsx:129:9 - error TS2367: This comparison appears to be unintentional because the types 'number' and 'string' have no overlap.
+
+129         enrollment.course_id === filterCourse
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/lms/types/index.ts:382:3 - error TS2687: All declarations of 'image' must have identical modifiers.
+
+382   image?: string;
+      ~~~~~
+
+src/modules/lms/types/index.ts:652:3 - error TS2717: Subsequent property declarations must have the same type.  Property 'category_id' must be of type 'number', but here has type 'number | null'.
+
+652   category_id: number | null;
+      ~~~~~~~~~~~
+
+  src/modules/lms/types/index.ts:379:3
+    379   category_id: number;
+          ~~~~~~~~~~~
+    'category_id' was also declared here.
+
+src/modules/lms/types/index.ts:655:3 - error TS2687: All declarations of 'image' must have identical modifiers.
+
+655   image: string;
+      ~~~~~
+
+src/modules/lms/types/index.ts:655:3 - error TS2717: Subsequent property declarations must have the same type.  Property 'image' must be of type 'string | undefined', but here has type 'string'.
+
+655   image: string;
+      ~~~~~
+
+  src/modules/lms/types/index.ts:382:3
+    382   image?: string;
+          ~~~~~
+    'image' was also declared here.
+
+src/modules/tickets/pages/TicketsPage.tsx:406:9 - error TS2322: Type '(ticketId: number, technicianId: number, _reason: string, _observations: string) => void' is not assignable to type '() => void'.       
+  Target signature provides too few arguments. Expected 4 or more, but got 0.
+
+406         onSuccess={handleEscalateConfirm}
+            ~~~~~~~~~
+
+  src/modules/tickets/components/EscalateTicketModal.tsx:33:3
+    33   onSuccess: () => void;
+         ~~~~~~~~~
+    The expected type comes from property 'onSuccess' which is declared here on type 'IntrinsicAttributes & EscalateTicketModalProps'
+
+src/modules/tickets/services/ticketsService.ts:33:11 - error TS6196: 'TicketUpdateResponse' is declared but never used.
+
+33 interface TicketUpdateResponse {
+             ~~~~~~~~~~~~~~~~~~~~
+
+src/modules/users/components/ApproveRegistrationModal.tsx:4:15 - error TS6196: 'RegistrationRequest' is declared but never used.
+
+4 import type { RegistrationRequest, ApproveRegistrationModalProps } from '../types';
+                ~~~~~~~~~~~~~~~~~~~
+
+src/modules/users/components/PendingRegistrationCard.tsx:11:15 - error TS6196: 'RegistrationRequest' is declared but never used.
+
+11 import type { RegistrationRequest, PendingRegistrationCardProps } from '../types';
+                 ~~~~~~~~~~~~~~~~~~~
+
+src/modules/users/components/RejectRegistrationModal.tsx:4:15 - error TS6196: 'RegistrationRequest' is declared but never used.
+
+4 import type { RegistrationRequest, RejectRegistrationModalProps } from '../types';
+                ~~~~~~~~~~~~~~~~~~~
+
+src/modules/users/components/UserFormModal.tsx:4:15 - error TS6196: 'User' is declared but never used.
+
+4 import type { User, UserRole, UserFormModalProps, CreateUserData, UpdateUserData } from '../types';
+                ~~~~
+
+src/modules/users/components/UserFormModal.tsx:4:51 - error TS6196: 'CreateUserData' is declared but never used.
+
+4 import type { User, UserRole, UserFormModalProps, CreateUserData, UpdateUserData } from '../types';
+                                                    ~~~~~~~~~~~~~~
+
+src/modules/users/components/UserFormModal.tsx:130:18 - error TS7006: Parameter 'detail' implicitly has an 'any' type.
+
+130             .map(detail => `${detail.field}: ${detail.message}`)
+                     ~~~~~~
+
+src/modules/users/components/UserTableRow.tsx:2:18 - error TS6133: 'faToggleOn' is declared but its value is never read.
+
+2 import { faEdit, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
+                   ~~~~~~~~~~
+
+src/modules/users/components/UserTableRow.tsx:2:30 - error TS6133: 'faToggleOff' is declared but its value is never read.
+
+2 import { faEdit, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
+                               ~~~~~~~~~~~
+
+src/modules/users/components/UserTableRow.tsx:3:15 - error TS6196: 'User' is declared but never used.
+
+3 import type { User, RoleInfo, UserTableRowProps } from '../types';
+                ~~~~
+
+src/modules/users/components/UserTableRow.tsx:3:21 - error TS6196: 'RoleInfo' is declared but never used.
+
+3 import type { User, RoleInfo, UserTableRowProps } from '../types';
+                      ~~~~~~~~
+
+src/modules/users/components/UserTableRow.tsx:9:3 - error TS6133: 'onToggleStatus' is declared but its value is never read.
+
+9   onToggleStatus,
+    ~~~~~~~~~~~~~~
+
+src/modules/users/pages/PendingRegistrationsPage.tsx:3:36 - error TS6133: 'faUserTimes' is declared but its value is never read.
+
+3 import { faUserClock, faUserCheck, faUserTimes, faUsers } from '@fortawesome/free-solid-svg-icons';
+                                     ~~~~~~~~~~~
+
+src/modules/users/pages/PendingRegistrationsPage.tsx:7:3 - error TS6133: 'PendingRegistrationCard' is declared but its value is never read.
+
+7   PendingRegistrationCard,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/users/pages/PendingRegistrationsPage.tsx:8:3 - error TS6133: 'PendingRegistrationStats' is declared but its value is never read.
+
+8   PendingRegistrationStats,
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/modules/users/pages/PendingRegistrationsPage.tsx:94:9 - error TS6133: 'approvedCount' is declared but its value is never read.
+
+94   const approvedCount = 0; // No mostramos los aprobados aquí
+           ~~~~~~~~~~~~~
+
+src/modules/users/pages/PendingRegistrationsPage.tsx:95:9 - error TS6133: 'rejectedCount' is declared but its value is never read.
+
+95   const rejectedCount = 0; // No mostramos los rechazados aquí
+           ~~~~~~~~~~~~~
+
+src/modules/web/components/AnnouncementCard.tsx:2:10 - error TS6133: 'faImage' is declared but its value is never read.
+
+2 import { faImage, faEdit, faTrash, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+           ~~~~~~~
+
+src/modules/web/pages/AnnouncementsPage.tsx:3:37 - error TS6133: 'faSearch' is declared but its value is never read.
+
+3 import { faPlus, faFilter, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
+                                      ~~~~~~~~
+
+src/modules/web/pages/AnnouncementsPage.tsx:213:9 - error TS6133: 'handleKeyPress' is declared but its value is never read.
+
+213   const handleKeyPress = (e: React.KeyboardEvent) => {
+            ~~~~~~~~~~~~~~
+
+src/modules/web/pages/ContactsPage.tsx:3:10 - error TS6133: 'faDownload' is declared but its value is never read.
+
+3 import { faDownload, faFilter } from '@fortawesome/free-solid-svg-icons';
+           ~~~~~~~~~~
+
+src/modules/web/pages/ContactsPage.tsx:102:101 - error TS6133: 'assignedTo' is declared but its value is never read.
+
+102   const handleSaveResponse = async (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
+                                                                                                        ~~~~~~~~~~
+
+src/modules/web/pages/WebDashboardPage.tsx:22:10 - error TS6133: 'alerts' is declared but its value is never read.
+
+22   const [alerts, setAlerts] = useState<Alert[]>([]);
+            ~~~~~~
+
+src/modules/web/pages/WebDashboardPage.tsx:116:108 - error TS6133: 'assignedTo' is declared but its value is never read.
+
+116   const handleSaveContactResponse = async (contactId: number, response: string, status: ContactFormStatus, assignedTo: number | null) => {
+                                                                                                               ~~~~~~~~~~
+
+src/pages/ProfilePage.tsx:6:3 - error TS6133: 'faPhone' is declared but its value is never read.
+
+6   faPhone,
+    ~~~~~~~
+
+src/pages/website/WebsitePage.tsx:12:3 - error TS2741: Property 'id' is missing in type '{ id_alert: number; message: string; type: "info"; status: "active"; link_url: string; link_text: string; start_date: string; end_date: null; priority: number; created_by: number; created_date: string; }' but required in type 'Alert'.
+
+ 12   {
+      ~
+ 13     id_alert: 1,
+    ~~~~~~~~~~~~~~~~
+...
+ 23     created_date: '2024-01-01'
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 24   },
+    ~~~
+
+  src/modules/web/types/index.ts:52:3
+    52   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:25:3 - error TS2741: Property 'id' is missing in type '{ id_alert: number; message: string; type: "success"; status: "active"; link_url: string; link_text: string; start_date: string; end_date: string; priority: number; created_by: number; created_date: string; }' but required in type 'Alert'.
+
+ 25   {
+      ~
+ 26     id_alert: 2,
+    ~~~~~~~~~~~~~~~~
+...
+ 36     created_date: '2024-01-01'
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 37   }
+    ~~~
+
+  src/modules/web/types/index.ts:52:3
+    52   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:41:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Educación"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.       
+
+ 41   {
+      ~
+ 42     id_news: 1,
+    ~~~~~~~~~~~~~~~
+...
+ 56     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+ 57   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:58:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Logros"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.
+
+ 58   {
+      ~
+ 59     id_news: 2,
+    ~~~~~~~~~~~~~~~
+...
+ 73     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+ 74   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:75:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Alianzas"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.        
+
+ 75   {
+      ~
+ 76     id_news: 3,
+    ~~~~~~~~~~~~~~~
+...
+ 90     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+ 91   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:92:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Eventos"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.
+
+ 92   {
+      ~
+ 93     id_news: 4,
+    ~~~~~~~~~~~~~~~
+...
+107     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+108   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:109:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Becas"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.
+
+109   {
+      ~
+110     id_news: 5,
+    ~~~~~~~~~~~~~~~
+...
+124     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+125   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:126:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Tecnología"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.     
+
+126   {
+      ~
+127     id_news: 6,
+    ~~~~~~~~~~~~~~~
+...
+141     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+142   }
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:148:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+148   {
+      ~
+149     id_faq: 1,
+    ~~~~~~~~~~~~~~
+...
+157     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+158   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:159:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+159   {
+      ~
+160     id_faq: 2,
+    ~~~~~~~~~~~~~~
+...
+168     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+169   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:170:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+170   {
+      ~
+171     id_faq: 3,
+    ~~~~~~~~~~~~~~
+...
+179     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+180   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:181:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+181   {
+      ~
+182     id_faq: 4,
+    ~~~~~~~~~~~~~~
+...
+190     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+191   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:192:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+192   {
+      ~
+193     id_faq: 5,
+    ~~~~~~~~~~~~~~
+...
+201     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+202   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/pages/website/WebsitePage.tsx:203:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+203   {
+      ~
+204     id_faq: 6,
+    ~~~~~~~~~~~~~~
+...
+212     updated_date: null
+    ~~~~~~~~~~~~~~~~~~~~~~
+213   }
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/services/api.config.ts:72:31 - error TS18048: 'errorDetails' is possibly 'undefined'.
+
+72           const fieldErrors = errorDetails
+                                 ~~~~~~~~~~~~
+
+src/services/authService.ts:10:3 - error TS6196: 'SessionData' is declared but never used.
+
+10   SessionData,
+     ~~~~~~~~~~~
+
+src/services/mockData.ts:11:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: string; author_id: number; author_name: string; category: "Educación"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: string; }' but required in type 'News'.
+
+ 11   {
+      ~
+ 12     id_news: 1,
+    ~~~~~~~~~~~~~~~
+...
+ 26     updated_date: '2024-03-09',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 27   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:28:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: string; author_id: number; author_name: string; category: "Alianzas"; tags: string[]; status: "published"; views: number; published_date: string; created_date: string; updated_date: null; }' but required in type 'News'.
+
+ 28   {
+      ~
+ 29     id_news: 2,
+    ~~~~~~~~~~~~~~~
+...
+ 43     updated_date: null,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+ 44   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:45:3 - error TS2741: Property 'id' is missing in type '{ id_news: number; title: string; slug: string; summary: string; content: string; featured_image: null; author_id: number; author_name: string; category: "Eventos"; tags: string[]; status: "draft"; views: number; published_date: null; created_date: string; updated_date: string; }' but required in type 'News'.
+
+ 45   {
+      ~
+ 46     id_news: 3,
+    ~~~~~~~~~~~~~~~
+...
+ 60     updated_date: '2024-03-15',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 61   },
+    ~~~
+
+  src/modules/web/types/index.ts:30:3
+    30   id: number;
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:66:3 - error TS2741: Property 'id' is missing in type '{ id_alert: number; message: string; type: "success"; status: "active"; link_url: string; link_text: string; start_date: string; end_date: string; priority: number; created_by: number; created_date: string; }' but required in type 'Alert'.
+
+ 66   {
+      ~
+ 67     id_alert: 1,
+    ~~~~~~~~~~~~~~~~
+...
+ 77     created_date: '2024-03-01',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 78   },
+    ~~~
+
+  src/modules/web/types/index.ts:52:3
+    52   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:79:3 - error TS2741: Property 'id' is missing in type '{ id_alert: number; message: string; type: "warning"; status: "active"; link_url: null; link_text: null; start_date: string; end_date: string; priority: number; created_by: number; created_date: string; }' but required in type 'Alert'.
+
+ 79   {
+      ~
+ 80     id_alert: 2,
+    ~~~~~~~~~~~~~~~~
+...
+ 90     created_date: '2024-03-14',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 91   },
+    ~~~
+
+  src/modules/web/types/index.ts:52:3
+    52   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:92:3 - error TS2741: Property 'id' is missing in type '{ id_alert: number; message: string; type: "info"; status: "inactive"; link_url: string; link_text: string; start_date: string; end_date: string; priority: number; created_by: number; created_date: string; }' but required in type 'Alert'.
+
+ 92   {
+      ~
+ 93     id_alert: 3,
+    ~~~~~~~~~~~~~~~~
+...
+103     created_date: '2024-02-20',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+104   },
+    ~~~
+
+  src/modules/web/types/index.ts:52:3
+    52   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:109:3 - error TS2741: Property 'id' is missing in type '{ id_announcement: number; title: string; content: string; image_url: string; display_type: "popup"; target_page: string; link_url: string; button_text: string; status: "active"; start_date: string; ... 4 more ...; created_date: string; }' but required in type 'Announcement'.
+
+109   {
+      ~
+110     id_announcement: 1,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+124     created_date: '2024-03-14',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+125   },
+    ~~~
+
+  src/modules/web/types/index.ts:69:3
+    69   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:126:3 - error TS2741: Property 'id' is missing in type '{ id_announcement: number; title: string; content: string; image_url: null; display_type: "banner"; target_page: string; link_url: string; button_text: string; status: "active"; start_date: string; ... 4 more ...; created_date: string; }' but required in type 'Announcement'.
+
+126   {
+      ~
+127     id_announcement: 2,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+...
+141     created_date: '2024-03-09',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+142   },
+    ~~~
+
+  src/modules/web/types/index.ts:69:3
+    69   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:147:3 - error TS2741: Property 'id' is missing in type '{ id_contact: number; full_name: string; email: string; phone: string; company: string; subject: string; message: string; form_type: "quote"; status: "pending"; priority: "high"; assigned_to: null; ... 7 more ...; utm_campaign: string; }' but required in type 'ContactForm'.
+
+147   {
+      ~
+148     id_contact: 1,
+    ~~~~~~~~~~~~~~~~~~
+...
+166     utm_campaign: 'empresas-2024',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+167   },
+    ~~~
+
+  src/modules/web/types/index.ts:89:3
+    89   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:168:3 - error TS2741: Property 'id' is missing in type '{ id_contact: number; full_name: string; email: string; phone: null; company: null; subject: string; message: string; form_type: "contact"; status: "in_progress"; priority: "medium"; assigned_to: number; ... 5 more ...; user_agent: string; }' but required in type 'ContactForm'.
+
+168   {
+      ~
+169     id_contact: 2,
+    ~~~~~~~~~~~~~~~~~~
+...
+185     user_agent: 'Mozilla/5.0...',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+186   },
+    ~~~
+
+  src/modules/web/types/index.ts:89:3
+    89   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:187:3 - error TS2741: Property 'id' is missing in type '{ id_contact: number; full_name: string; email: string; phone: string; company: string; subject: string; message: string; form_type: "partnership"; status: "pending"; priority: "urgent"; assigned_to: null; ... 4 more ...; user_agent: string; }' but required in type 'ContactForm'.
+
+187   {
+      ~
+188     id_contact: 3,
+    ~~~~~~~~~~~~~~~~~~
+...
+203     user_agent: 'Mozilla/5.0...',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+204   },
+    ~~~
+
+  src/modules/web/types/index.ts:89:3
+    89   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:205:3 - error TS2741: Property 'id' is missing in type '{ id_contact: number; full_name: string; email: string; phone: null; company: null; subject: string; message: string; form_type: "contact"; status: "spam"; priority: "low"; assigned_to: null; response: null; response_date: null; submission_date: string; ip_address: string; user_agent: string; }' but required in type 'ContactForm'.
+
+205   {
+      ~
+206     id_contact: 4,
+    ~~~~~~~~~~~~~~~~~~
+...
+221     user_agent: 'Bot...',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+222   },
+    ~~~
+
+  src/modules/web/types/index.ts:89:3
+    89   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/services/mockData.ts:227:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: string; }' but required in type 'ChatbotFAQ'.
+
+227   {
+      ~
+228     id_faq: 1,
+    ~~~~~~~~~~~~~~
+...
+236     updated_date: '2024-02-15',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+237   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/services/mockData.ts:238:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+238   {
+      ~
+239     id_faq: 2,
+    ~~~~~~~~~~~~~~
+...
+247     updated_date: null,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+248   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/services/mockData.ts:249:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: string; }' but required in type 'ChatbotFAQ'.
+
+249   {
+      ~
+250     id_faq: 3,
+    ~~~~~~~~~~~~~~
+...
+258     updated_date: '2024-03-01',
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+259   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/services/mockData.ts:260:3 - error TS2741: Property 'id' is missing in type '{ id_faq: number; question: string; answer: string; category: string; keywords: string[]; active: true; usage_count: number; created_date: string; updated_date: null; }' but required in type 'ChatbotFAQ'.
+
+260   {
+      ~
+261     id_faq: 4,
+    ~~~~~~~~~~~~~~
+...
+269     updated_date: null,
+    ~~~~~~~~~~~~~~~~~~~~~~~
+270   },
+    ~~~
+
+  src/modules/web/types/index.ts:146:3
+    146   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+          ~~
+    'id' is declared here.
+
+src/services/webService.ts:67:3 - error TS2741: Property 'id' is missing in type '{ id_contact: number; full_name: string; email: string; phone: string | null; company: string | null; subject: string; message: string; form_type: "contact" | "quote" | "support" | "partnership"; ... 7 more ...; user_agent: string; }' but required in type 'ContactForm'.
+
+67   return {
+     ~~~~~~
+
+  src/modules/web/types/index.ts:89:3
+    89   id: number; // Clave primaria - USAR ESTE PARA OPERACIONES
+         ~~
+    'id' is declared here.
+
+src/shared/utils/modules.ts:35:3 - error TS6133: 'faFolder' is declared but its value is never read.
+
+35   faFolder,
+     ~~~~~~~~
+
+
+Found 104 errors.
+
+PS C:\Users\anton\Desktop\PRODUCTO MIRKO\TechProc> 

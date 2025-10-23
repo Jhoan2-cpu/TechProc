@@ -97,7 +97,7 @@ const mockServers: Server[] = [
 // Datos mock - Licencias
 const mockLicenses: License[] = [
   {
-    id_license: 1,
+    id: 1,
     software_name: 'Microsoft Office 365 Business',
     license_key: 'XXXXX-XXXXX-XXXXX-XXXXX',
     license_type: 'suscripcion',
@@ -112,22 +112,22 @@ const mockLicenses: License[] = [
     notes: 'Renovación automática habilitada',
   },
   {
-    id_license: 2,
+    id: 2,
     software_name: 'Windows Server 2022 Datacenter',
     license_key: 'YYYYY-YYYYY-YYYYY-YYYYY',
     license_type: 'perpetua',
     provider: 'Microsoft',
     purchase_date: '2023-02-15',
-    expiration_date: null,
+    expiration_date: undefined,
     seats_total: 4,
     seats_used: 4,
     cost_annual: 0,
     status: 'active',
     responsible_id: 1,
-    notes: null,
+    notes: undefined,
   },
   {
-    id_license: 3,
+    id: 3,
     software_name: 'Adobe Creative Cloud',
     license_key: 'ZZZZZ-ZZZZZ-ZZZZZ-ZZZZZ',
     license_type: 'suscripcion',
@@ -142,7 +142,7 @@ const mockLicenses: License[] = [
     notes: 'Vence en 30 días - Programar renovación',
   },
   {
-    id_license: 4,
+    id: 4,
     software_name: 'Antivirus Enterprise',
     license_key: 'AAAAA-BBBBB-CCCCC-DDDDD',
     license_type: 'suscripcion',
@@ -376,7 +376,7 @@ const mockAlerts: InfrastructureAlert[] = [
 export const InfrastructureMainPage = () => {
   const location = useLocation();
   const [servers, setServers] = useState(mockServers);
-  const [licenses, setLicenses] = useState(mockLicenses);
+  const [licenses] = useState(mockLicenses);
   const [storage, setStorage] = useState(mockStorage);
   const [software, setSoftware] = useState(mockSoftware);
   const [alerts] = useState(mockAlerts);
@@ -398,7 +398,7 @@ export const InfrastructureMainPage = () => {
       case 'servers':
         return <ServersPage servers={servers} onUpdateServers={setServers} />;
       case 'licenses':
-        return <LicensesPage licenses={licenses} onUpdateLicenses={setLicenses} />;
+        return <LicensesPage />;
       case 'storage':
         return <StoragePage storage={storage} onUpdateStorage={setStorage} />;
       case 'software':

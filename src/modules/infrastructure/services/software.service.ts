@@ -1,42 +1,56 @@
 import {apiRequest} from '../../../services/api.config';
 
-import type{
+import type {
     Software,
     CreateSoftwareData,
-    UpdateSoftwareData,
-    ApiSoftware
-} from '../types/software.types';
+    UpdateSoftwareData
+} from '../types';
+
+// API Software interface (lo que devuelve la API)
+interface ApiSoftware {
+    id: number;
+    software_name: string;
+    version: string;
+    category: string;
+    vendor: string;
+    license_id: number | null;
+    installation_date: string;
+    last_update: string | null;
+    server_ids?: number[];
+    auto_update?: boolean;
+    support_until?: string | null;
+}
 
 // Tipos de respuesta según la API Laravel
-interface SoftwareListResponse{
+interface SoftwareListResponse {
     success: boolean;
-    data:ApiSoftware[];
+    data: ApiSoftware[];
 }
 
-interface SoftwareDetailResponse{
+interface SoftwareDetailResponse {
     success: boolean;
-    data:ApiSoftware;
+    data: ApiSoftware;
 }
 
-interface SoftwareCreateResponse{
+interface SoftwareCreateResponse {
     success: boolean;
     message: string;
     data: ApiSoftware;
 }
 
-interface SoftwareUpdateResponse{
+interface SoftwareUpdateResponse {
     success: boolean;
-    data:ApiSoftware;
+    data: ApiSoftware;
 }
 
-interface SoftwareDeleteResponse{
+interface SoftwareDeleteResponse {
     success: boolean;
     message: string;
 }
 
 // Mapeo de API -> modelo de frontend
 const mapApiSoftwareToSoftware = (apiSoftware: ApiSoftware): Software => ({
-    id: apiSoftware.id,
+    id_software: apiSoftware.id,
     software_name: apiSoftware.software_name,
     version: apiSoftware.version,
     category: apiSoftware.category,
@@ -44,6 +58,9 @@ const mapApiSoftwareToSoftware = (apiSoftware: ApiSoftware): Software => ({
     license_id: apiSoftware.license_id,
     installation_date: apiSoftware.installation_date,
     last_update: apiSoftware.last_update,
+    server_ids: apiSoftware.server_ids || [],
+    auto_update: apiSoftware.auto_update || false,
+    support_until: apiSoftware.support_until || null,
 });
 
 
@@ -55,7 +72,7 @@ export const SoftwareServices = {
             method: 'GET',
         });
         console.log('Cómo estamos traendo los softwares', res);
-        return res.map(mapApiSoftwareToSoftware);
+        return res.data.map(mapApiSoftwareToSoftware);
     },
 
     async getById(id: number): Promise<Software>{

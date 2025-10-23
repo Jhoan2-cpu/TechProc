@@ -2,7 +2,6 @@ import {useEffect, useState } from 'react';
 import type { License } from '../types';
 import { LicenseCard, LicenseDetailsModal, LicenseFormModal, DeleteLicenseModal, LicensesStats, LicensesHeader } from '../components';
 import { LicenseServices } from '../services/license.service';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 
 //interface LicensesPageProps {
   //licenses: License[];

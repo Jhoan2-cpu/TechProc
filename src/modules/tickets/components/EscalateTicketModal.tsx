@@ -30,7 +30,7 @@ interface EscalateTicketModalProps {
   ticket: Ticket | null;
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (ticketId: number, technicianId: number, reason: string, observations: string) => void;
 }
 
 export const EscalateTicketModal = ({
@@ -175,7 +175,7 @@ export const EscalateTicketModal = ({
       });
 
       // Éxito
-      onSuccess();
+      onSuccess(ticket.ticket_id, Number(technicianId), reason, observations);
       handleClose();
     } catch (err: any) {
       setError(err.message || 'Error al escalar el ticket');

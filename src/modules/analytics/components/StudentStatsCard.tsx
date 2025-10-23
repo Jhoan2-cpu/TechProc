@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser,
   faEnvelope,
-  faChartLine,
   faExclamationTriangle,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';

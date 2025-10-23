@@ -122,7 +122,7 @@ export interface CourseContent {
 // Categoría
 export interface Category {
   id: string;
-  category_id: number;
+  category_id: number | null;
   name: string;
   slug: string;
   image?: string;
@@ -373,16 +373,16 @@ export interface ApiInstructor {
 }
 
 
-// Categoría de la API
-export interface ApiCategory {
-  id: number;
-  category_id: number;
-  name: string;
-  slug: string;
-  image?: string;
-  courses_count: number;
-  created_at: string;
-}
+// Categoría de la API (primera definición - comentada porque se duplica más adelante)
+// export interface ApiCategory {
+//   id: number;
+//   category_id: number;
+//   name: string;
+//   slug: string;
+//   image?: string;
+//   courses_count: number;
+//   created_at: string;
+// }
 
 // Sub-objetos de la API
 export interface ApiContent {
@@ -646,17 +646,6 @@ export interface UpdateCompanyData {
 // CATEGORÍAS
 // -------------------------------------------------------------------
 
-// Categoría del frontend
-export interface Category {
-  id: string;
-  category_id: number | null;
-  name: string;
-  slug: string;
-  image: string;
-  courses_count: number;
-  created_at: string;
-}
-
 // Categoría de la API
 export interface ApiCategory {
   id: number;
@@ -716,6 +705,30 @@ export interface UpdateCategoryData {
   slug?: string;
   image?: string;
   category_id?: number | null;
+}
+
+// -------------------------------------------------------------------
+// ENROLLMENTS (INSCRIPCIONES)
+// -------------------------------------------------------------------
+
+// Enrollment básico
+export interface Enrollment {
+  id: number;
+  student_id: number;
+  course_id: number;
+  status: 'active' | 'completed' | 'cancelled';
+  enrolled_at: string;
+  completed_at?: string | null;
+  progress_percent?: number;
+}
+
+// Enrollment reciente para dashboard
+export interface RecentEnrollment {
+  id: number;
+  student_name: string;
+  student_email: string;
+  course_title: string;
+  enrolled_at: string;
 }
 
 // -------------------------------------------------------------------

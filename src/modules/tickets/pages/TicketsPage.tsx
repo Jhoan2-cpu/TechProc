@@ -403,7 +403,7 @@ export const TicketsPage = () => {
         ticket={ticketToEscalate}
         isOpen={!!ticketToEscalate}
         onClose={() => setTicketToEscalate(null)}
-        onEscalate={handleEscalateConfirm}
+        onSuccess={handleEscalateConfirm}
       />
 
       <TakeTicketModal

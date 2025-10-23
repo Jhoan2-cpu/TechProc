@@ -7,6 +7,7 @@ export type ResourceStatus = 'available' | 'in_use' | 'maintenance' | 'retired';
 
 
 export * from './license.types';
+export * from './software.types';
 // Interfaces - Servidores
 export interface Server {
   id_server: number;

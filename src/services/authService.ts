@@ -7,7 +7,6 @@ import type {
   RegisterData,
   RegisterResponse,
   RefreshTokenResponse,
-  SessionData,
 } from '../shared/types/auth';
 
 export const authService = {

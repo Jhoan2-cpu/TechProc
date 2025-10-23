@@ -146,9 +146,8 @@ export const CoursesPage = () => {
               key={course.id}
               course={course}
               index={index}
-              onView={(course) => setSelectedCourse(course)}
-              onEdit={(course) => setCourseToEdit(course)}
-              onDelete={(course) => setCourseToDelete(course)}
+              onView={(course: Course) => setSelectedCourse(course)}
+              onDelete={(course: Course) => setCourseToDelete(course)}
             />
           ))}
         </div>

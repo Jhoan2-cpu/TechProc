@@ -73,7 +73,7 @@ export const LicenseFormModal = ({ isOpen, license, onSave, onCancel }: LicenseF
       license_type: formData.licenseType,
       provider: formData.provider,
       purchase_date: new Date(formData.purchaseDate).toISOString(),
-      expiration_date: formData.expirationDate ? new Date(formData.expirationDate).toISOString() : null,
+      expiration_date: formData.expirationDate ? new Date(formData.expirationDate).toISOString() : undefined,
       seats_total: formData.seatsTotal,
       seats_used: formData.seatsUsed,
       cost_annual: formData.costAnnual,

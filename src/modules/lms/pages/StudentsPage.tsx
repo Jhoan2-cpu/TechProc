@@ -5,10 +5,6 @@ import {
   faEdit,
   faTrash,
   faEnvelope,
-  faMapMarkerAlt,
-  faCalendar,
-  faCheckCircle,
-  faTimesCircle,
   faPhone,
   faBuilding,
 } from '@fortawesome/free-solid-svg-icons';
@@ -125,8 +121,8 @@ export const StudentsPage = () => {
     // Filtrar por curso: verificar si el estudiante está inscrito en el curso seleccionado
     const matchesCourse = filterCourse === 'all' ||
       enrollments.some(enrollment =>
-        enrollment.student_id === student.id &&
-        enrollment.course_id === filterCourse
+        enrollment.student_id === Number(student.id) &&
+        enrollment.course_id === Number(filterCourse)
       );
 
     return matchesSearch && matchesState && matchesCourse;

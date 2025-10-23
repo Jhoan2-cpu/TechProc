@@ -9,11 +9,9 @@ import {
   faFileAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import type { LMSStats, RecentCourse } from '../types';
-import { LMSStatsCard, RecentCourseCard } from '../components';
+import { RecentCourseCard } from '../components';
 import {
   lmsService,
-  coursesService,
-  studentsService,
   instructorsService,
   companiesService,
   courseContentsService,
@@ -43,14 +41,12 @@ export const LMSPage = () => {
           instructorsData,
           companiesData,
           periodsData,
-          allCourses,
         ] = await Promise.all([
           lmsService.getStats(),
           lmsService.getRecentCourses(),
           instructorsService.getAll({ limit: 5 }).catch(() => ({ instructors: [], pagination: null })),
           companiesService.getAll({ limit: 5 }).catch(() => ({ companies: [], pagination: null })),
           academicPeriodsService.getAll().catch(() => []),
-          coursesService.getAll().catch(() => ({ courses: [], pagination: null })),
         ]);
 
         setStats(statsData);

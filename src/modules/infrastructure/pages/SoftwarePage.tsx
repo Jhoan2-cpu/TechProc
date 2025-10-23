@@ -18,7 +18,7 @@ export const SoftwarePage = ({ software, onUpdateSoftware }: SoftwarePageProps) 
   const [softwareToEdit, setSoftwareToEdit] = useState<Software | null>(null);
   const [softwareToDelete, setSoftwareToDelete] = useState<Software | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [softwares, setSoftwares]= useState<Software[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -122,7 +122,7 @@ export const SoftwarePage = ({ software, onUpdateSoftware }: SoftwarePageProps) 
               {softwares.length > 0 ? (
                 softwares.map((software:Software, index: number) => (
                   <SoftwareCard
-                    key={software.id}
+                    key={software.id_software}
                     software={software}
                     formatDate={formatDate}
                     index={index}

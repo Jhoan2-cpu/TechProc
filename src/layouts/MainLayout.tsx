@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { ProfilePage } from "../pages/ProfilePage";
 import { NotFoundPage } from "../pages/NotFoundPage";

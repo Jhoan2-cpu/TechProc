@@ -22,7 +22,6 @@ export const CourseCard = ({
   course,
   index = 0,
   onView,
-  onEdit,
   onDelete,
 }: CourseCardProps) => {
   const getStatusBadge = (status: string) => {

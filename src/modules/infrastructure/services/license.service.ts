@@ -11,49 +11,47 @@ import type{
 
 
 // Tipos de respuesta según la API Laravel
-interface LicenseListResponse{
-    map(mapApiLicenseToLicense: (apiLicense: ApiLicense) => License): License[] | PromiseLike<License[]>;
+interface LicenseListResponse {
     success: boolean;
     data: ApiLicense[];
 }
 
-interface LicenseDetailResponse{
+interface LicenseDetailResponse {
     success: boolean;
-    data:ApiLicense;
+    data: ApiLicense;
 }
 
-interface LicenseCreateResponse{
+interface LicenseCreateResponse {
     success: boolean;
     message: string;
     data: ApiLicense;
 }
 
-interface LicenseUpdateResponse{
-    map(mapApiLicenseToLicense: (apiLicense: ApiLicense) => License): License [] | PromiseLike<License[]>;
+interface LicenseUpdateResponse {
     success: boolean;
     data: ApiLicense;
 }
 
-interface LicenseDeleteResponse{
+interface LicenseDeleteResponse {
     success: boolean;
     message: string;
 }
 
 // Mapeo de API -> modelo de frontend
-const mapApiLicenseToLicense =(apiLicense: License) => ({
+const mapApiLicenseToLicense = (apiLicense: ApiLicense): License => ({
     id: apiLicense.id,
     software_name: apiLicense.software_name,
     license_key: apiLicense.license_key,
     license_type: apiLicense.license_type as LicenseType,
     provider: apiLicense.provider,
     purchase_date: apiLicense.purchase_date,
-    expiration_date: apiLicense.expiration_date || null,
-    seats_total:apiLicense.seats_total,
+    expiration_date: apiLicense.expiration_date || undefined,
+    seats_total: apiLicense.seats_total,
     seats_used: apiLicense.seats_used,
     cost_annual: apiLicense.cost_annual,
     status: apiLicense.status as LicenseStatus,
-    responsible_id: apiLicense.responsible_id || 0,
-    notes: apiLicense.notes,
+    responsible_id: apiLicense.responsible_id || undefined,
+    notes: apiLicense.notes || undefined,
     //createdAt: apiLicense.created_at,
     //updatedAt: apiLicense.updated_at,
 });
@@ -67,8 +65,7 @@ export const LicenseServices = {
             method: 'GET',
         });
         console.log("Lista de licencias: ", res);
-        return res.map(mapApiLicenseToLicense)
-        
+        return res.data.map(mapApiLicenseToLicense);
     },
 
     async getById(id: number): Promise<License>{
@@ -91,10 +88,10 @@ export const LicenseServices = {
         const res = await apiRequest<LicenseUpdateResponse>(`${BASE_ENDPOINT}/${id}`, {
             method : 'PUT',
             body: JSON.stringify(data),
-            
+
         });
         console.log('Cómo enviamos al actualizar', res);
-        return mapApiLicenseToLicense(res);
+        return mapApiLicenseToLicense(res.data);
     },
 
     async delete(id: number): Promise<boolean>{

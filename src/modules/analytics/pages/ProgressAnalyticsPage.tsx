@@ -55,40 +55,6 @@ export const ProgressAnalyticsPage = () => {
     }
   };
 
-  const getProgressLevelColor = (level: ProgressLevelType) => {
-    switch (level) {
-      case 'excellent':
-        return 'text-green-400';
-      case 'good':
-        return 'text-blue-400';
-      case 'regular':
-        return 'text-yellow-400';
-      case 'poor':
-        return 'text-orange-400';
-      case 'very_poor':
-        return 'text-red-400';
-      default:
-        return 'text-gray-400';
-    }
-  };
-
-  const getProgressLevelLabel = (level: ProgressLevelType) => {
-    switch (level) {
-      case 'excellent':
-        return 'Excelente';
-      case 'good':
-        return 'Bueno';
-      case 'regular':
-        return 'Regular';
-      case 'poor':
-        return 'Bajo';
-      case 'very_poor':
-        return 'Muy Bajo';
-      default:
-        return 'N/A';
-    }
-  };
-
   const filteredStudents = students.filter((student) => {
     const matchesCourse = filterCourse === 'all' || student.course_id === filterCourse;
     const matchesProgress = filterProgress === 'all' || student.progress_level === filterProgress;

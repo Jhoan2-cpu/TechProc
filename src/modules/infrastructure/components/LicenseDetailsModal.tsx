@@ -41,7 +41,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
     }
   };
 
-  const seatsPercentage = (license.seatsUsed / license.seatsTotal) * 100;
+  const seatsPercentage = ((license.seats_used || 0) / (license.seats_total || 1)) * 100;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in p-4">
@@ -53,7 +53,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
             </div>
             <div>
               <h3 className="text-2xl font-heading font-bold text-white">
-                {license.softwareName}
+                {license.software_name}
               </h3>
               <p className="text-sm text-gray-400">{license.provider}</p>
             </div>
@@ -70,8 +70,8 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
           {/* Estado */}
           <div className="card p-4 text-center">
             <p className="text-sm text-gray-400 mb-2">Estado de la Licencia</p>
-            <span className={`px-6 py-3 rounded-full text-lg font-bold inline-block ${getLicenseStatusColor(license.status)}`}>
-              {getStatusText(license.status)}
+            <span className={`px-6 py-3 rounded-full text-lg font-bold inline-block ${getLicenseStatusColor(license.status || 'active')}`}>
+              {getStatusText(license.status || 'active')}
             </span>
           </div>
 
@@ -84,7 +84,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-secondary-600/50 rounded-lg p-4">
                 <p className="text-xs text-gray-400 mb-1">Tipo de Licencia</p>
-                <p className="text-lg font-bold text-white">{getLicenseTypeText(license.licenseType)}</p>
+                <p className="text-lg font-bold text-white">{getLicenseTypeText(license.license_type || '')}</p>
               </div>
               <div className="bg-secondary-600/50 rounded-lg p-4">
                 <p className="text-xs text-gray-400 mb-1">Proveedor</p>
@@ -101,7 +101,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
             </h4>
             <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-lg p-4 border-2 border-blue-200">
               <p className="font-mono text-lg text-center text-white select-all">
-                {license.licenseKey}
+                {license.license_key}
               </p>
             </div>
             <p className="text-xs text-gray-400 text-center mt-2">
@@ -119,7 +119,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
               <div className="flex justify-between items-center">
                 <span className="text-gray-300">Licencias en Uso</span>
                 <span className="text-2xl font-bold text-white">
-                  {license.seatsUsed} / {license.seatsTotal}
+                  {license.seats_used || 0} / {license.seats_total || 0}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-6">
@@ -137,7 +137,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
                 </div>
               </div>
               <p className="text-sm text-gray-400">
-                {license.seatsTotal - license.seatsUsed} licencias disponibles
+                {(license.seats_total || 0) - (license.seats_used || 0)} licencias disponibles
               </p>
             </div>
           </div>
@@ -151,11 +151,11 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Fecha de Compra</p>
-                <p className="font-bold text-white">{formatDate(license.purchaseDate)}</p>
+                <p className="font-bold text-white">{formatDate(license.purchase_date || null)}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-400 mb-1">Fecha de Vencimiento</p>
-                <p className="font-bold text-white">{formatDate(license.expirationDate)}</p>
+                <p className="font-bold text-white">{formatDate(license.expiration_date || null)}</p>
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@ export const LicenseDetailsModal = ({ isOpen, license, onClose, formatDate }: Li
             <div className="bg-secondary-600/50 rounded-lg p-4">
               <p className="text-sm text-gray-400 mb-1">Costo Anual</p>
               <p className="text-3xl font-bold text-white">
-                S/ {license.costAnnual.toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                S/ {(license.cost_annual || 0).toLocaleString('es-PE', { minimumFractionDigits: 2 })}
               </p>
             </div>
           </div>
