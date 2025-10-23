@@ -143,13 +143,20 @@ export const LicensesPage = () => {
   };
 
   const handleConfirmDelete = async () => { //falta codear;
-    if (licenseToDelete) {
+    try{
+      setLoading(true);
+      if (licenseToDelete) {
       await LicenseServices.delete(licenseToDelete.id);
       await fetchLicenses();
-      setLicenses(licenses.filter(l => l.id !== licenseToDelete.id));
       setShowDeleteModal(false);
       setLicenseToDelete(null);
+      }
+    } catch(e: unknown){
+      console.error('Error al eliminar licencia', e);
+    } finally {
+      setLoading(false);
     }
+
   };
 
   // Estadísticas
@@ -222,7 +229,7 @@ export const LicensesPage = () => {
         }}
       />
 
-      <DeleteLicenseModal
+      {showDeleteModal && ( <DeleteLicenseModal
         isOpen={showDeleteModal}
         license={licenseToDelete}
         onConfirm={handleConfirmDelete}
@@ -230,7 +237,7 @@ export const LicensesPage = () => {
           setShowDeleteModal(false);
           setLicenseToDelete(null);
         }}
-      />
+      />)}
     </div>
   );
 };
