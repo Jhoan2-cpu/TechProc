@@ -33,6 +33,12 @@ import {
   faChalkboardTeacher,
   faBuilding,
   faFolder,
+  faUser,
+  faChalkboard,
+  faClipboardCheck,
+  faChartBar,
+  faDollarSign,
+  faFileInvoiceDollar,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const modules = [
@@ -113,10 +119,13 @@ export const modules = [
       icon: faChartLine,
       submodules: [
         { id: 'analytics-dashboard', name: 'Dashboard', icon: faChartLine },
-        { id: 'analytics-attendance', name: 'Asistencia', icon: faUserCheck },
-        { id: 'analytics-progress', name: 'Progreso', icon: faTasks },
-        { id: 'analytics-performance', name: 'Rendimiento', icon: faTrophy },
-        { id: 'analytics-dropout', name: 'Riesgo Deserción', icon: faExclamationTriangle },
+        { id: 'analytics-students', name: 'Estudiante', icon: faUser },
+        { id: 'analytics-courses', name: 'Cursos', icon: faChalkboard },
+        { id: 'analytics-attendance', name: 'Asistencia', icon: faClipboardCheck },
+        { id: 'analytics-grades', name: 'Calificaciones', icon: faChartBar },
+        { id: 'analytics-financial', name: 'Financiera', icon: faDollarSign },
+        { id: 'analytics-tickets', name: 'Tickets', icon: faTicket },
+        { id: 'analytics-security', name: 'Seguridad', icon: faLock },
         { id: 'analytics-reports', name: 'Reportes', icon: faFileAlt },
       ],
     },

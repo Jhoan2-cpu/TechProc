@@ -1,8 +1,8 @@
 export { AnalyticsPage } from './AnalyticsPage';
 export { AnalyticsMainPage } from './AnalyticsMainPage';
-export { AnalyticsDashboardPage } from './AnalyticsDashboardPage';
+export { DashboardPage } from './DashboardPage';
 export { AttendancePage } from './AttendancePage';
-export { ProgressPage } from './ProgressPage';
-export { PerformancePage } from './PerformancePage';
-export { DropoutPage } from './DropoutPage';
 export { ReportsPage } from './ReportsPage';
+export { StudentsPage } from './StudentsPage';
+export { GradesPage } from './GradesPage';
+export { FinancialPage } from './FinancialPage';

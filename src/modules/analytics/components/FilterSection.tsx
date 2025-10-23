@@ -34,26 +34,6 @@ export const FilterSection = ({
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </div>
-        <select
-          className="select min-w-[200px]"
-          value={selectedCourse}
-          onChange={(e) => onCourseChange(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-        >
-          <option value="all">Todos los cursos</option>
-          {courses.map(course => (
-            <option key={course.course_id} value={course.course_id}>
-              {course.course_name}
-            </option>
-          ))}
-        </select>
-        {hasFilters && (
-          <button
-            onClick={onClearFilters}
-            className="btn bg-primary-800 hover:bg-secondary-300 text-white"
-          >
-            Limpiar filtros
-          </button>
-        )}
       </div>
     </div>
   );

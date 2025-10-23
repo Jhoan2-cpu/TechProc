@@ -32,11 +32,13 @@ import {
   faBullhorn,
   faEnvelope,
   faRobot,
-  faUserCheck,
-  faTasks,
-  faTrophy,
   faFileAlt,
   faUserCircle,
+  faUser,
+  faChalkboard,
+  faClipboardCheck,
+  faChartBar,
+  faDollarSign,
 } from '@fortawesome/free-solid-svg-icons';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
@@ -100,10 +102,13 @@ const routeMap: Record<string, { label: string; icon: IconDefinition; parent?: s
 
   // Analítica
   '/analytics-dashboard': { label: 'Dashboard', icon: faChartLine, parent: '/analytics' },
-  '/analytics-attendance': { label: 'Asistencia', icon: faUserCheck, parent: '/analytics' },
-  '/analytics-progress': { label: 'Progreso', icon: faTasks, parent: '/analytics' },
-  '/analytics-performance': { label: 'Rendimiento', icon: faTrophy, parent: '/analytics' },
-  '/analytics-dropout': { label: 'Riesgo Deserción', icon: faExclamationTriangle, parent: '/analytics' },
+  '/analytics-students': { label: 'Estudiante', icon: faUser, parent: '/analytics' },
+  '/analytics-courses': { label: 'Cursos', icon: faChalkboard, parent: '/analytics' },
+  '/analytics-attendance': { label: 'Asistencia', icon: faClipboardCheck, parent: '/analytics' },
+  '/analytics-grades': { label: 'Calificaciones', icon: faChartBar, parent: '/analytics' },
+  '/analytics-financial': { label: 'Financiera', icon: faDollarSign, parent: '/analytics' },
+  '/analytics-tickets': { label: 'Tickets', icon: faTicket, parent: '/analytics' },
+  '/analytics-security': { label: 'Seguridad', icon: faLock, parent: '/analytics' },
   '/analytics-reports': { label: 'Reportes', icon: faFileAlt, parent: '/analytics' },
   '/analytics': { label: 'Analítica', icon: faChartLine },
 };

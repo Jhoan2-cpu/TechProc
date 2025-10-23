@@ -1,17 +1,17 @@
 // Tipos de usuario del sistema según especificación BACKEND_API_SPECIFICATION.md
 
 export type UserRole =
-  | 'admin'           // Acceso total
-  | 'lms'             // Solo LMS
-  | 'support'        // Tickets solamente
-  | 'soporte_seguridad'      // Tickets + Security
-  | 'soporte_infraestructura'// Tickets + Infrastructure
-  | 'developer_web'          // Web + Tickets
-  | 'analista_datos'        // Solo Analytics
-  | 'seg'             // Tickets + Security (cambiado de 'soporte_seguridad')
-  | 'infra'           // Tickets + Infrastructure (cambiado de 'soporte_infraestructura')  
-  | 'web'             // Web + Tickets
-  | 'data';           // Solo Analytics (cambiado de 'analista_datos')
+  | 'admin'
+  | 'lms'
+  | 'support'        // Añadido para coincidir con MODULE_ACCESS
+  | 'soporte_seguridad'
+  | 'soporte_infraestructura'
+  | 'developer_web'
+  | 'analista_datos'
+  | 'seg'
+  | 'infra'
+  | 'web'
+  | 'data';
 
 // Interfaz User según schema de la especificación
 export interface User {
@@ -105,10 +105,13 @@ export interface RefreshTokenResponse {
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
   admin: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
   lms: ['lms'],
-  support: ['support'],
+  support: ['tickets'], // Cambiado de 'support' a 'tickets'
   soporte_seguridad: ['tickets', 'security'],
   soporte_infraestructura: ['tickets', 'infrastructure'],
   developer_web: ['tickets', 'web'],
   web: ['tickets', 'web'],
   analista_datos: ['analytics'],
+  seg: ['tickets', 'security'],
+  infra: ['tickets', 'infrastructure'],
+  data: ['analytics'],
 };

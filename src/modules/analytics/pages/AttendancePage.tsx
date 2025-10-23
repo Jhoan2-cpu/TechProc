@@ -1,24 +1,25 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
-import type { StudentAttendance, CourseAnalytics } from '../types';
+import type { AttendanceFilters } from '../types';
 import { FilterSection, AttendanceCard } from '../components';
+import { useAttendance } from '../hooks/useAttendance';
 
-interface AttendancePageProps {
-  attendance: StudentAttendance[];
-  courses: CourseAnalytics[];
-  onExportCSV: (data: any[], filename: string) => void;
-}
-
-export const AttendancePage = ({
-  attendance,
-  courses,
-  onExportCSV,
-}: AttendancePageProps) => {
+export const AttendancePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState<number | 'all'>('all');
+  const [filters, setFilters] = useState<AttendanceFilters>({});
 
-  // Filtrar datos de asistencia por curso y término de búsqueda
+  const {
+    attendance,
+    courses,
+    loading,
+    error,
+    refreshData,
+    exportToCSV
+  } = useAttendance(filters);
+
+  // Aplicar filtros locales (búsqueda y curso)
   const filteredAttendance = attendance.filter(att => {
     const matchesCourse = selectedCourse === 'all' || att.course_id === selectedCourse;
     const matchesSearch = searchTerm === '' ||
@@ -27,6 +28,34 @@ export const AttendancePage = ({
     return matchesCourse && matchesSearch;
   });
 
+  // Manejar cambios en los filtros avanzados
+  const handleFilterChange = (newFilters: AttendanceFilters) => {
+    setFilters(newFilters);
+    refreshData(newFilters);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-white">Cargando datos de asistencia...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-500/20 border border-red-500 rounded-xl p-6 text-center">
+        <p className="text-red-300">{error}</p>
+        <button 
+          onClick={() => refreshData(filters)}
+          className="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+        >
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -34,7 +63,7 @@ export const AttendancePage = ({
           Análisis de Asistencia
         </h2>
         <button
-          onClick={() => onExportCSV(filteredAttendance, 'asistencia')}
+          onClick={() => exportToCSV(filters)}
           className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
         >
           <FontAwesomeIcon icon={faFileCsv} />
@@ -52,6 +81,8 @@ export const AttendancePage = ({
         onClearFilters={() => {
           setSearchTerm('');
           setSelectedCourse('all');
+          setFilters({});
+          refreshData({});
         }}
       />
 

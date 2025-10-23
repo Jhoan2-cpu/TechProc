@@ -1,10 +1,52 @@
 // Enums
 export type RiskLevel = 'bajo' | 'medio' | 'alto' | 'crítico';
-export type ReportType = 'asistencia' | 'rendimiento' | 'progreso' | 'desercion' | 'general';
-export type ReportFormat = 'pdf' | 'excel' | 'csv';
+export type ReportType = 'students' | 'courses' | 'attendance' | 'grades' | 'financial' | 'tickets' | 'security' | 'dashboard';
+export type ReportFormat = 'pdf' | 'excel';
 export type AttendanceStatus = 'presente' | 'ausente' | 'tardanza' | 'justificado';
 
-// Interfaces - Asistencia de Estudiantes
+// Interfaces - Reportes Generados
+export interface Report {
+  id: number;
+  report_type: ReportType;
+  report_type_name: string;
+  format: ReportFormat;
+  file_name: string;
+  report_title: string;
+  description: string;
+  file_size: string;
+  record_count: number;
+  filters: ReportFilters;
+  generated_by: number;
+  generated_by_name: string;
+  download_url: string;
+  created_at: string;
+  expires_at?: string;
+  is_expired: boolean;
+  icon: string;
+}
+
+// Interfaces - Parámetros de Reporte
+export interface ReportFormData {
+  report_type: ReportType;
+  format: ReportFormat;
+  start_date: string;
+  end_date: string;
+  include_charts: boolean;
+  include_raw_data: boolean;
+  report_title?: string;
+  filters?: ReportFilters;
+}
+
+export interface ReportFilters {
+  start_date?: string;
+  end_date?: string;
+  company_id?: number;
+  academic_period_id?: number;
+  status?: string;
+  [key: string]: any;
+}
+
+// Mantener las interfaces existentes que no han cambiado
 export interface StudentAttendance {
   student_id: number;
   student_name: string;
@@ -19,7 +61,6 @@ export interface StudentAttendance {
   last_attendance_date: string | null;
 }
 
-// Interfaces - Progreso Académico
 export interface StudentProgress {
   student_id: number;
   student_name: string;
@@ -29,12 +70,11 @@ export interface StudentProgress {
   completed_modules: number;
   current_module: number;
   progress_percentage: number;
-  average_time_per_module: number; // en horas
+  average_time_per_module: number;
   estimated_completion_date: string;
   enrollment_date: string;
 }
 
-// Interfaces - Rendimiento Académico
 export interface StudentPerformance {
   student_id: number;
   student_name: string;
@@ -42,15 +82,14 @@ export interface StudentPerformance {
   course_name: string;
   total_assessments: number;
   completed_assessments: number;
-  average_score: number; // 0-100
+  average_score: number;
   highest_score: number;
   lowest_score: number;
-  passing_rate: number; // porcentaje de evaluaciones aprobadas
+  passing_rate: number;
   last_assessment_date: string | null;
-  grade: string; // A, B, C, D, F
+  grade: string;
 }
 
-// Interfaces - Predicción de Deserción
 export interface DropoutPrediction {
   student_id: number;
   student_name: string;
@@ -58,7 +97,7 @@ export interface DropoutPrediction {
   course_id: number;
   course_name: string;
   risk_level: RiskLevel;
-  risk_score: number; // 0-100
+  risk_score: number;
   factors: DropoutFactor[];
   last_login: string;
   days_inactive: number;
@@ -66,7 +105,6 @@ export interface DropoutPrediction {
   prediction_date: string;
 }
 
-// Interfaces - Factores de Riesgo
 export interface DropoutFactor {
   factor_name: string;
   impact: 'bajo' | 'medio' | 'alto';
@@ -74,32 +112,6 @@ export interface DropoutFactor {
   description: string;
 }
 
-// Interfaces - Reportes Generados
-export interface Report {
-  id_report: number;
-  report_name: string;
-  report_type: ReportType;
-  description: string;
-  format: ReportFormat;
-  generated_by: number;
-  generated_by_name?: string;
-  generation_date: string;
-  file_path: string;
-  file_size_kb: number;
-  parameters: ReportParameters;
-}
-
-// Interfaces - Parámetros de Reporte
-export interface ReportParameters {
-  date_from?: string;
-  date_to?: string;
-  course_ids?: number[];
-  student_ids?: number[];
-  include_charts?: boolean;
-  include_raw_data?: boolean;
-}
-
-// Interfaces - Estadísticas Generales del Dashboard
 export interface AnalyticsDashboard {
   total_students: number;
   active_students: number;
@@ -111,7 +123,6 @@ export interface AnalyticsDashboard {
   completion_rate: number;
 }
 
-// Interfaces - Análisis por Curso
 export interface CourseAnalytics {
   course_id: number;
   course_name: string;
@@ -125,12 +136,13 @@ export interface CourseAnalytics {
   at_risk_count: number;
 }
 
-// Interfaces - Métricas de Tiempo
 export interface TimeMetrics {
   date: string;
   active_users: number;
   new_enrollments: number;
   completions: number;
   dropouts: number;
-  average_session_time: number; // minutos
+  average_session_time: number;
 }
+
+export * from '../../analytics/types/attendance';

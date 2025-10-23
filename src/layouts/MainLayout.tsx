@@ -54,9 +54,8 @@ export default function Layout({
       {/* Toggle Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className={`fixed top-4 z-50 bg-gradient-to-r from-primary-500 to-primary-600 text-white p-3 rounded-r-full shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-110 transition-all duration-300 ${
-          isSidebarOpen ? "left-[276px]" : "left-4"
-        }`}
+        className={`fixed top-4 z-50 bg-gradient-to-r from-primary-500 to-primary-600 text-white p-3 rounded-r-full shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-110 transition-all duration-300 ${isSidebarOpen ? "left-[276px]" : "left-4"
+          }`}
         aria-label={isSidebarOpen ? "Ocultar sidebar" : "Mostrar sidebar"}
       >
         <FontAwesomeIcon
@@ -67,14 +66,12 @@ export default function Layout({
 
       {/* Sidebar */}
       <aside
-        className={`bg-gradient-to-b from-secondary-500 to-secondary-700 shadow-2xl border-r border-primary-500/30 flex flex-col h-screen sticky top-0 transition-all duration-300 ${
-          isSidebarOpen ? "w-72" : "w-0 -translate-x-full"
-        }`}
+        className={`bg-gradient-to-b from-secondary-500 to-secondary-700 shadow-2xl border-r border-primary-500/30 flex flex-col h-screen sticky top-0 transition-all duration-300 ${isSidebarOpen ? "w-72" : "w-0 -translate-x-full"
+          }`}
       >
         <div
-          className={`${
-            isSidebarOpen ? "opacity-100" : "opacity-0"
-          } transition-opacity duration-300 flex flex-col h-full`}
+          className={`${isSidebarOpen ? "opacity-100" : "opacity-0"
+            } transition-opacity duration-300 flex flex-col h-full`}
         >
           {/* Logo */}
           <div className="p-6 border-b border-primary-500/20 flex-shrink-0">
@@ -122,11 +119,10 @@ export default function Layout({
             {/* Profile Button */}
             <button
               onClick={() => handleModuleChange("profile")}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                currentPath === "profile"
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentPath === "profile"
                   ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-105"
                   : "text-gray-300 hover:bg-gradient-to-r hover:from-secondary-600 hover:to-secondary-700 hover:text-white hover:shadow-lg hover:scale-105 border border-gray-700/30 hover:border-primary-500/50"
-              }`}
+                }`}
             >
               <FontAwesomeIcon icon={faUserCircle} className="text-lg" />
               <span className="font-medium">Mi Perfil</span>
@@ -155,7 +151,7 @@ export default function Layout({
           }}
         />
       )}
-      
+
       {/* Main Content */}
       <main className="flex-1 overflow-auto h-screen bg-gradient-to-br from-dark-600/50 to-smoky-600/50 backdrop-blur-sm">
         <div className="p-12">
@@ -197,10 +193,13 @@ export default function Layout({
             <Route path="/web-contacts" element={<WebPage />} />
             <Route path="/web-chatbot" element={<WebPage />} />
             <Route path="/analytics-dashboard" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-students" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-courses" element={<AnalyticsMainPage />} />
             <Route path="/analytics-attendance" element={<AnalyticsMainPage />} />
-            <Route path="/analytics-progress" element={<AnalyticsMainPage />} />
-            <Route path="/analytics-performance" element={<AnalyticsMainPage />} />
-            <Route path="/analytics-dropout" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-grades" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-financial" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-tickets" element={<AnalyticsMainPage />} />
+            <Route path="/analytics-security" element={<AnalyticsMainPage />} />
             <Route path="/analytics-reports" element={<AnalyticsMainPage />} />
 
             {/* 404 - Not Found */}

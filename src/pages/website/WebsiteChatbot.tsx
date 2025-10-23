@@ -5,33 +5,42 @@ import {
   faTimes,
   faPaperPlane,
   faUser,
-  faChevronDown
+  faChevronDown,
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons';
-import type { ChatbotFAQ } from '../../modules/web/types';
+import {
+  startConversation,
+  sendMessage,
+  endConversation,
+  getAllActiveFaqs,
+  validateMessage,
+  type ConversationFeedback
+} from '../../services/chatbotService';
 
-interface WebsiteChatbotProps {
-  faqs: ChatbotFAQ[];
-}
+// ELIMINAR: No necesitamos la prop faqs ya que siempre cargamos desde el backend
+interface WebsiteChatbotProps {} // ← Vacío, sin prop faqs
 
 interface Message {
   id: number;
   sender: 'user' | 'bot';
   message: string;
   timestamp: Date;
+  source?: 'faq' | 'gemini' | 'fallback';
 }
 
-export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
+// ELIMINAR: No recibir faqs como prop
+export const WebsiteChatbot = ({}: WebsiteChatbotProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      sender: 'bot',
-      message: '¡Hola! Soy el asistente virtual de INCADEV. ¿En qué puedo ayudarte hoy?',
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // ELIMINAR: Estado para FAQs locales, ahora solo usamos los de la BD
+  const [faqs, setFaqs] = useState<ChatbotFAQ[]>([]); // ← Siempre vacío inicial, se carga desde BD
+  
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -42,29 +51,73 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
     scrollToBottom();
   }, [messages]);
 
-  const findBestMatch = (userMessage: string): ChatbotFAQ | null => {
-    const normalizedMessage = userMessage.toLowerCase();
-
-    // Buscar coincidencia exacta en preguntas
-    let bestMatch = faqs.find(faq =>
-      faq.active && faq.question.toLowerCase().includes(normalizedMessage)
-    );
-
-    // Si no hay coincidencia, buscar en keywords
-    if (!bestMatch) {
-      bestMatch = faqs.find(faq =>
-        faq.active && faq.keywords.some(keyword =>
-          normalizedMessage.includes(keyword.toLowerCase())
-        )
-      );
+  // Cargar FAQs SOLO desde el backend cuando se abre el chat
+  useEffect(() => {
+    if (isOpen) {
+      loadFaqs();
     }
+  }, [isOpen]); // ← Solo cuando se abre el chat
 
-    return bestMatch || null;
+  // Iniciar conversación cuando se abre el chat
+  useEffect(() => {
+    if (isOpen && !conversationId) {
+      initializeConversation();
+    }
+  }, [isOpen]);
+
+  const loadFaqs = async () => {
+    try {
+      // ELIMINAR: No hay FAQs locales, siempre cargamos desde el backend
+      const loadedFaqs = await getAllActiveFaqs();
+      console.log('FAQs cargados desde BD:', loadedFaqs);
+      setFaqs(loadedFaqs);
+    } catch (err) {
+      console.error('Error al cargar FAQs desde el backend:', err);
+      setError('No se pudieron cargar las preguntas frecuentes');
+      // IMPORTANTE: En caso de error, dejamos faqs como array vacío
+      setFaqs([]);
+    }
   };
 
-  const handleSendMessage = (message?: string) => {
+  const initializeConversation = async () => {
+    try {
+      setIsLoading(true);
+      const { conversationId: newConvId, welcomeMessage } = await startConversation();
+      
+      console.log('Conversación iniciada:', newConvId);
+      setConversationId(newConvId);
+      setMessages([
+        {
+          id: Date.now(),
+          sender: 'bot',
+          message: welcomeMessage,
+          timestamp: new Date()
+        }
+      ]);
+      setError(null);
+    } catch (err) {
+      console.error('Error al iniciar conversación:', err);
+      setError('No se pudo iniciar la conversación. Por favor, intenta nuevamente.');
+      // Mensaje de bienvenida de respaldo
+      setMessages([
+        {
+          id: Date.now(),
+          sender: 'bot',
+          message: '¡Hola! Soy el asistente virtual de INCADEV. ¿En qué puedo ayudarte hoy?',
+          timestamp: new Date()
+        }
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSendMessage = async (message?: string) => {
     const messageToSend = message || inputMessage.trim();
-    if (!messageToSend) return;
+    
+    if (!messageToSend || !validateMessage(messageToSend)) {
+      return;
+    }
 
     // Agregar mensaje del usuario
     const userMessage: Message = {
@@ -77,30 +130,82 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setShowSuggestions(false);
+    setIsLoading(true);
+    setError(null);
 
-    // Simular tiempo de respuesta del bot
-    setTimeout(() => {
-      const matchedFAQ = findBestMatch(messageToSend);
+    try {
+      // Si no hay conversationId, iniciar una nueva
+      let currentConvId = conversationId;
+      if (!currentConvId) {
+        const { conversationId: newConvId } = await startConversation();
+        currentConvId = newConvId;
+        setConversationId(newConvId);
+      }
 
+      // ELIMINADO: No hay búsqueda local, siempre usamos el backend
+      // Enviar mensaje al backend
+      const response = await sendMessage(messageToSend, currentConvId);
+
+      // Agregar respuesta del bot
       const botResponse: Message = {
         id: Date.now() + 1,
         sender: 'bot',
-        message: matchedFAQ
-          ? matchedFAQ.answer
-          : 'Lo siento, no tengo una respuesta específica para esa pregunta. ¿Podrías reformularla o elegir una de las preguntas sugeridas?',
-        timestamp: new Date()
+        message: response.response,
+        timestamp: new Date(),
+        source: response.source
       };
 
       setMessages(prev => [...prev, botResponse]);
-    }, 1000);
+    } catch (err) {
+      console.error('Error al enviar mensaje:', err);
+      setError('No se pudo enviar el mensaje. Por favor, intenta nuevamente.');
+      
+      // Respuesta de error del bot
+      const errorResponse: Message = {
+        id: Date.now() + 1,
+        sender: 'bot',
+        message: 'Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, intenta nuevamente.',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  const handleCloseChat = async () => {
+    // Finalizar conversación en el backend si existe
+    if (conversationId) {
+      try {
+        await endConversation(conversationId);
+      } catch (err) {
+        console.error('Error al finalizar conversación:', err);
+      }
+    }
+
+    setIsOpen(false);
+    // Resetear estado para la próxima vez que se abra
+    setTimeout(() => {
+      setMessages([]);
+      setConversationId(null);
+      setShowSuggestions(true);
+      setError(null);
+      // ELIMINAR: No reseteamos faqs para no perder los datos cargados
+    }, 300);
+  };
+
+  // ELIMINADO: No hay FAQs locales, solo usamos los de la BD
+  // Usar SOLO FAQs cargados desde el backend
   const popularQuestions = faqs
     .filter(faq => faq.active)
     .sort((a, b) => b.usage_count - a.usage_count)
     .slice(0, 4);
 
-  const categories = [...new Set(faqs.filter(f => f.active).map(f => f.category))];
+  const categories = [...new Set(
+    faqs
+      .filter(f => f.active && f.category)
+      .map(f => f.category)
+  )];
 
   return (
     <>
@@ -110,6 +215,7 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
         className={`fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-full shadow-2xl hover:shadow-primary-500/50 hover:scale-110 transition-all duration-300 z-50 ${
           isOpen ? 'rotate-180' : ''
         }`}
+        aria-label={isOpen ? 'Cerrar chat' : 'Abrir chat'}
       >
         <FontAwesomeIcon icon={isOpen ? faTimes : faRobot} className="text-2xl" />
       </button>
@@ -132,12 +238,20 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
               </div>
             </div>
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={handleCloseChat}
               className="text-white/80 hover:text-white transition-colors"
+              aria-label="Cerrar chat"
             >
               <FontAwesomeIcon icon={faTimes} />
             </button>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="px-4 py-2 bg-red-500/20 border-b border-red-500/30">
+              <p className="text-xs text-red-300">{error}</p>
+            </div>
+          )}
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -163,7 +277,14 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
                         ? 'bg-primary-600 text-white'
                         : 'bg-secondary-700 text-gray-200'
                     }`}>
-                      <p className="text-sm">{msg.message}</p>
+                      <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                      {msg.source && msg.sender === 'bot' && (
+                        <span className="text-xs opacity-60 mt-1 block">
+                          {msg.source === 'faq' && '📚 FAQ'}
+                          {msg.source === 'gemini' && '🤖 AI'}
+                          {msg.source === 'fallback' && '💬 Respuesta general'}
+                        </span>
+                      )}
                     </div>
                     <p className="text-xs text-gray-400 mt-1">
                       {msg.timestamp.toLocaleTimeString('es-ES', {
@@ -176,15 +297,31 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
               </div>
             ))}
 
-            {/* Suggestions */}
-            {showSuggestions && popularQuestions.length > 0 && (
+            {/* Loading Indicator */}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="flex items-start gap-2 max-w-[80%]">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-secondary-700">
+                    <FontAwesomeIcon icon={faRobot} className="text-white text-sm" />
+                  </div>
+                  <div className="p-3 rounded-lg bg-secondary-700 text-gray-200">
+                    <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                    <span className="ml-2 text-sm">Escribiendo...</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Suggestions - SOLO si hay FAQs cargados desde BD */}
+            {showSuggestions && popularQuestions.length > 0 && !isLoading && (
               <div className="space-y-2 animate-fade-in">
                 <p className="text-sm text-gray-400 font-medium">Preguntas frecuentes:</p>
                 {popularQuestions.map((faq) => (
                   <button
-                    key={faq.id_faq}
+                    key={faq.id}
                     onClick={() => handleSendMessage(faq.question)}
-                    className="w-full text-left p-3 bg-secondary-700/50 hover:bg-secondary-700 text-gray-300 text-sm rounded-lg transition-colors border border-gray-600/30"
+                    disabled={isLoading}
+                    className="w-full text-left p-3 bg-secondary-700/50 hover:bg-secondary-700 text-gray-300 text-sm rounded-lg transition-colors border border-gray-600/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {faq.question}
                   </button>
@@ -192,8 +329,8 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
               </div>
             )}
 
-            {/* Categories */}
-            {categories.length > 0 && messages.length <= 1 && (
+            {/* Categories - SOLO si hay FAQs cargados desde BD */}
+            {categories.length > 0 && messages.length <= 1 && !isLoading && (
               <div className="space-y-2 mt-4 animate-fade-in">
                 <p className="text-sm text-gray-400 font-medium flex items-center gap-2">
                   <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
@@ -204,12 +341,20 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
                     <button
                       key={category}
                       onClick={() => handleSendMessage(`¿Información sobre ${category}?`)}
-                      className="px-3 py-1 bg-primary-600/20 text-primary-400 text-xs rounded-full hover:bg-primary-600/30 transition-colors"
+                      disabled={isLoading}
+                      className="px-3 py-1 bg-primary-600/20 text-primary-400 text-xs rounded-full hover:bg-primary-600/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {category}
                     </button>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Mensaje cuando no hay FAQs cargados */}
+            {showSuggestions && faqs.length === 0 && !isLoading && (
+              <div className="text-center py-4">
+                <p className="text-sm text-gray-400">No hay preguntas frecuentes disponibles en este momento.</p>
               </div>
             )}
 
@@ -230,16 +375,22 @@ export const WebsiteChatbot = ({ faqs }: WebsiteChatbotProps) => {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Escribe tu pregunta..."
-                className="flex-1 px-4 py-2 bg-secondary-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all"
+                disabled={isLoading}
+                maxLength={1000}
+                className="flex-1 px-4 py-2 bg-secondary-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <button
                 type="submit"
-                disabled={!inputMessage.trim()}
+                disabled={!inputMessage.trim() || isLoading}
                 className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Enviar mensaje"
               >
-                <FontAwesomeIcon icon={faPaperPlane} />
+                <FontAwesomeIcon icon={isLoading ? faSpinner : faPaperPlane} className={isLoading ? 'animate-spin' : ''} />
               </button>
             </form>
+            <p className="text-xs text-gray-400 mt-2 text-center">
+              {inputMessage.length}/1000 caracteres
+            </p>
           </div>
         </div>
       )}
