@@ -19,9 +19,6 @@ import {
   faClipboardList,
   faInbox,
   faExchangeAlt,
-  faUserCheck,
-  faTasks,
-  faTrophy,
   faFileAlt,
   faNewspaper,
   faBell,
@@ -32,105 +29,101 @@ import {
   faUserGraduate,
   faChalkboardTeacher,
   faBuilding,
-<<<<<<< HEAD
-  faFolder,
   faUser,
   faChalkboard,
   faClipboardCheck,
   faChartBar,
   faDollarSign,
-  faFileInvoiceDollar,
-=======
-  faCalendar,
->>>>>>> origin/DEV-ADAPTANDO
-} from '@fortawesome/free-solid-svg-icons';
+  faCalendar
+}
+  from '@fortawesome/free-solid-svg-icons';
 
 export const modules = [
-    {
-      id: 'users',
-      name: 'Usuarios',
-      icon: faUsers,
-      submodules: [
-        { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
-        { id: 'pending-registrations', name: 'Solicitudes Pendientes', icon: faUserClock },
-      ],
-    },
-    {
-      id: 'lms',
-      name: 'LMS',
-      icon: faGraduationCap,
-      submodules: [
-        { id: 'lms-dashboard', name: 'Dashboard', icon: faTachometerAlt },
-        { id: 'lms-courses', name: 'Cursos', icon: faBookOpen },
-        { id: 'lms-students', name: 'Estudiantes', icon: faUserGraduate },
-        { id: 'lms-instructors', name: 'Instructores', icon: faChalkboardTeacher },
-        { id: 'lms-companies', name: 'Compañías', icon: faBuilding },
-        { id: 'lms-academic-periods', name: 'Periodos Académicos', icon: faCalendar },
-      ],
-    },
-    {
-      id: 'support',
-      name: 'Soporte',
-      icon: faTicket,
-      submodules: [
-        { id: 'tickets-dashboard', name: 'Dashboard', icon: faTachometerAlt },
-        { id: 'tickets-my-tickets', name: 'Mis Tickets', icon: faClipboardList },
-        { id: 'tickets-available', name: 'Disponibles', icon: faInbox },
-        { id: 'tickets-escalations', name: 'Escalaciones', icon: faExchangeAlt },
-      ],
-    },
-    {
-      id: 'security',
-      name: 'Seguridad',
-      icon: faLock,
-      submodules: [
-        { id: 'security-dashboard', name: 'Dashboard', icon: faTachometerAlt },
-        { id: 'security-sessions', name: 'Sesiones Activas', icon: faUsersViewfinder },
-        { id: 'security-blocked-ips', name: 'IPs Bloqueadas', icon: faBan },
-        { id: 'security-blocked-users', name: 'Usuarios Bloqueados', icon: faUserSlash },
-        { id: 'security-incidents', name: 'Incidentes', icon: faExclamationTriangle },
-        { id: 'security-backups', name: 'Backups', icon: faFileArchive },
-      ],
-    },
-    {
-      id: 'infra',
-      name: 'Infraestructura',
-      icon: faServer,
-      submodules: [
-        { id: 'infrastructure-dashboard', name: 'Dashboard', icon: faTachometerAlt },
-        { id: 'infrastructure-servers', name: 'Servidores', icon: faServer },
-        { id: 'infrastructure-licenses', name: 'Licencias', icon: faKey },
-        { id: 'infrastructure-storage', name: 'Almacenamiento', icon: faHdd },
-        { id: 'infrastructure-software', name: 'Software', icon: faCog },
-      ],
-    },
-    {
-      id: 'web',
-      name: 'Web',
-      icon: faGlobe,
-      submodules: [
-        { id: 'web-dashboard', name: 'Dashboard', icon: faTachometerAlt },
-        { id: 'web-news', name: 'Noticias', icon: faNewspaper },
-        { id: 'web-alerts', name: 'Alertas', icon: faBell },
-        { id: 'web-announcements', name: 'Anuncios', icon: faBullhorn },
-        { id: 'web-contacts', name: 'Consultas', icon: faEnvelope },
-        { id: 'web-chatbot', name: 'Chatbot', icon: faRobot },
-      ],
-    },
-    {
-      id: 'analytics',
-      name: 'Analítica',
-      icon: faChartLine,
-      submodules: [
-        { id: 'analytics-dashboard', name: 'Dashboard', icon: faChartLine },
-        { id: 'analytics-students', name: 'Estudiante', icon: faUser },
-        { id: 'analytics-courses', name: 'Cursos', icon: faChalkboard },
-        { id: 'analytics-attendance', name: 'Asistencia', icon: faClipboardCheck },
-        { id: 'analytics-grades', name: 'Calificaciones', icon: faChartBar },
-        { id: 'analytics-financial', name: 'Financiera', icon: faDollarSign },
-        { id: 'analytics-tickets', name: 'Tickets', icon: faTicket },
-        { id: 'analytics-security', name: 'Seguridad', icon: faLock },
-        { id: 'analytics-reports', name: 'Reportes', icon: faFileAlt },
-      ],
-    },
-  ];
+  {
+    id: 'users',
+    name: 'Usuarios',
+    icon: faUsers,
+    submodules: [
+      { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
+      { id: 'pending-registrations', name: 'Solicitudes Pendientes', icon: faUserClock },
+    ],
+  },
+  {
+    id: 'lms',
+    name: 'LMS',
+    icon: faGraduationCap,
+    submodules: [
+      { id: 'lms-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+      { id: 'lms-courses', name: 'Cursos', icon: faBookOpen },
+      { id: 'lms-students', name: 'Estudiantes', icon: faUserGraduate },
+      { id: 'lms-instructors', name: 'Instructores', icon: faChalkboardTeacher },
+      { id: 'lms-companies', name: 'Compañías', icon: faBuilding },
+      { id: 'lms-academic-periods', name: 'Periodos Académicos', icon: faCalendar },
+    ],
+  },
+  {
+    id: 'support',
+    name: 'Soporte',
+    icon: faTicket,
+    submodules: [
+      { id: 'tickets-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+      { id: 'tickets-my-tickets', name: 'Mis Tickets', icon: faClipboardList },
+      { id: 'tickets-available', name: 'Disponibles', icon: faInbox },
+      { id: 'tickets-escalations', name: 'Escalaciones', icon: faExchangeAlt },
+    ],
+  },
+  {
+    id: 'security',
+    name: 'Seguridad',
+    icon: faLock,
+    submodules: [
+      { id: 'security-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+      { id: 'security-sessions', name: 'Sesiones Activas', icon: faUsersViewfinder },
+      { id: 'security-blocked-ips', name: 'IPs Bloqueadas', icon: faBan },
+      { id: 'security-blocked-users', name: 'Usuarios Bloqueados', icon: faUserSlash },
+      { id: 'security-incidents', name: 'Incidentes', icon: faExclamationTriangle },
+      { id: 'security-backups', name: 'Backups', icon: faFileArchive },
+    ],
+  },
+  {
+    id: 'infra',
+    name: 'Infraestructura',
+    icon: faServer,
+    submodules: [
+      { id: 'infrastructure-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+      { id: 'infrastructure-servers', name: 'Servidores', icon: faServer },
+      { id: 'infrastructure-licenses', name: 'Licencias', icon: faKey },
+      { id: 'infrastructure-storage', name: 'Almacenamiento', icon: faHdd },
+      { id: 'infrastructure-software', name: 'Software', icon: faCog },
+    ],
+  },
+  {
+    id: 'web',
+    name: 'Web',
+    icon: faGlobe,
+    submodules: [
+      { id: 'web-dashboard', name: 'Dashboard', icon: faTachometerAlt },
+      { id: 'web-news', name: 'Noticias', icon: faNewspaper },
+      { id: 'web-alerts', name: 'Alertas', icon: faBell },
+      { id: 'web-announcements', name: 'Anuncios', icon: faBullhorn },
+      { id: 'web-contacts', name: 'Consultas', icon: faEnvelope },
+      { id: 'web-chatbot', name: 'Chatbot', icon: faRobot },
+    ],
+  },
+  {
+    id: 'analytics',
+    name: 'Analítica',
+    icon: faChartLine,
+    submodules: [
+      { id: 'analytics-dashboard', name: 'Dashboard', icon: faChartLine },
+      { id: 'analytics-students', name: 'Estudiante', icon: faUser },
+      { id: 'analytics-courses', name: 'Cursos', icon: faChalkboard },
+      { id: 'analytics-attendance', name: 'Asistencia', icon: faClipboardCheck },
+      { id: 'analytics-grades', name: 'Calificaciones', icon: faChartBar },
+      { id: 'analytics-financial', name: 'Financiera', icon: faDollarSign },
+      { id: 'analytics-tickets', name: 'Tickets', icon: faTicket },
+      { id: 'analytics-security', name: 'Seguridad', icon: faLock },
+      { id: 'analytics-reports', name: 'Reportes', icon: faFileAlt },
+    ],
+  },
+];
