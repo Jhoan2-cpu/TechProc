@@ -20,3 +20,6 @@ export { StudentStatsCard } from './StudentStatsCard';
 export { GroupStatsCard } from './GroupStatsCard';
 export { TrendChart } from './TrendChart';
 export { RiskStudentCard } from './RiskStudentCard';
+
+// Progress Analytics Components
+export { StudentProgressCard } from './StudentProgressCard';

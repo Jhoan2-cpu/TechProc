@@ -4,6 +4,7 @@ export { AnalyticsDashboardPage } from './AnalyticsDashboardPage';
 export { AttendancePage } from './AttendancePage';
 export { AttendanceAnalyticsPage } from './AttendanceAnalyticsPage';
 export { ProgressPage } from './ProgressPage';
+export { ProgressAnalyticsPage } from './ProgressAnalyticsPage';
 export { PerformancePage } from './PerformancePage';
 export { DropoutPage } from './DropoutPage';
 export { ReportsPage } from './ReportsPage';

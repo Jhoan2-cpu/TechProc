@@ -377,3 +377,188 @@ export interface AttendanceFilters {
   page?: number;
   per_page?: number;
 }
+
+// ==========================================
+// PROGRESS ANALYTICS MODULE
+// ==========================================
+
+// Progress Level Types
+export type ProgressLevelType = 'excellent' | 'good' | 'regular' | 'poor' | 'very_poor';
+export type ProgramStatus = 'Passed' | 'Failed' | 'in_progress' | 'dropped';
+export type CompletionStatus = 'excellent' | 'good' | 'needs_attention' | 'critical';
+
+// Attendance Info for Progress
+export interface ProgressAttendanceInfo {
+  total_classes: number;
+  attended: number;
+  rate: number;
+}
+
+// Evaluations Info for Progress
+export interface ProgressEvaluationsInfo {
+  total: number;
+  completed: number;
+  rate: number;
+}
+
+// Student Progress Data
+export interface StudentProgressData {
+  student_id: number;
+  student_name: string;
+  student_email: string;
+  group_id: number;
+  group_name: string;
+  course_id: number;
+  course_title: string;
+  final_grade: number;
+  average_grade: number;
+  program_status: ProgramStatus;
+  attendance: ProgressAttendanceInfo;
+  evaluations: ProgressEvaluationsInfo;
+  overall_progress: number;
+  progress_level: ProgressLevelType;
+  status_label: string;
+}
+
+// Student Progress Response
+export interface StudentProgressResponse {
+  success: boolean;
+  data: StudentProgressData[];
+}
+
+// Student Detail - Student Info
+export interface ProgressStudentInfo {
+  id: number;
+  name: string;
+  email: string;
+  enrollment_date: string;
+}
+
+// Student Detail - Course Info
+export interface StudentCourseProgress {
+  course_id: number;
+  course_title: string;
+  group_id: number;
+  group_name: string;
+  start_date: string;
+  end_date: string;
+  final_grade: number;
+  average_grade: number;
+  program_status: ProgramStatus;
+  total_classes: number;
+  attended_classes: number;
+  attendance_rate: number;
+  total_evaluations: number;
+  completed_evaluations: number;
+  evaluation_completion_rate: number;
+  overall_progress: number;
+  progress_level: ProgressLevelType;
+}
+
+// Student Detail - Overall Metrics
+export interface StudentOverallMetrics {
+  total_courses: number;
+  active_courses: number;
+  completed_courses: number;
+  attendance_rate: number;
+  evaluation_completion_rate: number;
+  average_grade: number;
+}
+
+// Student Detail - Engagement
+export interface StudentEngagement {
+  attendance: ProgressAttendanceInfo;
+  evaluations: ProgressEvaluationsInfo;
+  last_activity: string;
+  overall_score: number;
+}
+
+// Student Detail Data
+export interface StudentDetailData {
+  student: ProgressStudentInfo;
+  courses: StudentCourseProgress[];
+  overall_metrics: StudentOverallMetrics;
+  engagement: StudentEngagement;
+}
+
+// Student Detail Response
+export interface StudentDetailResponse {
+  success: boolean;
+  data: StudentDetailData;
+}
+
+// Group Progress - Summary
+export interface GroupProgressSummary {
+  total_students: number;
+  avg_attendance_rate: number;
+  avg_evaluation_completion_rate: number;
+  avg_overall_progress: number;
+  avg_grade: number;
+  students_at_risk: number;
+  high_performers: number;
+}
+
+// Group Progress Data
+export interface GroupProgressData {
+  group_id: number;
+  students: StudentProgressData[];
+  summary: GroupProgressSummary;
+}
+
+// Group Progress Response
+export interface GroupProgressResponse {
+  success: boolean;
+  data: GroupProgressData;
+}
+
+// Completion Rate - Group Data
+export interface GroupCompletionRate {
+  group_id: number;
+  group_name: string;
+  course_id: number;
+  course_title: string;
+  total_students: number;
+  completed_students: number;
+  in_progress_students: number;
+  dropped_students: number;
+  completion_rate: number;
+  dropout_rate: number;
+  avg_final_grade: number;
+  status: CompletionStatus;
+}
+
+// Completion Rate - Overall Summary
+export interface CompletionRateOverall {
+  total_groups: number;
+  avg_completion_rate: number;
+  avg_dropout_rate: number;
+  total_students: number;
+  total_completed: number;
+  total_dropped: number;
+}
+
+// Completion Rate Response
+export interface CompletionRateResponse {
+  success: boolean;
+  data: GroupCompletionRate[];
+  overall: CompletionRateOverall;
+}
+
+// Timeline Event
+export interface TimelineEvent {
+  type: 'evaluation' | 'attendance' | 'module' | 'assignment';
+  date: string;
+  context: string;
+  status: string;
+  value: string;
+  icon: string;
+}
+
+// Student Timeline Response
+export interface StudentTimelineResponse {
+  success: boolean;
+  data: {
+    student_id: number;
+    timeline: TimelineEvent[];
+  };
+}

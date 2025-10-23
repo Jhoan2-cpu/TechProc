@@ -10,7 +10,7 @@ import type {
 } from '../types';
 import { AnalyticsDashboardPage } from './AnalyticsDashboardPage';
 import { AttendanceAnalyticsPage } from './AttendanceAnalyticsPage';
-import { ProgressPage } from './ProgressPage';
+import { ProgressAnalyticsPage } from './ProgressAnalyticsPage';
 import { PerformancePage } from './PerformancePage';
 import { DropoutPage } from './DropoutPage';
 import { ReportsPage } from './ReportsPage';
@@ -435,11 +435,7 @@ export const AnalyticsMainPage = () => {
         <AttendanceAnalyticsPage />
       )}
       {activeTab === 'progress' && (
-        <ProgressPage
-          progress={mockProgress}
-          courses={mockCourseAnalytics}
-          onExportCSV={exportToCSV}
-        />
+        <ProgressAnalyticsPage />
       )}
       {activeTab === 'performance' && (
         <PerformancePage
