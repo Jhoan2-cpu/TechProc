@@ -1,17 +1,20 @@
 // Tipos de usuario del sistema según especificación BACKEND_API_SPECIFICATION.md
 
 export type UserRole =
-  | 'admin'           // Acceso total
-  | 'lms'             // Solo LMS
-  | 'support'        // Tickets solamente
-  | 'soporte_seguridad'      // Tickets + Security
-  | 'infra'// Tickets + Infrastructure
-  | 'developer_web'          // Web + Tickets
-  | 'analista_datos'        // Solo Analytics
-  | 'seg'             // Tickets + Security (cambiado de 'soporte_seguridad')
-  | 'infra'           // Tickets + Infrastructure (cambiado de 'soporte_infraestructura')  
-  | 'web'             // Web + Tickets
-  | 'data';           // Solo Analytics (cambiado de 'analista_datos')
+  | 'admin'                      // Acceso total
+  | 'administrador'              // Alias para admin (compatibilidad)
+  | 'lms'                        // Solo LMS
+  | 'gestor_lms'                 // Gestor LMS (mismo que lms)
+  | 'support'                    // Tickets solamente
+  | 'soporte_tecnico'            // Soporte técnico (Tickets)
+  | 'seg'                        // Tickets + Security
+  | 'soporte_seguridad'          // Alias para seg (compatibilidad)
+  | 'infra'                      // Tickets + Infrastructure
+  | 'soporte_infraestructura'    // Alias para infra (compatibilidad)
+  | 'web'                        // Web + Tickets
+  | 'developer_web'              // Alias para web (compatibilidad)
+  | 'data'                       // Solo Analytics
+  | 'analista_datos';            // Alias para data (compatibilidad)
 
 // Interfaz User según schema de la especificación
 export interface User {
@@ -104,11 +107,17 @@ export interface RefreshTokenResponse {
 // Permisos de acceso a módulos por rol según tabla de la especificación
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
   admin: ['users', 'lms', 'tickets', 'security', 'infra', 'web', 'analytics'],
+  administrador: ['users', 'lms', 'tickets', 'security', 'infra', 'web', 'analytics'],
   lms: ['lms'],
-  support: ['support'],
+  gestor_lms: ['lms'],
+  support: ['tickets'],
+  soporte_tecnico: ['tickets'],
+  seg: ['tickets', 'security'],
   soporte_seguridad: ['tickets', 'security'],
   infra: ['tickets', 'infra'],
-  developer_web: ['tickets', 'web'],
+  soporte_infraestructura: ['tickets', 'infra'],
   web: ['tickets', 'web'],
+  developer_web: ['tickets', 'web'],
+  data: ['analytics'],
   analista_datos: ['analytics'],
 };
