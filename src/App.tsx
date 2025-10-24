@@ -79,7 +79,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/procesostecnologicos">
       <Routes>
         {/* Public Website Route */}
 
