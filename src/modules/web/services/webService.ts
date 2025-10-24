@@ -121,6 +121,19 @@ export const newsService = {
       pagination: response.data.pagination,
     };
   },
+
+  // Endpoint público para obtener una noticia específica por ID sin autenticación
+  // La respuesta viene como: { "success": true, "data": {...} }
+  async getPublicNewsById(id: number): Promise<News> {
+    const response = await apiRequest<{
+      success: boolean;
+      data: News;
+    }>(`/developer-web/news/public/${id}`, {
+      method: 'GET',
+    });
+
+    return response.data;
+  },
 };
 
 // ============================================

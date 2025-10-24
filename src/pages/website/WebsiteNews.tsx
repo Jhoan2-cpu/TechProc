@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNewspaper, faCalendar, faEye, faTag, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faNewspaper, faCalendar, faEye, faTag, faTimes, faUser, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import type { News } from '../../modules/web/types';
+import { newsService } from '../../modules/web/services/webService';
 
 interface WebsiteNewsProps {
   news: News[];
@@ -9,6 +10,7 @@ interface WebsiteNewsProps {
 
 export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
+  const [loadingNewsDetail, setLoadingNewsDetail] = useState(false);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
@@ -18,10 +20,22 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
     });
   };
 
-  const handleReadMore = (newsItem: News) => {
-    setSelectedNews(newsItem);
-    // Bloquear scroll del body cuando el modal está abierto
-    document.body.style.overflow = 'hidden';
+  const handleReadMore = async (newsItem: News) => {
+    try {
+      setLoadingNewsDetail(true);
+      // Bloquear scroll del body cuando el modal está abierto
+      document.body.style.overflow = 'hidden';
+
+      // Cargar los detalles completos desde la API
+      const newsDetail = await newsService.getPublicNewsById(newsItem.id);
+      setSelectedNews(newsDetail);
+    } catch (error) {
+      console.error('Error al cargar detalles de la noticia:', error);
+      // En caso de error, usar los datos que ya tenemos
+      setSelectedNews(newsItem);
+    } finally {
+      setLoadingNewsDetail(false);
+    }
   };
 
   const handleCloseModal = () => {
@@ -154,11 +168,19 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
       </div>
 
       {/* Modal para mostrar noticia completa */}
-      {selectedNews && (
+      {(selectedNews || loadingNewsDetail) && (
         <div
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
           onClick={handleCloseModal}
         >
+          {loadingNewsDetail ? (
+            <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl p-12 shadow-2xl border border-gray-700/50">
+              <div className="flex flex-col items-center gap-4">
+                <FontAwesomeIcon icon={faSpinner} className="text-primary-400 text-5xl animate-spin" />
+                <p className="text-white text-lg">Cargando noticia...</p>
+              </div>
+            </div>
+          ) : selectedNews ? (
           <div
             className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700/50 animate-slide-up"
             onClick={(e) => e.stopPropagation()}
@@ -249,6 +271,7 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
               )}
             </div>
           </div>
+          ) : null}
         </div>
       )}
     </section>
