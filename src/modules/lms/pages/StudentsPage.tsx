@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye,
   faEdit,
-  faTrash,
   faEnvelope,
   faPhone,
   faBuilding,
@@ -12,7 +11,6 @@ import type { Student, Course, Enrollment } from '../types';
 import { studentsService, coursesService } from '../services';
 // import { enrollmentsService } from '../services'; // Servicio no disponible
 import { EditStudentModal, ViewStudentModal, CreateStudentModal, StudentFilters, StudentStatsCards } from '../components';
-import { ConfirmDeleteModal } from '../../../shared/components/ConfirmDeleteModal';
 
 export const StudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -22,7 +20,6 @@ export const StudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterState, setFilterState] = useState<string>('all');
   const [filterCourse, setFilterCourse] = useState<string>('all');
-  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
   const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
   const [studentToView, setStudentToView] = useState<Student | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -59,26 +56,6 @@ export const StudentsPage = () => {
       </div>
     );
   }
-
-  const handleDeleteStudent = async () => {
-    if (studentToDelete) {
-      try {
-        // Eliminar el estudiante usando la API
-        await studentsService.delete(studentToDelete.id);
-
-        // Filtrar el estudiante eliminado de la lista local
-        setStudents(students.filter(s => s.id !== studentToDelete.id));
-        setStudentToDelete(null);
-
-        // Opcionalmente, recargar la lista completa para asegurar sincronización
-        const data = await studentsService.getAll();
-        setStudents(data.students);
-      } catch (error: any) {
-        console.error('Error deleting student:', error);
-        alert(error.message || 'Error al eliminar el estudiante');
-      }
-    }
-  };
 
   const handleEditStudent = async (studentId: string, updatedData: any) => {
     try {
@@ -230,13 +207,6 @@ export const StudentsPage = () => {
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
-                      <button
-                        onClick={() => setStudentToDelete(student)}
-                        className="text-red-600 hover:bg-danger/20 p-2 rounded-lg transition-colors"
-                        title="Eliminar"
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
                     </div>
                   </td>
                 </tr>
@@ -270,15 +240,6 @@ export const StudentsPage = () => {
         isOpen={!!studentToEdit}
         onClose={() => setStudentToEdit(null)}
         onSave={handleEditStudent}
-      />
-
-      <ConfirmDeleteModal
-        isOpen={!!studentToDelete}
-        title="Confirmar Eliminación"
-        message="¿Estás seguro de que deseas eliminar al estudiante?"
-        itemName={studentToDelete ? `${studentToDelete.first_name} ${studentToDelete.last_name}` : ''}
-        onConfirm={handleDeleteStudent}
-        onCancel={() => setStudentToDelete(null)}
       />
     </div>
   );
