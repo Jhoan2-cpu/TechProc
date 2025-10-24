@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNewspaper, faCalendar, faEye, faTag } from '@fortawesome/free-solid-svg-icons';
+import { faNewspaper, faCalendar, faEye, faTag, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import type { News } from '../../modules/web/types';
 
 interface WebsiteNewsProps {
@@ -7,6 +8,8 @@ interface WebsiteNewsProps {
 }
 
 export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
+  const [selectedNews, setSelectedNews] = useState<News | null>(null);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
       day: '2-digit',
@@ -15,8 +18,21 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
     });
   };
 
-  // Mostrar solo noticias publicadas
-  const publishedNews = news.filter(n => n.status === 'published').slice(0, 6);
+  const handleReadMore = (newsItem: News) => {
+    setSelectedNews(newsItem);
+    // Bloquear scroll del body cuando el modal está abierto
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleCloseModal = () => {
+    setSelectedNews(null);
+    // Restaurar scroll del body
+    document.body.style.overflow = 'auto';
+  };
+
+  // El endpoint público ya devuelve solo noticias publicadas
+  // Limitar a 6 noticias por si acaso
+  const publishedNews = news.slice(0, 6);
 
   return (
     <section id="news" className="py-20 bg-gradient-to-br from-dark-600/50 to-smoky-600/50">
@@ -44,11 +60,27 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Image */}
-                {newsItem.featured_image && (
-                  <div className="h-48 bg-gradient-to-br from-primary-500/20 to-primary-600/20 flex items-center justify-center">
-                    <FontAwesomeIcon icon={faNewspaper} className="text-primary-400 text-5xl" />
-                  </div>
-                )}
+                <div className="h-48 overflow-hidden relative">
+                  {newsItem.featured_image ? (
+                    <img
+                      src={newsItem.featured_image}
+                      alt={newsItem.title}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        // Fallback si la imagen no carga
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement!.classList.add('bg-gradient-to-br', 'from-primary-500/20', 'to-primary-600/20', 'flex', 'items-center', 'justify-center');
+                        const icon = document.createElement('i');
+                        icon.className = 'fas fa-newspaper text-primary-400 text-5xl';
+                        e.currentTarget.parentElement!.appendChild(icon);
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary-500/20 to-primary-600/20 flex items-center justify-center">
+                      <FontAwesomeIcon icon={faNewspaper} className="text-primary-400 text-5xl" />
+                    </div>
+                  )}
+                </div>
 
                 {/* Content */}
                 <div className="p-6">
@@ -95,7 +127,10 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
                   )}
 
                   {/* Read More */}
-                  <button className="w-full px-4 py-2 bg-primary-600/30 hover:bg-primary-600 text-primary-400 hover:text-white rounded-lg transition-all duration-300 font-medium text-sm">
+                  <button
+                    onClick={() => handleReadMore(newsItem)}
+                    className="w-full px-4 py-2 bg-primary-600/30 hover:bg-primary-600 text-primary-400 hover:text-white rounded-lg transition-all duration-300 font-medium text-sm"
+                  >
                     Leer más
                   </button>
                 </div>
@@ -117,6 +152,105 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
           </div>
         )}
       </div>
+
+      {/* Modal para mostrar noticia completa */}
+      {selectedNews && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+          onClick={handleCloseModal}
+        >
+          <div
+            className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-700/50 animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header del Modal */}
+            <div className="sticky top-0 bg-gradient-to-r from-secondary-500 to-secondary-600 border-b border-gray-700/50 p-6 flex items-start justify-between z-10">
+              <div className="flex-1">
+                <span className="inline-block px-3 py-1 bg-primary-600/30 text-primary-400 text-xs font-semibold rounded-full mb-2">
+                  {selectedNews.category}
+                </span>
+                <h2 className="text-3xl font-heading font-bold text-white mb-2">
+                  {selectedNews.title}
+                </h2>
+                <div className="flex items-center gap-4 text-sm text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <FontAwesomeIcon icon={faCalendar} />
+                    <span>{formatDate(selectedNews.published_date || selectedNews.created_date)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <FontAwesomeIcon icon={faEye} />
+                    <span>{selectedNews.views} vistas</span>
+                  </div>
+                  {selectedNews.author_name && (
+                    <div className="flex items-center gap-2">
+                      <FontAwesomeIcon icon={faUser} />
+                      <span>{selectedNews.author_name}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={handleCloseModal}
+                className="ml-4 p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <FontAwesomeIcon icon={faTimes} className="text-white text-xl" />
+              </button>
+            </div>
+
+            {/* Imagen destacada */}
+            {selectedNews.featured_image && (
+              <div className="w-full h-64 md:h-96 overflow-hidden">
+                <img
+                  src={selectedNews.featured_image}
+                  alt={selectedNews.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Contenido */}
+            <div className="p-6 md:p-8">
+              {/* Resumen */}
+              <div className="mb-6">
+                <p className="text-xl text-gray-300 font-medium leading-relaxed">
+                  {selectedNews.summary}
+                </p>
+              </div>
+
+              {/* Contenido completo */}
+              <div className="prose prose-invert max-w-none">
+                <div
+                  className="text-gray-300 leading-relaxed whitespace-pre-wrap"
+                  style={{ wordBreak: 'break-word' }}
+                >
+                  {selectedNews.content}
+                </div>
+              </div>
+
+              {/* Tags */}
+              {selectedNews.tags.length > 0 && (
+                <div className="mt-8 pt-6 border-t border-gray-700/50">
+                  <h4 className="text-sm font-semibold text-gray-400 mb-3">Etiquetas:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedNews.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-primary-600/20 text-primary-400 text-sm rounded-full border border-primary-500/30"
+                      >
+                        <FontAwesomeIcon icon={faTag} className="text-xs" />
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

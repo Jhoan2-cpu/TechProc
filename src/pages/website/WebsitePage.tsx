@@ -7,7 +7,7 @@ import { WebsiteContact } from './WebsiteContact';
 import { WebsiteChatbot } from './WebsiteChatbot';
 import { WebsiteFooter } from './WebsiteFooter';
 import type { News, Alert } from '../../modules/web/types';
-import { alertsService } from '../../modules/web/services/webService';
+import { alertsService, newsService } from '../../modules/web/services/webService';
 
 // Mock Data
 const mockAlerts: Alert[] = [
@@ -157,25 +157,32 @@ const mockNews: News[] = [
 
 export const WebsitePage = () => {
   const [activeAlerts, setActiveAlerts] = useState<Alert[]>([]);
+  const [news, setNews] = useState<News[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Cargar alertas activas desde el endpoint público (sin autenticación)
-        const alerts = await alertsService.getPublicAlerts();
+        const alertsResponse = await alertsService.getPublicAlerts();
 
         // El backend ya devuelve solo las alertas activas y válidas
         // Ordenar por prioridad (menor número = mayor prioridad)
-        const sortedAlerts = alerts.sort((a, b) =>
+        const sortedAlerts = alertsResponse.sort((a, b) =>
           (a.priority || 999) - (b.priority || 999)
         );
 
         setActiveAlerts(sortedAlerts);
 
+        // Cargar noticias publicadas desde el endpoint público (sin autenticación)
+        const newsResponse = await newsService.getPublicNews(6); // Limitar a 6 noticias
+
+        setNews(newsResponse.news);
+
       } catch (error) {
-        console.error('Error al cargar alertas públicas:', error);
-        // En caso de error, usar las alertas mock como fallback
+        console.error('Error al cargar datos públicos:', error);
+        // En caso de error, usar los datos mock como fallback
         setActiveAlerts(mockAlerts);
+        setNews(mockNews);
       }
     };
 
@@ -186,7 +193,7 @@ export const WebsitePage = () => {
     <div className="bg-gradient-to-br from-dark-600 to-smoky-700 min-h-screen">
       <WebsiteNavbar />
       <WebsiteHero activeAlerts={activeAlerts} />
-      <WebsiteNews news={mockNews} />
+      <WebsiteNews news={news} />
       <WebsiteAnnouncements />
       <WebsiteContact />
       <WebsiteFooter />

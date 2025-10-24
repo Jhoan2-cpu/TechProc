@@ -91,6 +91,36 @@ export const newsService = {
       method: 'DELETE',
     });
   },
+
+  // Endpoint público para obtener noticias publicadas sin autenticación
+  // La respuesta viene como: { "success": true, "data": { "news": [...], "pagination": {...} } }
+  async getPublicNews(limit?: number): Promise<{ news: News[]; pagination: any }> {
+    const params = new URLSearchParams();
+    if (limit) params.append('limit', limit.toString());
+
+    const queryString = params.toString();
+    const endpoint = `/developer-web/news/public${queryString ? `?${queryString}` : ''}`;
+
+    const response = await apiRequest<{
+      success: boolean;
+      data: {
+        news: News[];
+        pagination: {
+          current_page: number;
+          total_pages: number;
+          total_records: number;
+          per_page: number;
+        };
+      };
+    }>(endpoint, {
+      method: 'GET',
+    });
+
+    return {
+      news: response.data.news,
+      pagination: response.data.pagination,
+    };
+  },
 };
 
 // ============================================
