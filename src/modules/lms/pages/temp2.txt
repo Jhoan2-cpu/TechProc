@@ -1,0 +1,30 @@
+        </div>
+      </div>
+
+      {/* Modal para agregar clase */}
+      {showAddClassModal && (
+        <AddClassModal
+          groupId={selectedGroupId || undefined}
+          courseId={course?.course_id || undefined}
+          onClose={() => {
+            setShowAddClassModal(false);
+            setSelectedGroupId(null);
+          }}
+          onSave={handleClassAdded}
+        />
+      )}
+
+      {/* Modal para agregar material */}
+      {showAddMaterialModal && selectedClassId !== null && (
+        <AddClassMaterialModal
+          classId={selectedClassId}
+          onClose={() => {
+            setShowAddMaterialModal(false);
+            setSelectedClassId(null);
+          }}
+          onSave={handleMaterialAdded}
+        />
+      )}
+    </div>
+  );
+};

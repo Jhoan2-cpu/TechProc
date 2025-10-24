@@ -3,7 +3,9 @@
     "allow": [
       "Bash(cd:*)",
       "Bash(tee:*)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Read(//mnt/c/Users/anton/Desktop/**)",
+      "Bash(cd /mnt/c/Users/anton/Desktop/PRODUCTO\\ MIRKO/TechProc && git checkout:*)"
     ],
     "deny": [],
     "ask": []

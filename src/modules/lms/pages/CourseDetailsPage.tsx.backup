@@ -39,13 +39,13 @@ export const CourseDetailsPage = () => {
   const [loadingClasses, setLoadingClasses] = useState(true);
   const [showAddClassModal, setShowAddClassModal] = useState(false);
   const [showAddMaterialModal, setShowAddMaterialModal] = useState(false);
+  const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
   const [deletingClassId, setDeletingClassId] = useState<number | null>(null);
   const [deletingMaterialId, setDeletingMaterialId] = useState<number | null>(null);
   const [expandedClassIds, setExpandedClassIds] = useState<Set<number>>(new Set());
   const [activeGroupTab, setActiveGroupTab] = useState<number>(0);
-  const [showAddGroupModal, setShowAddGroupModal] = useState(false);
 
   useEffect(() => {
     if (courseId) {
@@ -111,12 +111,21 @@ export const CourseDetailsPage = () => {
     }
   };
 
+  const handleAddGroup = () => {
+    setShowAddGroupModal(true);
+  };
+
+  const handleGroupAdded = async () => {
+    setShowAddGroupModal(false);
+    await fetchGroupsAndClasses();
+  };
+
   const handleAddClass = (groupId?: number) => {
-    // Si se pasa un groupId específico, lo usa, sino usa el primer grupo disponible
+    // Si se pasa un groupId específico, lo usa, sino usa el grupo activo en el tab
     if (groupId) {
       setSelectedGroupId(groupId);
     } else if (groups.length > 0) {
-      setSelectedGroupId(groups[0].id);
+      setSelectedGroupId(groups[activeGroupTab]?.id || groups[0].id);
     }
     setShowAddClassModal(true);
   };
@@ -152,11 +161,6 @@ export const CourseDetailsPage = () => {
   const handleMaterialAdded = async () => {
     setShowAddMaterialModal(false);
     setSelectedClassId(null);
-    await fetchGroupsAndClasses();
-  };
-
-  const handleGroupAdded = async () => {
-    setShowAddGroupModal(false);
     await fetchGroupsAndClasses();
   };
 
@@ -438,10 +442,10 @@ export const CourseDetailsPage = () => {
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-heading font-semibold text-white flex items-center gap-2">
               <FontAwesomeIcon icon={faUsers} className="text-green-600" />
-              Grupos y Clases
+              Grupos del Curso
             </h3>
             <button
-              onClick={() => setShowAddGroupModal(true)}
+              onClick={handleAddGroup}
               className="btn bg-primary-600 text-white hover:bg-primary-700"
             >
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
@@ -458,21 +462,21 @@ export const CourseDetailsPage = () => {
             </div>
           ) : groups.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">No hay grupos creados para este curso</p>
+              <p className="text-gray-400 text-lg">No hay grupos creados</p>
               <p className="text-gray-500 text-sm mt-2">Haz clic en "Crear Grupo" para comenzar</p>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div>
               {/* Tabs de Grupos */}
-              <div className="flex items-center gap-3 border-b border-secondary-500 overflow-x-auto">
+              <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
                 {groups.map((group, index) => (
                   <button
                     key={group.id}
                     onClick={() => setActiveGroupTab(index)}
-                    className={`px-4 py-3 font-medium text-sm whitespace-nowrap transition-all duration-300 ${
+                    className={`px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap ${
                       activeGroupTab === index
-                        ? 'text-primary-400 border-b-2 border-primary-400'
-                        : 'text-gray-400 hover:text-gray-300'
+                        ? 'bg-primary-600 text-white shadow-lg'
+                        : 'bg-secondary-500 text-gray-300 hover:bg-secondary-400'
                     }`}
                   >
                     <FontAwesomeIcon icon={faUsers} className="mr-2" />
@@ -481,173 +485,182 @@ export const CourseDetailsPage = () => {
                 ))}
               </div>
 
-              {/* Contenido del grupo activo */}
+              {/* Contenido del Tab Activo */}
               {groups[activeGroupTab] && (
                 <div className="space-y-4">
-                  {/* Información del grupo */}
-                  <div className="bg-secondary-700/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-4">
+                  {/* Info del Grupo */}
+                  <div className="bg-secondary-500/50 rounded-lg p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div>
-                        <h4 className="text-lg font-semibold text-white mb-1">
-                          {groups[activeGroupTab].name}
-                        </h4>
-                        <p className="text-sm text-gray-400">
-                          <span className="font-medium text-primary-400">{groups[activeGroupTab].code}</span>
-                          {' • '}
-                          {formatDate(groups[activeGroupTab].start_date)} - {formatDate(groups[activeGroupTab].end_date)}
-                        </p>
+                        <span className="text-gray-400">Código:</span>
+                        <p className="text-white font-semibold">{groups[activeGroupTab].code}</p>
                       </div>
-                      <button
-                        onClick={() => {
-                          setSelectedGroupId(groups[activeGroupTab].id);
-                          setShowAddClassModal(true);
-                        }}
-                        className="btn bg-primary-600 text-white hover:bg-primary-700"
-                      >
-                        <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                        Agregar Clase
-                      </button>
+                      <div>
+                        <span className="text-gray-400">Fecha de Inicio:</span>
+                        <p className="text-white font-semibold">{formatDate(groups[activeGroupTab].start_date)}</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-400">Fecha de Fin:</span>
+                        <p className="text-white font-semibold">{formatDate(groups[activeGroupTab].end_date)}</p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Clases del grupo activo */}
+                  {/* Botón para agregar clase */}
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => handleAddClass(groups[activeGroupTab].id)}
+                      className="btn bg-primary-600 text-white hover:bg-primary-700"
+                    >
+                      <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                      Agregar Clase
+                    </button>
+                  </div>
+
+                  {/* Lista de Clases del Grupo */}
                   {(() => {
                     const groupClasses = getClassesByGroup(groups[activeGroupTab].id);
 
                     if (groupClasses.length === 0) {
                       return (
-                        <div className="text-center py-12">
-                          <p className="text-gray-400 text-lg">No hay clases programadas para este grupo</p>
-                          <p className="text-gray-500 text-sm mt-2">Haz clic en "Agregar Clase" para crear la primera clase</p>
+                        <div className="text-center py-12 bg-secondary-500/30 rounded-lg">
+                          <p className="text-gray-400 text-lg">No hay clases en este grupo</p>
+                          <p className="text-gray-500 text-sm mt-2">Haz clic en "Agregar Clase" para crear una clase</p>
                         </div>
                       );
                     }
 
                     return (
-                      <div className="space-y-3">
-                        {groupClasses.map((classItem) => {
-                          const classMaterials = getMaterialsByClass(classItem.id);
-                          const isExpanded = expandedClassIds.has(classItem.id);
+                      <div className="space-y-3">{groupClasses.map((classItem) => {
+                      const classMaterials = getMaterialsByClass(classItem.id);
+                      const isExpanded = expandedClassIds.has(classItem.id);
 
-                          return (
-                            <div key={classItem.id}>
-                              <div className="flex items-center gap-3 p-4 bg-secondary-700/50 rounded-lg hover:bg-secondary-600/50 transition-colors">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <FontAwesomeIcon icon={faVideo} className="text-primary-400" />
-                                    <p className="text-white font-medium">{classItem.class_name}</p>
-                                    <span className={`px-2 py-1 rounded text-xs ${getClassStatusBadge(classItem.class_status)}`}>
-                                      {getClassStatusLabel(classItem.class_status)}
-                                    </span>
-                                    {classMaterials.length > 0 && (
-                                      <span className="px-2 py-1 rounded text-xs bg-primary-500/20 text-primary-400">
-                                        {classMaterials.length} material{classMaterials.length > 1 ? 'es' : ''}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <p className="text-sm text-gray-400 mb-2">{classItem.description}</p>
-                                  <div className="flex items-center gap-4 text-xs text-gray-400">
-                                    <span>
-                                      <FontAwesomeIcon icon={faCalendar} className="mr-1" />
-                                      {formatDate(classItem.class_date)}
-                                    </span>
-                                    <span>
-                                      <FontAwesomeIcon icon={faClock} className="mr-1" />
-                                      {formatTime(classItem.start_time)} - {formatTime(classItem.end_time)}
-                                    </span>
-                                    {classItem.meeting_url && (
-                                      <a
-                                        href={classItem.meeting_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-primary-400 hover:text-primary-300"
-                                      >
-                                        <FontAwesomeIcon icon={faVideo} className="mr-1" />
-                                        Unirse a la reunión
-                                      </a>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    onClick={() => handleAddMaterial(classItem.id)}
-                                    className="btn bg-primary-600/20 text-primary-400 hover:bg-primary-600/30 border border-primary-600/30 hover:border-primary-600 py-2 px-3 text-xs transition-all duration-300"
-                                    title="Agregar material"
+                      return (
+                        <div key={classItem.id}>
+                          <div className="flex items-center gap-3 p-4 bg-secondary-700/50 rounded-lg hover:bg-secondary-600/50 transition-colors">
+
+                    {/* Clases del grupo */}
+                    {groupClasses.map((classItem) => {
+                      const classMaterials = getMaterialsByClass(classItem.id);
+                      const isExpanded = expandedClassIds.has(classItem.id);
+
+                      return (
+                        <div key={classItem.id} className="ml-11">
+                          <div className="flex items-center gap-3 p-4 bg-secondary-700/50 rounded-lg hover:bg-secondary-600/50 transition-colors">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <FontAwesomeIcon icon={faVideo} className="text-primary-400" />
+                                <p className="text-white font-medium">{classItem.class_name}</p>
+                                <span className={`px-2 py-1 rounded text-xs ${getClassStatusBadge(classItem.class_status)}`}>
+                                  {getClassStatusLabel(classItem.class_status)}
+                                </span>
+                                {classMaterials.length > 0 && (
+                                  <span className="px-2 py-1 rounded text-xs bg-primary-500/20 text-primary-400">
+                                    {classMaterials.length} material{classMaterials.length > 1 ? 'es' : ''}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm text-gray-400 mb-2">{classItem.description}</p>
+                              <div className="flex items-center gap-4 text-xs text-gray-400">
+                                <span>
+                                  <FontAwesomeIcon icon={faCalendar} className="mr-1" />
+                                  {formatDate(classItem.class_date)}
+                                </span>
+                                <span>
+                                  <FontAwesomeIcon icon={faClock} className="mr-1" />
+                                  {formatTime(classItem.start_time)} - {formatTime(classItem.end_time)}
+                                </span>
+                                {classItem.meeting_url && (
+                                  <a
+                                    href={classItem.meeting_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary-400 hover:text-primary-300"
                                   >
-                                    <FontAwesomeIcon icon={faPlus} className="mr-1" />
-                                    Material
-                                  </button>
-                                  {classMaterials.length > 0 && (
-                                    <button
-                                      onClick={() => toggleClassExpanded(classItem.id)}
-                                      className="btn bg-secondary-500 text-gray-300 hover:bg-secondary-400 py-2 px-3 text-xs transition-all duration-300"
-                                      title={isExpanded ? 'Ocultar materiales' : 'Ver materiales'}
+                                    <FontAwesomeIcon icon={faVideo} className="mr-1" />
+                                    Unirse a la reunión
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleAddMaterial(classItem.id)}
+                                className="btn bg-primary-600/20 text-primary-400 hover:bg-primary-600/30 border border-primary-600/30 hover:border-primary-600 py-2 px-3 text-xs transition-all duration-300"
+                                title="Agregar material"
+                              >
+                                <FontAwesomeIcon icon={faPlus} className="mr-1" />
+                                Material
+                              </button>
+                              {classMaterials.length > 0 && (
+                                <button
+                                  onClick={() => toggleClassExpanded(classItem.id)}
+                                  className="btn bg-secondary-500 text-gray-300 hover:bg-secondary-400 py-2 px-3 text-xs transition-all duration-300"
+                                  title={isExpanded ? 'Ocultar materiales' : 'Ver materiales'}
+                                >
+                                  {isExpanded ? '▼' : '▶'}
+                                </button>
+                              )}
+                              <button
+                                onClick={() => handleDeleteClass(classItem.id)}
+                                disabled={deletingClassId === classItem.id}
+                                className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-2 px-3 text-xs transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                title="Eliminar clase"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faTrash}
+                                  className={deletingClassId === classItem.id ? 'animate-pulse' : ''}
+                                />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Materiales de la clase */}
+                          {isExpanded && classMaterials.length > 0 && (
+                            <div className="mt-2 ml-4 space-y-2">
+                              {classMaterials.map((material) => (
+                                <div
+                                  key={material.id}
+                                  className="flex items-center gap-3 p-3 bg-secondary-600/30 rounded-lg hover:bg-secondary-600/50 transition-colors"
+                                >
+                                  <FontAwesomeIcon
+                                    icon={getMaterialIcon(material.type)}
+                                    className="text-primary-400 text-lg"
+                                  />
+                                  <div className="flex-1">
+                                    <a
+                                      href={material.material_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-white hover:text-primary-400 transition-colors text-sm font-medium"
                                     >
-                                      {isExpanded ? '▼' : '▶'}
-                                    </button>
-                                  )}
+                                      {material.material_url}
+                                    </a>
+                                  </div>
+                                  <span className={`px-2 py-1 rounded text-xs ${getMaterialTypeBadge(material.type)}`}>
+                                    {material.type}
+                                  </span>
                                   <button
-                                    onClick={() => handleDeleteClass(classItem.id)}
-                                    disabled={deletingClassId === classItem.id}
-                                    className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-2 px-3 text-xs transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    title="Eliminar clase"
+                                    onClick={() => handleDeleteMaterial(material.id)}
+                                    disabled={deletingMaterialId === material.id}
+                                    className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-1 px-2 text-xs transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    title="Eliminar material"
                                   >
                                     <FontAwesomeIcon
                                       icon={faTrash}
-                                      className={deletingClassId === classItem.id ? 'animate-pulse' : ''}
+                                      className={deletingMaterialId === material.id ? 'animate-pulse' : ''}
                                     />
                                   </button>
                                 </div>
-                              </div>
-
-                              {/* Materiales de la clase */}
-                              {isExpanded && classMaterials.length > 0 && (
-                                <div className="mt-2 ml-4 space-y-2">
-                                  {classMaterials.map((material) => (
-                                    <div
-                                      key={material.id}
-                                      className="flex items-center gap-3 p-3 bg-secondary-600/30 rounded-lg hover:bg-secondary-600/50 transition-colors"
-                                    >
-                                      <FontAwesomeIcon
-                                        icon={getMaterialIcon(material.type)}
-                                        className="text-primary-400 text-lg"
-                                      />
-                                      <div className="flex-1">
-                                        <a
-                                          href={material.material_url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-white hover:text-primary-400 transition-colors text-sm font-medium"
-                                        >
-                                          {material.material_url}
-                                        </a>
-                                      </div>
-                                      <span className={`px-2 py-1 rounded text-xs ${getMaterialTypeBadge(material.type)}`}>
-                                        {material.type}
-                                      </span>
-                                      <button
-                                        onClick={() => handleDeleteMaterial(material.id)}
-                                        disabled={deletingMaterialId === material.id}
-                                        className="btn bg-danger/20 text-danger hover:bg-danger/30 border border-danger/30 hover:border-danger py-1 px-2 text-xs transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        title="Eliminar material"
-                                      >
-                                        <FontAwesomeIcon
-                                          icon={faTrash}
-                                          className={deletingMaterialId === material.id ? 'animate-pulse' : ''}
-                                        />
-                                      </button>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
+                              ))}
                             </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })()}
-                </div>
-              )}
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -675,15 +688,6 @@ export const CourseDetailsPage = () => {
             setSelectedClassId(null);
           }}
           onSave={handleMaterialAdded}
-        />
-      )}
-
-      {/* Modal para crear grupo */}
-      {showAddGroupModal && (
-        <AddGroupModal
-          courseId={course?.course_id || 0}
-          onClose={() => setShowAddGroupModal(false)}
-          onSave={handleGroupAdded}
         />
       )}
     </div>
