@@ -45,7 +45,6 @@ export const modules = [
     icon: faUsers,
     submodules: [
       { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
-      { id: 'pending-registrations', name: 'Solicitudes Pendientes', icon: faUserClock },
     ],
   },
   {

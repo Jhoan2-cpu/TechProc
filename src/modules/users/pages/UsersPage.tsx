@@ -6,12 +6,12 @@ import {
   faToggleOff,
 } from '@fortawesome/free-solid-svg-icons';
 import type { User } from '../types';
-import { getRoleInfo } from '../utils/roleUtils';
 import {
   UserStatsCard,
   UserFilters,
   UserTableRow,
   UserFormModal,
+  ViewUserDetailsModal,
 } from '../components';
 import { usersService } from '../services';
 
@@ -23,21 +23,24 @@ export const UsersPage = () => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Filtrar usuarios
   const filteredUsers = users.filter((user) => {
+    const fullName = user.full_name?.toLowerCase() || '';
     const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      fullName.includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = filterRole === 'all' || user.role === filterRole;
+      (user.dni && user.dni.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const primaryRole = user.role && user.role.length > 0 ? user.role[0] : '';
+    const matchesRole = filterRole === 'all' || primaryRole === filterRole;
+
     const matchesStatus =
-      filterStatus === 'all' ||
-      (filterStatus === 'active' && user.is_active) ||
-      (filterStatus === 'inactive' && !user.is_active) ||
-      (filterStatus === 'banned' && !user.is_active);
+      filterStatus === 'all' || user.status === filterStatus;
+
     return matchesSearch && matchesRole && matchesStatus;
   });
 
@@ -62,7 +65,7 @@ export const UsersPage = () => {
       setLoading(true);
       setError(null);
       const data = await usersService.getAll();
-      setUsers(data.users);
+      setUsers(data);
     } catch (err: unknown) {
       console.error('Error fetching users:', err);
       if (err instanceof Error) {
@@ -75,48 +78,18 @@ export const UsersPage = () => {
     }
   };
 
-  // Activar/Desactivar usuario
-  const toggleUserStatus = async (userId: string) => {
-    const user = users.find((u) => u.id === userId);
-    if (user) {
-      const action = user.is_active ? 'desactivar' : 'activar';
-      if (window.confirm(`¿Está seguro de ${action} a ${user.name}?`)) {
-        try {
-          setError(null);
-          await usersService.update(userId, {
-            status: user.is_active ? 'inactive' : 'active',
-          });
-          // Actualizar localmente
-        } catch (err: unknown) {
-          console.error('Error updating user status:', err);
-          if (err instanceof Error) {
-            setError(err.message || 'Error al cambiar el estado del usuario. Por favor, intenta nuevamente.');
-          } else {
-            setError('Error al cambiar el estado del usuario. Por favor, intenta nuevamente.');
-          }
-        }
-      }
-    }
-  };
-
-  // Crear usuario
-  const handleCreateUser = (newUser: User) => {
-    setUsers((prev) => [newUser, ...prev]);
+  // Crear/Editar usuario
+  const handleSaveUser = () => {
+    fetchUsers(); // Recargar lista
     setShowCreateModal(false);
-    setSuccessMessage(`Usuario ${newUser.name} creado exitosamente`);
-  };
-
-  // Editar usuario
-  const handleEditUser = (updatedUser: User) => {
-    setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
     setEditingUser(null);
-    setSuccessMessage(`Usuario ${updatedUser.name} actualizado exitosamente`);
+    setSuccessMessage('Usuario guardado exitosamente');
   };
 
   // Estadísticas
   const totalUsers = users.length;
-  const activeUsers = users.filter((u) => u.is_active).length;
-  const inactiveUsers = users.filter((u) => !u.is_active).length;
+  const activeUsers = users.filter((u) => u.status === 'active').length;
+  const inactiveUsers = users.filter((u) => u.status === 'inactive').length;
 
   useEffect(() => {
     fetchUsers();
@@ -238,18 +211,14 @@ export const UsersPage = () => {
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((user) => {
-                  const roleInfo = getRoleInfo(user.role);
-                  return (
-                    <UserTableRow
-                      key={user.id}
-                      user={user}
-                      roleInfo={roleInfo}
-                      onEdit={setEditingUser}
-                      onToggleStatus={toggleUserStatus}
-                    />
-                  );
-                })
+                filteredUsers.map((user) => (
+                  <UserTableRow
+                    key={user.id}
+                    user={user}
+                    onEdit={setEditingUser}
+                    onViewDetails={setViewingUser}
+                  />
+                ))
               )}
             </tbody>
           </table>
@@ -261,7 +230,7 @@ export const UsersPage = () => {
         <UserFormModal
           title="Crear Nuevo Usuario"
           onClose={() => setShowCreateModal(false)}
-          onSave={handleCreateUser}
+          onSave={handleSaveUser}
         />
       )}
 
@@ -271,7 +240,15 @@ export const UsersPage = () => {
           title="Editar Usuario"
           user={editingUser}
           onClose={() => setEditingUser(null)}
-          onSave={handleEditUser}
+          onSave={handleSaveUser}
+        />
+      )}
+
+      {/* Modal Ver Detalles */}
+      {viewingUser && (
+        <ViewUserDetailsModal
+          user={viewingUser}
+          onClose={() => setViewingUser(null)}
         />
       )}
     </div>

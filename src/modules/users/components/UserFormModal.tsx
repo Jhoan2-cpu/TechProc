@@ -1,29 +1,32 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { UserRole, UserFormModalProps, UpdateUserData } from '../types';
+import type { UserRole, UserFormModalProps, UpdateUserData, CreateUserData, Gender } from '../types';
 import { usersService } from '../services';
-import { authService } from '../../../services/authService';
 
 export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalProps) => {
   const isEditing = !!user;
+  const primaryRole = user?.role && user.role.length > 0 ? user.role[0] : 'student';
 
   const [formData, setFormData] = useState({
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
+    full_name: user?.full_name || '',
+    dni: user?.dni || '',
+    document: user?.document || '',
     email: user?.email || '',
     password: '',
-    phone_number: user?.phone || '',
-    address: '',
-    role: user?.role || ('analista_datos' as UserRole),
-    status: user?.is_active ? 'active' : 'inactive',
-    // Campos adicionales para registro
-    reason: '',
-    hire_date: new Date().toISOString().split('T')[0],
-    employment_status: 'Active',
-    schedule: 'Lunes a Viernes, 9:00 AM - 6:00 PM',
-    speciality: '',
-    salary: '',
+    phone_number: user?.phone_number || '',
+    address: user?.address || '',
+    birth_date: user?.birth_date || '',
+    gender: (user?.gender || 'other') as Gender,
+    country: user?.country || 'Peru',
+    country_location: user?.country_location || '',
+    timezone: user?.timezone || 'America/Lima',
+    profile_photo: user?.profile_photo || null,
+    role: (primaryRole || 'student') as UserRole,
+    status: user?.status || 'active',
+    synchronized: user?.synchronized !== undefined ? user.synchronized : true,
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,7 +35,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     // Validaciones
     if (!formData.first_name.trim() || !formData.last_name.trim()) {
       setError('El nombre y apellido son obligatorios');
@@ -54,22 +57,6 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
       return;
     }
 
-    // Validaciones adicionales para crear usuario
-    if (!isEditing) {
-      if (!formData.reason.trim()) {
-        setError('El motivo/razón es obligatorio');
-        return;
-      }
-      if (!formData.speciality.trim()) {
-        setError('La especialidad es obligatoria');
-        return;
-      }
-      if (!formData.salary || parseFloat(formData.salary) <= 0) {
-        setError('El salario es obligatorio y debe ser mayor a 0');
-        return;
-      }
-    }
-
     try {
       setLoading(true);
 
@@ -78,45 +65,56 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
         const updateData: UpdateUserData = {
           first_name: formData.first_name,
           last_name: formData.last_name,
+          full_name: formData.full_name || `${formData.first_name} ${formData.last_name}`,
           phone_number: formData.phone_number || undefined,
           address: formData.address || undefined,
-          status: formData.status,
+          birth_date: formData.birth_date || undefined,
+          gender: formData.gender,
+          country: formData.country || undefined,
+          country_location: formData.country_location || undefined,
+          timezone: formData.timezone || undefined,
+          status: formData.status as any,
           role: formData.role,
         };
 
-        const updatedUser = await usersService.update(user.id, updateData);
-        onSave(updatedUser);
+        await usersService.update(user.id, updateData);
         onClose();
+        // Recargar usuarios
+        onSave(user); // Trigger parent to reload
       } else {
-        // Crear nuevo usuario usando el endpoint de registro
-        const registerData = {
+        // Crear nuevo usuario
+        const createData: CreateUserData = {
           first_name: formData.first_name,
           last_name: formData.last_name,
+          full_name: formData.full_name || `${formData.first_name} ${formData.last_name}`,
+          dni: formData.dni || undefined,
+          document: formData.document || undefined,
           email: formData.email,
           password: formData.password,
-          phone_number: formData.phone_number,
+          phone_number: formData.phone_number || undefined,
+          address: formData.address || undefined,
+          birth_date: formData.birth_date || undefined,
+          gender: formData.gender,
+          country: formData.country,
+          country_location: formData.country_location || undefined,
+          timezone: formData.timezone || 'America/Lima',
+          profile_photo: formData.profile_photo,
           role: formData.role,
-          reason: formData.reason,
-          position_id: 1,
-          department_id: 2,
-          hire_date: formData.hire_date,
-          employment_status: formData.employment_status,
-          schedule: formData.schedule,
-          speciality: formData.speciality,
-          salary: parseFloat(formData.salary),
+          status: formData.status as any,
+          synchronized: formData.synchronized,
         };
 
-        console.log('Datos enviados al API:', JSON.stringify(registerData, null, 2));
+        console.log('Datos enviados al API:', JSON.stringify(createData, null, 2));
 
-        const response = await authService.register(registerData);
+        const response = await usersService.create(createData);
 
         if (response.success) {
-          alert(`Usuario registrado exitosamente. ID de solicitud: ${response.data.request_id}`);
+          alert(`Usuario creado exitosamente. ID: ${response.data.id}`);
           onClose();
-          // Recargar la página de usuarios
-          window.location.reload();
+          // Trigger parent to reload
+          onSave(user!);
         } else {
-          setError(response.message || 'Error al registrar el usuario');
+          setError(response.message || 'Error al crear el usuario');
         }
       }
     } catch (err: any) {
@@ -262,121 +260,73 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
             </div>
 
             {/* Dirección */}
-            {isEditing && (
-              <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-gray-300 mb-2">Dirección</label>
-                <input
-                  type="text"
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                  placeholder="Av. Principal 123, Lima"
-                  disabled={loading}
-                />
-              </div>
-            )}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold text-gray-300 mb-2">Dirección</label>
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                placeholder="Av. Principal 123, Lima"
+                disabled={loading}
+              />
+            </div>
 
-            {/* Campos adicionales solo para crear usuario */}
-            {!isEditing && (
-              <>
-                {/* Especialidad */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Especialidad <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.speciality}
-                    onChange={(e) => setFormData({ ...formData, speciality: e.target.value })}
-                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                    placeholder="Administración de Sistemas"
-                    disabled={loading}
-                  />
-                </div>
+            {/* Fecha de nacimiento */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">Fecha de Nacimiento</label>
+              <input
+                type="date"
+                value={formData.birth_date}
+                onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
+                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                disabled={loading}
+              />
+            </div>
 
-                {/* Salario */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Salario <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    required
-                    value={formData.salary}
-                    onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
-                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                    placeholder="4500.00"
-                    disabled={loading}
-                  />
-                </div>
+            {/* Género */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">Género</label>
+              <select
+                value={formData.gender}
+                onChange={(e) => setFormData({ ...formData, gender: e.target.value as Gender })}
+                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
+                disabled={loading}
+              >
+                <option value="male" className="bg-secondary-700">Masculino</option>
+                <option value="female" className="bg-secondary-700">Femenino</option>
+                <option value="other" className="bg-secondary-700">Otro</option>
+              </select>
+            </div>
 
-                {/* Fecha de contratación */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Fecha de Contratación <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={formData.hire_date}
-                    onChange={(e) => setFormData({ ...formData, hire_date: e.target.value })}
-                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                    disabled={loading}
-                  />
-                </div>
+            {/* País */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">País</label>
+              <input
+                type="text"
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                placeholder="Peru"
+                disabled={loading}
+              />
+            </div>
 
-                {/* Estado de empleo */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Estado de Empleo
-                  </label>
-                  <select
-                    value={formData.employment_status}
-                    onChange={(e) => setFormData({ ...formData, employment_status: e.target.value })}
-                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
-                    disabled={loading}
-                  >
-                    <option value="Active" className="bg-secondary-700">Active</option>
-                    <option value="Inactive" className="bg-secondary-700">Inactive</option>
-                    <option value="Terminated" className="bg-secondary-700">Terminated</option>
-                  </select>
-                </div>
-
-                {/* Horario */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">Horario</label>
-                  <input
-                    type="text"
-                    value={formData.schedule}
-                    onChange={(e) => setFormData({ ...formData, schedule: e.target.value })}
-                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                    placeholder="Lunes a Viernes, 9:00 AM - 6:00 PM"
-                    disabled={loading}
-                  />
-                </div>
-
-                {/* Motivo/Razón */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Motivo de Registro <span className="text-danger">*</span>
-                  </label>
-                  <textarea
-                    required
-                    value={formData.reason}
-                    onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                    className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 min-h-[100px]"
-                    placeholder="Explique brevemente por qué se necesita crear este usuario..."
-                    rows={3}
-                    disabled={loading}
-                  />
-                </div>
-              </>
-            )}
+            {/* Ciudad/Ubicación */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">Ciudad</label>
+              <input
+                type="text"
+                value={formData.country_location}
+                onChange={(e) => setFormData({ ...formData, country_location: e.target.value })}
+                className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+                placeholder="Lima"
+                disabled={loading}
+              />
+            </div>
 
             {/* Rol */}
-            <div className={isEditing ? '' : 'md:col-span-2'}>
+            <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2">
                 Rol <span className="text-danger">*</span>
               </label>
@@ -387,27 +337,14 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
                 className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
                 disabled={loading}
               >
-                <option value="administrador" className="bg-secondary-700">
-                  Administrador (Acceso Total)
-                </option>
-                <option value="gestor_lms" className="bg-secondary-700">
-                  Gestor LMS
-                </option>
-                <option value="soporte_tecnico" className="bg-secondary-700">
-                  Soporte Técnico
-                </option>
-                <option value="soporte_seguridad" className="bg-secondary-700">
-                  Soporte - Seguridad
-                </option>
-                <option value="soporte_infraestructura" className="bg-secondary-700">
-                  Soporte - Infraestructura
-                </option>
-                <option value="developer_web" className="bg-secondary-700">
-                  Developer Web
-                </option>
-                <option value="analista_datos" className="bg-secondary-700">
-                  Analista de Datos
-                </option>
+                <option value="admin" className="bg-secondary-700">Administrador</option>
+                <option value="instructor" className="bg-secondary-700">Instructor</option>
+                <option value="student" className="bg-secondary-700">Estudiante</option>
+                <option value="lms" className="bg-secondary-700">Gestor LMS</option>
+                <option value="seg" className="bg-secondary-700">Seguridad</option>
+                <option value="infra" className="bg-secondary-700">Infraestructura</option>
+                <option value="web" className="bg-secondary-700">Desarrollo Web</option>
+                <option value="data" className="bg-secondary-700">Analista de Datos</option>
               </select>
             </div>
 
@@ -429,9 +366,6 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
                   </option>
                   <option value="inactive" className="bg-secondary-700">
                     Inactivo
-                  </option>
-                  <option value="banned" className="bg-secondary-700">
-                    Bloqueado
                   </option>
                 </select>
               </div>

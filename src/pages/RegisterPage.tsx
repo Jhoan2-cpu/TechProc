@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,7 +7,7 @@ import {
   faEnvelope,
   faLock,
   faPhone,
-  faBuilding,
+  faMapMarkerAlt,
   faIdCard,
   faShieldHalved,
   faServer,
@@ -17,55 +17,47 @@ import {
   faArrowLeft,
   faCheckCircle,
   faSpinner,
+  faBirthdayCake,
+  faVenusMars,
   faTicket,
 } from '@fortawesome/free-solid-svg-icons';
-import { authService } from '../services/authService';
-import type { UserRole } from '../shared/types/auth';
-
-interface RegisterPageProps {
-  onBackToLogin: () => void;
-}
 
 interface RegisterFormData {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
+  dni: string;
   email: string;
-  phone: string;
-  username: string;
   password: string;
-  confirmPassword: string;
+  password_confirmation: string;
+  phone_number: string;
+  address: string;
+  birth_date: string;
+  gender: 'male' | 'female' | 'other';
+  country: string;
   role: string;
-  department: string;
-  reason: string;
-  hireDate: string;
-  employmentStatus: string;
-  schedule: string;
-  speciality: string;
-  salary: string;
 }
 
-export const RegisterPage = ({}: RegisterPageProps) => {
+export const RegisterPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<RegisterFormData>({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
+    dni: '',
     email: '',
-    phone: '',
-    username: '',
     password: '',
-    confirmPassword: '',
+    password_confirmation: '',
+    phone_number: '',
+    address: '',
+    birth_date: '',
+    gender: 'other',
+    country: 'Peru',
     role: '',
-    department: '',
-    reason: '',
-    hireDate: new Date().toISOString().split('T')[0], // Fecha actual por defecto
-    employmentStatus: 'Active',
-    schedule: 'Lunes a Viernes, 9:00 AM - 6:00 PM',
-    speciality: '',
-    salary: '',
   });
 
+  const [document, setDocument] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
-  const [requestId, setRequestId] = useState<number | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [userEmail, setUserEmail] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string>('');
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});
@@ -74,7 +66,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
     navigate('/login');
   };
 
-  const roles: Array<{ value: UserRole; label: string; icon: any; color: string }> = [
+  const roles: Array<{ value: string; label: string; icon: any; color: string }> = [
     {
       value: 'admin',
       label: 'Administrador',
@@ -82,10 +74,22 @@ export const RegisterPage = ({}: RegisterPageProps) => {
       color: 'text-red-600',
     },
     {
+      value: 'instructor',
+      label: 'Instructor',
+      icon: faGraduationCap,
+      color: 'text-blue-600',
+    },
+    {
+      value: 'student',
+      label: 'Estudiante',
+      icon: faUser,
+      color: 'text-green-600',
+    },
+    {
       value: 'lms',
       label: 'Gestor LMS',
       icon: faGraduationCap,
-      color: 'text-blue-600',
+      color: 'text-purple-600',
     },
     {
       value: 'support',
@@ -94,76 +98,69 @@ export const RegisterPage = ({}: RegisterPageProps) => {
       color: 'text-yellow-600',
     },
     {
-      value: 'soporte_seguridad',
-      label: 'Soporte - Seguridad',
-      icon: faLock,
-      color: 'text-purple-600',
+      value: 'seg',
+      label: 'Seguridad',
+      icon: faShieldHalved,
+      color: 'text-pink-600',
     },
     {
-      value: 'soporte_infraestructura',
-      label: 'Soporte - Infraestructura',
+      value: 'infra',
+      label: 'Infraestructura',
       icon: faServer,
-      color: 'text-green-600',
+      color: 'text-indigo-600',
     },
     {
-      value: 'developer_web',
-      label: 'Developer Web',
+      value: 'web',
+      label: 'Desarrollo Web',
       icon: faGlobe,
       color: 'text-orange-600',
     },
     {
-      value: 'analista_datos',
+      value: 'data',
       label: 'Analista de Datos',
       icon: faChartLine,
       color: 'text-cyan-600',
     },
   ];
 
+  // Generar document automáticamente cuando cambie role o dni
+  useEffect(() => {
+    if (formData.role && formData.dni) {
+      let prefix = '';
+      if (formData.role === 'admin') {
+        prefix = 'AD';
+      } else if (['lms', 'support', 'web', 'data', 'infra', 'seg'].includes(formData.role)) {
+        prefix = 'EMP';
+      } else {
+        prefix = 'DOC'; // Para instructor y student
+      }
+      setDocument(`${prefix}${formData.dni}`);
+    } else {
+      setDocument('');
+    }
+  }, [formData.role, formData.dni]);
+
   const validateForm = (): boolean => {
     const newErrors: Partial<Record<keyof RegisterFormData, string>> = {};
 
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'El nombre es requerido';
-    }
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'El apellido es requerido';
-    }
+    if (!formData.first_name.trim()) newErrors.first_name = 'El nombre es requerido';
+    if (!formData.last_name.trim()) newErrors.last_name = 'El apellido es requerido';
+    if (!formData.dni.trim()) newErrors.dni = 'El DNI es requerido';
     if (!formData.email.trim()) {
       newErrors.email = 'El email es requerido';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Email inválido';
-    }
-    if (!formData.username.trim()) {
-      newErrors.username = 'El nombre de usuario es requerido';
-    } else if (formData.username.length < 4) {
-      newErrors.username = 'El usuario debe tener al menos 4 caracteres';
     }
     if (!formData.password) {
       newErrors.password = 'La contraseña es requerida';
     } else if (formData.password.length < 6) {
       newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
     }
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
+    if (formData.password !== formData.password_confirmation) {
+      newErrors.password_confirmation = 'Las contraseñas no coinciden';
     }
-    if (!formData.role) {
-      newErrors.role = 'Debe seleccionar un rol';
-    }
-    if (!formData.reason.trim()) {
-      newErrors.reason = 'Debe indicar el motivo de registro';
-    }
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'El teléfono es requerido';
-    }
-    if (!formData.hireDate) {
-      newErrors.hireDate = 'La fecha de contratación es requerida';
-    }
-    if (!formData.speciality.trim()) {
-      newErrors.speciality = 'La especialidad es requerida';
-    }
-    if (!formData.salary || parseFloat(formData.salary) <= 0) {
-      newErrors.salary = 'El salario es requerido y debe ser mayor a 0';
-    }
+    if (!formData.role) newErrors.role = 'Debe seleccionar un rol';
+    if (!formData.phone_number.trim()) newErrors.phone_number = 'El teléfono es requerido';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -177,33 +174,39 @@ export const RegisterPage = ({}: RegisterPageProps) => {
       try {
         setLoading(true);
 
-        // Llamar al servicio de registro según especificación
-        const response = await authService.register({
-          email: formData.email,
-          password: formData.password,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          phone_number: formData.phone,
-          role: formData.role as UserRole,
-          reason: formData.reason,
-          position_id: 1,
-          department_id: 2,
-          hire_date: formData.hireDate,
-          employment_status: formData.employmentStatus,
-          schedule: formData.schedule,
-          speciality: formData.speciality,
-          salary: parseFloat(formData.salary),
+        const response = await fetch('http://127.0.0.1:8000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            email: formData.email,
+            password: formData.password,
+            password_confirmation: formData.password_confirmation,
+            phone_number: formData.phone_number,
+            address: formData.address || undefined,
+            birth_date: formData.birth_date || undefined,
+            gender: formData.gender,
+            country: formData.country,
+            dni: formData.dni,
+            document: document,
+            role: formData.role,
+            status: 'inactive',
+          }),
         });
 
-        // NO guardar sesión - el registro requiere aprobación del administrador
-        // Mostrar mensaje de éxito con el request_id
-        if (response.success && response.data) {
-          setRequestId(response.data.request_id);
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          setUserId(data.data.user_id);
+          setUserEmail(data.data.email);
           setSubmitted(true);
         } else {
-          setApiError(response.message || 'Error al procesar el registro');
+          setApiError(data.message || 'Error al procesar el registro');
         }
-
       } catch (error: any) {
         setApiError(error.message || 'Error al procesar el registro');
       } finally {
@@ -212,188 +215,16 @@ export const RegisterPage = ({}: RegisterPageProps) => {
     }
   };
 
-  const handleChange = (field: keyof RegisterFormData, value: string) => {
+  const handleChange = (field: keyof RegisterFormData, value: string | any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-
-    // Validación en tiempo real
-    validateField(field, value);
-  };
-
-  const validateField = (field: keyof RegisterFormData, value: string) => {
-    const newErrors = { ...errors };
-
-    switch (field) {
-      case 'firstName':
-        if (!value.trim()) {
-          newErrors.firstName = 'El nombre es requerido';
-        } else if (value.trim().length < 2) {
-          newErrors.firstName = 'El nombre debe tener al menos 2 caracteres';
-        } else if (value.trim().length > 50) {
-          newErrors.firstName = 'El nombre no puede tener más de 50 caracteres';
-        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value)) {
-          newErrors.firstName = 'Solo se permiten letras y espacios';
-        } else {
-          delete newErrors.firstName;
-        }
-        break;
-
-      case 'lastName':
-        if (!value.trim()) {
-          newErrors.lastName = 'El apellido es requerido';
-        } else if (value.trim().length < 2) {
-          newErrors.lastName = 'El apellido debe tener al menos 2 caracteres';
-        } else if (value.trim().length > 50) {
-          newErrors.lastName = 'El apellido no puede tener más de 50 caracteres';
-        } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value)) {
-          newErrors.lastName = 'Solo se permiten letras y espacios';
-        } else {
-          delete newErrors.lastName;
-        }
-        break;
-
-      case 'email':
-        if (!value.trim()) {
-          newErrors.email = 'El email es requerido';
-        } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
-          newErrors.email = 'Email inválido. Solo letras, números, puntos, guiones y guiones bajos';
-        } else if (value.length > 100) {
-          newErrors.email = 'El email no puede tener más de 100 caracteres';
-        } else {
-          delete newErrors.email;
-        }
-        break;
-
-      case 'username':
-        if (!value.trim()) {
-          newErrors.username = 'El nombre de usuario es requerido';
-        } else if (value.length < 4) {
-          newErrors.username = 'El usuario debe tener al menos 4 caracteres';
-        } else if (value.length > 20) {
-          newErrors.username = 'El usuario no puede tener más de 20 caracteres';
-        } else if (!/^[a-zA-Z0-9._-]+$/.test(value)) {
-          newErrors.username = 'Solo se permiten letras, números, puntos, guiones y guiones bajos';
-        } else {
-          delete newErrors.username;
-        }
-        break;
-
-      case 'password':
-        if (!value) {
-          newErrors.password = 'La contraseña es requerida';
-        } else if (value.length < 6) {
-          newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
-        } else if (value.length > 50) {
-          newErrors.password = 'La contraseña no puede tener más de 50 caracteres';
-        } else {
-          delete newErrors.password;
-        }
-        // Revalidar confirmPassword si existe
-        if (formData.confirmPassword) {
-          if (value !== formData.confirmPassword) {
-            newErrors.confirmPassword = 'Las contraseñas no coinciden';
-          } else {
-            delete newErrors.confirmPassword;
-          }
-        }
-        break;
-
-      case 'confirmPassword':
-        if (!value) {
-          newErrors.confirmPassword = 'Debe confirmar la contraseña';
-        } else if (value !== formData.password) {
-          newErrors.confirmPassword = 'Las contraseñas no coinciden';
-        } else {
-          delete newErrors.confirmPassword;
-        }
-        break;
-
-      case 'role':
-        if (!value) {
-          newErrors.role = 'Debe seleccionar un rol';
-        } else {
-          delete newErrors.role;
-        }
-        break;
-
-      case 'reason':
-        if (!value.trim()) {
-          newErrors.reason = 'Debe indicar el motivo de registro';
-        } else if (value.trim().length < 10) {
-          newErrors.reason = 'El motivo debe tener al menos 10 caracteres';
-        } else if (value.trim().length > 500) {
-          newErrors.reason = 'El motivo no puede exceder 500 caracteres';
-        } else if (!/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s.,;:()\-¿?¡!]+$/.test(value)) {
-          newErrors.reason = 'Solo se permiten letras, números, espacios y signos de puntuación básicos';
-        } else {
-          delete newErrors.reason;
-        }
-        break;
-
-      case 'phone':
-        // Validación estricta: solo formato +51980490696 (sin espacios, guiones ni paréntesis)
-        if (!value.trim()) {
-          newErrors.phone = 'El teléfono es requerido';
-        } else if (!/^\+\d{1,3}\d{7,12}$/.test(value)) {
-          newErrors.phone = 'Formato inválido. Use +[código país][número]. Ej: +51980490696';
-        } else if (value.length > 16) {
-          newErrors.phone = 'El teléfono no puede tener más de 16 caracteres';
-        } else {
-          delete newErrors.phone;
-        }
-        break;
-
-      case 'department':
-        // Validación para departamento (opcional pero sin caracteres especiales)
-        if (value.trim()) {
-          if (!/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(value)) {
-            newErrors.department = 'Solo se permiten letras, números y espacios';
-          } else if (value.trim().length > 50) {
-            newErrors.department = 'El departamento no puede tener más de 50 caracteres';
-          } else {
-            delete newErrors.department;
-          }
-        } else {
-          delete newErrors.department;
-        }
-        break;
-
-      case 'hireDate':
-        if (!value) {
-          newErrors.hireDate = 'La fecha de contratación es requerida';
-        } else {
-          delete newErrors.hireDate;
-        }
-        break;
-
-      case 'speciality':
-        if (!value.trim()) {
-          newErrors.speciality = 'La especialidad es requerida';
-        } else if (value.trim().length < 3) {
-          newErrors.speciality = 'La especialidad debe tener al menos 3 caracteres';
-        } else if (value.trim().length > 100) {
-          newErrors.speciality = 'La especialidad no puede tener más de 100 caracteres';
-        } else {
-          delete newErrors.speciality;
-        }
-        break;
-
-      case 'salary':
-        if (!value) {
-          newErrors.salary = 'El salario es requerido';
-        } else if (isNaN(parseFloat(value)) || parseFloat(value) <= 0) {
-          newErrors.salary = 'El salario debe ser un número mayor a 0';
-        } else if (parseFloat(value) > 999999.99) {
-          newErrors.salary = 'El salario no puede exceder 999,999.99';
-        } else {
-          delete newErrors.salary;
-        }
-        break;
-
-      default:
-        break;
+    // Limpiar error del campo al cambiar
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
     }
-
-    setErrors(newErrors);
   };
 
   if (submitted) {
@@ -409,12 +240,15 @@ export const RegisterPage = ({}: RegisterPageProps) => {
               ¡Solicitud Enviada Exitosamente!
             </h2>
             <p className="text-gray-300 mb-2">
-              Solicitud de registro enviada. Será revisada por un administrador.
+              Tu solicitud de registro ha sido enviada.
             </p>
-            {requestId && (
+            {userId && (
               <div className="bg-gradient-to-br from-primary-600/20 to-primary-700/20 rounded-lg p-4 mb-4 border border-primary-500/30">
+                <p className="text-sm text-gray-300 mb-1">
+                  <span className="font-semibold text-primary-400">ID de Usuario:</span> #{userId}
+                </p>
                 <p className="text-sm text-gray-300">
-                  <span className="font-semibold text-primary-400">ID de Solicitud:</span> #{requestId}
+                  <span className="font-semibold text-primary-400">Email:</span> {userEmail}
                 </p>
               </div>
             )}
@@ -478,14 +312,14 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                   </label>
                   <input
                     type="text"
-                    className={`input ${errors.firstName ? 'border-danger' : ''}`}
-                    value={formData.firstName}
-                    onChange={(e) => handleChange('firstName', e.target.value)}
+                    className={`input ${errors.first_name ? 'border-danger' : ''}`}
+                    value={formData.first_name}
+                    onChange={(e) => handleChange('first_name', e.target.value)}
                     placeholder="Juan"
                     disabled={loading}
                   />
-                  {errors.firstName && (
-                    <p className="text-danger text-xs mt-1">{errors.firstName}</p>
+                  {errors.first_name && (
+                    <p className="text-danger text-xs mt-1">{errors.first_name}</p>
                   )}
                 </div>
                 <div>
@@ -494,16 +328,103 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                   </label>
                   <input
                     type="text"
-                    className={`input ${errors.lastName ? 'border-danger' : ''}`}
-                    value={formData.lastName}
-                    onChange={(e) => handleChange('lastName', e.target.value)}
+                    className={`input ${errors.last_name ? 'border-danger' : ''}`}
+                    value={formData.last_name}
+                    onChange={(e) => handleChange('last_name', e.target.value)}
                     placeholder="Pérez"
                     disabled={loading}
                   />
-                  {errors.lastName && (
-                    <p className="text-danger text-xs mt-1">{errors.lastName}</p>
+                  {errors.last_name && (
+                    <p className="text-danger text-xs mt-1">{errors.last_name}</p>
                   )}
                 </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    DNI *
+                  </label>
+                  <div className="relative">
+                    <FontAwesomeIcon
+                      icon={faIdCard}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                    <input
+                      type="text"
+                      className={`input pl-12 ${errors.dni ? 'border-danger' : ''}`}
+                      value={formData.dni}
+                      onChange={(e) => handleChange('dni', e.target.value)}
+                      placeholder="12345678"
+                      disabled={loading}
+                    />
+                  </div>
+                  {errors.dni && <p className="text-danger text-xs mt-1">{errors.dni}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Documento (Generado automáticamente)
+                  </label>
+                  <input
+                    type="text"
+                    className="input bg-secondary-700/50 cursor-not-allowed"
+                    value={document}
+                    disabled
+                    placeholder="Seleccione rol y DNI"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">
+                    {formData.role === 'admin' ? 'Admin: AD + DNI' :
+                     ['lms', 'support', 'web', 'data', 'infra', 'seg'].includes(formData.role) ? 'Empleado: EMP + DNI' :
+                     formData.role ? 'Documento: DOC + DNI' : 'Seleccione un rol primero'}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Fecha de Nacimiento
+                  </label>
+                  <div className="relative">
+                    <FontAwesomeIcon
+                      icon={faBirthdayCake}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                    <input
+                      type="date"
+                      className={`input pl-12 ${errors.birth_date ? 'border-danger' : ''}`}
+                      value={formData.birth_date}
+                      onChange={(e) => handleChange('birth_date', e.target.value)}
+                      disabled={loading}
+                    />
+                  </div>
+                  {errors.birth_date && <p className="text-danger text-xs mt-1">{errors.birth_date}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Género
+                  </label>
+                  <div className="relative">
+                    <FontAwesomeIcon
+                      icon={faVenusMars}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                    <select
+                      className={`input pl-12 ${errors.gender ? 'border-danger' : ''}`}
+                      value={formData.gender}
+                      onChange={(e) => handleChange('gender', e.target.value as any)}
+                      disabled={loading}
+                    >
+                      <option value="male">Masculino</option>
+                      <option value="female">Femenino</option>
+                      <option value="other">Otro</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Información de Contacto */}
+            <div>
+              <h3 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
+                <FontAwesomeIcon icon={faEnvelope} className="text-primary-400" />
+                Información de Contacto
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Email *
@@ -535,14 +456,46 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     />
                     <input
                       type="tel"
-                      className={`input pl-12 ${errors.phone ? 'border-danger' : ''}`}
-                      value={formData.phone}
-                      onChange={(e) => handleChange('phone', e.target.value)}
-                      placeholder="+51980490696"
+                      className={`input pl-12 ${errors.phone_number ? 'border-danger' : ''}`}
+                      value={formData.phone_number}
+                      onChange={(e) => handleChange('phone_number', e.target.value)}
+                      placeholder="+51 987654321"
                       disabled={loading}
                     />
                   </div>
-                  {errors.phone && <p className="text-danger text-xs mt-1">{errors.phone}</p>}
+                  {errors.phone_number && <p className="text-danger text-xs mt-1">{errors.phone_number}</p>}
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    Dirección
+                  </label>
+                  <div className="relative">
+                    <FontAwesomeIcon
+                      icon={faMapMarkerAlt}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                    <input
+                      type="text"
+                      className={`input pl-12 ${errors.address ? 'border-danger' : ''}`}
+                      value={formData.address}
+                      onChange={(e) => handleChange('address', e.target.value)}
+                      placeholder="Av. Principal 123"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
+                    País
+                  </label>
+                  <input
+                    type="text"
+                    className={`input ${errors.country ? 'border-danger' : ''}`}
+                    value={formData.country}
+                    onChange={(e) => handleChange('country', e.target.value)}
+                    placeholder="Peru"
+                    disabled={loading}
+                  />
                 </div>
               </div>
             </div>
@@ -550,48 +503,10 @@ export const RegisterPage = ({}: RegisterPageProps) => {
             {/* Información de Cuenta */}
             <div>
               <h3 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
-                <FontAwesomeIcon icon={faIdCard} className="text-primary-400" />
+                <FontAwesomeIcon icon={faLock} className="text-primary-400" />
                 Información de Cuenta
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Nombre de Usuario *
-                  </label>
-                  <input
-                    type="text"
-                    className={`input ${errors.username ? 'border-danger' : ''}`}
-                    value={formData.username}
-                    onChange={(e) => handleChange('username', e.target.value)}
-                    placeholder="juan.perez"
-                    disabled={loading}
-                  />
-                  {errors.username && (
-                    <p className="text-danger text-xs mt-1">{errors.username}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Departamento
-                  </label>
-                  <div className="relative">
-                    <FontAwesomeIcon
-                      icon={faBuilding}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    />
-                    <input
-                      type="text"
-                      className={`input pl-12 ${errors.department ? 'border-danger' : ''}`}
-                      value={formData.department}
-                      onChange={(e) => handleChange('department', e.target.value)}
-                      placeholder="Tecnología"
-                      disabled={loading}
-                    />
-                  </div>
-                  {errors.department && (
-                    <p className="text-danger text-xs mt-1">{errors.department}</p>
-                  )}
-                </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Contraseña *
@@ -625,100 +540,16 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                     />
                     <input
                       type="password"
-                      className={`input pl-12 ${errors.confirmPassword ? 'border-danger' : ''}`}
-                      value={formData.confirmPassword}
-                      onChange={(e) => handleChange('confirmPassword', e.target.value)}
+                      className={`input pl-12 ${errors.password_confirmation ? 'border-danger' : ''}`}
+                      value={formData.password_confirmation}
+                      onChange={(e) => handleChange('password_confirmation', e.target.value)}
                       placeholder="••••••••"
                       disabled={loading}
                     />
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-danger text-xs mt-1">{errors.confirmPassword}</p>
+                  {errors.password_confirmation && (
+                    <p className="text-danger text-xs mt-1">{errors.password_confirmation}</p>
                   )}
-                </div>
-              </div>
-            </div>
-
-            {/* Información Laboral */}
-            <div>
-              <h3 className="text-lg font-heading font-bold text-white mb-4 flex items-center gap-2">
-                <FontAwesomeIcon icon={faBuilding} className="text-primary-400" />
-                Información Laboral
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Especialidad *
-                  </label>
-                  <input
-                    type="text"
-                    className={`input ${errors.speciality ? 'border-danger' : ''}`}
-                    value={formData.speciality}
-                    onChange={(e) => handleChange('speciality', e.target.value)}
-                    placeholder="Administración de Sistemas"
-                    disabled={loading}
-                  />
-                  {errors.speciality && (
-                    <p className="text-danger text-xs mt-1">{errors.speciality}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Salario *
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    className={`input ${errors.salary ? 'border-danger' : ''}`}
-                    value={formData.salary}
-                    onChange={(e) => handleChange('salary', e.target.value)}
-                    placeholder="4500.00"
-                    disabled={loading}
-                  />
-                  {errors.salary && (
-                    <p className="text-danger text-xs mt-1">{errors.salary}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Fecha de Contratación *
-                  </label>
-                  <input
-                    type="date"
-                    className={`input ${errors.hireDate ? 'border-danger' : ''}`}
-                    value={formData.hireDate}
-                    onChange={(e) => handleChange('hireDate', e.target.value)}
-                    disabled={loading}
-                  />
-                  {errors.hireDate && (
-                    <p className="text-danger text-xs mt-1">{errors.hireDate}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Estado de Empleo
-                  </label>
-                  <input
-                    type="text"
-                    className="input"
-                    value={formData.employmentStatus}
-                    onChange={(e) => handleChange('employmentStatus', e.target.value)}
-                    placeholder="Active"
-                    disabled={loading}
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-gray-300 mb-2">
-                    Horario
-                  </label>
-                  <input
-                    type="text"
-                    className="input"
-                    value={formData.schedule}
-                    onChange={(e) => handleChange('schedule', e.target.value)}
-                    placeholder="Lunes a Viernes, 9:00 AM - 6:00 PM"
-                    disabled={loading}
-                  />
                 </div>
               </div>
             </div>
@@ -768,22 +599,6 @@ export const RegisterPage = ({}: RegisterPageProps) => {
               {errors.role && <p className="text-danger text-sm mt-2">{errors.role}</p>}
             </div>
 
-            {/* Motivo de Registro */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                Motivo de Registro *
-              </label>
-              <textarea
-                className={`input min-h-[100px] ${errors.reason ? 'border-danger' : ''}`}
-                value={formData.reason}
-                onChange={(e) => handleChange('reason', e.target.value)}
-                placeholder="Explique brevemente por qué necesita acceso al sistema y cómo lo utilizará..."
-                rows={4}
-                disabled={loading}
-              />
-              {errors.reason && <p className="text-danger text-xs mt-1">{errors.reason}</p>}
-            </div>
-
             {/* Botones */}
             <div className="flex items-center justify-between pt-4 border-t border-primary-500/20">
               <button
@@ -807,7 +622,7 @@ export const RegisterPage = ({}: RegisterPageProps) => {
                 {loading ? (
                   <>
                     <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-                    Registrando...
+                    Enviando...
                   </>
                 ) : (
                   <>

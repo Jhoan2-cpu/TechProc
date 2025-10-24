@@ -5,29 +5,44 @@
 // ============================================
 
 export type UserRole =
-  | 'administrador'
-  | 'gestor_lms'
-  | 'soporte_tecnico'
-  | 'soporte_seguridad'
-  | 'soporte_infraestructura'
-  | 'developer_web'
-  | 'analista_datos';
+  | 'admin'
+  | 'instructor'
+  | 'student'
+  | 'lms'
+  | 'seg'
+  | 'infra'
+  | 'web'
+  | 'data';
 
-export type UserStatus = 'active' | 'inactive' | 'banned';
+export type UserStatus = 'active' | 'inactive';
+
+export type Gender = 'male' | 'female' | 'other';
 
 export interface User {
-  id: string;
-  username: string;
-  email: string;
+  id: number;
   first_name: string;
   last_name: string;
-  name: string;
-  role: UserRole;
-  phone?: string;
-  department?: string;
-  is_active: boolean;
+  full_name: string;
+  dni?: string;
+  document?: string;
+  email: string;
+  email_verified_at?: string | null;
+  phone_number?: string;
+  address?: string;
+  birth_date?: string;
+  role: string[]; // Array de roles
+  gender?: Gender;
+  country?: string;
+  country_location?: string;
+  timezone?: string;
+  profile_photo?: string | null;
+  status: UserStatus;
+  synchronized?: boolean;
+  last_access_ip?: string | null;
+  last_access?: string | null;
+  last_connection?: string | null;
   created_at: string;
-  last_login?: string;
+  updated_at?: string;
 }
 
 export interface UserStats {
@@ -49,20 +64,12 @@ export interface RoleInfo {
 // Tipos de respuesta según la API
 export interface UsersListResponse {
   success: boolean;
-  data: {
-    users: ApiUser[];
-    pagination: {
-      current_page: number;
-      total_pages: number;
-      total_records: number;
-      per_page: number;
-    };
-  };
+  data: User[];
 }
 
 export interface UserDetailResponse {
   success: boolean;
-  data: ApiUser;
+  data: User;
 }
 
 export interface UserCreateResponse {
@@ -84,26 +91,6 @@ export interface UserDeleteResponse {
   message: string;
 }
 
-// Tipos de la API (diferentes a los tipos del frontend)
-export interface ApiUser {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number?: string;
-  address?: string;
-  birth_date?: string;
-  gender?: string;
-  country?: string;
-  role: string[]; // Array de roles según respuesta del API
-  status: string;
-  profile_photo?: string;
-  last_access?: string | null;
-  last_access_ip?: string | null;
-  created_at: string;
-  updated_at?: string;
-}
-
 // Parámetros de filtrado para listar usuarios
 export interface UsersFilterParams {
   page?: number;
@@ -117,87 +104,44 @@ export interface UsersFilterParams {
 export interface CreateUserData {
   first_name: string;
   last_name: string;
+  full_name?: string;
+  dni?: string;
+  document?: string;
   email: string;
   password: string;
   phone_number?: string;
   address?: string;
   birth_date?: string;
-  gender?: string;
+  gender?: Gender;
   country?: string;
-  role: string;
-  status: string;
+  country_location?: string;
+  timezone?: string;
+  profile_photo?: string | null;
+  role: UserRole;
+  status?: UserStatus;
+  synchronized?: boolean;
 }
 
 // Datos para actualizar usuario
 export interface UpdateUserData {
   first_name?: string;
   last_name?: string;
+  full_name?: string;
+  dni?: string;
+  document?: string;
+  email?: string;
+  password?: string;
   phone_number?: string;
   address?: string;
-  status?: string;
-  role?: string;
-}
-
-// ============================================
-// Registration Requests Service Types
-// ============================================
-
-// Tipos de respuesta según la API
-export interface RegistrationRequestsListResponse {
-  success: boolean;
-  data: ApiRegistrationRequest[];
-}
-
-export interface ApproveRequestResponse {
-  success: boolean;
-  message: string;
-}
-
-export interface RejectRequestResponse {
-  success: boolean;
-  message: string;
-}
-
-// Tipo de solicitud de registro desde la API
-export interface ApiRegistrationRequest {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number?: string;
-  role: string;
-  reason?: string;
-  created_at: string;
-  status: 'pending' | 'approved' | 'rejected';
-}
-
-// Tipo de solicitud de registro para el frontend
-export interface RegistrationRequest {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number?: string;
-  role: string;
-  reason?: string;
-  created_at: string;
-  status: 'pending' | 'approved' | 'rejected';
-}
-
-// Parámetros de filtrado
-export interface RegistrationRequestsFilterParams {
-  status?: 'pending' | 'approved' | 'rejected';
-}
-
-// Datos para aprobar solicitud
-export interface ApproveRequestData {
-  role: string;
-  status: string;
-}
-
-// Datos para rechazar solicitud
-export interface RejectRequestData {
-  rejection_reason: string;
+  birth_date?: string;
+  gender?: Gender;
+  country?: string;
+  country_location?: string;
+  timezone?: string;
+  profile_photo?: string | null;
+  role?: UserRole;
+  status?: UserStatus;
+  synchronized?: boolean;
 }
 
 // ============================================
@@ -211,20 +155,6 @@ export interface UserFormModalProps {
   onSave: (user: User) => void;
 }
 
-export interface ApproveRegistrationModalProps {
-  isOpen: boolean;
-  registration: RegistrationRequest | null;
-  onClose: () => void;
-  onConfirm: (role: string) => void;
-}
-
-export interface RejectRegistrationModalProps {
-  isOpen: boolean;
-  registration: RegistrationRequest | null;
-  onClose: () => void;
-  onConfirm: (reason: string) => void;
-}
-
 export interface UserFiltersProps {
   searchTerm: string;
   filterRole: string;
@@ -233,25 +163,6 @@ export interface UserFiltersProps {
   onRoleChange: (value: string) => void;
   onStatusChange: (value: string) => void;
   onCreateClick: () => void;
-}
-
-export interface PendingRegistrationCardProps {
-  registration: RegistrationRequest;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
-  onApprove: () => void;
-  onReject: () => void;
-}
-
-export interface PendingRegistrationStatsProps {
-  pendingCount: number;
-  approvedCount: number;
-  rejectedCount: number;
-}
-
-export interface PendingRegistrationFiltersProps {
-  filterStatus: 'all' | 'pending' | 'approved' | 'rejected';
-  onStatusChange: (status: 'all' | 'pending' | 'approved' | 'rejected') => void;
 }
 
 export interface UserStatsCardProps {
@@ -265,7 +176,6 @@ export interface UserStatsCardProps {
 
 export interface UserTableRowProps {
   user: User;
-  roleInfo: RoleInfo;
   onEdit: (user: User) => void;
-  onToggleStatus: (userId: string) => void;
+  onViewDetails: (user: User) => void;
 }

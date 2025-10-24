@@ -17,7 +17,6 @@ import { InfrastructureMainPage } from "../modules/infrastructure/pages/Infrastr
 import { WebPage } from "../modules/web/pages/WebPage";
 import { AnalyticsMainPage } from "../modules/analytics/pages/AnalyticsMainPage";
 import { UsersPage } from "../modules/users/pages/UsersPage";
-import { PendingRegistrationsPage } from "../modules/users/pages/PendingRegistrationsPage";
 import { Breadcrumb } from "../shared/components/Breadcrumb";
 import type { User } from "../shared/types/auth";
 import { hasAccess } from "../shared/utils/auth";
@@ -165,7 +164,6 @@ export default function Layout({
             <Route path="/" element={<Navigate to="/website" replace />} />
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />
             <Route path="/users" element={<UsersPage />} />
-            <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />
             <Route path="/lms-dashboard" element={<LMSMainPage />} />
             <Route path="/lms-courses" element={<LMSMainPage />} />
             <Route path="/lms-courses/:courseId" element={<CourseDetailsPage />} />
