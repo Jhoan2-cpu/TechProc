@@ -14,8 +14,6 @@ import {
   faTrash,
   faArrowLeft,
   faUsers,
-  faCheckCircle,
-  faExclamationCircle,
   faLink,
   faFile,
   faFilePdf,
@@ -109,16 +107,6 @@ export const CourseDetailsPage = () => {
     } finally {
       setLoadingClasses(false);
     }
-  };
-
-  const handleAddClass = (groupId?: number) => {
-    // Si se pasa un groupId específico, lo usa, sino usa el primer grupo disponible
-    if (groupId) {
-      setSelectedGroupId(groupId);
-    } else if (groups.length > 0) {
-      setSelectedGroupId(groups[0].id);
-    }
-    setShowAddClassModal(true);
   };
 
   const handleClassAdded = async () => {

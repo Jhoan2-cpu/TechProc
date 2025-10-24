@@ -1,10 +1,9 @@
 // src/modules/analytics/pages/AttendancePage.tsx
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faFileCsv, 
-  faChartBar, 
-  faUserCheck, 
+import {
+  faChartBar,
+  faUserCheck,
   faChartLine,
   faPercentage,
   faUsers,

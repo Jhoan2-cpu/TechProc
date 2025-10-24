@@ -58,10 +58,20 @@ function App() {
   const handleLogin = (user: User) => {
     setCurrentUser(user);
   };
-  
-  const handleLogout = () => {
-    authService.clearSession();
-    setCurrentUser(null);
+
+  const handleLogout = async () => {
+    try {
+      // Llamar a la API de logout
+      await authService.logout();
+      console.log('Logout exitoso');
+    } catch (error) {
+      console.error('Error al hacer logout:', error);
+      // Continuar con el logout local incluso si falla la API
+    } finally {
+      // Limpiar sesión local y actualizar estado
+      authService.clearSession();
+      setCurrentUser(null);
+    }
   };
 
   if (isLoading) {

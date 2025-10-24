@@ -17,14 +17,6 @@ export const GradeFilterSection = ({
   onFilterChange,
   onClearFilters
 }: GradeFilterSectionProps) => {
-  const evaluationTypes = [
-    'Quiz',
-    'Exam',
-    'Assignment',
-    'Project',
-    'Final'
-  ];
-
   return (
     <div className="card p-6 border border-gray-700/30">
       <div className="flex items-center justify-between mb-4">

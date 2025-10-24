@@ -72,8 +72,14 @@ export const authService = {
 
   // Logout
   async logout(): Promise<void> {
+    const sessionId = sessionStorage.getItem('session_id');
+    if (!sessionId) {
+      throw new Error('No hay sesión activa');
+    }
+
     return apiRequest<void>('/auth/logout', {
       method: 'POST',
+      body: JSON.stringify({ session_id: parseInt(sessionId) }),
     });
   },
 

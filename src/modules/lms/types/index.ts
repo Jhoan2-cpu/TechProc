@@ -869,7 +869,7 @@ export interface CreateAcademicPeriodData {
 // -------------------------------------------------------------------
 
 // Status de grupo
-export type GroupStatus = 'open' | 'in_progress' | 'completed' | 'cancelled';
+export type GroupStatus = 'draft' | 'approved' | 'open' | 'in_progress' | 'completed' | 'cancelled' | 'suspended';
 
 // Grupo del frontend
 export interface Group {
