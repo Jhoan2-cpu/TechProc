@@ -157,7 +157,7 @@ export const apiRequest = async <T>(
           sessionStorage.removeItem('auth_token');
           sessionStorage.removeItem('refresh_token');
           // Usar ruta relativa que funciona con basename
-          window.location.href = '/procesostecnologicos/login';
+          window.location.href = '/procesostecnologicos/web/login';
         }
       }
     }
