@@ -864,3 +864,274 @@ export interface CreateAcademicPeriodData {
   status: AcademicPeriodStatus;
 }
 
+// -------------------------------------------------------------------
+// GRUPOS (GROUPS)
+// -------------------------------------------------------------------
+
+// Status de grupo
+export type GroupStatus = 'open' | 'in_progress' | 'completed' | 'cancelled';
+
+// Grupo del frontend
+export interface Group {
+  id: number;
+  course_id: number;
+  course?: {
+    id: number;
+    title: string;
+    name?: string;
+  };
+  code: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  status: GroupStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+// Grupo de la API
+export interface ApiGroup {
+  id: number;
+  course_id: number;
+  course?: {
+    id: number;
+    title: string;
+    name?: string;
+  };
+  code: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  status: GroupStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+// Responses de la API
+export interface GroupsListResponse {
+  success: boolean;
+  data: {
+    data: ApiGroup[];
+    pagination: {
+      total: number;
+      count: number;
+      per_page: number;
+      current_page: number;
+      total_pages: number;
+      links: {
+        next: string | null;
+        previous: string | null;
+      };
+    };
+  };
+}
+
+export interface GroupCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+  };
+}
+
+// Datos para crear grupo
+export interface CreateGroupData {
+  course_id: number;
+  code: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  status: GroupStatus;
+}
+
+// -------------------------------------------------------------------
+// CLASES (CLASSES)
+// -------------------------------------------------------------------
+
+// Status de clase
+export type ClassStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
+// Clase del frontend
+export interface Class {
+  id: number;
+  group_id: number;
+  group?: {
+    id: number;
+    code: string;
+    name: string;
+    course?: {
+      id: number;
+      title: string;
+    };
+  };
+  class_name: string;
+  meeting_url: string;
+  description: string;
+  class_date: string;
+  start_time: string;
+  end_time: string;
+  class_status: ClassStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+// Clase de la API
+export interface ApiClass {
+  id: number;
+  group_id: number;
+  group?: {
+    id: number;
+    code: string;
+    name: string;
+    course?: {
+      id: number;
+      title: string;
+    };
+  };
+  class_name: string;
+  meeting_url: string;
+  description: string;
+  class_date: string;
+  start_time: string;
+  end_time: string;
+  class_status: ClassStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+// Responses de la API
+export interface ClassesListResponse {
+  success: boolean;
+  data: {
+    data: ApiClass[];
+    pagination: {
+      total: number;
+      count: number;
+      per_page: number;
+      current_page: number;
+      total_pages: number;
+      links: {
+        next: string | null;
+        previous: string | null;
+      };
+    };
+  };
+}
+
+export interface ClassCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+  };
+}
+
+export interface ClassDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Datos para crear clase
+export interface CreateClassData {
+  group_id: number;
+  class_name: string;
+  meeting_url: string;
+  description: string;
+  class_date: string;
+  start_time: string;
+  end_time: string;
+  class_status: ClassStatus;
+}
+
+// -------------------------------------------------------------------
+// MATERIALES DE CLASE (CLASS MATERIALS)
+// -------------------------------------------------------------------
+
+// Tipo de material
+export type MaterialType = 'PDF' | 'VIDEO' | 'LINK' | 'DOCUMENT' | 'PRESENTATION' | 'OTHER';
+
+// Material de clase del frontend
+export interface ClassMaterial {
+  id: number;
+  class_id: number;
+  class?: {
+    id: number;
+    class_name: string;
+    class_date: string;
+    group?: {
+      id: number;
+      name: string;
+      course?: {
+        id: number;
+        title: string;
+      };
+    };
+  };
+  material_url: string;
+  type: MaterialType;
+  created_at: string;
+  updated_at: string;
+}
+
+// Material de clase de la API
+export interface ApiClassMaterial {
+  id: number;
+  class_id: number;
+  class?: {
+    id: number;
+    class_name: string;
+    class_date: string;
+    group?: {
+      id: number;
+      name: string;
+      course?: {
+        id: number;
+        title: string;
+      };
+    };
+  };
+  material_url: string;
+  type: MaterialType;
+  created_at: string;
+  updated_at: string;
+}
+
+// Responses de la API
+export interface ClassMaterialsListResponse {
+  success: boolean;
+  data: {
+    data: ApiClassMaterial[];
+    pagination: {
+      total: number;
+      count: number;
+      per_page: number;
+      current_page: number;
+      total_pages: number;
+      links: {
+        next: string | null;
+        previous: string | null;
+      };
+    };
+  };
+}
+
+export interface ClassMaterialCreateResponse {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+  };
+}
+
+export interface ClassMaterialDeleteResponse {
+  success: boolean;
+  message: string;
+}
+
+// Datos para crear material de clase
+export interface CreateClassMaterialData {
+  class_id: number;
+  material_url: string;
+  type: MaterialType;
+}
+
