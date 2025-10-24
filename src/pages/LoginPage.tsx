@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelope,
@@ -273,13 +273,13 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               </button>
             </div>
             <div>
-              <a
-                href="/website"
+              <Link
+                to="/website"
                 className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
               >
                 <FontAwesomeIcon icon={faGlobe} />
                 Visitar nuestro sitio web
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -465,13 +465,13 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
             </button>
           </div>
           <div>
-            <a
-              href="/website"
+            <Link
+              to="/website"
               className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold hover:underline transition-colors duration-200"
             >
               <FontAwesomeIcon icon={faGlobe} />
               Visitar nuestro sitio web
-            </a>
+            </Link>
           </div>
         </div>
       </div>

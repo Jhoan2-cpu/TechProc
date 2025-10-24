@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGraduationCap,
@@ -75,9 +76,9 @@ export const WebsiteFooter = () => {
                 </a>
               </li>
               <li>
-                <a href="/login" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
+                <Link to="/login" className="text-gray-400 hover:text-primary-400 transition-colors text-sm">
                   Portal de Estudiantes
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

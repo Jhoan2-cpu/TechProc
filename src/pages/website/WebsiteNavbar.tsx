@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 
@@ -54,12 +55,12 @@ export const WebsiteNavbar = () => {
             >
               Contacto
             </button>
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="px-6 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 font-medium"
             >
               Ingresar
-            </a>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -98,12 +99,12 @@ export const WebsiteNavbar = () => {
             >
               Contacto
             </button>
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="block w-full text-center px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg font-medium mt-4"
             >
               Ingresar
-            </a>
+            </Link>
           </div>
         )}
       </div>
