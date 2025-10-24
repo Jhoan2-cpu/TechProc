@@ -3,7 +3,6 @@ import type { Course } from '../types';
 import {
   CreateCourseModal,
   CourseCard,
-  ViewCourseModal,
   CourseFilters
 } from '../components';
 import { coursesService } from '../services';
@@ -17,7 +16,6 @@ export const CoursesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
   const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
 
@@ -146,7 +144,6 @@ export const CoursesPage = () => {
               key={course.id}
               course={course}
               index={index}
-              onView={(course: Course) => setSelectedCourse(course)}
               onDelete={(course: Course) => setCourseToDelete(course)}
             />
           ))}
@@ -165,14 +162,6 @@ export const CoursesPage = () => {
         <CreateCourseModal
           onClose={() => setShowCreateModal(false)}
           onSave={handleCreateCourse}
-        />
-      )}
-
-      {/* Modal de visualización */}
-      {selectedCourse && (
-        <ViewCourseModal
-          course={selectedCourse}
-          onClose={() => setSelectedCourse(null)}
         />
       )}
 

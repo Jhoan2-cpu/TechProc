@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEye,
@@ -14,16 +15,19 @@ import type { Course } from '../types';
 interface CourseCardProps {
   course: Course;
   index?: number;
-  onView?: (course: Course) => void;
   onDelete?: (course: Course) => void;
 }
 
 export const CourseCard = ({
   course,
   index = 0,
-  onView,
   onDelete,
 }: CourseCardProps) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/lms-courses/${course.course_id || course.id}`);
+  };
   const getStatusBadge = (status: string) => {
     const styles = {
       publicado: 'bg-success/20 text-green-700',
@@ -149,7 +153,7 @@ export const CourseCard = ({
         {/* Acciones */}
         <div className="flex gap-2">
           <button
-            onClick={() => onView?.(course)}
+            onClick={handleViewDetails}
             className="flex-1 btn bg-primary-300/20 text-primary-300 hover:bg-primary-500/30 border border-primary-500/30 hover:border-primary-500 py-2 text-sm transition-all duration-300"
           >
             <FontAwesomeIcon icon={faEye} className="mr-1" />

@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-
 import { ProfilePage } from "../pages/ProfilePage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { LMSMainPage } from "../modules/lms/pages/LMSMainPage";
+import { CourseDetailsPage } from "../modules/lms/pages/CourseDetailsPage";
 import { TicketsMainPage } from "../modules/tickets/pages/TicketsMainPage";
 import {
   SecurityDashboardPage,
@@ -167,6 +168,7 @@ export default function Layout({
             <Route path="/pending-registrations" element={<PendingRegistrationsPage />} />
             <Route path="/lms-dashboard" element={<LMSMainPage />} />
             <Route path="/lms-courses" element={<LMSMainPage />} />
+            <Route path="/lms-courses/:courseId" element={<CourseDetailsPage />} />
             <Route path="/lms-students" element={<LMSMainPage />} />
             <Route path="/lms-instructors" element={<LMSMainPage />} />
             <Route path="/lms-companies" element={<LMSMainPage />} />
