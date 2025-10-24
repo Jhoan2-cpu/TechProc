@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv, faUsers, faChartBar, faBuilding} from '@fortawesome/free-solid-svg-icons';
+import {faUsers, faChartBar, faBuilding} from '@fortawesome/free-solid-svg-icons';
 import type { StudentFilters } from '../types/student';
 import { StudentFilterSection, StudentCard } from '../components';
 import { useStudents } from '../hooks/useStudents';
@@ -15,8 +15,7 @@ export const StudentsPage = () => {
     loading,
     error,
     pagination,
-    refreshData,
-    exportToCSV
+    refreshData
   } = useStudents(filters);
 
   // Aplicar filtro de búsqueda local
@@ -82,13 +81,6 @@ export const StudentsPage = () => {
             Gestión y análisis de información estudiantil
           </p>
         </div>
-        <button
-          onClick={() => exportToCSV(filters)}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faFileCsv} />
-          Exportar CSV
-        </button>
       </div>
 
       {/* Estadísticas rápidas */}

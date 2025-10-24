@@ -67,30 +67,4 @@ export const courseService = {
     const response = await apiRequest<ApiResponse<CourseStatistics>>(endpoint);
     return response.data;
   },
-
-  /**
-   * Exportar cursos a CSV
-   */
-  async exportToCSV(filters?: CourseFilters): Promise<Blob> {
-    const params = new URLSearchParams();
-    
-    if (filters?.search) params.append('search', filters.search);
-    if (filters?.level) params.append('level', filters.level);
-    if (filters?.status !== undefined) params.append('status', filters.status.toString());
-    if (filters?.bestseller !== undefined) params.append('bestseller', filters.bestseller.toString());
-    if (filters?.featured !== undefined) params.append('featured', filters.featured.toString());
-    if (filters?.start_date) params.append('start_date', filters.start_date);
-    if (filters?.end_date) params.append('end_date', filters.end_date);
-
-    const queryString = params.toString();
-    const endpoint = `/data-analyst/courses/export/csv${queryString ? `?${queryString}` : ''}`;
-
-    const response = await apiRequest<Blob>(endpoint, {
-      method: 'GET',
-      headers: {
-        'Accept': 'text/csv',
-      },
-    });
-    return response;
-  }
 };

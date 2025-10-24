@@ -47,23 +47,6 @@ export const useStudents = (initialFilters?: StudentFilters) => {
     ]);
   };
 
-  const exportToCSV = async (filters?: StudentFilters) => {
-    try {
-      const blob = await studentService.exportToCSV(filters);
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `estudiantes_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Error al exportar CSV:', err);
-      throw err;
-    }
-  };
-
   useEffect(() => {
     refreshData(initialFilters);
   }, []);
@@ -75,7 +58,6 @@ export const useStudents = (initialFilters?: StudentFilters) => {
     error,
     pagination,
     refreshData,
-    exportToCSV,
     loadStudents
   };
 };

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faFileCsv,
   faDollarSign,
   faChartLine,
   faWallet,
@@ -26,8 +25,7 @@ export const FinancialPage = () => {
     pendingPayments,
     loading,
     error,
-    refreshData,
-    exportToCSV
+    refreshData
   } = useFinancial(filters);
 
   const handleFilterChange = (newFilters: FinancialFilters) => {
@@ -82,13 +80,6 @@ export const FinancialPage = () => {
             Reporte detallado de ingresos, gastos y flujo de caja
           </p>
         </div>
-        <button
-          onClick={() => exportToCSV(filters)}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faFileCsv} />
-          Exportar CSV
-        </button>
       </div>
 
       {/* Estadísticas principales */}

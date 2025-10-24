@@ -74,23 +74,6 @@ export const useTickets = (initialFilters?: TicketFilters) => {
     ]);
   }, [fetchTickets, fetchStatistics, fetchCategoryStats, fetchTechnicianRanking]);
 
-  const exportToCSV = useCallback(async (filters?: TicketFilters) => {
-    try {
-      const blob = await ticketService.exportToCSV(filters);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `tickets_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (err) {
-      console.error('Error exporting to CSV:', err);
-      setError('Error al exportar datos');
-    }
-  }, []);
-
   useEffect(() => {
     refreshData(initialFilters);
   }, []);
@@ -103,7 +86,6 @@ export const useTickets = (initialFilters?: TicketFilters) => {
     loading,
     error,
     pagination,
-    refreshData,
-    exportToCSV
+    refreshData
   };
 };

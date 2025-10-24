@@ -92,29 +92,4 @@ export const ticketService = {
     const response = await apiRequest<ApiResponse<TechnicianRanking[]>>(endpoint);
     return response.data;
   },
-
-  /**
-   * Exportar tickets a CSV
-   */
-  async exportToCSV(filters?: TicketFilters): Promise<Blob> {
-    const params = new URLSearchParams();
-    
-    if (filters?.start_date) params.append('start_date', filters.start_date);
-    if (filters?.end_date) params.append('end_date', filters.end_date);
-    if (filters?.category) params.append('category', filters.category);
-    if (filters?.priority) params.append('priority', filters.priority);
-    if (filters?.status) params.append('status', filters.status);
-    if (filters?.technician_id) params.append('technician_id', filters.technician_id.toString());
-
-    const queryString = params.toString();
-    const endpoint = `/data-analyst/tickets/export/csv${queryString ? `?${queryString}` : ''}`;
-
-    const response = await apiRequest<Blob>(endpoint, {
-      method: 'GET',
-      headers: {
-        'Accept': 'text/csv',
-      },
-    });
-    return response;
-  }
 };

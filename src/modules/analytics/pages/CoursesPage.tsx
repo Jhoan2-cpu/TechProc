@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faFileCsv, 
   faChartBar, 
   faBook, 
   faTrophy,
@@ -24,8 +23,7 @@ export const CoursesPage = () => {
     loading,
     error,
     pagination,
-    refreshData,
-    exportToCSV
+    refreshData
   } = useCourses(filters);
 
   // Aplicar filtro de búsqueda local
@@ -84,13 +82,6 @@ export const CoursesPage = () => {
             Reporte detallado de cursos y estadísticas de matriculación
           </p>
         </div>
-        <button
-          onClick={() => exportToCSV(filters)}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faFileCsv} />
-          Exportar CSV
-        </button>
       </div>
 
       {/* Estadísticas principales */}

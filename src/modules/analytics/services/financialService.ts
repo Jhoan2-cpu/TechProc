@@ -70,26 +70,4 @@ export const financialService = {
     const response = await apiRequest<ApiResponse<PendingPaymentsData>>(endpoint);
     return response.data;
   },
-
-  /**
-   * Exportar reporte financiero a CSV
-   */
-  async exportToCSV(filters?: FinancialFilters): Promise<Blob> {
-    const params = new URLSearchParams();
-    
-    if (filters?.start_date) params.append('start_date', filters.start_date);
-    if (filters?.end_date) params.append('end_date', filters.end_date);
-    if (filters?.revenue_source_id) params.append('revenue_source_id', filters.revenue_source_id.toString());
-
-    const queryString = params.toString();
-    const endpoint = `/data-analyst/financial/export/csv${queryString ? `?${queryString}` : ''}`;
-
-    const response = await apiRequest<Blob>(endpoint, {
-      method: 'GET',
-      headers: {
-        'Accept': 'text/csv',
-      },
-    });
-    return response;
-  }
 };

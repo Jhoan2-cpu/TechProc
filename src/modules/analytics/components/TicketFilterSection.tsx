@@ -55,24 +55,6 @@ export const TicketFilterSection = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Estado */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Estado
-          </label>
-          <select
-            value={filters.status || ''}
-            onChange={(e) => onFilterChange({ ...filters, status: e.target.value as any || undefined })}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          >
-            <option value="">Todos los estados</option>
-            <option value="abierto">Abierto</option>
-            <option value="en_progreso">En Progreso</option>
-            <option value="resuelto">Resuelto</option>
-            <option value="cerrado">Cerrado</option>
-          </select>
-        </div>
-
         {/* Prioridad */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -91,24 +73,10 @@ export const TicketFilterSection = ({
           </select>
         </div>
 
-        {/* Categoría */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Categoría
-          </label>
-          <input
-            type="text"
-            value={filters.category || ''}
-            onChange={(e) => onFilterChange({ ...filters, category: e.target.value || undefined })}
-            placeholder="Ej: academico, tecnico..."
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
-        </div>
-
         {/* Fecha desde */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Fecha desde
+            Fecha de creación desde
           </label>
           <input
             type="date"
@@ -121,7 +89,7 @@ export const TicketFilterSection = ({
         {/* Fecha hasta */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Fecha hasta
+            Fecha creación hasta
           </label>
           <input
             type="date"

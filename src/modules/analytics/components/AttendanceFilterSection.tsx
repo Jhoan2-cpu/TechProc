@@ -57,7 +57,7 @@ export const AttendanceFilterSection = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {/* Filtro por Curso */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -80,28 +80,6 @@ export const AttendanceFilterSection = ({
           </select>
         </div>
 
-        {/* Filtro por Estudiante */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Estudiante
-          </label>
-          <select
-            value={filters.student_id || ''}
-            onChange={(e) => onFilterChange({ 
-              ...filters, 
-              student_id: e.target.value ? Number(e.target.value) : undefined 
-            })}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          >
-            <option value="">Todos los estudiantes</option>
-            {filterOptions?.students.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.first_name} {student.last_name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Filtro por Estado de Asistencia */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -119,38 +97,6 @@ export const AttendanceFilterSection = ({
             <option value="YES">Presente</option>
             <option value="NO">Ausente</option>
           </select>
-        </div>
-
-        {/* Filtro por Fecha de Inicio */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Fecha de Inicio
-          </label>
-          <input
-            type="date"
-            value={filters.start_date || ''}
-            onChange={(e) => onFilterChange({ 
-              ...filters, 
-              start_date: e.target.value || undefined 
-            })}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Filtro por Fecha de Fin */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Fecha de Fin
-          </label>
-          <input
-            type="date"
-            value={filters.end_date || ''}
-            onChange={(e) => onFilterChange({ 
-              ...filters, 
-              end_date: e.target.value || undefined 
-            })}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
         </div>
       </div>
     </div>

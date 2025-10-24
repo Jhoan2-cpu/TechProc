@@ -30,7 +30,7 @@ export const DashboardFilterSection = ({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Fecha de inicio */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -56,40 +56,6 @@ export const DashboardFilterSection = ({
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
-
-        {/* ID de Empresa */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            ID de Empresa
-          </label>
-          <input
-            type="number"
-            value={filters.company_id || ''}
-            onChange={(e) => onFilterChange({ 
-              ...filters, 
-              company_id: e.target.value ? parseInt(e.target.value) : undefined 
-            })}
-            placeholder="Filtrar por empresa"
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      {/* Período académico */}
-      <div className="mt-4">
-        <label className="block text-sm font-medium text-gray-300 mb-2">
-          ID de Período Académico
-        </label>
-        <input
-          type="number"
-          value={filters.academic_period_id || ''}
-          onChange={(e) => onFilterChange({ 
-            ...filters, 
-            academic_period_id: e.target.value ? parseInt(e.target.value) : undefined 
-          })}
-          placeholder="Filtrar por período académico"
-          className="w-full md:w-1/3 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-        />
       </div>
     </div>
   );

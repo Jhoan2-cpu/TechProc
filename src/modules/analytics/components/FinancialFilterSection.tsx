@@ -81,27 +81,6 @@ export const FinancialFilterSection = ({
           </select>
         </div>
       </div>
-
-      {/* Período para tendencia */}
-      <div className="mt-4">
-        <label className="block text-sm font-medium text-gray-300 mb-2">
-          Período de Análisis
-        </label>
-        <select
-          value={filters.period || 'monthly'}
-          onChange={(e) => onFilterChange({ 
-            ...filters, 
-            period: e.target.value as FinancialFilters['period']
-          })}
-          className="w-full md:w-1/3 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-        >
-          <option value="daily">Diario</option>
-          <option value="weekly">Semanal</option>
-          <option value="monthly">Mensual</option>
-          <option value="quarterly">Trimestral</option>
-          <option value="yearly">Anual</option>
-        </select>
-      </div>
     </div>
   );
 };

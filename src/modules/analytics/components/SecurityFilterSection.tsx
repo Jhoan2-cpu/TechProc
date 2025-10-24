@@ -93,23 +93,6 @@ export const SecurityFilterSection = ({
           </select>
         </div>
 
-        {/* Estado (para alertas) */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Estado
-          </label>
-          <select
-            value={filters.status || ''}
-            onChange={(e) => onFilterChange({ ...filters, status: e.target.value || undefined })}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          >
-            <option value="">Todos los estados</option>
-            <option value="open">Abierto</option>
-            <option value="investigating">Investigando</option>
-            <option value="resolved">Resuelto</option>
-          </select>
-        </div>
-
         {/* Fecha de inicio */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -135,20 +118,6 @@ export const SecurityFilterSection = ({
             value={filters.end_date || ''}
             onChange={(e) => onFilterChange({ ...filters, end_date: e.target.value || undefined })}
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          />
-        </div>
-
-        {/* Dirección IP */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Dirección IP
-          </label>
-          <input
-            type="text"
-            value={filters.ip_address || ''}
-            onChange={(e) => onFilterChange({ ...filters, ip_address: e.target.value || undefined })}
-            placeholder="192.168.1.1"
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
         </div>
       </div>

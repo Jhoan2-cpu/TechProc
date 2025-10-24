@@ -92,29 +92,4 @@ export const attendanceService = {
     );
     return response.data;
   },
-
-  /**
-   * Exportar datos de asistencia a CSV (futura implementación)
-   */
-  async exportToCSV(filters?: AttendanceFilters): Promise<Blob> {
-    const params = new URLSearchParams();
-    
-    if (filters?.group_id) params.append('group_id', filters.group_id.toString());
-    if (filters?.course_id) params.append('course_id', filters.course_id.toString());
-    if (filters?.student_id) params.append('student_id', filters.student_id.toString());
-    if (filters?.start_date) params.append('start_date', filters.start_date);
-    if (filters?.end_date) params.append('end_date', filters.end_date);
-    if (filters?.attendance_status) params.append('attendance_status', filters.attendance_status);
-
-    const queryString = params.toString();
-    const endpoint = `/data-analyst/attendance/export${queryString ? `?${queryString}` : ''}`;
-
-    const response = await apiRequest<Blob>(endpoint, {
-      method: 'POST',
-      headers: {
-        'Accept': 'text/csv',
-      },
-    });
-    return response;
-  }
 };

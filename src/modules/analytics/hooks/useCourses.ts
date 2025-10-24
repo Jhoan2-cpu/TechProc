@@ -46,23 +46,6 @@ export const useCourses = (initialFilters?: CourseFilters) => {
     ]);
   }, [fetchCourses, fetchStatistics]);
 
-  const exportToCSV = useCallback(async (filters?: CourseFilters) => {
-    try {
-      const blob = await courseService.exportToCSV(filters);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `cursos_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (err) {
-      console.error('Error exporting to CSV:', err);
-      setError('Error al exportar datos');
-    }
-  }, []);
-
   useEffect(() => {
     refreshData(initialFilters);
   }, []);
@@ -73,7 +56,6 @@ export const useCourses = (initialFilters?: CourseFilters) => {
     loading,
     error,
     pagination,
-    refreshData,
-    exportToCSV
+    refreshData
   };
 };

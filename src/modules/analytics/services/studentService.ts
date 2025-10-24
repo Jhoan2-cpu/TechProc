@@ -73,28 +73,4 @@ export const studentService = {
     const response = await apiRequest<ApiResponse<any>>(endpoint);
     return response.data;
   },
-
-  /**
-   * Exportar datos de estudiantes a CSV
-   */
-  async exportToCSV(filters?: StudentFilters): Promise<Blob> {
-    const params = new URLSearchParams();
-    
-    if (filters?.company_id) params.append('company_id', filters.company_id.toString());
-    if (filters?.status) params.append('status', filters.status);
-    if (filters?.enrollment_type) params.append('enrollment_type', filters.enrollment_type);
-    if (filters?.academic_period_id) params.append('academic_period_id', filters.academic_period_id.toString());
-    if (filters?.search) params.append('search', filters.search);
-
-    const queryString = params.toString();
-    const endpoint = `/data-analyst/students/export/csv${queryString ? `?${queryString}` : ''}`;
-
-    const response = await apiRequest<Blob>(endpoint, {
-      method: 'GET',
-      headers: {
-        'Accept': 'text/csv',
-      },
-    });
-    return response;
-  }
 };

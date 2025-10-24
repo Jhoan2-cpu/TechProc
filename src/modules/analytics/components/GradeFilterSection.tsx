@@ -42,7 +42,7 @@ export const GradeFilterSection = ({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Curso */}
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -82,28 +82,6 @@ export const GradeFilterSection = ({
             {filterOptions.academicPeriods.map((period) => (
               <option key={period.id} value={period.id}>
                 {period.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Tipo de Evaluación */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Tipo de Evaluación
-          </label>
-          <select
-            value={filters.grade_type || ''}
-            onChange={(e) => onFilterChange({ 
-              ...filters, 
-              grade_type: e.target.value || undefined 
-            })}
-            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-          >
-            <option value="">Todos los tipos</option>
-            {evaluationTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
               </option>
             ))}
           </select>

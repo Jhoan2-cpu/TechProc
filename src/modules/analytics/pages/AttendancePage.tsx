@@ -27,8 +27,7 @@ export const AttendancePage = () => {
     loading,
     error,
     pagination,
-    refreshData,
-    exportToCSV
+    refreshData
   } = useAttendances(filters);
 
   // Aplicar filtro de búsqueda local
@@ -88,13 +87,6 @@ export const AttendancePage = () => {
             Reporte detallado de asistencia y participación de estudiantes
           </p>
         </div>
-        <button
-          onClick={() => exportToCSV(filters)}
-          className="btn bg-primary-600 hover:bg-primary-700 text-white flex items-center gap-2"
-        >
-          <FontAwesomeIcon icon={faFileCsv} />
-          Exportar CSV
-        </button>
       </div>
 
       {/* Estadísticas principales */}
