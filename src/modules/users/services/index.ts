@@ -2,3 +2,4 @@
 export * from './usersService';
 export * from './departmentsService';
 export * from './positionsService';
+export * from './employeesService';

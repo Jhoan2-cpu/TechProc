@@ -5,7 +5,7 @@ import { faBuilding, faUsers, faSpinner, faArrowLeft, faCalendar, faInfoCircle, 
 import { Breadcrumb } from '../../../shared/components/Breadcrumb';
 import type { DepartmentDetailsResponse, Employee, Position } from '../types';
 import { getDepartmentById, getPositionsByDepartment } from '../services';
-import { EmployeeTableRow, EmployeeFilters, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal } from '../components';
+import { EmployeeTableRow, EmployeeFilters, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal, CreateEmployeeModal } from '../components';
 
 export const DepartmentDetailsPage = () => {
   const { departmentId } = useParams<{ departmentId: string }>();
@@ -20,6 +20,7 @@ export const DepartmentDetailsPage = () => {
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [showCreateEmployeeModal, setShowCreateEmployeeModal] = useState(false);
 
   useEffect(() => {
     if (departmentId) {
@@ -56,6 +57,10 @@ export const DepartmentDetailsPage = () => {
 
   const handlePositionSuccess = () => {
     loadPositions();
+  };
+
+  const handleEmployeeSuccess = () => {
+    loadDepartmentDetails();
   };
 
   // Filtrar empleados
@@ -232,16 +237,25 @@ export const DepartmentDetailsPage = () => {
 
         {/* Lista de Empleados */}
         <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-primary-50/30 shadow-lg">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-heading font-bold text-white flex items-center gap-3">
-              <FontAwesomeIcon icon={faUsers} className="text-primary-400" />
-              Empleados del Departamento
-            </h2>
-            {departmentDetails.employees && departmentDetails.employees.length > 0 && (
-              <span className="px-4 py-2 bg-primary-500/20 text-primary-400 rounded-full text-sm font-medium border border-primary-500/30">
-                {filteredEmployees.length} de {departmentDetails.employees.length} empleado{departmentDetails.employees.length !== 1 ? 's' : ''}
-              </span>
-            )}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-heading font-bold text-white flex items-center gap-3">
+                <FontAwesomeIcon icon={faUsers} className="text-primary-400" />
+                Empleados del Departamento
+              </h2>
+              {departmentDetails.employees && departmentDetails.employees.length > 0 && (
+                <span className="px-4 py-2 bg-primary-500/20 text-primary-400 rounded-full text-sm font-medium border border-primary-500/30">
+                  {filteredEmployees.length} de {departmentDetails.employees.length}
+                </span>
+              )}
+            </div>
+            <button
+              onClick={() => setShowCreateEmployeeModal(true)}
+              className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 hover:scale-105 transition-all duration-300 font-medium flex items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+              <span>Agregar Empleado</span>
+            </button>
           </div>
 
           {departmentDetails.employees && departmentDetails.employees.length > 0 ? (
@@ -345,6 +359,17 @@ export const DepartmentDetailsPage = () => {
           departmentName={departmentDetails.department_name}
           onClose={() => setSelectedPosition(null)}
           onSuccess={handlePositionSuccess}
+        />
+      )}
+
+      {/* Modal de Crear Empleado */}
+      {showCreateEmployeeModal && departmentDetails && (
+        <CreateEmployeeModal
+          departmentId={departmentDetails.id}
+          departmentName={departmentDetails.department_name}
+          positions={positions}
+          onClose={() => setShowCreateEmployeeModal(false)}
+          onSuccess={handleEmployeeSuccess}
         />
       )}
     </div>

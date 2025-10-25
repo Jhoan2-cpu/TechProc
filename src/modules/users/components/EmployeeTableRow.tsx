@@ -10,7 +10,7 @@ interface EmployeeTableRowProps {
 export const EmployeeTableRow = ({ employee, onViewDetails }: EmployeeTableRowProps) => {
   return (
     <tr className="border-b border-gray-700/50 hover:bg-secondary-600/30 transition-colors duration-200">
-      <td className="px-4 py-3 text-sm text-gray-300">{employee.employee_id}</td>
+      <td className="px-4 py-3 text-sm text-gray-300">{employee.id}</td>
       <td className="px-4 py-3">
         <div className="flex flex-col">
           <span className="text-white font-medium">{employee.user.full_name}</span>

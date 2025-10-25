@@ -243,3 +243,37 @@ export interface DepartmentResponse {
 export interface DepartmentDetailsResponse extends Department {
   employees: Employee[];
 }
+
+export interface CreateEmployeeWithUserData {
+  user: {
+    first_name: string;
+    last_name: string;
+    dni: string;
+    email: string;
+    password: string;
+    phone_number?: string;
+    address?: string;
+    birth_date?: string;
+    role: string[];
+    gender?: string;
+    country?: string;
+    country_location?: string;
+    timezone?: string;
+    status?: string;
+  };
+  employee: {
+    hire_date: string;
+    position_id: number;
+    department_id: number;
+    employment_status: string;
+    schedule: string;
+    speciality: string;
+    salary: number;
+  };
+}
+
+export interface CreateEmployeeWithUserResponse {
+  success: boolean;
+  message: string;
+  data: Employee;
+}
