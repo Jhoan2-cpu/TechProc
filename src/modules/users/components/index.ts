@@ -11,3 +11,5 @@ export { ViewEmployeeDetailsModal } from './ViewEmployeeDetailsModal';
 export { PositionCard } from './PositionCard';
 export { CreatePositionModal } from './CreatePositionModal';
 export { EditPositionModal } from './EditPositionModal';
+export { EmployeeTableRow } from './EmployeeTableRow';
+export { EmployeeFilters } from './EmployeeFilters';

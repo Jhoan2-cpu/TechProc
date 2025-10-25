@@ -5,7 +5,7 @@ import { faBuilding, faUsers, faSpinner, faArrowLeft, faCalendar, faInfoCircle, 
 import { Breadcrumb } from '../../../shared/components/Breadcrumb';
 import type { DepartmentDetailsResponse, Employee, Position } from '../types';
 import { getDepartmentById, getPositionsByDepartment } from '../services';
-import { EmployeeCard, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal } from '../components';
+import { EmployeeTableRow, EmployeeFilters, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal } from '../components';
 
 export const DepartmentDetailsPage = () => {
   const { departmentId } = useParams<{ departmentId: string }>();
@@ -18,6 +18,8 @@ export const DepartmentDetailsPage = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showCreatePositionModal, setShowCreatePositionModal] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
 
   useEffect(() => {
     if (departmentId) {
@@ -55,6 +57,19 @@ export const DepartmentDetailsPage = () => {
   const handlePositionSuccess = () => {
     loadPositions();
   };
+
+  // Filtrar empleados
+  const filteredEmployees = departmentDetails?.employees?.filter((employee) => {
+    const matchesSearch =
+      employee.user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.employee_id.toString().includes(searchTerm);
+
+    const matchesStatus =
+      filterStatus === '' || employee.employment_status === filterStatus;
+
+    return matchesSearch && matchesStatus;
+  }) || [];
 
   const breadcrumbItems = [
     { label: 'Usuarios', path: '/users' },
@@ -224,21 +239,77 @@ export const DepartmentDetailsPage = () => {
             </h2>
             {departmentDetails.employees && departmentDetails.employees.length > 0 && (
               <span className="px-4 py-2 bg-primary-500/20 text-primary-400 rounded-full text-sm font-medium border border-primary-500/30">
-                {departmentDetails.employees.length} empleado{departmentDetails.employees.length !== 1 ? 's' : ''}
+                {filteredEmployees.length} de {departmentDetails.employees.length} empleado{departmentDetails.employees.length !== 1 ? 's' : ''}
               </span>
             )}
           </div>
 
           {departmentDetails.employees && departmentDetails.employees.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {departmentDetails.employees.map((employee) => (
-                <EmployeeCard
-                  key={employee.id}
-                  employee={employee}
-                  onViewDetails={setSelectedEmployee}
-                />
-              ))}
-            </div>
+            <>
+              {/* Filtros */}
+              <EmployeeFilters
+                searchTerm={searchTerm}
+                filterStatus={filterStatus}
+                onSearchChange={setSearchTerm}
+                onStatusChange={setFilterStatus}
+              />
+
+              {/* Tabla de Empleados */}
+              {filteredEmployees.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-700/50 bg-secondary-700/30">
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          ID
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          Empleado
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          Cargo
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          Teléfono
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          Estado
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          Fecha de Ingreso
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          Acciones
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredEmployees.map((employee) => (
+                        <EmployeeTableRow
+                          key={employee.id}
+                          employee={employee}
+                          onViewDetails={setSelectedEmployee}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <FontAwesomeIcon icon={faUsers} className="text-6xl text-gray-600 mb-4" />
+                  <p className="text-gray-400 text-lg">No se encontraron empleados con los filtros aplicados</p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setFilterStatus('');
+                    }}
+                    className="mt-4 px-4 py-2 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg transition-all duration-300"
+                  >
+                    Limpiar filtros
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-12">
               <FontAwesomeIcon icon={faUsers} className="text-6xl text-gray-600 mb-4" />
