@@ -1,0 +1,157 @@
+quiero que implementes un page para cargar a los empleados en el modulo users, en modules/users/pages
+luego dentro de la sección mostrar departamentos como cards. He implementar lo siguiente.
+
+NOTA: base_url=127.0.0.1:8000
+cuando hago GET a {{base_url}}/api/infraestructura/departments
+me responde con algo como:
+[
+    {
+        "id": 1,
+        "department_name": "Recursos Humanos",
+        "description": "Gestión del talento humano, reclutamiento y desarrollo del personal",
+        "created_at": "2025-10-24 11:27:48.826674-05",
+        "updated_at": "2025-10-24 11:27:48.826674-05"
+    },
+    {
+        "id": 2,
+        "department_name": "Tecnología e Innovación",
+        "description": "Desarrollo de software, infraestructura TI y soporte técnico",
+        "created_at": "2025-10-24 11:27:48.826674-05",
+        "updated_at": "2025-10-24 11:27:48.826674-05"
+    },
+]
+
+quiero que esos me cargue en cada cards
+También quiero que le implementes un botón para crear departamentos.
+para ello usas POST a {{base_url}}/api/infraestructura/departments
+enviando datos como:
+{
+  "department_name": "Recursos Humanos",
+  "description": "Departamento encargado de la gestión del personal y talento humano"
+}
+
+y esperando de respuesta: {
+    "department_name": "Recursos Humanos",
+    "description": "Departamento encargado de la gestión del personal y talento humano",
+    "id": 8
+}
+
+Ahora, donde se cargan los cards,quiero que tengan algun botón para ver los detalles.
+y es allí donde se cargará otra sección nueva para ver los detalles del departamento. y es allí donde se hace
+GET a {{base_url}}/api/infraestructura/departments/4  donde /4 es el id del department al cual se le dio click en detalles.
+eso obtendrá´como respuesta algo como esto:
+Mira cuando hago un GET a 
+{{base_url}}/api/infraestructura/departments/4
+
+obtengo por respuesta esto:
+{
+    "id": 4,
+    "department_name": "Finanzas y Contabilidad",
+    "description": "Gestión financiera, contabilidad y presupuestos",
+    "created_at": "2025-10-24 11:27:48.826674-05",
+    "updated_at": "2025-10-24 11:27:48.826674-05",
+    "employees": [
+        {
+            "id": 11,
+            "employee_id": 4011,
+            "hire_date": "2017-05-01",
+            "position_id": 11,
+            "department_id": 4,
+            "user_id": 33,
+            "employment_status": "Active",
+            "schedule": "Lunes a Viernes 8:00-17:00",
+            "speciality": "Gestión Financiera",
+            "salary": "8000.00",
+            "created_at": "2025-10-24 11:27:48.826674-05",
+            "updated_at": "2025-10-24 11:27:48.826674-05",
+            "user": {
+                "id": 33,
+                "first_name": "Guillermo",
+                "last_name": "Espinoza",
+                "full_name": "Guillermo Espinoza",
+                "dni": "40456789",
+                "document": "EMP40456789",
+                "email": "guillermo.espinoza@empresa.edu",
+                "email_verified_at": null,
+                "phone_number": "+51987654411",
+                "address": "Av. Finanzas 234, Lima",
+                "birth_date": "1978-01-28T05:00:00.000000Z",
+                "role": [
+                    "employee",
+                    "admin"
+                ],
+                "gender": "male",
+                "country": "Peru",
+                "country_location": "Lima",
+                "timezone": "America/Lima",
+                "profile_photo": null,
+                "status": "active",
+                "synchronized": true,
+                "last_access_ip": null,
+                "last_access": null,
+                "last_connection": null,
+                "created_at": "2025-10-24T16:27:48.826674Z",
+                "updated_at": "2025-10-24T16:27:48.826674Z"
+            },
+            "position": {
+                "id": 11,
+                "position_name": "Director Financiero (CFO)",
+                "department_id": 4,
+                "created_at": "2025-10-24 11:27:48.826674-05",
+                "updated_at": "2025-10-24 11:27:48.826674-05"
+            }
+        },
+        {
+            "id": 12,
+            "employee_id": 4012,
+            "hire_date": "2019-11-15",
+            "position_id": 12,
+            "department_id": 4,
+            "user_id": 34,
+            "employment_status": "Active",
+            "schedule": "Lunes a Viernes 8:00-17:00",
+            "speciality": "Contabilidad General",
+            "salary": "4800.00",
+            "created_at": "2025-10-24 11:27:48.826674-05",
+            "updated_at": "2025-10-24 11:27:48.826674-05",
+            "user": {
+                "id": 34,
+                "first_name": "Teresa",
+                "last_name": "Arias",
+                "full_name": "Teresa Arias",
+                "dni": "50567890",
+                "document": "EMP50567890",
+                "email": "teresa.arias@empresa.edu",
+                "email_verified_at": null,
+                "phone_number": "+51987654412",
+                "address": "Jr. Contable 567, Lima",
+                "birth_date": "1985-05-16T05:00:00.000000Z",
+                "role": [
+                    "employee"
+                ],
+                "gender": "female",
+                "country": "Peru",
+                "country_location": "Lima",
+                "timezone": "America/Lima",
+                "profile_photo": null,
+                "status": "active",
+                "synchronized": true,
+                "last_access_ip": null,
+                "last_access": null,
+                "last_connection": null,
+                "created_at": "2025-10-24T16:27:48.826674Z",
+                "updated_at": "2025-10-24T16:27:48.826674Z"
+            },
+            "position": {
+                "id": 12,
+                "position_name": "Contador Senior",
+                "department_id": 4,
+                "created_at": "2025-10-24 11:27:48.826674-05",
+                "updated_at": "2025-10-24 11:27:48.826674-05"
+            }
+        },
+        
+    ]
+}
+
+se cargará una lista de empleados. pero solo muestra la información relevante, ya cuando le des click en detalles se cargará el resto de información de cada empleado.

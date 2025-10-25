@@ -1,13 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faEye } from '@fortawesome/free-solid-svg-icons';
 import type { Department } from '../types';
 
 interface DepartmentCardProps {
   department: Department;
-  onViewDetails: (department: Department) => void;
 }
 
-export const DepartmentCard = ({ department, onViewDetails }: DepartmentCardProps) => {
+export const DepartmentCard = ({ department }: DepartmentCardProps) => {
+  const navigate = useNavigate();
   return (
     <div className="border-primary-50/30 bg-gradient-to-br bg-slate-600/100 from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
       <div className="flex items-start justify-between mb-4">
@@ -33,7 +34,7 @@ export const DepartmentCard = ({ department, onViewDetails }: DepartmentCardProp
           <p>Creado: {new Date(department.created_at).toLocaleDateString()}</p>
         </div>
         <button
-          onClick={() => onViewDetails(department)}
+          onClick={() => navigate(`/users/employees/department/${department.id}`)}
           className="px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-all duration-300 flex items-center gap-2 border border-blue-500/30"
         >
           <FontAwesomeIcon icon={faEye} />

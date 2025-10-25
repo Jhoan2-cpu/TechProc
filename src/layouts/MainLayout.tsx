@@ -16,7 +16,7 @@ import {
 import { InfrastructureMainPage } from "../modules/infrastructure/pages/InfrastructureMainPage";
 import { WebPage } from "../modules/web/pages/WebPage";
 import { AnalyticsMainPage } from "../modules/analytics/pages/AnalyticsMainPage";
-import { UsersPage, EmployeesPage } from "../modules/users/pages";
+import { UsersPage, EmployeesPage, DepartmentDetailsPage } from "../modules/users/pages";
 import { Breadcrumb } from "../shared/components/Breadcrumb";
 import type { User } from "../shared/types/auth";
 import { hasAccess } from "../shared/utils/auth";
@@ -165,6 +165,7 @@ export default function Layout({
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/employees" element={<EmployeesPage />} />
+            <Route path="/users/employees/department/:departmentId" element={<DepartmentDetailsPage />} />
             <Route path="/lms-dashboard" element={<LMSMainPage />} />
             <Route path="/lms-courses" element={<LMSMainPage />} />
             <Route path="/lms-courses/:courseId" element={<CourseDetailsPage />} />

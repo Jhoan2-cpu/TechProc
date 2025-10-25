@@ -7,7 +7,6 @@ import { getDepartments } from '../services';
 import {
   DepartmentCard,
   CreateDepartmentModal,
-  ViewDepartmentDetailsModal,
 } from '../components';
 
 export const EmployeesPage = () => {
@@ -15,7 +14,6 @@ export const EmployeesPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
 
   useEffect(() => {
     loadDepartments();
@@ -123,7 +121,6 @@ export const EmployeesPage = () => {
               <DepartmentCard
                 key={department.id}
                 department={department}
-                onViewDetails={setSelectedDepartment}
               />
             ))}
           </div>
@@ -135,13 +132,6 @@ export const EmployeesPage = () => {
         <CreateDepartmentModal
           onClose={() => setShowCreateModal(false)}
           onSuccess={handleCreateSuccess}
-        />
-      )}
-
-      {selectedDepartment && (
-        <ViewDepartmentDetailsModal
-          department={selectedDepartment}
-          onClose={() => setSelectedDepartment(null)}
         />
       )}
     </div>
