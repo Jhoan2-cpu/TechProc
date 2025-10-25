@@ -30,6 +30,17 @@ export const buildUrl = (endpoint: string): string => {
   return `${API_CONFIG.BASE_URL}${cleanEndpoint}`;
 };
 
+// Helper para cerrar sesión automáticamente
+const handleUnauthorized = () => {
+  // Limpiar sesión
+  sessionStorage.removeItem('auth_token');
+  sessionStorage.removeItem('refresh_token');
+  sessionStorage.removeItem('user');
+
+  // Redirigir al login
+  window.location.href = '/procesostecnologicos/web/login';
+};
+
 // Helper para manejar respuestas según especificación
 export const handleResponse = async <T>(response: Response): Promise<T> => {
   // Para respuestas 204 No Content
@@ -39,6 +50,12 @@ export const handleResponse = async <T>(response: Response): Promise<T> => {
 
   const contentType = response.headers.get('content-type');
   const isJson = contentType?.includes('application/json');
+
+  // Manejar 401 Unauthorized - Token inválido o expirado
+  if (response.status === 401) {
+    handleUnauthorized();
+    throw new Error('Sesión expirada. Por favor, inicie sesión nuevamente.');
+  }
 
   if (!response.ok) {
     if (isJson) {
@@ -122,14 +139,19 @@ export const apiRequest = async <T>(
     const response = await fetch(url, config);
     return handleResponse<T>(response);
   } catch (error: unknown) {
-    // Si el token expiró, intentar refrescar
-    if (
+    // Verificar si es un error relacionado con autenticación
+    const isAuthError =
       typeof error === 'object' &&
       error !== null &&
       'code' in error &&
-      (error as { code: string }).code === 'TOKEN_EXPIRED' &&
-      !endpoint.includes('/auth/')
-    ) {
+      (
+        (error as { code: string }).code === 'TOKEN_EXPIRED' ||
+        (error as { code: string }).code === 'INVALID_TOKEN' ||
+        (error as { code: string }).code === 'TOKEN_REQUIRED'
+      );
+
+    // Si el token expiró o es inválido, intentar refrescar (solo si no es endpoint de auth)
+    if (isAuthError && !endpoint.includes('/auth/')) {
       const refreshToken = sessionStorage.getItem('refresh_token');
       if (refreshToken) {
         try {
@@ -151,14 +173,17 @@ export const apiRequest = async <T>(
             };
             const retryResponse = await fetch(url, config);
             return handleResponse<T>(retryResponse);
+          } else {
+            // Si el refresh falla, cerrar sesión
+            handleUnauthorized();
           }
         } catch {
-          // Si falla el refresh, limpiar sesión
-          sessionStorage.removeItem('auth_token');
-          sessionStorage.removeItem('refresh_token');
-          // Usar ruta relativa que funciona con basename
-          window.location.href = '/procesostecnologicos/web/login';
+          // Si falla el refresh, cerrar sesión
+          handleUnauthorized();
         }
+      } else {
+        // Si no hay refresh token, cerrar sesión
+        handleUnauthorized();
       }
     }
 
