@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faUser, faEnvelope, faPhone, faMapMarkerAlt, faBriefcase, faCalendar, faDollarSign, faClock, faStar } from '@fortawesome/free-solid-svg-icons';
 import type { Employee } from '../types';
+import { useLockBodyScroll } from '../../../shared/hooks';
+import { Portal } from '../../../shared/components/Portal';
 
 interface ViewEmployeeDetailsModalProps {
   employee: Employee;
@@ -8,6 +10,9 @@ interface ViewEmployeeDetailsModalProps {
 }
 
 export const ViewEmployeeDetailsModal = ({ employee, onClose }: ViewEmployeeDetailsModalProps) => {
+  // Bloquear scroll del body cuando el modal está abierto
+  useLockBodyScroll();
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
@@ -21,7 +26,8 @@ export const ViewEmployeeDetailsModal = ({ employee, onClose }: ViewEmployeeDeta
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+    <Portal>
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
       <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-primary-500/30 animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-gray-700/50 bg-gradient-to-r from-secondary-600 to-secondary-700">
@@ -191,5 +197,6 @@ export const ViewEmployeeDetailsModal = ({ employee, onClose }: ViewEmployeeDeta
         </div>
       </div>
     </div>
+    </Portal>
   );
 };

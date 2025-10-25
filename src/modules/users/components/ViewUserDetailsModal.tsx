@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faUser, faEnvelope, faPhone, faMapMarkerAlt, faBirthdayCake, faVenusMars, faGlobe, faClock, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import type { User } from '../types';
+import { useLockBodyScroll } from '../../../shared/hooks';
+import { Portal } from '../../../shared/components/Portal';
 
 interface ViewUserDetailsModalProps {
   user: User;
@@ -8,6 +10,9 @@ interface ViewUserDetailsModalProps {
 }
 
 export const ViewUserDetailsModal = ({ user, onClose }: ViewUserDetailsModalProps) => {
+  // Bloquear scroll del body cuando el modal está abierto
+  useLockBodyScroll();
+
   const primaryRole = user.role && user.role.length > 0 ? user.role[0] : 'student';
   const roleLabels: Record<string, string> = {
     'admin': 'Administrador',
@@ -60,7 +65,8 @@ export const ViewUserDetailsModal = ({ user, onClose }: ViewUserDetailsModalProp
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+    <Portal>
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
       <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto border border-primary-500/30 animate-scale-in">
         {/* Header */}
         <div className="p-6 border-b border-gray-700/50 bg-gradient-to-r from-secondary-600 to-secondary-700">
@@ -251,5 +257,6 @@ export const ViewUserDetailsModal = ({ user, onClose }: ViewUserDetailsModalProp
         </div>
       </div>
     </div>
+    </Portal>
   );
 };

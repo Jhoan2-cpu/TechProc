@@ -5,6 +5,8 @@ import type { Employee, Department, Position, UpdateEmployeeData } from '../type
 import { updateEmployee } from '../services/employeesService';
 import { getDepartments } from '../services/departmentsService';
 import { getPositionsByDepartment } from '../services/positionsService';
+import { useLockBodyScroll } from '../../../shared/hooks';
+import { Portal } from '../../../shared/components/Portal';
 
 interface EditEmployeeModalProps {
   employee: Employee;
@@ -13,6 +15,9 @@ interface EditEmployeeModalProps {
 }
 
 export const EditEmployeeModal = ({ employee, onClose, onSuccess }: EditEmployeeModalProps) => {
+  // Bloquear scroll del body cuando el modal está abierto
+  useLockBodyScroll();
+
   const [loading, setLoading] = useState(false);
   const [loadingDepartments, setLoadingDepartments] = useState(true);
   const [loadingPositions, setLoadingPositions] = useState(false);
@@ -139,7 +144,8 @@ export const EditEmployeeModal = ({ employee, onClose, onSuccess }: EditEmployee
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+    <Portal>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
       <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-2xl w-full max-w-2xl border border-primary-50/20 my-8">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
@@ -365,5 +371,6 @@ export const EditEmployeeModal = ({ employee, onClose, onSuccess }: EditEmployee
         </form>
       </div>
     </div>
+    </Portal>
   );
 };
