@@ -94,6 +94,47 @@ export interface ContactFormAPIResponse {
   message: string;
 }
 
+// Tipos para cursos públicos
+export interface CourseOfferingInstructor {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+export interface CourseInfo {
+  id: number;
+  name: string;
+  title: string;
+}
+
+export interface AcademicPeriod {
+  id: number;
+  name: string;
+  start_date: string;
+  end_date: string;
+}
+
+export interface CourseOffering {
+  id: number;
+  course_offering_id: number;
+  course_id: number;
+  course: CourseInfo;
+  academic_period_id: number;
+  academic_period: AcademicPeriod;
+  instructor_id: number;
+  instructor: CourseOfferingInstructor;
+  schedule: string;
+  delivery_method: 'regular' | 'online' | 'intensive';
+  featured?: boolean;
+  created_at: string;
+}
+
+export interface CourseOfferingsResponse {
+  success: boolean;
+  data: CourseOffering[];
+}
+
 // ==========================================
 // SERVICIO PÚBLICO DE WEBSITE
 // ==========================================
@@ -198,6 +239,38 @@ class WebsiteService {
       return data;
     } catch (error) {
       console.error('Error en submitContactForm:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Obtiene los cursos ofrecidos del último período académico
+   * Endpoint: GET /api/lms/course-offerings/public/latest-period
+   * No requiere autenticación
+   */
+  async getPublicCourseOfferings(): Promise<CourseOffering[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/lms/course-offerings/public/latest-period`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al obtener cursos: ${response.status}`);
+      }
+
+      const data: CourseOfferingsResponse = await response.json();
+
+      if (!data.success) {
+        throw new Error('La respuesta de la API no fue exitosa');
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error('Error en getPublicCourseOfferings:', error);
       throw error;
     }
   }

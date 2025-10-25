@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { WebsiteNavbar } from './WebsiteNavbar';
 import { WebsiteHero } from './WebsiteHero';
+import { WebsiteFeaturedCourses } from './WebsiteFeaturedCourses';
 import { WebsiteNews } from './WebsiteNews';
 import { WebsiteAnnouncements } from './WebsiteAnnouncements';
+import { WebsiteCourses } from './WebsiteCourses';
 import { WebsiteContact } from './WebsiteContact';
 import { WebsiteChatbot } from './WebsiteChatbot';
 import { WebsiteFooter } from './WebsiteFooter';
@@ -193,6 +195,8 @@ export const WebsitePage = () => {
     <div className="bg-gradient-to-br from-dark-600 to-smoky-700 min-h-screen">
       <WebsiteNavbar />
       <WebsiteHero activeAlerts={activeAlerts} />
+      <WebsiteFeaturedCourses />
+      <WebsiteCourses />
       <WebsiteNews news={news} />
       <WebsiteAnnouncements />
       <WebsiteContact />
