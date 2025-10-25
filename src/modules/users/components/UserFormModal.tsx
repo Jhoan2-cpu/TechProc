@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { UserRole, UserFormModalProps, UpdateUserData, CreateUserData, Gender } from '../types';
+import type { UserRole, UserFormModalProps, UpdateUserData, CreateUserData, Gender, UserStatus } from '../types';
 import { usersService } from '../services';
 import { useLockBodyScroll } from '../../../shared/hooks';
 import { Portal } from '../../../shared/components/Portal';
@@ -363,7 +363,7 @@ export const UserFormModal = ({ title, user, onClose, onSave }: UserFormModalPro
                 <select
                   required
                   value={formData.status}
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value as UserStatus })}
                   className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
                   disabled={loading}
                 >

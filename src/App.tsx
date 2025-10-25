@@ -103,7 +103,7 @@ function App() {
             currentUser ? (
               <Navigate to="/" replace />
             ) : (
-              <RegisterPage onBackToLogin={() => {}} />
+              <RegisterPage />
             )
           }
         />

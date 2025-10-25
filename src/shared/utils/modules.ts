@@ -6,7 +6,6 @@ import {
   faServer,
   faGlobe,
   faChartLine,
-  faUserClock,
   faTachometerAlt,
   faUsersViewfinder,
   faBan,
