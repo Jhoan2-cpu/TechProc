@@ -298,7 +298,7 @@ export const WebsiteFeaturedCourses = () => {
                             e.preventDefault();
                             window.location.hash = 'contact-enrollment';
                           }}
-                          className="w-full px-6 py-4 bg-gradient-to-r from-primary-500 via-orange-500 to-primary-600 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 group cursor-pointer"
+                          className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 via-orange-600 to-orange-400 text-white font-bold text-lg rounded-xl shadow-2xl hover:shadow-primary-500/50 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 group cursor-pointer"
                         >
                           <FontAwesomeIcon icon={faLaptop} className="group-hover:scale-110 transition-transform" />
                           <span>¡Inscríbete Ahora!</span>

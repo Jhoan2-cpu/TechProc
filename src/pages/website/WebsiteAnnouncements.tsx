@@ -271,7 +271,7 @@ export const WebsiteAnnouncements = () => {
       )}
 
       {/* Sección principal con tarjetas de tipo Banner */}
-      <section id="announcements" className="py-20 bg-gradient-to-br from-smoky-600/50 to-dark-600/50">
+      <section id="announcements" className="py-20 bg-gradient-to-br from-primary-600/20 to-dark-600/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12 animate-fade-in">
