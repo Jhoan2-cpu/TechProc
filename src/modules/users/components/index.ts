@@ -14,3 +14,4 @@ export { EditPositionModal } from './EditPositionModal';
 export { EmployeeTableRow } from './EmployeeTableRow';
 export { EmployeeFilters } from './EmployeeFilters';
 export { CreateEmployeeModal } from './CreateEmployeeModal';
+export { EditEmployeeModal } from './EditEmployeeModal';

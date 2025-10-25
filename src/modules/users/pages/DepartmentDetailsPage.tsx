@@ -5,7 +5,7 @@ import { faBuilding, faUsers, faSpinner, faArrowLeft, faCalendar, faInfoCircle, 
 import { Breadcrumb } from '../../../shared/components/Breadcrumb';
 import type { DepartmentDetailsResponse, Employee, Position } from '../types';
 import { getDepartmentById, getPositionsByDepartment } from '../services';
-import { EmployeeTableRow, EmployeeFilters, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal, CreateEmployeeModal } from '../components';
+import { EmployeeTableRow, EmployeeFilters, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal, CreateEmployeeModal, EditEmployeeModal } from '../components';
 
 export const DepartmentDetailsPage = () => {
   const { departmentId } = useParams<{ departmentId: string }>();
@@ -21,6 +21,7 @@ export const DepartmentDetailsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [showCreateEmployeeModal, setShowCreateEmployeeModal] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
 
   useEffect(() => {
     if (departmentId) {
@@ -303,6 +304,7 @@ export const DepartmentDetailsPage = () => {
                           key={employee.id}
                           employee={employee}
                           onViewDetails={setSelectedEmployee}
+                          onEdit={setEditingEmployee}
                         />
                       ))}
                     </tbody>
@@ -369,6 +371,15 @@ export const DepartmentDetailsPage = () => {
           departmentName={departmentDetails.department_name}
           positions={positions}
           onClose={() => setShowCreateEmployeeModal(false)}
+          onSuccess={handleEmployeeSuccess}
+        />
+      )}
+
+      {/* Modal de Editar Empleado */}
+      {editingEmployee && (
+        <EditEmployeeModal
+          employee={editingEmployee}
+          onClose={() => setEditingEmployee(null)}
           onSuccess={handleEmployeeSuccess}
         />
       )}

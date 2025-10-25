@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEdit } from '@fortawesome/free-solid-svg-icons';
 import type { Employee } from '../types';
 
 interface EmployeeTableRowProps {
   employee: Employee;
   onViewDetails: (employee: Employee) => void;
+  onEdit: (employee: Employee) => void;
 }
 
-export const EmployeeTableRow = ({ employee, onViewDetails }: EmployeeTableRowProps) => {
+export const EmployeeTableRow = ({ employee, onViewDetails, onEdit }: EmployeeTableRowProps) => {
   return (
     <tr className="border-b border-gray-700/50 hover:bg-secondary-600/30 transition-colors duration-200">
       <td className="px-4 py-3 text-sm text-gray-300">{employee.id}</td>
@@ -32,13 +33,22 @@ export const EmployeeTableRow = ({ employee, onViewDetails }: EmployeeTableRowPr
         {new Date(employee.hire_date).toLocaleDateString('es-ES')}
       </td>
       <td className="px-4 py-3">
-        <button
-          onClick={() => onViewDetails(employee)}
-          className="px-3 py-1.5 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg transition-all duration-300 flex items-center gap-2 border border-primary-500/30 text-sm"
-        >
-          <FontAwesomeIcon icon={faEye} />
-          <span>Ver</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onViewDetails(employee)}
+            className="px-3 py-1.5 bg-primary-500/20 hover:bg-primary-500/30 text-primary-400 rounded-lg transition-all duration-300 flex items-center gap-2 border border-primary-500/30 text-sm"
+          >
+            <FontAwesomeIcon icon={faEye} />
+            <span>Ver</span>
+          </button>
+          <button
+            onClick={() => onEdit(employee)}
+            className="px-3 py-1.5 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 rounded-lg transition-all duration-300 flex items-center gap-2 border border-yellow-500/30 text-sm"
+          >
+            <FontAwesomeIcon icon={faEdit} />
+            <span>Editar</span>
+          </button>
+        </div>
       </td>
     </tr>
   );

@@ -277,3 +277,28 @@ export interface CreateEmployeeWithUserResponse {
   message: string;
   data: Employee;
 }
+
+export interface UpdateEmployeeData {
+  hire_date: string;
+  position_id: number;
+  department_id: number;
+  employment_status: string;
+  schedule: string;
+  speciality: string;
+  salary: number;
+}
+
+export interface UpdateEmployeeResponse {
+  id: number;
+  employee_id: string | null;
+  hire_date: string;
+  position_id: number;
+  department_id: number;
+  user_id: number;
+  employment_status: string;
+  schedule: string;
+  speciality: string;
+  salary: number;
+  created_at: string;
+  updated_at: string | null;
+}
