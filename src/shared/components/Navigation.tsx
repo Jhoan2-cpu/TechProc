@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
@@ -36,6 +36,20 @@ export const SidebarNavigation = ({
   onModuleChange,
 }: SidebarNavigationProps) => {
   const [expandedModules, setExpandedModules] = useState<string[]>([]);
+
+  // Auto-expandir el módulo padre si hay un submódulo activo
+  useEffect(() => {
+    modules.forEach((module) => {
+      if (module.submodules) {
+        const hasActiveSubmodule = module.submodules.some(
+          (submodule) => currentPath === submodule.id
+        );
+        if (hasActiveSubmodule && !expandedModules.includes(module.id)) {
+          setExpandedModules((prev) => [...prev, module.id]);
+        }
+      }
+    });
+  }, [currentPath]);
 
   return (
     <nav className="flex-1 p-4 overflow-y-auto min-h-0">

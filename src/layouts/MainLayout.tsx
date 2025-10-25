@@ -47,7 +47,9 @@ export default function Layout({
     navigate(`/${module}`);
   };
 
-  const currentPath = location.pathname.split("/")[1] || "";
+  // Capturar la ruta completa sin el primer slash para comparar con los IDs de módulos/submódulos
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  const currentPath = pathParts.length > 1 ? pathParts.slice(0, 2).join("/") : pathParts[0] || "";
 
   return (
     <div className="min-h-screen flex animate-fade-in">
