@@ -179,3 +179,56 @@ export interface UserTableRowProps {
   onEdit: (user: User) => void;
   onViewDetails: (user: User) => void;
 }
+
+// ============================================
+// Department Types
+// ============================================
+
+export interface Department {
+  id: number;
+  department_name: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  employees?: Employee[];
+}
+
+export interface Position {
+  id: number;
+  position_name: string;
+  department_id: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Employee {
+  id: number;
+  employee_id: number;
+  hire_date: string;
+  position_id: number;
+  department_id: number;
+  user_id: number;
+  employment_status: string;
+  schedule: string;
+  speciality: string;
+  salary: string;
+  created_at: string;
+  updated_at: string;
+  user: User;
+  position: Position;
+}
+
+export interface CreateDepartmentData {
+  department_name: string;
+  description: string;
+}
+
+export interface DepartmentResponse {
+  id: number;
+  department_name: string;
+  description: string;
+}
+
+export interface DepartmentDetailsResponse extends Department {
+  employees: Employee[];
+}

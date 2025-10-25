@@ -34,7 +34,8 @@ import {
   faClipboardCheck,
   faChartBar,
   faDollarSign,
-  faCalendar
+  faCalendar,
+  faUserTie
 }
   from '@fortawesome/free-solid-svg-icons';
 
@@ -45,6 +46,7 @@ export const modules = [
     icon: faUsers,
     submodules: [
       { id: 'users', name: 'Gestión de Usuarios', icon: faUsers },
+      { id: 'users/employees', name: 'Empleados', icon: faUserTie },
     ],
   },
   {

@@ -4,3 +4,8 @@ export { UserFilters } from './UserFilters';
 export { UserTableRow } from './UserTableRow';
 export { UserFormModal } from './UserFormModal';
 export { ViewUserDetailsModal } from './ViewUserDetailsModal';
+export { DepartmentCard } from './DepartmentCard';
+export { CreateDepartmentModal } from './CreateDepartmentModal';
+export { ViewDepartmentDetailsModal } from './ViewDepartmentDetailsModal';
+export { EmployeeCard } from './EmployeeCard';
+export { ViewEmployeeDetailsModal } from './ViewEmployeeDetailsModal';

@@ -5,7 +5,9 @@
       "Bash(tee:*)",
       "Bash(npm run build)",
       "Read(//mnt/c/Users/anton/Desktop/**)",
-      "Bash(cd /mnt/c/Users/anton/Desktop/PRODUCTO\\ MIRKO/TechProc && git checkout:*)"
+      "Bash(cd /mnt/c/Users/anton/Desktop/PRODUCTO\\ MIRKO/TechProc && git checkout:*)",
+      "Bash(npx tsc --noEmit src/modules/users/pages/EmployeesPage.tsx src/modules/users/components/DepartmentCard.tsx src/modules/users/components/CreateDepartmentModal.tsx src/modules/users/components/ViewDepartmentDetailsModal.tsx src/modules/users/components/EmployeeCard.tsx src/modules/users/components/ViewEmployeeDetailsModal.tsx src/modules/users/services/departmentsService.ts)",
+      "Bash(cd /mnt/c/Users/anton/Desktop/PRODUCTO MIRKO/TechProc && npx tsc:*)"
     ],
     "deny": [],
     "ask": []
