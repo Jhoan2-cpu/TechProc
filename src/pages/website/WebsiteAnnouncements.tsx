@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBullhorn, faCalendar, faArrowRight, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn, faCalendar, faArrowRight, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { websiteService, type AnnouncementFromAPI } from '../../services/websiteService';
 
 export const WebsiteAnnouncements = () => {
@@ -11,56 +11,59 @@ export const WebsiteAnnouncements = () => {
   // Estados para controlar la visualización de cada tipo
   const [modalAnnouncement, setModalAnnouncement] = useState<AnnouncementFromAPI | null>(null);
   const [popupAnnouncement, setPopupAnnouncement] = useState<AnnouncementFromAPI | null>(null);
-  const [notificationAnnouncements, setNotificationAnnouncements] = useState<AnnouncementFromAPI[]>([]);
 
   useEffect(() => {
+    let isMounted = true;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+
     const fetchAnnouncements = async () => {
       try {
         setLoading(true);
         const data = await websiteService.getPublicAnnouncements();
+
+        if (!isMounted) return;
+
         setAnnouncements(data);
         setError(null);
 
         // Separar anuncios por tipo para mostrarlos de forma diferente
         const modal = data.find(a => a.display_type === 'modal');
         const popup = data.find(a => a.display_type === 'popup');
-        const notifications = data.filter(a => a.display_type === 'notification');
 
         // Mostrar modal primero (más importante) después de 1 segundo
         if (modal) {
-          setTimeout(() => setModalAnnouncement(modal), 1000);
+          const timeout = setTimeout(() => {
+            if (isMounted) setModalAnnouncement(modal);
+          }, 1000);
+          timeouts.push(timeout);
         }
 
         // Mostrar popup después de 3 segundos (o después de cerrar el modal)
         if (popup) {
-          setTimeout(() => {
-            if (!modal) setPopupAnnouncement(popup);
+          const timeout = setTimeout(() => {
+            if (isMounted && !modal) setPopupAnnouncement(popup);
           }, 3000);
-        }
-
-        // Mostrar notificaciones después de 2 segundos, una por una
-        if (notifications.length > 0) {
-          setTimeout(() => {
-            notifications.forEach((notif, index) => {
-              setTimeout(() => {
-                setNotificationAnnouncements(prev => [...prev, notif]);
-                // Auto-ocultar después de 8 segundos
-                setTimeout(() => {
-                  setNotificationAnnouncements(prev => prev.filter(n => n.id_announcement !== notif.id_announcement));
-                }, 8000);
-              }, index * 2500); // Espaciar notificaciones por 2.5 segundos
-            });
-          }, 2000);
+          timeouts.push(timeout);
         }
       } catch (err) {
         console.error('Error al cargar anuncios:', err);
-        setError('No se pudieron cargar los anuncios');
+        if (isMounted) {
+          setError('No se pudieron cargar los anuncios');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchAnnouncements();
+
+    // Cleanup: cancelar todos los timeouts cuando el componente se desmonte
+    return () => {
+      isMounted = false;
+      timeouts.forEach(timeout => clearTimeout(timeout));
+    };
   }, []);
 
   // Cuando se cierra el modal, mostrar el popup si existe
@@ -140,7 +143,7 @@ export const WebsiteAnnouncements = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
           <div className="bg-gradient-to-br from-primary-500/10 via-secondary-500 to-secondary-600 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto animate-scale-up border-2 border-primary-500/30">
             {/* Botón cerrar */}
-            <div className="sticky top-0 flex justify-end p-6 bg-gradient-to-b from-secondary-500/98 to-transparent z-10">
+            <div className="sticky top-[300px] border-4 flex justify-end p-6 bg-gradient-to-b from-secondary-500/98 to-transparent z-10">
               <button
                 onClick={handleCloseModal}
                 className="w-12 h-12 flex items-center justify-center rounded-full bg-red-500/30 hover:bg-red-500/50 text-red-300 hover:text-white transition-all shadow-lg"
@@ -264,38 +267,6 @@ export const WebsiteAnnouncements = () => {
           </div>
         </div>
       )}
-
-      {/* Notifications (Toasts) */}
-      <div className="fixed top-4 right-4 z-40 space-y-3 max-w-md">
-        {notificationAnnouncements.map((notification, index) => (
-          <div
-            key={`notification-${notification.id_announcement}-${index}`}
-            className="bg-gradient-to-r from-blue-500/95 to-blue-600/95 backdrop-blur-sm rounded-xl shadow-2xl p-4 animate-slide-in-right border border-blue-400/30"
-          >
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <FontAwesomeIcon icon={faInfoCircle} className="text-white" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-bold text-white mb-1">{notification.title}</h4>
-                <p className="text-sm text-white/95 mb-2 line-clamp-2">{notification.content}</p>
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-white text-[10px] font-semibold">
-                    {notification.creator.first_name[0]}{notification.creator.last_name[0]}
-                  </div>
-                  <p className="text-xs text-white/80">{notification.creator.full_name}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setNotificationAnnouncements(prev => prev.filter(n => n.id_announcement !== notification.id_announcement))}
-                className="flex-shrink-0 text-white/70 hover:text-white transition-colors"
-              >
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
 
       {/* Sección principal con tarjetas de tipo Banner */}
       <section id="announcements" className="py-20 bg-gradient-to-br from-smoky-600/50 to-dark-600/50">
