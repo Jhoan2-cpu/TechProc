@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBullhorn, faCalendar, faArrowRight, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn, faCalendar, faArrowRight, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import { websiteService, type AnnouncementFromAPI } from '../../services/websiteService';
+import { ViewAnnouncementDetailsModal } from './ViewAnnouncementDetailsModal';
 
 export const WebsiteAnnouncements = () => {
   const [announcements, setAnnouncements] = useState<AnnouncementFromAPI[]>([]);
@@ -11,6 +12,7 @@ export const WebsiteAnnouncements = () => {
   // Estados para controlar la visualización de cada tipo
   const [modalAnnouncement, setModalAnnouncement] = useState<AnnouncementFromAPI | null>(null);
   const [popupAnnouncement, setPopupAnnouncement] = useState<AnnouncementFromAPI | null>(null);
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState<number | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -362,6 +364,15 @@ export const WebsiteAnnouncements = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Botón Ver más */}
+                  <button
+                    onClick={() => setSelectedAnnouncementId(announcement.id_announcement)}
+                    className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                  >
+                    <FontAwesomeIcon icon={faEye} />
+                    Ver más
+                  </button>
                 </div>
               </div>
             ))}
@@ -373,6 +384,14 @@ export const WebsiteAnnouncements = () => {
           )}
         </div>
       </section>
+
+      {/* Modal de detalles del anuncio */}
+      {selectedAnnouncementId && (
+        <ViewAnnouncementDetailsModal
+          announcementId={selectedAnnouncementId}
+          onClose={() => setSelectedAnnouncementId(null)}
+        />
+      )}
     </>
   );
 };

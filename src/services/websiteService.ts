@@ -55,6 +55,11 @@ export interface AnnouncementsResponse {
   data: AnnouncementFromAPI[];
 }
 
+export interface AnnouncementDetailResponse {
+  success: boolean;
+  data: AnnouncementFromAPI;
+}
+
 // Tipos para formulario de contacto
 export interface ContactFormData {
   full_name: string;
@@ -128,6 +133,38 @@ class WebsiteService {
       return data.data;
     } catch (error) {
       console.error('Error en getPublicAnnouncements:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Obtiene un anuncio específico por su ID
+   * Endpoint: GET /api/developer-web/announcements/public/:id
+   * No requiere autenticación
+   */
+  async getAnnouncementById(id: number): Promise<AnnouncementFromAPI> {
+    try {
+      const response = await fetch(`${this.baseUrl}/developer-web/announcements/public/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al obtener anuncio: ${response.status}`);
+      }
+
+      const data: AnnouncementDetailResponse = await response.json();
+
+      if (!data.success) {
+        throw new Error('La respuesta de la API no fue exitosa');
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error('Error en getAnnouncementById:', error);
       throw error;
     }
   }

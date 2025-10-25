@@ -11,6 +11,7 @@ interface WebsiteNewsProps {
 export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
   const [selectedNews, setSelectedNews] = useState<News | null>(null);
   const [loadingNewsDetail, setLoadingNewsDetail] = useState(false);
+  const [showAllNews, setShowAllNews] = useState(false);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('es-ES', {
@@ -45,8 +46,11 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
   };
 
   // El endpoint público ya devuelve solo noticias publicadas
-  // Limitar a 6 noticias por si acaso
-  const publishedNews = news.slice(0, 6);
+  // Mostrar solo 6 noticias por defecto, o todas si showAllNews es true
+  const publishedNews = showAllNews ? news : news.slice(0, 6);
+
+  // Determinar si hay más de 6 noticias para mostrar el botón
+  const hasMoreNews = news.length > 6;
 
   return (
     <section id="news" className="py-20 bg-gradient-to-br from-dark-600/50 to-smoky-600/50">
@@ -157,11 +161,14 @@ export const WebsiteNews = ({ news }: WebsiteNewsProps) => {
           </div>
         )}
 
-        {/* View All Button */}
-        {publishedNews.length > 0 && (
+        {/* View All Button - Solo mostrar si hay más de 6 noticias */}
+        {hasMoreNews && (
           <div className="text-center mt-12">
-            <button className="px-8 py-3 bg-secondary-600/50 border-2 border-primary-500/30 text-white font-semibold rounded-lg hover:bg-secondary-600 hover:border-primary-500/50 transition-all duration-300">
-              Ver Todas las Noticias
+            <button
+              onClick={() => setShowAllNews(!showAllNews)}
+              className="px-8 py-3 bg-secondary-600/50 border-2 border-primary-500/30 text-white font-semibold rounded-lg hover:bg-secondary-600 hover:border-primary-500/50 transition-all duration-300"
+            >
+              {showAllNews ? 'Ver Menos Noticias' : 'Ver Todas las Noticias'}
             </button>
           </div>
         )}
