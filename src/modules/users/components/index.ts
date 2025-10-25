@@ -8,3 +8,6 @@ export { DepartmentCard } from './DepartmentCard';
 export { CreateDepartmentModal } from './CreateDepartmentModal';
 export { EmployeeCard } from './EmployeeCard';
 export { ViewEmployeeDetailsModal } from './ViewEmployeeDetailsModal';
+export { PositionCard } from './PositionCard';
+export { CreatePositionModal } from './CreatePositionModal';
+export { EditPositionModal } from './EditPositionModal';

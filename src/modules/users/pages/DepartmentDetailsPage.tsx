@@ -1,23 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faUsers, faSpinner, faArrowLeft, faCalendar, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faUsers, faSpinner, faArrowLeft, faCalendar, faInfoCircle, faBriefcase, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Breadcrumb } from '../../../shared/components/Breadcrumb';
-import type { DepartmentDetailsResponse, Employee } from '../types';
-import { getDepartmentById } from '../services';
-import { EmployeeCard, ViewEmployeeDetailsModal } from '../components';
+import type { DepartmentDetailsResponse, Employee, Position } from '../types';
+import { getDepartmentById, getPositionsByDepartment } from '../services';
+import { EmployeeCard, ViewEmployeeDetailsModal, PositionCard, CreatePositionModal, EditPositionModal } from '../components';
 
 export const DepartmentDetailsPage = () => {
   const { departmentId } = useParams<{ departmentId: string }>();
   const navigate = useNavigate();
   const [departmentDetails, setDepartmentDetails] = useState<DepartmentDetailsResponse | null>(null);
+  const [positions, setPositions] = useState<Position[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingPositions, setLoadingPositions] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [showCreatePositionModal, setShowCreatePositionModal] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState<Position | null>(null);
 
   useEffect(() => {
     if (departmentId) {
       loadDepartmentDetails();
+      loadPositions();
     }
   }, [departmentId]);
 
@@ -33,6 +38,22 @@ export const DepartmentDetailsPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadPositions = async () => {
+    try {
+      setLoadingPositions(true);
+      const data = await getPositionsByDepartment(Number(departmentId));
+      setPositions(data);
+    } catch (err: any) {
+      console.error('Error al cargar posiciones:', err);
+    } finally {
+      setLoadingPositions(false);
+    }
+  };
+
+  const handlePositionSuccess = () => {
+    loadPositions();
   };
 
   const breadcrumbItems = [
@@ -148,6 +169,52 @@ export const DepartmentDetailsPage = () => {
           </div>
         </div>
 
+        {/* Lista de Cargos/Posiciones */}
+        <div className="mb-8 bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-primary-50/30 shadow-lg">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-heading font-bold text-white flex items-center gap-3">
+              <FontAwesomeIcon icon={faBriefcase} className="text-purple-400" />
+              Cargos del Departamento
+            </h2>
+            <button
+              onClick={() => setShowCreatePositionModal(true)}
+              className="px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 font-medium flex items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+              <span>Crear Cargo</span>
+            </button>
+          </div>
+
+          {loadingPositions ? (
+            <div className="flex items-center justify-center py-12">
+              <FontAwesomeIcon icon={faSpinner} className="text-3xl text-primary-400 animate-spin" />
+              <span className="ml-3 text-gray-400">Cargando cargos...</span>
+            </div>
+          ) : positions.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {positions.map((position) => (
+                <PositionCard
+                  key={position.id}
+                  position={position}
+                  onEdit={setSelectedPosition}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <FontAwesomeIcon icon={faBriefcase} className="text-6xl text-gray-600 mb-4" />
+              <p className="text-gray-400 text-lg mb-4">No hay cargos definidos en este departamento</p>
+              <button
+                onClick={() => setShowCreatePositionModal(true)}
+                className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 font-medium inline-flex items-center gap-2"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Crear Primer Cargo</span>
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Lista de Empleados */}
         <div className="bg-gradient-to-br from-secondary-500/80 to-secondary-600/80 backdrop-blur-sm rounded-xl p-6 border border-primary-50/30 shadow-lg">
           <div className="flex items-center justify-between mb-6">
@@ -186,6 +253,27 @@ export const DepartmentDetailsPage = () => {
         <ViewEmployeeDetailsModal
           employee={selectedEmployee}
           onClose={() => setSelectedEmployee(null)}
+        />
+      )}
+
+      {/* Modal de Crear Cargo */}
+      {showCreatePositionModal && departmentDetails && (
+        <CreatePositionModal
+          departmentId={departmentDetails.id}
+          departmentName={departmentDetails.department_name}
+          onClose={() => setShowCreatePositionModal(false)}
+          onSuccess={handlePositionSuccess}
+        />
+      )}
+
+      {/* Modal de Editar Cargo */}
+      {selectedPosition && departmentDetails && (
+        <EditPositionModal
+          position={selectedPosition}
+          departmentId={departmentDetails.id}
+          departmentName={departmentDetails.department_name}
+          onClose={() => setSelectedPosition(null)}
+          onSuccess={handlePositionSuccess}
         />
       )}
     </div>

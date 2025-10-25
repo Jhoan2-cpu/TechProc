@@ -199,6 +199,17 @@ export interface Position {
   department_id: number;
   created_at: string;
   updated_at: string;
+  department?: Department;
+}
+
+export interface CreatePositionData {
+  position_name: string;
+  department_id: number;
+}
+
+export interface UpdatePositionData {
+  position_name: string;
+  department_id: number;
 }
 
 export interface Employee {
