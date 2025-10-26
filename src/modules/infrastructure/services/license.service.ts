@@ -11,11 +11,6 @@ import type{
 
 
 // Tipos de respuesta según la API Laravel
-interface LicenseListResponse {
-    success: boolean;
-    data: ApiLicense[];
-}
-
 interface LicenseDetailResponse {
     success: boolean;
     data: ApiLicense;
@@ -48,10 +43,11 @@ const mapApiLicenseToLicense = (apiLicense: ApiLicense): License => ({
     expiration_date: apiLicense.expiration_date || undefined,
     seats_total: apiLicense.seats_total,
     seats_used: apiLicense.seats_used,
-    cost_annual: apiLicense.cost_annual,
+    cost_annual: parseFloat(apiLicense.cost_annual), // Convertir de string a number
     status: apiLicense.status as LicenseStatus,
     responsible_id: apiLicense.responsible_id || undefined,
     notes: apiLicense.notes || undefined,
+    responsible: apiLicense.responsible || undefined,
     //createdAt: apiLicense.created_at,
     //updatedAt: apiLicense.updated_at,
 });
@@ -61,11 +57,12 @@ const BASE_ENDPOINT = '/infraestructura/licenses'
 
 export const LicenseServices = {
     async getAll(): Promise<License[]> {
-        const res = await apiRequest<LicenseListResponse>(BASE_ENDPOINT, {
+        const res = await apiRequest<ApiLicense[]>(BASE_ENDPOINT, {
             method: 'GET',
         });
         console.log("Lista de licencias: ", res);
-        return res.data.map(mapApiLicenseToLicense);
+        // El backend devuelve directamente un array, no un objeto con success/data
+        return res.map(mapApiLicenseToLicense);
     },
 
     async getById(id: number): Promise<License>{

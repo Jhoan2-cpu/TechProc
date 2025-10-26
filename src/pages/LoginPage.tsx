@@ -71,7 +71,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'soporte@techproc.com',
     },
     {
-      value: 'soporte_seguridad',
+      value: 'seg',
       label: 'Soporte - Seguridad',
       description: 'Seguridad del sistema',
       color: 'from-purple-500 to-purple-700',
@@ -79,7 +79,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'security@techproc.com',
     },
     {
-      value: 'soporte_infraestructura',
+      value: 'infra',
       label: 'Soporte - Infraestructura',
       description: 'Gestión de infraestructura',
       color: 'from-green-500 to-green-700',
@@ -87,7 +87,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'infra@techproc.com',
     },
     {
-      value: 'developer_web',
+      value: 'web',
       label: 'Developer Web',
       description: 'Desarrollo y gestión web',
       color: 'from-orange-500 to-orange-700',
@@ -95,7 +95,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       suggestedEmail: 'web@techproc.com',
     },
     {
-      value: 'analista_datos',
+      value: 'data',
       label: 'Analista de Datos',
       description: 'Analítica y reportes',
       color: 'from-cyan-500 to-cyan-700',
@@ -445,9 +445,9 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               <p>• Email: {selectedProfile?.suggestedEmail}</p>
               <p>• Contraseña: {selectedProfile?.value === 'admin' ? 'admin123' :
                                selectedProfile?.value === 'lms' ? 'lms123' :
-                               selectedProfile?.value === 'soporte_seguridad' ? 'security123' :
-                               selectedProfile?.value === 'soporte_infraestructura' ? 'infra123' :
-                               selectedProfile?.value === 'developer_web' ? 'web123' : 'data123'}</p>
+                               selectedProfile?.value === 'seg' ? 'security123' :
+                               selectedProfile?.value === 'infra' ? 'infra123' :
+                               selectedProfile?.value === 'web' ? 'web123' : 'data123'}</p>
             </div>
           </div>
         </div>

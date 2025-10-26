@@ -42,9 +42,13 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
             
             <div className="flex items-center gap-2 text-gray-300">
               <FontAwesomeIcon icon={faBuilding} className="w-4 text-primary-400" />
-              <span>{student.company.name}</span>
-              <span className="text-gray-500">•</span>
-              <span className="text-gray-400">{student.company.industry}</span>
+              <span>{student.company?.name || 'Sin compañía'}</span>
+              {student.company?.industry && (
+                <>
+                  <span className="text-gray-500">•</span>
+                  <span className="text-gray-400">{student.company.industry}</span>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -79,7 +83,7 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
           <div className="space-y-2">
             {student.enrollments.slice(0, 2).map((enrollment) => (
               <div key={enrollment.id} className="flex justify-between items-center text-sm">
-                <span className="text-white">{enrollment.academic_period.name}</span>
+                <span className="text-white">{enrollment.academic_period?.name || 'Período no disponible'}</span>
                 <span className="text-gray-400 text-xs">
                   {new Date(enrollment.enrollment_date).toLocaleDateString()}
                 </span>

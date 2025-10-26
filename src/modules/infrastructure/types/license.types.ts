@@ -5,6 +5,7 @@
  */
 export interface ApiLicense {
   id: number;
+  id_license: number | null;
   software_name: string;
   license_key: string;
   license_type: string;
@@ -13,12 +14,26 @@ export interface ApiLicense {
   expiration_date?: string | null;
   seats_total: number;
   seats_used: number;
-  cost_annual: number;
+  cost_annual: string; // El backend devuelve como string
   status: string;
   responsible_id?: number | null; // id del empleado responsable
-  notes: string;
+  notes: string | null;
   created_at?: string;
-  //updated_at?: string;
+  software: any | null; // Objeto de software relacionado (puede ser null)
+  responsible: {
+    id: number;
+    employee_id: string | null;
+    hire_date: string;
+    position_id: number;
+    department_id: number;
+    user_id: number;
+    employment_status: string;
+    schedule: string;
+    speciality: string;
+    salary: string;
+    created_at: string;
+    updated_at: string | null;
+  } | null;
 }
 
 /**
@@ -38,6 +53,20 @@ export interface License {
   status?: string;
   responsible_id?: number | null;
   notes?: string;
+  responsible?: {
+    id: number;
+    employee_id: string | null;
+    hire_date: string;
+    position_id: number;
+    department_id: number;
+    user_id: number;
+    employment_status: string;
+    schedule: string;
+    speciality: string;
+    salary: string;
+    created_at: string;
+    updated_at: string | null;
+  };
   //created_At?: string;
   //updated_At?: string;
 }

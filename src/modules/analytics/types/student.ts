@@ -25,7 +25,7 @@ export interface Student {
       contact_email: string;
       created_at: string;
       updated_at: string;
-    };
+    } | null;
     enrollments: Enrollment[];
   }
   
@@ -46,7 +46,7 @@ export interface Student {
       end_date: string;
       status: string;
       created_at: string;
-    };
+    } | null;
     enrollment_details?: EnrollmentDetail[];
   }
   

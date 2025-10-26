@@ -27,14 +27,13 @@ const roleConfig: Record<UserRole, { color: string; icon: IconDefinition; label:
   admin: { color: 'from-red-500 to-red-700', icon: faShieldHalved, label: 'Administrador' },
   lms: { color: 'from-blue-500 to-blue-700', icon: faGraduationCap, label: 'Gestor LMS' },
   support: { color: 'from-yellow-500 to-yellow-700', icon: faBriefcase, label: 'Soporte Técnico' },
-  seg: { color: 'from-purple-500 to-purple-700', icon: faLock, label: 'Soporte - Seguridad' },
   soporte_seguridad: { color: 'from-purple-500 to-purple-700', icon: faLock, label: 'Soporte - Seguridad' },
-  infra: { color: 'from-green-500 to-green-700', icon: faServer, label: 'Soporte - Infraestructura' },
-  soporte_infraestructura: { color: 'from-green-500 to-green-700', icon: faServer, label: 'Soporte - Infraestructura' },
-  web: { color: 'from-orange-500 to-orange-700', icon: faGlobe, label: 'Developer Web' },
   developer_web: { color: 'from-orange-500 to-orange-700', icon: faGlobe, label: 'Developer Web' },
-  data: { color: 'from-cyan-500 to-cyan-700', icon: faChartLine, label: 'Analista de Datos' },
   analista_datos: { color: 'from-cyan-500 to-cyan-700', icon: faChartLine, label: 'Analista de Datos' },
+  seg: { color: 'from-purple-500 to-purple-700', icon: faLock, label: 'Soporte - Seguridad' },
+  infra: { color: 'from-green-500 to-green-700', icon: faServer, label: 'Soporte - Infraestructura' },
+  web: { color: 'from-orange-500 to-orange-700', icon: faGlobe, label: 'Developer Web' },
+  data: { color: 'from-cyan-500 to-cyan-700', icon: faChartLine, label: 'Analista de Datos' },
 };
 
 export const ProfilePage = ({ user }: ProfilePageProps) => {
