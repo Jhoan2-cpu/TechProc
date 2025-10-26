@@ -103,9 +103,9 @@ export interface RefreshTokenResponse {
 
 // Permisos de acceso a módulos por rol según tabla de la especificación
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
-  admin: ['users', 'lms', 'tickets', 'security', 'infrastructure', 'web', 'analytics'],
+  admin: ['users', 'lms', 'tickets', 'security', 'infra', 'web', 'analytics'],
   lms: ['lms'],
-  support: ['tickets'], // Cambiado de 'support' a 'tickets'
+  support: ['support'], // Cambiado de 'support' a 'tickets'
   soporte_seguridad: ['tickets', 'security'],
   soporte_infraestructura: ['tickets', 'infrastructure'],
   developer_web: ['tickets', 'web'],
