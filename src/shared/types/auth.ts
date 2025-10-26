@@ -5,7 +5,6 @@ export type UserRole =
   | 'lms'
   | 'support'        // Añadido para coincidir con MODULE_ACCESS
   | 'soporte_seguridad'
-  | 'soporte_infraestructura'
   | 'developer_web'
   | 'analista_datos'
   | 'seg'
@@ -107,11 +106,10 @@ export const MODULE_ACCESS: Record<UserRole, string[]> = {
   lms: ['lms'],
   support: ['support'], // Cambiado de 'support' a 'tickets'
   soporte_seguridad: ['tickets', 'security'],
-  soporte_infraestructura: ['tickets', 'infrastructure'],
   developer_web: ['tickets', 'web'],
   web: ['tickets', 'web'],
   analista_datos: ['analytics'],
   seg: ['tickets', 'security'],
-  infra: ['tickets', 'infrastructure'],
+  infra: ['tickets', 'infra'],
   data: ['analytics'],
 };

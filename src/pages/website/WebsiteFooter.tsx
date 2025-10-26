@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faGraduationCap,
   faEnvelope,
   faPhone,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faPlug,
+  faCheckCircle,
+  faTimesCircle,
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faFacebook,
@@ -13,9 +18,43 @@ import {
   faInstagram,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { apiRequest } from '../../services/api.config';
 
 export const WebsiteFooter = () => {
   const currentYear = new Date().getFullYear();
+  const [connectionStatus, setConnectionStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
+  const [connectionMessage, setConnectionMessage] = useState<string>('');
+
+  const testConnection = async () => {
+    setConnectionStatus('testing');
+    setConnectionMessage('');
+
+    try {
+      const response = await apiRequest<{
+        success: boolean;
+        message: string;
+        timestamp: string;
+      }>('/test-public', {
+        method: 'GET',
+      });
+
+      if (response.success) {
+        setConnectionStatus('success');
+        setConnectionMessage(response.message);
+        setTimeout(() => {
+          setConnectionStatus('idle');
+          setConnectionMessage('');
+        }, 5000);
+      }
+    } catch (error: any) {
+      setConnectionStatus('error');
+      setConnectionMessage(error.message || 'Error al conectar con el servidor');
+      setTimeout(() => {
+        setConnectionStatus('idle');
+        setConnectionMessage('');
+      }, 5000);
+    }
+  };
 
   return (
     <footer className="bg-gradient-to-br from-secondary-700 to-secondary-800 border-t border-primary-500/30">
@@ -147,9 +186,42 @@ export const WebsiteFooter = () => {
         {/* Bottom Bar */}
         <div className="border-t border-secondary-600 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-gray-400 text-sm text-center md:text-left">
-              © {currentYear} INCADEV. Todos los derechos reservados.
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <p className="text-gray-400 text-sm text-center md:text-left">
+                © {currentYear} INCADEV. Todos los derechos reservados.
+              </p>
+
+              {/* Botón de prueba de conexión */}
+              <button
+                onClick={testConnection}
+                disabled={connectionStatus === 'testing'}
+                className={`
+                  px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 flex items-center gap-2
+                  ${connectionStatus === 'idle' ? 'bg-secondary-600 hover:bg-secondary-500 text-gray-300' : ''}
+                  ${connectionStatus === 'testing' ? 'bg-blue-600 text-white cursor-wait' : ''}
+                  ${connectionStatus === 'success' ? 'bg-green-600 text-white' : ''}
+                  ${connectionStatus === 'error' ? 'bg-red-600 text-white' : ''}
+                `}
+                title="Probar conexión con el servidor"
+              >
+                <FontAwesomeIcon
+                  icon={
+                    connectionStatus === 'testing' ? faSpinner :
+                    connectionStatus === 'success' ? faCheckCircle :
+                    connectionStatus === 'error' ? faTimesCircle :
+                    faPlug
+                  }
+                  className={connectionStatus === 'testing' ? 'animate-spin' : ''}
+                />
+                <span>
+                  {connectionStatus === 'idle' && 'Test API'}
+                  {connectionStatus === 'testing' && 'Conectando...'}
+                  {connectionStatus === 'success' && 'Conectado'}
+                  {connectionStatus === 'error' && 'Error'}
+                </span>
+              </button>
+            </div>
+
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-gray-400 hover:text-primary-400 transition-colors">
                 Términos y Condiciones
@@ -162,6 +234,15 @@ export const WebsiteFooter = () => {
               </a>
             </div>
           </div>
+
+          {/* Mensaje de estado de conexión */}
+          {connectionMessage && (
+            <div className="mt-4 text-center">
+              <p className={`text-xs ${connectionStatus === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                {connectionMessage}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </footer>
