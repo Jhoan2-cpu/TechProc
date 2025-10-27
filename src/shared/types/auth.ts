@@ -4,13 +4,13 @@ export type UserRole =
   | 'admin'
   | 'lms'
   | 'support'        // Añadido para coincidir con MODULE_ACCESS
-  | 'soporte_seguridad'
-  | 'developer_web'
-  | 'analista_datos'
   | 'seg'
   | 'infra'
   | 'web'
-  | 'data';
+  | 'data'
+  | 'instructor'
+  | 'student'
+  | 'employee';
 
 // Interfaz User según schema de la especificación
 export interface User {
@@ -102,14 +102,14 @@ export interface RefreshTokenResponse {
 
 // Permisos de acceso a módulos por rol según tabla de la especificación
 export const MODULE_ACCESS: Record<UserRole, string[]> = {
-  admin: ['users', 'lms', 'tickets', 'security', 'infra', 'web', 'analytics'],
+  admin: ['users', 'lms', 'security', 'infra', 'web', 'analytics'],
   lms: ['lms'],
   support: ['support'], // Cambiado de 'support' a 'tickets'
-  soporte_seguridad: ['tickets', 'security'],
-  developer_web: ['tickets', 'web'],
-  web: ['tickets', 'web'],
-  analista_datos: ['analytics'],
-  seg: ['tickets', 'security'],
-  infra: ['tickets', 'infra'],
+  seg: ['security'],
+  web: ['web'],
+  infra: ['infra'],
   data: ['analytics'],
+  instructor: ['lms'],
+  student: ['lms'],
+  employee: [],
 };

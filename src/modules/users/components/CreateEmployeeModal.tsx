@@ -313,26 +313,28 @@ export const CreateEmployeeModal = ({ departmentId, departmentName, positions, o
               {/* Roles */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Roles <span className="text-danger">*</span>
+                  Rol <span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
+                <select
                   required
-                  value={formData.user.role.join(', ')}
+                  value={formData.user.role[0] || 'employee'}
                   onChange={(e) => {
-                    const rolesArray = e.target.value
-                      .split(',')
-                      .map(role => role.trim())
-                      .filter(role => role.length > 0);
-                    setFormData({ ...formData, user: { ...formData.user, role: rolesArray } });
+                    setFormData({ ...formData, user: { ...formData.user, role: [e.target.value] } });
                   }}
-                  className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
-                  placeholder="Ingrese roles separados por comas"
+                  className="w-full px-4 py-3 bg-secondary-700/50 border border-gray-700/50 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300 cursor-pointer"
                   disabled={loading}
-                />
-                <p className="text-xs text-gray-400 mt-2">
-                  Puede asignar múltiples roles separados por comas. Ejemplos: <span className="text-primary-400">admin</span>, <span className="text-primary-400">lms</span>, <span className="text-primary-400">student</span>, <span className="text-primary-400">instructor</span>, <span className="text-primary-400">seg</span>, <span className="text-primary-400">infra</span>, <span className="text-primary-400">web</span>, <span className="text-primary-400">data</span>
-                </p>
+                >
+                  <option value="admin" className="bg-secondary-700">Administrador</option>
+                  <option value="instructor" className="bg-secondary-700">Instructor</option>
+                  <option value="student" className="bg-secondary-700">Estudiante</option>
+                  <option value="lms" className="bg-secondary-700">Gestor LMS</option>
+                  <option value="seg" className="bg-secondary-700">Seguridad</option>
+                  <option value="support" className="bg-secondary-700">Soporte Técnico</option>
+                  <option value="infra" className="bg-secondary-700">Infraestructura</option>
+                  <option value="web" className="bg-secondary-700">Desarrollo Web</option>
+                  <option value="data" className="bg-secondary-700">Analista Datos</option>
+                  <option value="employee" className="bg-secondary-700">Empleado</option>
+                </select>
                 {getFieldError('user.role') && (
                   <p className="text-danger text-xs mt-1">{getFieldError('user.role')}</p>
                 )}

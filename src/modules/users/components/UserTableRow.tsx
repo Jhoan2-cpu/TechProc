@@ -14,6 +14,7 @@ export const UserTableRow = ({
     'student': 'Estudiante',
     'lms': 'Gestor LMS',
     'seg': 'Seguridad',
+    'support': 'Soporte Técnico',
     'infra': 'Infraestructura',
     'web': 'Desarrollo Web',
     'data': 'Analista Datos',
