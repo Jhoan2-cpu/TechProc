@@ -129,26 +129,28 @@ export const CreateEmployeeModal = ({ departmentId, departmentName, positions, o
 
   return (
     <Portal>
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in overflow-y-auto">
-      <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-2xl max-w-4xl w-full my-8 border border-primary-500/30 animate-scale-in">
-        {/* Header */}
-        <div className="p-6 border-b border-gray-700/50 bg-gradient-to-r from-secondary-600 to-secondary-700 sticky top-0 z-10">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-heading font-bold text-gradient">Agregar Empleado</h2>
-              <p className="text-sm text-gray-400 mt-1">Departamento: {departmentName}</p>
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+        <div className="bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] border border-primary-500/30 animate-scale-in flex flex-col">
+          {/* Header - Fixed at top */}
+          <div className="p-6 border-b border-gray-700/50 bg-gradient-to-r from-secondary-600 to-secondary-700 rounded-t-xl flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-heading font-bold text-gradient">Agregar Empleado</h2>
+                <p className="text-sm text-gray-400 mt-1">Departamento: {departmentName}</p>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-white transition-colors"
+                disabled={loading}
+              >
+                <FontAwesomeIcon icon={faTimes} className="text-xl" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors"
-              disabled={loading}
-            >
-              <FontAwesomeIcon icon={faTimes} className="text-xl" />
-            </button>
           </div>
-        </div>
 
-        <form onSubmit={handleSubmit} className="p-6">
+          {/* Scrollable Form Content */}
+          <div className="overflow-y-auto flex-1">
+            <form onSubmit={handleSubmit} className="p-6">
           {/* Error Message */}
           {error && (
             <div className="mb-4 p-4 bg-danger/10 border border-danger/30 rounded-lg animate-slide-down">
@@ -448,37 +450,38 @@ export const CreateEmployeeModal = ({ departmentId, departmentName, positions, o
             </div>
           </div>
 
-          {/* Footer Actions */}
-          <div className="mt-8 flex gap-3 justify-end pt-4 border-t border-gray-700/50">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-3 bg-secondary-700/50 hover:bg-secondary-600/50 text-gray-300 hover:text-white rounded-lg border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
-                  Creando...
-                </>
-              ) : (
-                <>
-                  <FontAwesomeIcon icon={faSave} />
-                  Crear Empleado
-                </>
-              )}
-            </button>
+              {/* Footer Actions */}
+              <div className="mt-8 flex gap-3 justify-end pt-4 border-t border-gray-700/50">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-6 py-3 bg-secondary-700/50 hover:bg-secondary-600/50 text-gray-300 hover:text-white rounded-lg border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={loading}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 hover:scale-105 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+                      Creando...
+                    </>
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faSave} />
+                      Crear Empleado
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
     </Portal>
   );
 };

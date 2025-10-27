@@ -168,7 +168,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
         onLogin(user);
 
         // Recargar la página para asegurar que todos los módulos se inicialicen correctamente
-        window.location.href = '/profile';
+        window.location.href = '/procesostecnologicos/web/profile';
       } else {
         setError('Error al iniciar sesión: Respuesta inválida del servidor');
       }
