@@ -4,6 +4,7 @@ import {faUsers, faChartBar, faBuilding} from '@fortawesome/free-solid-svg-icons
 import type { StudentFilters } from '../types/student';
 import { StudentFilterSection, StudentCard } from '../components';
 import { useStudents } from '../hooks/useStudents';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export const StudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,12 +21,14 @@ export const StudentsPage = () => {
 
   // Aplicar filtro de búsqueda local
   const filteredStudents = students.filter(student => {
+    if (!student) return false;
+    
     const searchLower = searchTerm.toLowerCase();
     return (
-      student.first_name.toLowerCase().includes(searchLower) ||
-      student.last_name.toLowerCase().includes(searchLower) ||
-      student.email.toLowerCase().includes(searchLower) ||
-      student.document_number.includes(searchTerm)
+      student.first_name?.toLowerCase().includes(searchLower) ||
+      student.last_name?.toLowerCase().includes(searchLower) ||
+      student.email?.toLowerCase().includes(searchLower) ||
+      student.document_number?.includes(searchTerm)
     );
   });
 
@@ -40,18 +43,8 @@ export const StudentsPage = () => {
     refreshData({});
   };
 
-  /*const handleViewDetails = (studentId: number) => {
-    setSelectedStudent(studentId);
-    // Aquí podrías navegar a una página de detalle o mostrar un modal
-    console.log('Ver detalles del estudiante:', studentId);
-  };*/
-
   if (loading && students.length === 0) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-white">Cargando datos de estudiantes...</div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -116,7 +109,7 @@ export const StudentsPage = () => {
                 <FontAwesomeIcon icon={faBuilding} className="text-blue-400 text-xl" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{statistics.by_company.length}</p>
+                <p className="text-2xl font-bold text-white">{statistics.by_company?.length || 0}</p>
                 <p className="text-sm text-gray-300">Empresas</p>
               </div>
             </div>
@@ -129,7 +122,10 @@ export const StudentsPage = () => {
               </div>
               <div>
                 <p className="text-2xl font-bold text-white">
-                  {((statistics.active_students / statistics.total_students) * 100).toFixed(1)}%
+                  {statistics.total_students > 0 
+                    ? ((statistics.active_students / statistics.total_students) * 100).toFixed(1)
+                    : '0'
+                  }%
                 </p>
                 <p className="text-sm text-gray-300">Tasa de Activos</p>
               </div>
@@ -164,7 +160,6 @@ export const StudentsPage = () => {
               key={student.id}
               student={student}
               index={index}
-              //onViewDetails={handleViewDetails}
             />
           ))
         ) : (

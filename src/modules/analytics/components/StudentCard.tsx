@@ -16,6 +16,15 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
     return `px-2 py-1 rounded-full text-xs border ${colors}`;
   };
 
+  // Función segura para formatear fecha
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString();
+    } catch {
+      return 'Fecha inválida';
+    }
+  };
+
   return (
     <div
       className="card p-6 border border-transparent hover:shadow-lg hover:border-primary-500/20 transition-all duration-300 cursor-pointer"
@@ -55,7 +64,7 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
         
         <div className="text-right">
           <p className="text-3xl font-bold text-primary-400">
-            {student.enrollments_count}
+            {student.enrollments_count || 0}
           </p>
           <p className="text-xs text-gray-300">matrículas</p>
         </div>
@@ -69,12 +78,12 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
         </div>
         <div className="p-3 bg-primary-900/20 rounded">
           <p className="text-xs text-gray-400 mb-1">Teléfono</p>
-          <p className="text-sm text-white">{student.phone}</p>
+          <p className="text-sm text-white">{student.phone || 'No especificado'}</p>
         </div>
       </div>
 
       {/* Matrículas recientes */}
-      {student.enrollments.length > 0 && (
+      {student.enrollments && student.enrollments.length > 0 ? (
         <div className="border-t border-gray-700 pt-3">
           <p className="text-xs text-gray-400 mb-2 flex items-center gap-2">
             <FontAwesomeIcon icon={faCalendar} />
@@ -83,9 +92,11 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
           <div className="space-y-2">
             {student.enrollments.slice(0, 2).map((enrollment) => (
               <div key={enrollment.id} className="flex justify-between items-center text-sm">
-                <span className="text-white">{enrollment.academic_period?.name || 'Período no disponible'}</span>
+                <span className="text-white">
+                  {enrollment.academic_period?.name || 'Período académico'}
+                </span>
                 <span className="text-gray-400 text-xs">
-                  {new Date(enrollment.enrollment_date).toLocaleDateString()}
+                  {formatDate(enrollment.enrollment_date)}
                 </span>
               </div>
             ))}
@@ -96,8 +107,19 @@ export const StudentCard = ({ student, index }: StudentCardProps) => {
             )}
           </div>
         </div>
+      ) : (
+        <div className="border-t border-gray-700 pt-3">
+          <p className="text-xs text-gray-400 mb-2 flex items-center gap-2">
+            <FontAwesomeIcon icon={faCalendar} />
+            Matrículas
+          </p>
+          <p className="text-sm text-gray-500 text-center">No hay matrículas registradas</p>
+        </div>
       )}
 
+      <div className="flex items-center justify-between text-sm text-gray-400 mt-3">
+        <span>Registrado: {formatDate(student.created_at)}</span>
+      </div>
     </div>
   );
 };

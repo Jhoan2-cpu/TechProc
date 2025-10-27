@@ -15,30 +15,39 @@ export const studentService = {
     students: Student[]; 
     pagination: any 
   }> {
-    const params = new URLSearchParams();
-    
-    if (filters?.company_id) params.append('company_id', filters.company_id.toString());
-    if (filters?.status) params.append('status', filters.status);
-    if (filters?.enrollment_type) params.append('enrollment_type', filters.enrollment_type);
-    if (filters?.academic_period_id) params.append('academic_period_id', filters.academic_period_id.toString());
-    if (filters?.search) params.append('search', filters.search);
-    if (filters?.per_page) params.append('per_page', filters.per_page.toString());
-    if (filters?.page) params.append('page', filters.page.toString());
+    try {
+      const params = new URLSearchParams();
+      
+      if (filters?.company_id) params.append('company_id', filters.company_id.toString());
+      if (filters?.status) params.append('status', filters.status);
+      if (filters?.enrollment_type) params.append('enrollment_type', filters.enrollment_type);
+      if (filters?.academic_period_id) params.append('academic_period_id', filters.academic_period_id.toString());
+      if (filters?.search) params.append('search', filters.search);
+      if (filters?.per_page) params.append('per_page', filters.per_page?.toString() || '10');
+      if (filters?.page) params.append('page', filters.page.toString());
 
-    const queryString = params.toString();
-    const endpoint = `/data-analyst/students${queryString ? `?${queryString}` : ''}`;
+      const queryString = params.toString();
+      const endpoint = `/data-analyst/students${queryString ? `?${queryString}` : ''}`;
 
-    const response = await apiRequest<ApiResponse<PaginatedResponse<Student>>>(endpoint);
-    
-    return {
-      students: response.data.data,
-      pagination: {
-        current_page: response.data.current_page,
-        total_pages: Math.ceil(response.data.total_records / response.data.per_page),
-        total_records: response.data.total_records,
-        per_page: response.data.per_page
+      const response = await apiRequest<ApiResponse<PaginatedResponse<Student>>>(endpoint);
+      
+      if (!response.success) {
+        throw new Error(response.message || 'Error al obtener estudiantes');
       }
-    };
+      
+      return {
+        students: response.data.data || [],
+        pagination: {
+          current_page: response.data.current_page || 1,
+          total_pages: Math.ceil((response.data.total_records || 0) / (response.data.per_page || 10)),
+          total_records: response.data.total_records || 0,
+          per_page: response.data.per_page || 10
+        }
+      };
+    } catch (error) {
+      console.error('Error in studentService.getStudents:', error);
+      throw error;
+    }
   },
 
   /**
@@ -46,6 +55,9 @@ export const studentService = {
    */
   async getStudentDetail(studentId: number): Promise<Student> {
     const response = await apiRequest<ApiResponse<Student>>(`/data-analyst/students/${studentId}`);
+    if (!response.success) {
+      throw new Error(response.message || 'Error al obtener detalle del estudiante');
+    }
     return response.data;
   },
 
@@ -54,6 +66,9 @@ export const studentService = {
    */
   async getStudentStatistics(): Promise<StudentStatistics> {
     const response = await apiRequest<ApiResponse<StudentStatistics>>('/data-analyst/students/stats/summary');
+    if (!response.success) {
+      throw new Error(response.message || 'Error al obtener estadísticas');
+    }
     return response.data;
   },
 
@@ -71,6 +86,9 @@ export const studentService = {
     const endpoint = `/data-analyst/students/reports/advanced${queryString ? `?${queryString}` : ''}`;
 
     const response = await apiRequest<ApiResponse<any>>(endpoint);
+    if (!response.success) {
+      throw new Error(response.message || 'Error al obtener reporte avanzado');
+    }
     return response.data;
   },
 };

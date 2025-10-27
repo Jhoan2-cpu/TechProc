@@ -22,10 +22,20 @@ export const useStudents = (initialFilters?: StudentFilters) => {
       const { students: studentData, pagination: paginationData } = 
         await studentService.getStudents(filters);
       
-      setStudents(studentData);
+      // Asegurarnos de que los datos tengan la estructura correcta
+      const safeStudentData = studentData.map(student => ({
+        ...student,
+        company: student.company || null,
+        enrollments: student.enrollments || [],
+        enrollments_count: student.enrollments_count || 0
+      }));
+      
+      setStudents(safeStudentData);
       setPagination(paginationData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar estudiantes');
+    } catch (err: any) {
+      console.error('Error loading students:', err);
+      setError(err?.message || 'Error al cargar estudiantes');
+      setStudents([]);
     } finally {
       setLoading(false);
     }
@@ -37,14 +47,20 @@ export const useStudents = (initialFilters?: StudentFilters) => {
       setStatistics(stats);
     } catch (err) {
       console.error('Error al cargar estadísticas:', err);
+      // No seteamos error aquí para no bloquear la UI principal
     }
   };
 
   const refreshData = async (filters?: StudentFilters) => {
-    await Promise.all([
-      loadStudents(filters),
-      loadStatistics()
-    ]);
+    try {
+      setLoading(true);
+      await Promise.all([
+        loadStudents(filters),
+        loadStatistics()
+      ]);
+    } catch (err) {
+      console.error('Error refreshing data:', err);
+    }
   };
 
   useEffect(() => {
