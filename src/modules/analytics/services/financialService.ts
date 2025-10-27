@@ -48,8 +48,14 @@ export const financialService = {
    * Obtener fuentes de ingresos disponibles
    */
   async getRevenueSources(): Promise<RevenueSource[]> {
-    const response = await apiRequest<ApiResponse<RevenueSource[]>>('/data-analyst/financial/revenue-sources');
-    return response.data;
+    try {
+      const response = await apiRequest<ApiResponse<RevenueSource[]>>('/data-analyst/financial/revenue-sources');
+      // Filtrar elementos nulos de la respuesta
+      return response.data.filter(source => source !== null);
+    } catch (error) {
+      console.error('Error fetching revenue sources:', error);
+      return []; // Retornar array vacío en caso de error
+    }
   },
 
   /**

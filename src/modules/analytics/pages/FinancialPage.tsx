@@ -114,26 +114,22 @@ export const FinancialPage = () => {
               </div>
             </div>
 
-            <div className={`card p-4 bg-gradient-to-br ${
-              statistics.net_income >= 0
+            <div className={`card p-4 bg-gradient-to-br ${statistics.net_income >= 0
                 ? 'from-blue-500/20 to-blue-600/20 border-blue-500/30'
                 : 'from-orange-500/20 to-orange-600/20 border-orange-500/30'
-            }`}>
+              }`}>
               <div className="flex items-center gap-3">
-                <div className={`p-2 ${
-                  statistics.net_income >= 0 ? 'bg-blue-500/20' : 'bg-orange-500/20'
-                } rounded-lg`}>
-                  <FontAwesomeIcon 
-                    icon={faChartLine} 
-                    className={`${
-                      statistics.net_income >= 0 ? 'text-blue-400' : 'text-orange-400'
-                    } text-xl`} 
+                <div className={`p-2 ${statistics.net_income >= 0 ? 'bg-blue-500/20' : 'bg-orange-500/20'
+                  } rounded-lg`}>
+                  <FontAwesomeIcon
+                    icon={faChartLine}
+                    className={`${statistics.net_income >= 0 ? 'text-blue-400' : 'text-orange-400'
+                      } text-xl`}
                   />
                 </div>
                 <div>
-                  <p className={`text-2xl font-bold ${
-                    statistics.net_income >= 0 ? 'text-blue-400' : 'text-orange-400'
-                  }`}>
+                  <p className={`text-2xl font-bold ${statistics.net_income >= 0 ? 'text-blue-400' : 'text-orange-400'
+                    }`}>
                     {formatCurrency(statistics.net_income)}
                   </p>
                   <p className="text-sm text-gray-300">Ingreso Neto</p>
@@ -249,13 +245,17 @@ export const FinancialPage = () => {
         </>
       )}
 
+
+      
       {/* Filtros */}
+      {/*
       <FinancialFilterSection
         filters={filters}
         revenueSources={revenueSources}
         onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
       />
+      */}
 
       {/* Pagos pendientes */}
       {pendingPayments && pendingPayments.invoices.length > 0 && (
@@ -284,9 +284,9 @@ export const FinancialPage = () => {
           {pendingPayments.pagination.last_page > 1 && (
             <div className="flex justify-center items-center gap-2 mt-6">
               <button
-                onClick={() => handleFilterChange({ 
-                  ...filters, 
-                  page: (filters.page || 1) - 1 
+                onClick={() => handleFilterChange({
+                  ...filters,
+                  page: (filters.page || 1) - 1
                 })}
                 disabled={pendingPayments.pagination.current_page === 1}
                 className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600"
@@ -299,9 +299,9 @@ export const FinancialPage = () => {
               </span>
 
               <button
-                onClick={() => handleFilterChange({ 
-                  ...filters, 
-                  page: (filters.page || 1) + 1 
+                onClick={() => handleFilterChange({
+                  ...filters,
+                  page: (filters.page || 1) + 1
                 })}
                 disabled={pendingPayments.pagination.current_page === pendingPayments.pagination.last_page}
                 className="px-4 py-2 bg-gray-700 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-600"

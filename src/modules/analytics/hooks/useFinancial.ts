@@ -43,9 +43,12 @@ export const useFinancial = (initialFilters?: FinancialFilters) => {
   const fetchRevenueSources = useCallback(async () => {
     try {
       const sources = await financialService.getRevenueSources();
-      setRevenueSources(sources);
+      // Filtrar cualquier fuente nula antes de establecer el estado
+      setRevenueSources(sources.filter(source => source !== null));
     } catch (err) {
       console.error('Error fetching revenue sources:', err);
+      // Establecer array vacío en caso de error
+      setRevenueSources([]);
     }
   }, []);
 
@@ -59,17 +62,26 @@ export const useFinancial = (initialFilters?: FinancialFilters) => {
   }, []);
 
   const refreshData = useCallback(async (filters?: FinancialFilters) => {
-    await Promise.all([
-      fetchStatistics(filters),
-      fetchRevenueTrend(filters),
-      fetchRevenueSources(),
-      fetchPendingPayments(filters)
-    ]);
+    try {
+      setLoading(true);
+      setError(null);
+      await Promise.all([
+        fetchStatistics(filters),
+        fetchRevenueTrend(filters),
+        fetchRevenueSources(),
+        fetchPendingPayments(filters)
+      ]);
+    } catch (err) {
+      setError('Error al cargar los datos financieros');
+      console.error('Error refreshing data:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [fetchStatistics, fetchRevenueTrend, fetchRevenueSources, fetchPendingPayments]);
 
   useEffect(() => {
     refreshData(initialFilters);
-  }, []);
+  }, [refreshData]);
 
   return {
     statistics,

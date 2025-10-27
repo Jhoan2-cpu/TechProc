@@ -15,6 +15,11 @@ export const FinancialFilterSection = ({
   onFilterChange,
   onClearFilters
 }: FinancialFilterSectionProps) => {
+  // Filtrar fuentes de ingresos válidas
+  const validRevenueSources = revenueSources.filter(source => 
+    source && source.id && source.name
+  );
+
   return (
     <div className="card p-6 border border-gray-700/30">
       <div className="flex items-center justify-between mb-4">
@@ -73,7 +78,7 @@ export const FinancialFilterSection = ({
             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           >
             <option value="">Todas las fuentes</option>
-            {revenueSources.map((source) => (
+            {validRevenueSources.map((source) => (
               <option key={source.id} value={source.id}>
                 {source.name}
               </option>
