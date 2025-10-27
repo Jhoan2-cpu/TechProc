@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { ProfilePage } from "../pages/ProfilePage";
+import { UserTicketsPage } from "../pages/UserTicketsPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { LMSMainPage } from "../modules/lms/pages/LMSMainPage";
 import { CourseDetailsPage } from "../modules/lms/pages/CourseDetailsPage";
@@ -26,6 +27,7 @@ import {
   faUserCircle,
   faBars,
   faTimes,
+  faTicket,
 } from "@fortawesome/free-solid-svg-icons";
 import { modules } from "../shared/utils/modules";
 import { LogoutModal } from "../shared/components/LogoutModal";
@@ -130,6 +132,18 @@ export default function Layout({
               <span className="font-medium">Mi Perfil</span>
             </button>
 
+            {/* Tickets Button */}
+            <button
+              onClick={() => handleModuleChange("user-tickets")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentPath === "user-tickets"
+                  ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/15 hover:scale-105"
+                  : "text-gray-300 hover:bg-gradient-to-r hover:from-secondary-600 hover:to-secondary-700 hover:text-white hover:shadow-lg hover:scale-105 border border-gray-700/30 hover:border-primary-500/50"
+                }`}
+            >
+              <FontAwesomeIcon icon={faTicket} className="text-lg" />
+              <span className="font-medium">Mis Tickets</span>
+            </button>
+
             {/* Logout Button */}
             <button
               onClick={() => setShowLogoutModal(true)}
@@ -165,6 +179,7 @@ export default function Layout({
             {/* Root redirect */}
             <Route path="/" element={<Navigate to="/website" replace />} />
             <Route path="/profile" element={<ProfilePage user={currentUser} />} />
+            <Route path="/user-tickets" element={<UserTicketsPage />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/employees" element={<EmployeesPage />} />
             <Route path="/users/employees/department/:departmentId" element={<DepartmentDetailsPage />} />
