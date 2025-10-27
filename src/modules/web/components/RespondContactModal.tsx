@@ -177,6 +177,24 @@ export const RespondContactModal = ({ isOpen, contact, onSave, onCancel, formatD
                     placeholder="Escribe tu respuesta aquí..."
                   />
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Estado *
+                    </label>
+                    <select
+                      required
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value as ContactFormStatus)}
+                      className="input w-full"
+                    >
+                      <option value="pending">Pendiente</option>
+                      <option value="resolved">Resuelto</option>
+                      <option value="spam">Spam</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
 
