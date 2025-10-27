@@ -20,10 +20,15 @@ const mapApiInstructorToInstructor = (apiInstructor: ApiInstructor): Instructor 
   }
   // Note: 'suspended' is not a valid ApiStatus value according to the API
 
+  // Separar nombre en first_name y last_name de forma segura
+  const nameParts = apiInstructor.name ? apiInstructor.name.split(' ') : [];
+  const first_name = nameParts[0] || '';
+  const last_name = nameParts.slice(1).join(' ') || '';
+
   return {
     id: String(apiInstructor.instructor_id || apiInstructor.id),
-    first_name: apiInstructor.name.split(' ')[0] || '',
-    last_name: apiInstructor.name.split(' ').slice(1).join(' ') || '',
+    first_name,
+    last_name,
     email: apiInstructor.email,
     email_verified_at: null,
     address: '',

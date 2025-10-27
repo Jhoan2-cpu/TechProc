@@ -9,7 +9,11 @@ interface InstructorStatsCardsProps {
 export const InstructorStatsCards = ({ instructors }: InstructorStatsCardsProps) => {
   const totalInstructors = instructors.length;
   const activeInstructors = instructors.filter(i => i.status === 'activo').length;
-  const expertiseAreas = new Set(instructors.map(i => i.expertise_area.split(',')[0])).size;
+  const expertiseAreas = new Set(
+    instructors
+      .map(i => i.expertise_area ? i.expertise_area.split(',')[0] : 'Sin especificar')
+      .filter(Boolean)
+  ).size;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
