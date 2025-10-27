@@ -86,18 +86,18 @@ export const SoftwareDetailsModal = ({ isOpen, software, onClose, formatDate }: 
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-gray-400">Fecha de Instalación</span>
-                <span className="font-bold text-white">{formatDate(software.installation_date)}</span>
+                <span className="font-bold text-white">{formatDate(software.installation_date || null)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-400">Última Actualización</span>
-                <span className="font-bold text-white">{formatDate(software.last_update)}</span>
+                <span className="font-bold text-white">{formatDate(software.last_update || null)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-400 flex items-center gap-2">
                   <FontAwesomeIcon icon={faShieldAlt} />
                   Soporte Vigente Hasta
                 </span>
-                <span className="font-bold text-white">{formatDate(software.support_until)}</span>
+                <span className="font-bold text-white">{formatDate(software.support_until || null)}</span>
               </div>
             </div>
           </div>
@@ -126,7 +126,7 @@ export const SoftwareDetailsModal = ({ isOpen, software, onClose, formatDate }: 
               <FontAwesomeIcon icon={faServer} className="text-primary-600" />
               Servidores con esta Instalación
             </h4>
-            {software.server_ids.length > 0 ? (
+            {software.server_ids && software.server_ids.length > 0 ? (
               <div>
                 <p className="text-gray-400 mb-3">
                   Este software está instalado en <span className="font-bold text-white">{software.server_ids.length}</span> servidor(es)

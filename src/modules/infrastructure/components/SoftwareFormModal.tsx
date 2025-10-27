@@ -30,15 +30,15 @@ export const SoftwareFormModal = ({ isOpen, software, onSave, onCancel }: Softwa
     if (software) {
       setFormData({
         software_name: software.software_name,
-        version: software.version,
-        category: software.category,
-        vendor: software.vendor,
-        license_id: software.license_id,
-        installation_date: software.installation_date,
+        version: software.version || '',
+        category: software.category || '',
+        vendor: software.vendor || '',
+        license_id: software.license_id || null,
+        installation_date: software.installation_date || '',
         last_update: software.last_update || '',
-        auto_update: software.auto_update,
+        auto_update: software.auto_update || false,
         support_until: software.support_until || '',
-        server_ids: software.server_ids,
+        server_ids: software.server_ids || [],
       });
     } else {
       setFormData({
