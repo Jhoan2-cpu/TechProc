@@ -402,7 +402,7 @@ export const InfrastructureMainPage = () => {
       case 'storage':
         return <StoragePage storage={storage} onUpdateStorage={setStorage} />;
       case 'software':
-        return <SoftwarePage software={software} onUpdateSoftware={setSoftware} />;
+        return <SoftwarePage />;
       case 'dashboard':
       default:
         return (

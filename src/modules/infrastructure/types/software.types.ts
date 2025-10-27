@@ -1,38 +1,44 @@
 // src/modules/infrastructure/types/software.types.ts
 
-// 💾 Estructura que devuelve la API
+// 💾 Estructura que devuelve la API (según backend real)
 export interface ApiSoftware {
   id: number;
+  id_software: number | null;
   software_name: string;
   version: string;
   category: string;
   vendor: string;
-  license_id: number;
+  license_id: number | null;
   installation_date: string;
   last_update: string;
 }
 
-// 💡 Modelo usado en el frontend (más limpio)
+// 💡 Modelo usado en el frontend
 export interface Software {
-  id: number;
-  name: string;
-  version: string;
-  license_type: string;
-  vendor: string;
-  install_date: string;
-  expiration_date?: string | null;
-  status: string;
+  id_software: number;
+  software_name: string;
+  version?: string;
+  category?: string;
+  vendor?: string;
+  license_id?: number | null;
+  installation_date?: string;
+  last_update?: string | null;
+  // Propiedades opcionales para compatibilidad con código legacy
+  server_ids?: number[];
+  auto_update?: boolean;
+  support_until?: string | null;
 }
 
 // ✏️ Datos para crear software
 export interface CreateSoftwareData {
-  name: string;
-  version: string;
-  license_type: string;
-  vendor: string;
-  install_date: string;
-  expiration_date?: string | null;
-  status: string;
+  id_software?: number;
+  software_name: string;
+  version?: string;
+  category?: string;
+  vendor?: string;
+  license_id?: number | null;
+  installation_date?: string;
+  last_update?: string | null;
 }
 
 // 🧩 Datos para actualizar software

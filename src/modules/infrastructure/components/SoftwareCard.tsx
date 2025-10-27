@@ -43,15 +43,15 @@ export const SoftwareCard = ({ software, formatDate, index, onDetails, onEdit, o
             </div>
             <div>
               <p className="text-xs text-gray-400">Instalación</p>
-              <p className="font-semibold text-white">{formatDate(software.installation_date)}</p>
+              <p className="font-semibold text-white">{formatDate(software.installation_date || null)}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400">Última Actualización</p>
-              <p className="font-semibold text-white">{formatDate(software.last_update)}</p>
+              <p className="font-semibold text-white">{formatDate(software.last_update || null)}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400">Soporte hasta</p>
-              <p className="font-semibold text-white">{formatDate(software.support_until)}</p>
+              <p className="font-semibold text-white">{formatDate(software.support_until || null)}</p>
             </div>
           </div>
       

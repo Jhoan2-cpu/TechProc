@@ -5,12 +5,7 @@ import type { Software } from '../types';
 import { SoftwareCard, SoftwareDetailsModal, SoftwareFormModal, DeleteSoftwareModal } from '../components';
 import { SoftwareServices } from '../services/software.service';
 
-interface SoftwarePageProps {
-  software: Software[];
-  onUpdateSoftware: (software: Software[]) => void;
-}
-
-export const SoftwarePage = ({ software, onUpdateSoftware }: SoftwarePageProps) => {
+export const SoftwarePage = () => {
   const [selectedSoftware, setSelectedSoftware] = useState<Software | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showFormModal, setShowFormModal] = useState(false);
@@ -71,35 +66,55 @@ export const SoftwarePage = ({ software, onUpdateSoftware }: SoftwarePageProps) 
     setShowFormModal(true);
   };
 
-  const handleSaveSoftware = (softwareData: Partial<Software>) => {
-    if (softwareToEdit) {
-      // Editar software existente
-      const updatedSoftware = software.map(soft =>
-        soft.id_software === softwareToEdit.id_software
-          ? { ...soft, ...softwareData }
-          : soft
-      );
-      onUpdateSoftware(updatedSoftware);
-    } else {
-      // Crear nuevo software
-      const newSoftware: Software = {
-        id_software: Date.now(),
-        ...softwareData as Omit<Software, 'id_software'>,
-      };
-      onUpdateSoftware([newSoftware, ...software]);
+  const handleSaveSoftware = async (softwareData: Partial<Software>) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      if (softwareToEdit) {
+        // Editar software existente
+        const updated = await SoftwareServices.update(
+          softwareToEdit.id_software,
+          softwareData
+        );
+        setSoftwares(prev =>
+          prev.map(soft => soft.id_software === updated.id_software ? updated : soft)
+        );
+        setSuccessMessage('Software actualizado correctamente');
+      } else {
+        // Crear nuevo software
+        const created = await SoftwareServices.create(softwareData as any);
+        setSoftwares(prev => [created, ...prev]);
+        setSuccessMessage('Software creado correctamente');
+      }
+
+      setShowFormModal(false);
+      setSoftwareToEdit(null);
+    } catch (err: unknown) {
+      console.error('Error al guardar software:', err);
+      setError('Error al guardar el software');
+    } finally {
+      setLoading(false);
     }
-    setShowFormModal(false);
-    setSoftwareToEdit(null);
   };
 
-  const handleConfirmDelete = () => {
-    if (softwareToDelete) {
-      const updatedSoftware = software.filter(
-        soft => soft.id_software !== softwareToDelete.id_software
-      );
-      onUpdateSoftware(updatedSoftware);
-      setShowDeleteModal(false);
-      setSoftwareToDelete(null);
+  const handleConfirmDelete = async () => {
+    try {
+      setLoading(true);
+      if (softwareToDelete) {
+        await SoftwareServices.delete(softwareToDelete.id_software);
+        setSoftwares(prev => prev.filter(
+          soft => soft.id_software !== softwareToDelete.id_software
+        ));
+        setSuccessMessage('Software eliminado correctamente');
+        setShowDeleteModal(false);
+        setSoftwareToDelete(null);
+      }
+    } catch (err: unknown) {
+      console.error('Error al eliminar software:', err);
+      setError('Error al eliminar el software');
+    } finally {
+      setLoading(false);
     }
   };
 

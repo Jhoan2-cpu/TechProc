@@ -45,20 +45,7 @@ export interface Storage {
   status: 'healthy' | 'warning' | 'critical';
 }
 
-// Interfaces - Software Instalado
-export interface Software {
-  id_software: number;
-  software_name: string;
-  version: string;
-  category: string;
-  vendor: string;
-  license_id: number | null;
-  installation_date: string;
-  last_update: string | null;
-  server_ids: number[];
-  auto_update: boolean;
-  support_until: string | null;
-}
+// Software types are now exported from software.types.ts
 
 // Interfaces - Recursos Tecnológicos
 export interface TechResource {

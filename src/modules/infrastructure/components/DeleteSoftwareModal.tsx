@@ -46,7 +46,7 @@ export const DeleteSoftwareModal = ({ isOpen, software, onConfirm, onCancel }: D
                 <span className="text-gray-400 text-sm">Proveedor:</span>
                 <span className="font-medium text-white">{software.vendor}</span>
               </div>
-              {software.server_ids.length > 0 && (
+              {software.server_ids && software.server_ids.length > 0 && (
                 <div className="flex justify-between">
                   <span className="text-gray-400 text-sm">Servidores instalados:</span>
                   <span className="font-bold text-white">{software.server_ids.length}</span>
@@ -55,7 +55,7 @@ export const DeleteSoftwareModal = ({ isOpen, software, onConfirm, onCancel }: D
             </div>
           </div>
 
-          {software.server_ids.length > 0 && (
+          {software.server_ids && software.server_ids.length > 0 && (
             <div className="bg-amber-50 border-l-4 border-amber-400 p-4">
               <p className="text-sm text-amber-800">
                 <span className="font-semibold">Advertencia:</span> Este software está instalado en {software.server_ids.length} servidor(es).
